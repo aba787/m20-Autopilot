@@ -1,0 +1,211 @@
+Build a full clickable Arabic SaaS dashboard prototype using Next.js + TypeScript + Tailwind CSS.
+
+This is a UI-only prototype for an Amazon advertising optimization platform for Arab Amazon sellers. Do NOT build backend logic or real API integrations yet. Use mock data only. The goal is to create a realistic demo website that looks production-ready and allows the client to review all requested features before development starts.
+
+General requirements:
+- Language: Arabic
+- Direction: RTL
+- Modern, clean, premium SaaS design
+- Fully responsive
+- Include dark mode toggle and make all pages support dark mode
+- Use a professional admin dashboard layout with sidebar + topbar
+- Make all menu items clickable and navigate between pages
+- Use charts, cards, tables, alerts, and status badges with mock data
+- Focus on simplicity, clarity, and ease of use
+- The UI should feel easier and cleaner than competitors like M19
+- Add polished empty states, loading states, and success/error alert examples
+
+Main product idea:
+An Arabic AI-powered SaaS platform that helps Amazon sellers analyze, manage, and optimize their advertising campaigns.
+
+Create these pages and sections:
+
+1) Login Page
+- Email
+- Password
+- Forgot password
+- Sign in button
+- Clean Arabic SaaS branding
+
+2) Main Dashboard
+Show mock KPI cards for:
+- إجمالي الإنفاق
+- إجمالي المبيعات
+- ROAS
+- ACOS
+- CTR
+- عدد الحملات النشطة
+
+Also include:
+- Interactive sales/performance charts
+- Best campaigns
+- Worst campaigns
+- Smart alerts section
+- Recent optimization actions
+- Account health score
+- Quick action buttons
+
+3) Campaigns Page
+- Campaigns table
+- Campaign status: active / paused
+- Budget
+- Spend
+- Sales
+- ROAS
+- ACOS
+- CTR
+- Edit button
+- Filter/search UI
+- Campaign details drawer or modal
+
+4) Keywords Page
+- Keywords table
+- CPC
+- CTR
+- Conversions
+- ACOS
+- ROAS
+- System recommendation for each keyword
+- Status badges
+- Search and filter options
+
+5) AI Recommendations Page
+Show recommendation cards such as:
+- Reduce bid
+- Increase budget
+- Pause keyword
+- Add new keyword
+- Improve campaign structure
+
+Each recommendation must include:
+- Campaign/keyword name
+- Recommendation type
+- Reason in Arabic
+- Expected impact
+- Priority level
+- Apply button
+- Ignore button
+
+6) Amazon Integration Page
+- Connect Amazon account button
+- Connection status
+- Last sync time
+- Store selector
+- API connection steps UI
+- Sync history
+
+7) Reports Page
+- Daily / weekly / monthly reports tabs
+- Charts and summary cards
+- Export PDF button (UI only)
+- Export CSV button (UI only)
+
+8) Smart Alerts Page
+- Alerts list
+Examples:
+  - ROAS dropped
+  - ACOS increased
+  - No sales detected
+  - Budget nearly exhausted
+- Alert severity labels
+- Alert details panel
+
+9) Subscriptions Page
+Pricing cards for:
+- Starter
+- Pro
+- Enterprise
+
+Include:
+- Monthly / yearly toggle
+- Features list
+- Current plan badge
+- Upgrade button
+
+10) Settings Page
+Include:
+- Target ACOS setting
+- Language setting
+- Dark mode toggle
+- Notification settings
+- Store management
+- Profile settings
+- Billing tab
+- Security tab
+
+11) Multi-store Management Page
+- Show multiple Amazon stores under one account
+- Store cards
+- Active store selector
+- Store performance preview
+
+12) Customer Support AI Page
+Create an in-app Arabic support assistant page.
+Include:
+- Chat interface
+- Suggested quick questions
+- Help center links
+- Ticket escalation button
+- Examples of support replies explaining metrics like ACOS, ROAS, CTR
+- Explanations of why the system made certain optimization recommendations
+
+13) Help Center Page
+Arabic FAQ/help center with sections:
+- Getting started
+- Amazon account connection
+- Advertising metrics explained
+- Optimization recommendations explained
+- Subscription help
+- Technical support
+
+14) Notifications UI
+- Notification dropdown in topbar
+- Arabic notification examples
+- Mark as read UI
+
+15) Audit Log / Activity History Page
+- Show optimization history
+- What was changed
+- Why it was changed
+- Date/time
+- User/system source
+
+Important design requirements:
+- Arabic fonts and elegant spacing
+- Clear hierarchy
+- Premium SaaS feel
+- Strong usability
+- Minimal clutter
+- Use mock realistic Amazon ad data
+- Include icons for menu items
+- Sidebar items in Arabic
+- Topbar with user profile, notifications, dark mode toggle
+
+Suggested sidebar menu in Arabic:
+- لوحة التحكم
+- الحملات
+- الكلمات المفتاحية
+- التوصيات الذكية
+- التنبيهات
+- التقارير
+- المتاجر
+- ربط أمازون
+- الاشتراكات
+- سجل التعديلات
+- خدمة العملاء الذكية
+- مركز المساعدة
+- الإعدادات
+
+Branding:
+Use a fictional product name like:
+"M19 Autopilot Arabic" is NOT allowed.
+Create an original Arabic/modern SaaS brand name, for example:
+"AdPilot Arabia" or another unique brand identity.
+
+Final output:
+- A polished clickable front-end prototype
+- No backend
+- No real authentication
+- No real Amazon API integration
+- Mock data only
+- Ready to show to client for approval

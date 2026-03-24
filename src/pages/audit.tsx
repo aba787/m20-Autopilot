@@ -1,44 +1,53 @@
 import { auditLog } from '@/data/mock';
-import { History, User, Bot, Settings } from 'lucide-react';
+import { History, User, Bot } from 'lucide-react';
 
 export default function Audit() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold">سجل التعديلات</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">متابعة جميع التعديلات والتحسينات على حملاتك</p>
+        <h1 className="text-xl font-bold flex items-center gap-2"><History className="w-5 h-5" /> سجل التعديلات</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">جميع التغييرات المُجراة على الحملات والكلمات المفتاحية</p>
       </div>
 
-      <div className="card p-4">
-        <div className="space-y-0">
-          {auditLog.map((entry, i) => (
-            <div key={entry.id} className="flex gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-800/30 rounded-lg transition-colors">
-              <div className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${entry.source === 'النظام الذكي' ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-brand-100 dark:bg-brand-900/30'}`}>
-                  {entry.source === 'النظام الذكي' ? <Bot className="w-5 h-5 text-purple-600" /> : <User className="w-5 h-5 text-brand-600" />}
-                </div>
-                {i < auditLog.length - 1 && <div className="w-0.5 flex-1 bg-gray-200 dark:bg-gray-700 mt-2" />}
-              </div>
-              <div className="flex-1 pb-4">
-                <div className="flex items-start justify-between mb-1">
-                  <div>
-                    <h4 className="font-bold text-sm">{entry.action}</h4>
-                    <p className="text-sm text-brand-600 dark:text-brand-400">{entry.target}</p>
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs text-gray-500">{entry.date}</p>
-                    <span className={`text-xs ${entry.source === 'النظام الذكي' ? 'badge-info' : 'badge-success'} mt-1 inline-block`}>
-                      {entry.source}
+      <div className="card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-800">
+              <tr>
+                <th className="text-right py-2.5 px-4 font-medium text-gray-500">الإجراء</th>
+                <th className="text-right py-2.5 px-4 font-medium text-gray-500">الهدف</th>
+                <th className="text-right py-2.5 px-4 font-medium text-gray-500">التفاصيل</th>
+                <th className="text-right py-2.5 px-4 font-medium text-gray-500">السبب</th>
+                <th className="text-right py-2.5 px-4 font-medium text-gray-500">المصدر</th>
+                <th className="text-right py-2.5 px-4 font-medium text-gray-500">التاريخ</th>
+              </tr>
+            </thead>
+            <tbody>
+              {auditLog.map(log => (
+                <tr key={log.id} className="border-b border-gray-100 dark:border-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800/30">
+                  <td className="py-3 px-4">
+                    <span className="font-medium text-gray-800 dark:text-gray-200">{log.action}</span>
+                  </td>
+                  <td className="py-3 px-4 text-gray-600 dark:text-gray-400 max-w-[150px]">
+                    <p className="truncate">{log.target}</p>
+                  </td>
+                  <td className="py-3 px-4 text-gray-600 dark:text-gray-400 max-w-[200px]">
+                    <p className="truncate">{log.details}</p>
+                  </td>
+                  <td className="py-3 px-4 text-gray-600 dark:text-gray-400 max-w-[160px]">
+                    <p className="truncate text-xs">{log.reason}</p>
+                  </td>
+                  <td className="py-3 px-4">
+                    <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded font-medium ${log.source === 'النظام الذكي' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'}`}>
+                      {log.source === 'النظام الذكي' ? <Bot className="w-3 h-3" /> : <User className="w-3 h-3" />}
+                      {log.source}
                     </span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{entry.details}</p>
-                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                  <Settings className="w-3 h-3" /> السبب: {entry.reason}
-                </p>
-              </div>
-            </div>
-          ))}
+                  </td>
+                  <td className="py-3 px-4 text-xs text-gray-400">{log.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

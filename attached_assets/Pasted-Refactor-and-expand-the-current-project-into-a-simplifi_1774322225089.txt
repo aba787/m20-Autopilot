@@ -1,0 +1,215 @@
+Refactor and expand the current project into a simplified but more complete Amazon seller platform called M20 Autopilot.
+
+Main Direction:
+The system should be inspired by Amazon Ads style:
+- Simple
+- Data-focused
+- Table-based
+- Clear
+- Not overly fancy
+
+The goal is NOT just a beautiful UI, but a practical system for Amazon sellers.
+
+--------------------------------------------------
+
+1. Branding
+- Rename the product to: M20 Autopilot
+
+--------------------------------------------------
+
+2. UI simplification
+- Simplify all pages
+- Improve spacing and clarity
+- Use clean arrow-style icons where appropriate
+- Add a circular floating AI assistant icon
+- Improve visibility of filters and inputs
+- Make product name columns wider and readable
+- Avoid complex or overloaded UI
+
+--------------------------------------------------
+
+3. Dashboard (VERY IMPORTANT)
+
+Design based on Amazon Ads style:
+
+- Add KPI cards at the top:
+  - Sales
+  - Orders
+  - Cost
+  - ACOS
+  - Clicks
+  - Profit
+  - Spend
+  - Units Sold
+
+- Add time filter:
+  - Monthly
+  - Two weeks
+
+- Add:
+  1) Line chart (performance over time)
+     - Metrics: Sales, Spend
+  2) Donut chart (campaign breakdown or sales type)
+
+- Layout must be:
+  - Clean
+  - Easy to read
+  - Not crowded
+
+- Add product performance section:
+  - Product name
+  - Sales
+  - Cost
+  - Profit
+  - Units sold
+
+--------------------------------------------------
+
+4. Campaigns page
+
+- Redesign to be closer to Amazon Ads
+- Use table layout
+- Keep it simple and structured
+- Focus on clarity and performance data
+
+--------------------------------------------------
+
+5. Keywords / Products page (CRITICAL)
+
+This page MUST match the following structure:
+
+Purpose:
+A clean table-based product management + keyword targeting system
+
+Requirements:
+
+- One product per row
+- Large scrollable table
+- Each row includes:
+  - Product thumbnail (small image)
+  - Product name (long and readable)
+  - ASIN
+  - Basic data
+
+Top controls:
+- Search bar (search by product name)
+- Filter system
+- Brand filter dropdown (like Amazon UI)
+
+Other requirements:
+- Show product count
+- Replace “seed” with “keyword”
+- Add negative keyword logic:
+  Example:
+  If product is “luxury pillow” → avoid “cheap pillow”
+- Improve readability and spacing
+
+IMPORTANT:
+This page should feel like a real Amazon seller product table.
+
+--------------------------------------------------
+
+6. Blacklist
+
+- Add blacklist feature
+- One-click “Exclude” button
+- Move product to blacklist instantly
+- AI must ignore blacklisted products
+- Blacklisted products should be separated in their own section/page
+
+--------------------------------------------------
+
+7. Settings
+
+- Add Amazon link field
+- Add date / calendar support
+- Add currency selector:
+  - SAR
+  - USD
+
+--------------------------------------------------
+
+8. AI Engine
+
+- Run daily analysis on products
+- Detect high-demand products
+- Suggest best-performing keywords
+- Suggest keywords per product
+- Prioritize seller’s actual products
+- Understand product categories correctly
+- Avoid mismatched targeting
+- Detect weak or bad products
+- Support automation of ads and product decisions
+- Aim for strong performance optimization (low ACOS / high efficiency)
+
+--------------------------------------------------
+
+9. Accounting System
+
+- Add full accounting system
+- Show:
+  - Daily profit
+  - Product profit
+  - Cost
+  - Ad spend
+  - Revenue
+  - Units sold
+- Make it simple and readable
+- Add AI assistant for accounting insights
+
+--------------------------------------------------
+
+10. Amazon News
+
+- Add a section for Amazon-related updates
+- Show useful news for sellers
+- Keep it simple and clean
+
+--------------------------------------------------
+
+11. Charts
+
+- Add multiple chart styles:
+  - Line chart (main)
+  - Donut chart (required)
+- Keep colors simple (prefer black/green tones)
+
+--------------------------------------------------
+
+12. Subscription Plans
+
+- Rename plans to professional names
+- Avoid weak or unprofessional wording
+
+--------------------------------------------------
+
+13. Landing Page
+
+- Create a clean landing page
+- Simple and modern
+- Focus on explaining the product clearly
+
+--------------------------------------------------
+
+FINAL DESIGN RULES (VERY IMPORTANT):
+
+- Use:
+  - Tables
+  - Filters
+  - Charts
+
+- Avoid:
+  - Over-design
+  - Complex layouts
+  - Unnecessary UI elements
+
+- The system must feel:
+  - Practical
+  - Fast
+  - Clear
+  - Close to Amazon Ads experience
+
+--------------------------------------------------
+
+All changes above are REQUIRED.
+Do not skip anything.

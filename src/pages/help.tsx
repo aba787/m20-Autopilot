@@ -1,65 +1,80 @@
 import { useState } from 'react';
 import { helpSections } from '@/data/mock';
-import { HelpCircle, ChevronDown, ChevronUp, Search, BookOpen } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, Search } from 'lucide-react';
 
 export default function Help() {
-  const [openSection, setOpenSection] = useState<number | null>(0);
-  const [openArticle, setOpenArticle] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [openArticles, setOpenArticles] = useState<Record<string, boolean>>({});
 
-  const filteredSections = helpSections.map(s => ({
+  const toggleSection = (t: string) => setOpenSections(p => ({ ...p, [t]: !p[t] }));
+  const toggleArticle = (k: string) => setOpenArticles(p => ({ ...p, [k]: !p[k] }));
+
+  const filtered = helpSections.map(s => ({
     ...s,
-    articles: s.articles.filter(a => a.title.includes(search) || a.content.includes(search)),
-  })).filter(s => s.articles.length > 0 || !search);
+    articles: s.articles.filter(a =>
+      !search || a.title.includes(search) || a.content.includes(search)
+    ),
+  })).filter(s => s.articles.length > 0);
 
   return (
-    <div className="space-y-6">
-      <div className="text-center max-w-2xl mx-auto">
-        <BookOpen className="w-12 h-12 text-brand-600 mx-auto mb-3" />
-        <h1 className="text-2xl font-bold">مركز المساعدة</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">ابحث عن إجابات لأسئلتك حول منصة أدفلو</p>
-        <div className="mt-4 flex items-center gap-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 px-4 py-3 shadow-sm">
-          <Search className="w-5 h-5 text-gray-400" />
-          <input type="text" placeholder="ابحث في مركز المساعدة..." value={search} onChange={e => setSearch(e.target.value)}
-            className="bg-transparent border-none outline-none w-full text-sm" />
-        </div>
+    <div className="space-y-5 max-w-2xl">
+      <div>
+        <h1 className="text-xl font-bold flex items-center gap-2"><HelpCircle className="w-5 h-5 text-brand-600" /> مركز المساعدة</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">إجابات على الأسئلة الأكثر شيوعاً</p>
       </div>
 
-      <div className="max-w-3xl mx-auto space-y-4">
-        {filteredSections.map((section, si) => (
-          <div key={si} className="card overflow-hidden">
-            <button onClick={() => setOpenSection(openSection === si ? null : si)}
-              className="w-full flex items-center justify-between p-5 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-              <h2 className="font-bold flex items-center gap-2">
-                <HelpCircle className="w-5 h-5 text-brand-600" /> {section.title}
-              </h2>
-              {openSection === si ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
-            </button>
-            {openSection === si && (
-              <div className="border-t border-gray-200 dark:border-gray-800">
-                {section.articles.map((article, ai) => {
-                  const key = `${si}-${ai}`;
-                  return (
-                    <div key={ai} className="border-b border-gray-100 dark:border-gray-800/50 last:border-0">
-                      <button onClick={() => setOpenArticle(openArticle === key ? null : key)}
-                        className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
-                        <span className="text-sm font-medium">{article.title}</span>
-                        {openArticle === key ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
-                      </button>
-                      {openArticle === key && (
-                        <div className="px-4 pb-4">
-                          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                            {article.content}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        ))}
+      <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2.5">
+        <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+        <input type="text" placeholder="ابحث في المساعدة..." value={search} onChange={e => setSearch(e.target.value)}
+          className="bg-transparent border-none outline-none text-sm w-full" />
+      </div>
+
+      {filtered.length === 0 && (
+        <div className="card p-10 text-center">
+          <HelpCircle className="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+          <p className="font-bold">لا توجد نتائج</p>
+          <p className="text-sm text-gray-500 mt-1">جرّب كلمة بحث أخرى أو تواصل معنا مباشرة.</p>
+        </div>
+      )}
+
+      {filtered.map(section => (
+        <div key={section.title} className="card overflow-hidden">
+          <button onClick={() => toggleSection(section.title)}
+            className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 text-right">
+            <span className="font-bold text-sm">{section.title}</span>
+            {openSections[section.title] ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+          </button>
+          {openSections[section.title] && (
+            <div className="border-t border-gray-100 dark:border-gray-800">
+              {section.articles.map(article => {
+                const key = section.title + article.title;
+                return (
+                  <div key={article.title} className="border-b border-gray-100 dark:border-gray-800 last:border-0">
+                    <button onClick={() => toggleArticle(key)}
+                      className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 text-right">
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{article.title}</span>
+                      {openArticles[key] ? <ChevronUp className="w-3.5 h-3.5 text-gray-400" /> : <ChevronDown className="w-3.5 h-3.5 text-gray-400" />}
+                    </button>
+                    {openArticles[key] && (
+                      <div className="px-4 pb-4">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{article.content}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ))}
+
+      <div className="card p-4 text-center">
+        <p className="text-sm font-medium mb-1">لم تجد إجابتك؟</p>
+        <p className="text-xs text-gray-500 mb-3">فريق الدعم جاهز لمساعدتك</p>
+        <a href="/support" className="inline-flex items-center gap-1.5 text-sm bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-lg font-medium hover:opacity-90">
+          تحدث مع المساعد الذكي →
+        </a>
       </div>
     </div>
   );

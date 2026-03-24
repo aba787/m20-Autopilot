@@ -4,18 +4,20 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 
+const noLayoutPages = ['/', '/login'];
+
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const noLayout = router.pathname === '/';
+  const useLayout = !noLayoutPages.includes(router.pathname);
 
   return (
     <ThemeProvider>
-      {noLayout ? (
-        <Component {...pageProps} />
-      ) : (
+      {useLayout ? (
         <Layout>
           <Component {...pageProps} />
         </Layout>
+      ) : (
+        <Component {...pageProps} />
       )}
     </ThemeProvider>
   );

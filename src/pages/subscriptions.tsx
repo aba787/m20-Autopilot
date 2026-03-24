@@ -1,58 +1,75 @@
 import { useState } from 'react';
 import { subscriptionPlans } from '@/data/mock';
-import { Check, Crown } from 'lucide-react';
+import { CheckCircle2, Crown, Zap } from 'lucide-react';
 
 export default function Subscriptions() {
-  const [yearly, setYearly] = useState(false);
+  const [billing, setBilling] = useState<'monthly' | 'yearly'>('monthly');
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold">الاشتراكات</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">اختر الخطة المناسبة لاحتياجاتك</p>
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-xl font-bold flex items-center gap-2"><Crown className="w-5 h-5 text-amber-500" /> الاشتراكات</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">اختر الخطة المناسبة لحجم متجرك</p>
       </div>
 
-      <div className="flex items-center justify-center gap-3">
-        <span className={`text-sm font-medium ${!yearly ? 'text-brand-600' : 'text-gray-500'}`}>شهري</span>
-        <button onClick={() => setYearly(!yearly)}
-          className={`w-12 h-6 rounded-full transition-colors relative ${yearly ? 'bg-brand-600' : 'bg-gray-300 dark:bg-gray-600'}`}>
-          <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all ${yearly ? 'right-0.5' : 'right-[26px]'}`} />
-        </button>
-        <span className={`text-sm font-medium ${yearly ? 'text-brand-600' : 'text-gray-500'}`}>سنوي</span>
-        {yearly && <span className="badge-success text-xs">وفر 17%</span>}
+      <div className="flex justify-center mb-2">
+        <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden text-sm">
+          <button onClick={() => setBilling('monthly')}
+            className={`px-5 py-2 font-medium transition-colors ${billing === 'monthly' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'text-gray-500'}`}>
+            شهري
+          </button>
+          <button onClick={() => setBilling('yearly')}
+            className={`px-5 py-2 font-medium transition-colors flex items-center gap-1.5 ${billing === 'yearly' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'text-gray-500'}`}>
+            سنوي <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">وفّر 17%</span>
+          </button>
+        </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-3 gap-5">
         {subscriptionPlans.map((plan, i) => (
-          <div key={i} className={`card p-6 relative ${plan.current ? 'border-2 border-brand-500 shadow-lg shadow-brand-100 dark:shadow-brand-900/20' : ''}`}>
+          <div key={i} className={`card p-5 ${plan.current ? 'ring-2 ring-gray-900 dark:ring-white' : ''}`}>
             {plan.current && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
-                <Crown className="w-3 h-3" /> خطتك الحالية
+              <div className="flex items-center gap-1.5 text-xs font-medium text-green-700 dark:text-green-400 mb-3 bg-green-50 dark:bg-green-950/30 px-2 py-1 rounded-full w-fit">
+                <Zap className="w-3 h-3" /> خطتك الحالية
               </div>
             )}
-            <div className="text-center mb-6">
-              <h3 className="text-lg font-bold">{plan.nameAr}</h3>
-              <p className="text-xs text-gray-500">{plan.name}</p>
-              <div className="mt-4">
-                <span className="text-4xl font-bold">{yearly ? plan.yearlyPrice : plan.monthlyPrice}</span>
-                <span className="text-gray-500 mr-1">ر.س / {yearly ? 'سنة' : 'شهر'}</span>
-              </div>
+
+            <div className="mb-4">
+              <h3 className="font-bold text-lg">{plan.nameAr}</h3>
+              <p className="text-xs text-gray-400">{plan.name}</p>
             </div>
-            <ul className="space-y-3 mb-6">
+
+            <div className="mb-5">
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold">
+                  {billing === 'yearly' ? Math.round(plan.yearlyPrice / 12) : plan.monthlyPrice}
+                </span>
+                <span className="text-sm text-gray-500">ر.س/شهر</span>
+              </div>
+              {billing === 'yearly' && (
+                <p className="text-xs text-green-600 mt-0.5">{plan.yearlyPrice.toLocaleString()} ر.س/سنة</p>
+              )}
+            </div>
+
+            <ul className="space-y-2 mb-5">
               {plan.features.map((f, j) => (
                 <li key={j} className="flex items-center gap-2 text-sm">
-                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  <span>{f}</span>
+                  <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-600 dark:text-gray-400">{f}</span>
                 </li>
               ))}
             </ul>
-            {plan.current ? (
-              <button className="w-full py-2.5 rounded-lg border-2 border-brand-600 text-brand-600 font-medium text-sm">خطتك الحالية</button>
-            ) : (
-              <button className="w-full btn-primary py-2.5 text-sm">ترقية الآن</button>
-            )}
+
+            <button className={`w-full py-2.5 rounded-lg font-medium text-sm transition-opacity hover:opacity-90 ${plan.current ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+              {plan.current ? 'خطتك الحالية' : 'الترقية'}
+            </button>
           </div>
         ))}
+      </div>
+
+      <div className="card p-4 text-center text-sm text-gray-500 dark:text-gray-400">
+        <p>جميع الخطط تتضمن: دعم فني، SSL، تحديثات مجانية</p>
+        <p className="mt-0.5">للاستفسارات تواصل معنا: <a href="mailto:support@m20.ai" className="text-brand-600 hover:underline">support@m20.ai</a></p>
       </div>
     </div>
   );

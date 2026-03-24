@@ -1,137 +1,122 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { chatMessages } from '@/data/mock';
-import { Send, Bot, User, HelpCircle, ExternalLink, Headphones } from 'lucide-react';
+import { Send, Bot, User } from 'lucide-react';
 
 const quickQuestions = [
-  'ما هو ACOS وكيف أحسنه؟',
-  'لماذا انخفض ROAS حملتي؟',
-  'كيف أزيد المبيعات؟',
-  'اشرح لي التوصيات الذكية',
-  'كيف أربط حسابي بأمازون؟',
+  'ما الفرق بين ACOS و ROAS؟',
+  'كيف أخفض ACOS؟',
+  'ما أفضل ميزانية لحملتي؟',
+  'كيف أختار الكلمات المفتاحية؟',
 ];
+
+const autoReplies: Record<string, string> = {
+  'اشرح': 'بكل سرور! يرجى تحديد ما تريد شرحه وسأجيبك بالتفصيل.',
+  'ACOS': 'ACOS = إنفاق الإعلان ÷ مبيعات الإعلان × 100\n\nكلما انخفض ACOS كان أفضل. الهدف المعقول عادةً بين 20-30% حسب هامش ربحك.\n\nمثال: أنفقت 200 ر.س وحققت 1000 ر.س → ACOS = 20%',
+  'ROAS': 'ROAS = مبيعات الإعلان ÷ إنفاق الإعلان\n\nكلما ارتفع كان أفضل. ROAS 4 يعني كل ريال تنفقه يُعيد 4 ريالات مبيعات.',
+  'ميزانية': 'لتحديد الميزانية المثالية:\n1. ابدأ بميزانية صغيرة (50-100 ر.س يومياً)\n2. راقب ACOS لأسبوع\n3. إذا كان ROAS أعلى من 4 — زِد الميزانية\n4. إذا كان ACOS أعلى من 40% — أوقف وراجع الكلمات',
+  'كلمات': 'لاختيار الكلمات المفتاحية المثالية:\n1. ابدأ بـ Broad Match لاكتشاف ما يصلح\n2. انتقل لـ Phrase ثم Exact للكلمات الجيدة\n3. استخدم كلمات سلبية لحجب النقرات الغير مجدية\n4. راجع تقرير استعلامات البحث أسبوعياً',
+};
+
+function getBotReply(msg: string): string {
+  for (const key of Object.keys(autoReplies)) {
+    if (msg.includes(key)) return autoReplies[key];
+  }
+  return 'شكراً لسؤالك! سيرد عليك فريق M20 قريباً. في الوقت الحالي يمكنك مراجعة مركز المساعدة للإجابات الشائعة.';
+}
 
 export default function Support() {
   const [messages, setMessages] = useState(chatMessages);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const sendMessage = (text: string) => {
-    if (!text.trim()) return;
-    const newMsg = { id: messages.length + 1, sender: 'user', message: text };
-    setMessages([...messages, newMsg]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+
+  const send = (text?: string) => {
+    const msg = text || input.trim();
+    if (!msg) return;
     setInput('');
+    setMessages(prev => [...prev, { id: Date.now(), sender: 'user', message: msg }]);
     setTyping(true);
-
     setTimeout(() => {
-      const reply = {
-        id: messages.length + 2,
-        sender: 'bot',
-        message: 'شكراً لسؤالك! بناءً على تحليل بيانات حسابك، يمكنني مساعدتك. هل تريد المزيد من التفاصيل حول هذا الموضوع؟',
-      };
-      setMessages(prev => [...prev, reply]);
+      setMessages(prev => [...prev, { id: Date.now() + 1, sender: 'bot', message: getBotReply(msg) }]);
       setTyping(false);
-    }, 1500);
+    }, 1000);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 h-full flex flex-col max-h-[calc(100vh-8rem)]">
       <div>
-        <h1 className="text-2xl font-bold">خدمة العملاء الذكية</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">مساعد ذكي يجيب على أسئلتك حول حملاتك وإعلاناتك</p>
+        <h1 className="text-xl font-bold flex items-center gap-2"><Bot className="w-5 h-5 text-green-600" /> المساعد الذكي</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">اسأل عن أي شيء متعلق بإعلانات أمازون والمنصة</p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="card flex flex-col" style={{ height: '600px' }}>
-            <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-brand-600" />
-              </div>
-              <div>
-                <h3 className="font-bold text-sm">مساعد أدفلو الذكي</h3>
-                <p className="text-xs text-emerald-600">متصل الآن</p>
-              </div>
+      <div className="card flex-1 flex flex-col overflow-hidden" style={{ minHeight: '400px', maxHeight: '500px' }}>
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex gap-2.5">
+            <div className="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+              <Bot className="w-4 h-4 text-green-600" />
             </div>
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map(m => (
-                <div key={m.id} className={`flex gap-3 ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${m.sender === 'user' ? 'bg-brand-100 dark:bg-brand-900/30' : 'bg-purple-100 dark:bg-purple-900/30'}`}>
-                    {m.sender === 'user' ? <User className="w-4 h-4 text-brand-600" /> : <Bot className="w-4 h-4 text-purple-600" />}
-                  </div>
-                  <div className={`max-w-[75%] p-3 rounded-xl text-sm leading-relaxed whitespace-pre-line ${m.sender === 'user' ? 'bg-brand-600 text-white rounded-tl-sm' : 'bg-gray-100 dark:bg-gray-800 rounded-tr-sm'}`}>
-                    {m.message}
-                  </div>
-                </div>
-              ))}
-              {typing && (
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl rounded-tr-sm">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-              <div className="flex flex-wrap gap-2 mb-3">
-                {quickQuestions.slice(0, 3).map((q, i) => (
-                  <button key={i} onClick={() => sendMessage(q)}
-                    className="text-xs px-3 py-1.5 rounded-full bg-brand-50 dark:bg-brand-950/50 text-brand-600 hover:bg-brand-100 dark:hover:bg-brand-900/30 transition-colors">
-                    {q}
-                  </button>
-                ))}
-              </div>
-              <div className="flex gap-2">
-                <input type="text" value={input} onChange={e => setInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
-                  placeholder="اكتب سؤالك هنا..."
-                  className="input-field flex-1" />
-                <button onClick={() => sendMessage(input)} className="btn-primary px-4">
-                  <Send className="w-4 h-4" />
-                </button>
+            <div className="flex-1">
+              <p className="text-xs text-gray-400 mb-1">M20 AI</p>
+              <div className="bg-gray-100 dark:bg-gray-800 rounded-xl rounded-tr-sm px-3 py-2 text-sm max-w-sm">
+                مرحباً! أنا مساعد M20 الذكي. كيف يمكنني مساعدتك اليوم؟
               </div>
             </div>
           </div>
+
+          {messages.map(m => (
+            <div key={m.id} className={`flex gap-2.5 ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.sender === 'bot' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                {m.sender === 'bot' ? <Bot className="w-4 h-4 text-green-600" /> : <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />}
+              </div>
+              <div className={`flex-1 ${m.sender === 'user' ? 'flex flex-col items-end' : ''}`}>
+                <p className="text-xs text-gray-400 mb-1">{m.sender === 'bot' ? 'M20 AI' : 'أنت'}</p>
+                <div className={`inline-block rounded-xl px-3 py-2 text-sm max-w-xs lg:max-w-sm whitespace-pre-line ${m.sender === 'user' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-tl-sm' : 'bg-gray-100 dark:bg-gray-800 rounded-tr-sm'}`}>
+                  {m.message}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {typing && (
+            <div className="flex gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                <Bot className="w-4 h-4 text-green-600" />
+              </div>
+              <div className="bg-gray-100 dark:bg-gray-800 rounded-xl rounded-tr-sm px-4 py-3">
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={bottomRef} />
         </div>
 
-        <div className="space-y-4">
-          <div className="card p-5">
-            <h3 className="font-bold mb-3 flex items-center gap-2"><HelpCircle className="w-4 h-4 text-brand-600" /> أسئلة شائعة</h3>
-            <div className="space-y-2">
-              {quickQuestions.map((q, i) => (
-                <button key={i} onClick={() => sendMessage(q)}
-                  className="w-full text-right text-sm p-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400">
-                  {q}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Quick Questions */}
+        <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex gap-1.5 overflow-x-auto">
+          {quickQuestions.map(q => (
+            <button key={q} onClick={() => send(q)}
+              className="text-xs px-2.5 py-1 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 whitespace-nowrap text-gray-600 dark:text-gray-400">
+              {q}
+            </button>
+          ))}
+        </div>
 
-          <div className="card p-5">
-            <h3 className="font-bold mb-3 flex items-center gap-2"><ExternalLink className="w-4 h-4 text-brand-600" /> روابط مفيدة</h3>
-            <div className="space-y-2">
-              <a href="/help" className="block text-sm text-brand-600 hover:underline p-2">مركز المساعدة</a>
-              <a href="/help" className="block text-sm text-brand-600 hover:underline p-2">دليل البدء السريع</a>
-              <a href="/help" className="block text-sm text-brand-600 hover:underline p-2">شرح مقاييس الإعلانات</a>
-            </div>
-          </div>
-
-          <div className="card p-5 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-            <div className="flex items-center gap-3 mb-3">
-              <Headphones className="w-5 h-5 text-amber-600" />
-              <h3 className="font-bold text-sm">تحتاج مساعدة بشرية؟</h3>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">يمكنك تصعيد المحادثة لفريق الدعم</p>
-            <button className="w-full btn-secondary text-sm">فتح تذكرة دعم</button>
-          </div>
+        {/* Input */}
+        <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-800">
+          <form onSubmit={e => { e.preventDefault(); send(); }} className="flex gap-2">
+            <input type="text" value={input} onChange={e => setInput(e.target.value)}
+              placeholder="اكتب سؤالك هنا..." className="flex-1 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-gray-400 dark:focus:border-gray-500 bg-white dark:bg-gray-900" />
+            <button type="submit" disabled={!input.trim()}
+              className="p-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg disabled:opacity-40 hover:opacity-90">
+              <Send className="w-4 h-4" />
+            </button>
+          </form>
         </div>
       </div>
     </div>

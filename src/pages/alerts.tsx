@@ -1,105 +1,100 @@
 import { useState } from 'react';
-import { alerts } from '@/data/mock';
-import { Bell, AlertTriangle, AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
+import { alerts as initialAlerts } from '@/data/mock';
+import { Bell, AlertTriangle, AlertCircle, CheckCircle2, X } from 'lucide-react';
 
 const severityConfig: Record<string, { label: string; color: string; icon: any; bg: string }> = {
-  critical: { label: 'حرج', color: 'text-red-600', icon: AlertCircle, bg: 'bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800/30' },
-  warning: { label: 'تحذير', color: 'text-amber-600', icon: AlertTriangle, bg: 'bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30' },
-  success: { label: 'إيجابي', color: 'text-emerald-600', icon: CheckCircle2, bg: 'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-200 dark:border-emerald-800/30' },
-  info: { label: 'معلومة', color: 'text-blue-600', icon: Info, bg: 'bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800/30' },
+  critical: { label: 'حرج', color: 'text-red-600', icon: AlertCircle, bg: 'border-red-200 dark:border-red-800 bg-red-50/50 dark:bg-red-950/10' },
+  warning: { label: 'تحذير', color: 'text-amber-600', icon: AlertTriangle, bg: 'border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/10' },
+  success: { label: 'إيجابي', color: 'text-green-600', icon: CheckCircle2, bg: 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/10' },
 };
 
 export default function Alerts() {
-  const [selectedAlert, setSelectedAlert] = useState<typeof alerts[0] | null>(null);
-  const [filter, setFilter] = useState('all');
+  const [items, setItems] = useState(initialAlerts);
+  const [filter, setFilter] = useState<'all' | 'unread'>('all');
+  const [severityFilter, setSeverityFilter] = useState('all');
 
-  const filtered = filter === 'all' ? alerts : alerts.filter(a => a.severity === filter);
+  const dismiss = (id: number) => setItems(prev => prev.filter(a => a.id !== id));
+  const markRead = (id: number) => setItems(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
+  const markAllRead = () => setItems(prev => prev.map(a => ({ ...a, read: true })));
+
+  const filtered = items.filter(a => {
+    const rf = filter === 'unread' ? !a.read : true;
+    const sf = severityFilter === 'all' || a.severity === severityFilter;
+    return rf && sf;
+  });
+
+  const unreadCount = items.filter(a => !a.read).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">التنبيهات</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">متابعة التنبيهات والتحذيرات لحملاتك</p>
+          <h1 className="text-xl font-bold flex items-center gap-2"><Bell className="w-5 h-5 text-amber-500" /> التنبيهات</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{unreadCount} غير مقروء</p>
         </div>
-        <button className="btn-secondary text-sm">تحديد الكل كمقروء</button>
+        <button onClick={markAllRead} className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          تحديد الكل كمقروء
+        </button>
       </div>
 
-      <div className="flex gap-2 flex-wrap">
-        {['all', 'critical', 'warning', 'success', 'info'].map(f => (
-          <button key={f} onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === f ? 'bg-brand-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
-            {f === 'all' ? 'الكل' : severityConfig[f]?.label}
+      {/* Filters */}
+      <div className="flex flex-wrap gap-2">
+        <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden text-sm">
+          <button onClick={() => setFilter('all')}
+            className={`px-3 py-1.5 font-medium ${filter === 'all' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'text-gray-500'}`}>
+            الكل ({items.length})
           </button>
-        ))}
+          <button onClick={() => setFilter('unread')}
+            className={`px-3 py-1.5 font-medium ${filter === 'unread' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'text-gray-500'}`}>
+            غير مقروء ({unreadCount})
+          </button>
+        </div>
+        <select value={severityFilter} onChange={e => setSeverityFilter(e.target.value)}
+          className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded px-3 py-1.5 text-sm outline-none">
+          <option value="all">جميع الأنواع</option>
+          <option value="critical">حرج</option>
+          <option value="warning">تحذير</option>
+          <option value="success">إيجابي</option>
+        </select>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-3">
-          {filtered.map(a => {
-            const config = severityConfig[a.severity];
-            const Icon = config.icon;
-            return (
-              <div key={a.id}
-                onClick={() => setSelectedAlert(a)}
-                className={`card p-4 border cursor-pointer hover:shadow-md transition-all ${config.bg} ${selectedAlert?.id === a.id ? 'ring-2 ring-brand-500' : ''} ${!a.read ? '' : 'opacity-70'}`}>
-                <div className="flex items-start gap-3">
-                  <Icon className={`w-5 h-5 mt-0.5 ${config.color}`} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-sm">{a.title}</h3>
-                      {!a.read && <span className="w-2 h-2 rounded-full bg-brand-500" />}
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{a.message}</p>
-                    <p className="text-xs text-gray-400 mt-2">{a.time}</p>
+      {/* List */}
+      <div className="space-y-2">
+        {filtered.map(a => {
+          const cfg = severityConfig[a.severity];
+          const Icon = cfg.icon;
+          return (
+            <div key={a.id} className={`card p-4 border ${cfg.bg} ${!a.read ? 'shadow-sm' : ''}`}>
+              <div className="flex items-start gap-3">
+                <Icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${cfg.color}`} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <h3 className="font-bold text-sm">{a.title}</h3>
+                    <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${cfg.color} bg-white dark:bg-gray-900`}>{cfg.label}</span>
+                    {!a.read && <span className="w-2 h-2 rounded-full bg-blue-500" />}
                   </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{a.message}</p>
+                  <p className="text-xs text-gray-400 mt-1">{a.time}</p>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="lg:col-span-1">
-          {selectedAlert ? (
-            <div className="card p-5 sticky top-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold">تفاصيل التنبيه</h3>
-                <button onClick={() => setSelectedAlert(null)} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">النوع</p>
-                  <span className={`badge ${severityConfig[selectedAlert.severity].color} ${severityConfig[selectedAlert.severity].bg.split(' ')[0]}`}>
-                    {severityConfig[selectedAlert.severity].label}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">العنوان</p>
-                  <p className="font-bold">{selectedAlert.title}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">التفاصيل</p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{selectedAlert.message}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">الوقت</p>
-                  <p className="text-sm">{selectedAlert.time}</p>
-                </div>
-                <div className="flex gap-2 pt-2">
-                  <button className="btn-primary flex-1 text-sm">عرض الحملة</button>
-                  <button className="btn-secondary flex-1 text-sm">تجاهل</button>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  {!a.read && (
+                    <button onClick={() => markRead(a.id)} className="p-1.5 rounded hover:bg-white dark:hover:bg-gray-800 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-xs" title="تحديد كمقروء">✓</button>
+                  )}
+                  <button onClick={() => dismiss(a.id)} className="p-1.5 rounded hover:bg-white dark:hover:bg-gray-800 text-gray-400">
+                    <X className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="card p-8 text-center">
-              <Bell className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-sm text-gray-500">اختر تنبيهاً لعرض تفاصيله</p>
-            </div>
-          )}
-        </div>
+          );
+        })}
+        {filtered.length === 0 && (
+          <div className="card p-12 text-center">
+            <Bell className="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+            <p className="font-bold">لا توجد تنبيهات</p>
+            <p className="text-sm text-gray-500 mt-1">ممتاز! كل شيء يعمل بشكل جيد.</p>
+          </div>
+        )}
       </div>
     </div>
   );

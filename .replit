@@ -12,7 +12,6 @@ channel = "stable-24_11"
 run = ["npm", "run", "start"]
 deploymentTarget = "autoscale"
 ignorePorts = false
-publicDir = "public"
 build = ["npm", "run", "build"]
 
 [agent]

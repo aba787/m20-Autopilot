@@ -1,0 +1,88 @@
+ثانيًا: الكود (العقل + التنفيذ)
+1) حساب الميتريكس
+function calculateMetrics(campaign) {
+  const acos = campaign.spend / campaign.sales
+  const roas = campaign.sales / campaign.spend
+  const ctr = campaign.clicks / campaign.impressions
+
+  return { acos, roas, ctr }
+}
+2) القوانين (Decision Engine)
+function applyRules(metrics, campaign) {
+  if (metrics.acos > campaign.target_acos && campaign.clicks > 25) {
+    return {
+      action: "decrease_bid",
+      reason: "ACOS too high"
+    }
+  }
+
+  if (metrics.acos < campaign.target_acos * 0.7) {
+    return {
+      action: "scale",
+      reason: "Good performance"
+    }
+  }
+
+  return {
+    action: "keep",
+    reason: "Stable"
+  }
+}
+3) تنفيذ القرار
+
+(حاليًا وهمي — بعدين تربطينه بـ Amazon API)
+
+async function executeAction(action, campaign) {
+  if (action === "decrease_bid") {
+    console.log("خفض البيد")
+  }
+
+  if (action === "scale") {
+    console.log("رفع الميزانية")
+  }
+
+  if (action === "pause") {
+    console.log("إيقاف الحملة")
+  }
+}
+4) تسجيل القرار (Learning 🔥)
+async function logDecision(supabase, campaign, decision, metrics) {
+  await supabase.from('decision_logs').insert([
+    {
+      campaign_id: campaign.id,
+      action: decision.action,
+      reason: decision.reason,
+      before_acos: metrics.acos
+    }
+  ])
+}
+5) البوت الكامل (هذا أهم كود عندك)
+async function runBot(supabase) {
+  const { data: campaigns } = await supabase
+    .from('campaigns')
+    .select('*')
+
+  for (let campaign of campaigns) {
+    const metrics = calculateMetrics(campaign)
+
+    const decision = applyRules(metrics, campaign)
+
+    await executeAction(decision.action, campaign)
+
+    await logDecision(supabase, campaign, decision, metrics)
+  }
+You are an Amazon Ads expert.
+
+Analyze campaign performance based on:
+
+- Spend
+- Sales
+- ACOS
+- Clicks
+
+Suggest:
+- pause, scale, or optimize
+- explain why
+
+API KeyKeep it realistic.
+sk-proj-NrlknlniRFikjGbKL1cBEqMS6aFyBP5-CDB64EF7Pq_Kr7r7H_gaJ6MpJTXjrjd99lBdogjpt0T3BlbkFJc0_tVYo_W15VFKcgYhtwzpzp3Y28kFJg7PhIzHSJIJn-vGMTx5VrCslTZnJBaZ-9diEkN6vEQANo fake promises.}

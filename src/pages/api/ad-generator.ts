@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
+import { db as supabaseAdmin } from '@/lib/supabaseAdmin';
+import { getTokenFromRequest, verifyToken } from '@/lib/auth';
 
 const AD_GEN_SYSTEM_PROMPT = `${MASTER_SYSTEM_PROMPT}
 
@@ -81,6 +83,24 @@ Return ONLY valid JSON with no extra text.`;
       result = JSON.parse(raw);
     } catch {
       return res.status(500).json({ error: 'Failed to parse AI response as JSON' });
+    }
+
+    // Save to DB if user is authenticated
+    const token = getTokenFromRequest(req);
+    if (token) {
+      const payload = verifyToken(token);
+      if (payload?.sub) {
+        await supabaseAdmin.from('ad_generations').insert({
+          user_id:     payload.sub,
+          product_name: productName.trim(),
+          category:    category?.trim() || null,
+          brand:       brand?.trim()    || null,
+          keywords:    result.keywords  ?? [],
+          headlines:   result.headlines ?? [],
+          description: result.description ?? '',
+          targeting:   result.targeting   ?? '',
+        });
+      }
     }
 
     return res.status(200).json({ result });

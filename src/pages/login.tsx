@@ -1,30 +1,44 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from '@/components/ThemeProvider';
-import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3 } from 'lucide-react';
+import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/lib/useAuth';
 
 const FEATURES = [
-  { icon: BarChart3,  text: 'Daily AI-powered analysis'        },
-  { icon: TrendingUp, text: 'Keyword recommendations'           },
-  { icon: Bot,        text: 'Integrated accounting system'      },
-  { icon: Shield,     text: 'Smart product blacklisting'        },
+  { icon: BarChart3,  text: 'Daily AI-powered analysis'     },
+  { icon: TrendingUp, text: 'Keyword recommendations'        },
+  { icon: Bot,        text: 'Integrated accounting system'   },
+  { icon: Shield,     text: 'Smart product blacklisting'     },
 ];
 
 const CYAN = '#00d9ff';
 
 export default function Login() {
+  const [tab,      setTab]      = useState<'login' | 'register'>('login');
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
+  const [name,     setName]     = useState('');
   const [showPass, setShowPass] = useState(false);
   const [loading,  setLoading]  = useState(false);
+  const [error,    setError]    = useState('');
   const router = useRouter();
   const { dark, toggle } = useTheme();
+  const { login, register } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
-    setTimeout(() => router.push('/dashboard'), 900);
+    try {
+      const result = tab === 'login'
+        ? await login(email, password)
+        : await register(email, password, name.trim() || undefined);
+      if (result.error) { setError(result.error); }
+      else               { router.push('/dashboard'); }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyle: React.CSSProperties = {
@@ -81,11 +95,7 @@ export default function Login() {
           </div>
 
           <div className="mt-10 flex gap-6">
-            {[
-              { v: '500+', l: 'Sellers'  },
-              { v: '-32%', l: 'ACOS'     },
-              { v: '5.2x', l: 'ROAS'     },
-            ].map((s, i) => (
+            {[{ v: '500+', l: 'Sellers' }, { v: '-32%', l: 'ACOS' }, { v: '5.2x', l: 'ROAS' }].map((s, i) => (
               <div key={i} className="text-center">
                 <p className="text-xl font-bold" style={{ color: CYAN }}>{s.v}</p>
                 <p className="text-xs" style={{ color: '#4a5568' }}>{s.l}</p>
@@ -96,8 +106,7 @@ export default function Login() {
       </div>
 
       {/* ── Right Panel (form) ─────────────────────────────── */}
-      <div className="flex-1 flex items-center justify-center p-6 relative"
-        style={{ background: '#0a0612' }}>
+      <div className="flex-1 flex items-center justify-center p-6 relative" style={{ background: '#0a0612' }}>
 
         <button onClick={toggle}
           className="absolute top-4 right-4 p-2 rounded-lg"
@@ -115,59 +124,92 @@ export default function Login() {
             <span className="font-bold text-white">M20 Autopilot</span>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-1">Sign In</h1>
-          <p className="text-sm mb-8" style={{ color: '#8a94a6' }}>Enter your credentials to access your account</p>
+          {/* Tab toggle */}
+          <div className="flex rounded-xl overflow-hidden mb-6" style={{ border: '1px solid rgba(0,217,255,0.15)' }}>
+            {(['login', 'register'] as const).map(t => (
+              <button key={t} onClick={() => { setTab(t); setError(''); }}
+                className="flex-1 py-2.5 text-sm font-semibold transition-all capitalize"
+                style={tab === t
+                  ? { background: 'linear-gradient(135deg,#00d9ff,#00f0ff)', color: '#0a0612' }
+                  : { color: '#8a94a6', background: 'transparent' }}>
+                {t === 'login' ? 'Sign In' : 'Create Account'}
+              </button>
+            ))}
+          </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <h1 className="text-2xl font-bold text-white mb-1">
+            {tab === 'login' ? 'Welcome back' : 'Get started free'}
+          </h1>
+          <p className="text-sm mb-6" style={{ color: '#8a94a6' }}>
+            {tab === 'login' ? 'Enter your credentials to access your account' : '14-day free trial · No credit card required'}
+          </p>
+
+          {error && (
+            <div className="flex items-center gap-2 p-3 rounded-xl mb-4 text-sm"
+              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: '#ef4444' }}>
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {tab === 'register' && (
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>Full Name</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)}
+                  placeholder="Ahmed M." style={inputStyle} />
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>Email</label>
-              <input
-                type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="you@example.com" style={inputStyle} />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                required placeholder="you@example.com" style={inputStyle} />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>Password</label>
               <div className="relative">
-                <input
-                  type={showPass ? 'text' : 'password'} value={password}
+                <input type={showPass ? 'text' : 'password'} value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••" style={{ ...inputStyle, paddingRight: '2.5rem' }} />
+                  required minLength={8} placeholder="••••••••"
+                  style={{ ...inputStyle, paddingRight: '2.5rem' }} />
                 <button type="button" onClick={() => setShowPass(!showPass)}
                   className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: '#4a5568' }}>
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              {tab === 'register' && (
+                <p className="text-xs mt-1" style={{ color: '#4a5568' }}>Minimum 8 characters</p>
+              )}
             </div>
 
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer" style={{ color: '#a0aec0' }}>
-                <input type="checkbox" className="rounded accent-[#00d9ff]" />
-                Remember me
-              </label>
-              <button type="button" className="text-sm transition-colors" style={{ color: CYAN }}>
-                Forgot password?
-              </button>
-            </div>
+            {tab === 'login' && (
+              <div className="flex items-center justify-between text-sm">
+                <label className="flex items-center gap-2 cursor-pointer" style={{ color: '#a0aec0' }}>
+                  <input type="checkbox" className="rounded accent-[#00d9ff]" /> Remember me
+                </label>
+                <button type="button" className="text-sm" style={{ color: CYAN }}>Forgot password?</button>
+              </div>
+            )}
 
-            <button type="submit" disabled={loading}
+            <button type="submit" disabled={loading || !email || !password}
               className="w-full py-3 rounded-xl font-bold text-[#0a0612] flex items-center justify-center gap-2 transition-all"
               style={{
                 background: 'linear-gradient(135deg,#00d9ff,#00f0ff)',
                 boxShadow: '0 0 20px rgba(0,217,255,0.3)',
-                opacity: loading ? 0.7 : 1,
+                opacity: (loading || !email || !password) ? 0.7 : 1,
               }}>
               {loading
-                ? <><span className="w-4 h-4 border-2 border-[#0a0612]/30 border-t-[#0a0612] rounded-full animate-spin" /> Signing in...</>
-                : 'Sign In'}
+                ? <><span className="w-4 h-4 border-2 border-[#0a0612]/30 border-t-[#0a0612] rounded-full animate-spin" /> {tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
+                : tab === 'login' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
           <p className="text-center text-sm mt-6" style={{ color: '#8a94a6' }}>
-            Don't have an account?{' '}
-            <Link href="/" className="font-semibold transition-colors" style={{ color: CYAN }}>
-              Start free trial
-            </Link>
+            {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
+            <button onClick={() => { setTab(tab === 'login' ? 'register' : 'login'); setError(''); }}
+              className="font-semibold" style={{ color: CYAN }}>
+              {tab === 'login' ? 'Start free trial' : 'Sign in'}
+            </button>
           </p>
         </div>
       </div>

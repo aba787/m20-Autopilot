@@ -1,41 +1,51 @@
 import { amazonNews } from '@/data/mock';
 import { Newspaper, ExternalLink, Star } from 'lucide-react';
 
-const categoryColors: Record<string, string> = {
-  'بائعون': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  'خوارزمية': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-  'رسوم': 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-  'موسمي': 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-  'تحسين': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+const CARD = { background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.12)', borderRadius: '0.875rem' } as const;
+
+const categoryColors: Record<string, React.CSSProperties> = {
+  'Sellers':   { background: 'rgba(0,217,255,0.12)', color: '#00d9ff',  border: '1px solid rgba(0,217,255,0.25)' },
+  'Algorithm': { background: 'rgba(139,92,246,0.12)',color: '#8b5cf6',  border: '1px solid rgba(139,92,246,0.25)' },
+  'Fees':      { background: 'rgba(239,68,68,0.12)', color: '#ef4444',  border: '1px solid rgba(239,68,68,0.25)' },
+  'Seasonal':  { background: 'rgba(245,158,11,0.12)',color: '#f59e0b',  border: '1px solid rgba(245,158,11,0.25)' },
+  'Optimize':  { background: 'rgba(16,185,129,0.12)',color: '#10b981',  border: '1px solid rgba(16,185,129,0.25)' },
 };
+
+const defaultCategory: React.CSSProperties = { background: 'rgba(100,116,139,0.12)', color: '#64748b', border: '1px solid rgba(100,116,139,0.25)' };
 
 export default function AmazonNews() {
   const importantNews = amazonNews.filter(n => n.important);
-  const allNews = amazonNews;
 
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-bold flex items-center gap-2"><Newspaper className="w-5 h-5 text-blue-600" /> أخبار أمازون</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">آخر المستجدات والتحديثات المهمة للبائعين</p>
+        <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <Newspaper className="w-5 h-5" style={{ color: '#00d9ff' }} /> Amazon News
+        </h1>
+        <p className="text-sm" style={{ color: '#8a94a6' }}>Latest updates and important news for sellers</p>
       </div>
 
       {/* Important */}
       {importantNews.length > 0 && (
         <div>
-          <h2 className="font-bold text-sm mb-3 flex items-center gap-1.5"><Star className="w-4 h-4 text-amber-500" /> مهم للبائعين</h2>
+          <h2 className="font-bold text-sm mb-3 flex items-center gap-1.5" style={{ color: '#f59e0b' }}>
+            <Star className="w-4 h-4" /> Important for Sellers
+          </h2>
           <div className="grid md:grid-cols-2 gap-3">
             {importantNews.map(n => (
-              <div key={n.id} className="card p-4 border-l-4 border-amber-400 dark:border-amber-600 hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`text-xs px-2 py-0.5 rounded font-medium ${categoryColors[n.category] || 'bg-gray-100 text-gray-600'}`}>{n.category}</span>
-                  <span className="text-xs text-gray-400">{n.date}</span>
-                  <span className="mr-auto text-xs bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded">⭐ مهم</span>
+              <div key={n.id} className="p-4 hover:shadow-md transition-all rounded-xl"
+                style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.25)', borderLeft: '4px solid #f59e0b' }}>
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                  <span className="text-xs px-2 py-0.5 rounded font-medium"
+                    style={categoryColors[n.category] ?? defaultCategory}>{n.category}</span>
+                  <span className="text-xs" style={{ color: '#4a5568' }}>{n.date}</span>
+                  <span className="ml-auto text-xs px-1.5 py-0.5 rounded font-medium"
+                    style={{ background: 'rgba(245,158,11,0.12)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.25)' }}>⭐ Important</span>
                 </div>
-                <h3 className="font-bold text-sm mb-2 leading-snug">{n.title}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{n.summary}</p>
-                <button className="mt-3 flex items-center gap-1 text-xs text-blue-600 hover:underline">
-                  اقرأ المزيد <ExternalLink className="w-3 h-3" />
+                <h3 className="font-bold text-sm mb-2 leading-snug text-white">{n.title}</h3>
+                <p className="text-xs leading-relaxed" style={{ color: '#8a94a6' }}>{n.summary}</p>
+                <button className="mt-3 flex items-center gap-1 text-xs transition-colors" style={{ color: '#00d9ff' }}>
+                  Read more <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
             ))}
@@ -45,24 +55,27 @@ export default function AmazonNews() {
 
       {/* All News */}
       <div>
-        <h2 className="font-bold text-sm mb-3">جميع الأخبار</h2>
+        <h2 className="font-bold text-sm mb-3 text-white">All News</h2>
         <div className="space-y-2">
-          {allNews.map(n => (
-            <div key={n.id} className="card p-4 hover:shadow-sm transition-shadow">
+          {amazonNews.map(n => (
+            <div key={n.id} className="p-4 transition-all rounded-xl"
+              style={CARD}>
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
-                  <Newspaper className="w-5 h-5 text-gray-500" />
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(0,217,255,0.08)', border: '1px solid rgba(0,217,255,0.15)' }}>
+                  <Newspaper className="w-5 h-5" style={{ color: '#00d9ff' }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className={`text-xs px-2 py-0.5 rounded font-medium ${categoryColors[n.category] || 'bg-gray-100 text-gray-600'}`}>{n.category}</span>
-                    <span className="text-xs text-gray-400">{n.date}</span>
-                    {n.important && <span className="text-xs text-amber-600">⭐</span>}
+                    <span className="text-xs px-2 py-0.5 rounded font-medium"
+                      style={categoryColors[n.category] ?? defaultCategory}>{n.category}</span>
+                    <span className="text-xs" style={{ color: '#4a5568' }}>{n.date}</span>
+                    {n.important && <span className="text-xs" style={{ color: '#f59e0b' }}>⭐</span>}
                   </div>
-                  <h3 className="font-bold text-sm leading-snug mb-1">{n.title}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{n.summary}</p>
+                  <h3 className="font-bold text-sm leading-snug mb-1 text-white">{n.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: '#8a94a6' }}>{n.summary}</p>
                 </div>
-                <button className="text-blue-600 hover:text-blue-700 flex-shrink-0 mt-1">
+                <button className="flex-shrink-0 mt-1 transition-colors" style={{ color: '#00d9ff' }}>
                   <ExternalLink className="w-4 h-4" />
                 </button>
               </div>

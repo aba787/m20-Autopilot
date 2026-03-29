@@ -5,32 +5,30 @@ import { useTheme } from './ThemeProvider';
 import { notifications as initialNotifications } from '@/data/mock';
 import {
   LayoutDashboard, Megaphone, Package, Lightbulb, Bell, FileText,
-  Link2, CreditCard, History, HeadphonesIcon, HelpCircle,
+  Link2, History, HeadphonesIcon, HelpCircle,
   Settings, Moon, Sun, Menu, X, ChevronDown, User, LogOut, Search,
   Calculator, Newspaper, ShieldOff, Bot, Zap
 } from 'lucide-react';
 
 const menuItems = [
-  { href: '/dashboard',    label: 'لوحة التحكم',          icon: LayoutDashboard },
-  { href: '/campaigns',    label: 'الحملات',               icon: Megaphone },
-  { href: '/products',     label: 'المنتجات والكلمات',     icon: Package },
-  { href: '/blacklist',    label: 'القائمة السوداء',        icon: ShieldOff },
-  { href: '/ai-engine',    label: 'المحرك الذكي',           icon: Lightbulb },
-  { href: '/accounting',   label: 'المحاسبة',              icon: Calculator },
-  { href: '/alerts',       label: 'التنبيهات',              icon: Bell },
-  { href: '/reports',      label: 'التقارير',              icon: FileText },
-  { href: '/amazon-news',  label: 'أخبار أمازون',           icon: Newspaper },
-  { href: '/integration',  label: 'ربط أمازون',            icon: Link2 },
-  { href: '/subscriptions',label: 'الاشتراكات',            icon: CreditCard },
-  { href: '/audit',        label: 'سجل التعديلات',         icon: History },
-  { href: '/support',      label: 'المساعد الذكي',          icon: HeadphonesIcon },
-  { href: '/help',         label: 'مركز المساعدة',          icon: HelpCircle },
-  { href: '/settings',     label: 'الإعدادات',             icon: Settings },
+  { href: '/dashboard',   label: 'Dashboard',        icon: LayoutDashboard },
+  { href: '/campaigns',   label: 'Campaigns',         icon: Megaphone       },
+  { href: '/products',    label: 'Products & Keywords',icon: Package         },
+  { href: '/blacklist',   label: 'Blacklist',         icon: ShieldOff       },
+  { href: '/ai-engine',   label: 'AI Engine',         icon: Lightbulb       },
+  { href: '/accounting',  label: 'Accounting',        icon: Calculator      },
+  { href: '/alerts',      label: 'Alerts',            icon: Bell            },
+  { href: '/reports',     label: 'Reports',           icon: FileText        },
+  { href: '/amazon-news', label: 'Amazon News',       icon: Newspaper       },
+  { href: '/integration', label: 'Amazon Connect',    icon: Link2           },
+  { href: '/audit',       label: 'Change Log',        icon: History         },
+  { href: '/support',     label: 'AI Assistant',      icon: HeadphonesIcon  },
+  { href: '/help',        label: 'Help Center',       icon: HelpCircle      },
+  { href: '/settings',    label: 'Settings',          icon: Settings        },
 ];
 
 const alertBadge: Record<string, number> = { '/alerts': 3, '/ai-engine': 6 };
 
-// ── Sidebar styles ───────────────────────────────────────────
 const SIDEBAR_BG    = '#0d1628';
 const SIDEBAR_BORDER = 'rgba(0,217,255,0.12)';
 const HEADER_BG     = '#080d1f';
@@ -54,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n)), []);
 
   return (
-    <div className="flex h-screen overflow-hidden" dir="rtl">
+    <div className="flex h-screen overflow-hidden" dir="ltr">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
@@ -63,8 +61,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Sidebar ─────────────────────────────────────────── */}
       <aside
-        className={`fixed lg:static inset-y-0 right-0 z-50 w-60 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'} flex flex-col`}
-        style={{ background: SIDEBAR_BG, borderLeft: `1px solid ${SIDEBAR_BORDER}` }}>
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-60 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} flex flex-col`}
+        style={{ background: SIDEBAR_BG, borderRight: `1px solid ${SIDEBAR_BORDER}` }}>
 
         {/* Logo */}
         <div className="p-4 flex-shrink-0" style={{ borderBottom: `1px solid ${SIDEBAR_BORDER}` }}>
@@ -75,7 +73,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <h1 className="text-sm font-bold text-white leading-tight">M20 Autopilot</h1>
-              <p className="text-[10px] leading-tight" style={{ color: '#4a5568' }}>لوحة تحكم البائع</p>
+              <p className="text-[10px] leading-tight" style={{ color: '#4a5568' }}>Amazon Ad Dashboard</p>
             </div>
           </Link>
         </div>
@@ -118,8 +116,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <User className="w-3.5 h-3.5" style={{ color: '#00d9ff' }} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-white truncate">أحمد محمد</p>
-              <p className="text-[10px] truncate" style={{ color: '#00d9ff' }}>احترافي</p>
+              <p className="text-xs font-medium text-white truncate">Ahmed M.</p>
+              <p className="text-[10px] truncate" style={{ color: '#00d9ff' }}>Professional</p>
             </div>
           </div>
         </div>
@@ -143,7 +141,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden sm:flex items-center gap-2 rounded-lg px-3 py-1.5 w-52"
               style={{ background: 'rgba(0,217,255,0.05)', border: '1px solid rgba(0,217,255,0.12)' }}>
               <Search className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#4a5568' }} />
-              <input type="text" placeholder="بحث..."
+              <input type="text" placeholder="Search..."
                 className="bg-transparent border-none outline-none text-sm w-full placeholder-[#4a5568]"
                 style={{ color: '#e2e8f0' }} />
             </div>
@@ -153,8 +151,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Theme toggle */}
             <button onClick={toggle}
               className="p-2 rounded-lg transition-all"
-              style={{ color: '#a0aec0' }}
-              title={dark ? 'الوضع الفاتح' : 'الوضع المظلم'}>
+              style={{ color: '#a0aec0' }}>
               {dark
                 ? <Sun className="w-4 h-4 text-amber-400" />
                 : <Moon className="w-4 h-4" />}
@@ -167,19 +164,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 style={{ color: '#a0aec0' }}>
                 <Bell className="w-4 h-4" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 left-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+                  <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
                     style={{ background: '#ef4444' }}>{unreadCount}</span>
                 )}
               </button>
 
               {notifOpen && (
-                <div className="absolute left-0 top-12 w-80 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto"
+                <div className="absolute right-0 top-12 w-80 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto"
                   style={{ background: '#0d1628', border: '1px solid rgba(0,217,255,0.2)' }}>
                   <div className="p-3 flex items-center justify-between"
                     style={{ borderBottom: '1px solid rgba(0,217,255,0.12)' }}>
-                    <h3 className="font-bold text-sm text-white">الإشعارات</h3>
+                    <h3 className="font-bold text-sm text-white">Notifications</h3>
                     <button onClick={markAllRead} className="text-xs" style={{ color: '#00d9ff' }}>
-                      تحديد الكل كمقروء
+                      Mark all read
                     </button>
                   </div>
                   {notifications.map(n => (
@@ -209,24 +206,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   style={{ background: 'rgba(0,217,255,0.12)', border: '1px solid rgba(0,217,255,0.3)' }}>
                   <User className="w-3.5 h-3.5" style={{ color: '#00d9ff' }} />
                 </div>
-                <span className="hidden sm:block text-sm font-medium" style={{ color: '#e2e8f0' }}>أحمد</span>
+                <span className="hidden sm:block text-sm font-medium" style={{ color: '#e2e8f0' }}>Ahmed</span>
                 <ChevronDown className="w-3.5 h-3.5 hidden sm:block" style={{ color: '#4a5568' }} />
               </button>
 
               {profileOpen && (
-                <div className="absolute left-0 top-12 w-44 rounded-xl shadow-2xl z-50 overflow-hidden"
+                <div className="absolute right-0 top-12 w-44 rounded-xl shadow-2xl z-50 overflow-hidden"
                   style={{ background: '#0d1628', border: '1px solid rgba(0,217,255,0.2)' }}>
                   <Link href="/settings"
                     className="flex items-center gap-2 p-3 text-sm transition-colors"
                     style={{ color: '#e2e8f0' }}
                     onClick={() => setProfileOpen(false)}>
-                    <Settings className="w-4 h-4" style={{ color: '#00d9ff' }} /> الإعدادات
+                    <Settings className="w-4 h-4" style={{ color: '#00d9ff' }} /> Settings
                   </Link>
                   <Link href="/login"
                     className="flex items-center gap-2 p-3 text-sm transition-colors"
                     style={{ color: '#ef4444' }}
                     onClick={() => setProfileOpen(false)}>
-                    <LogOut className="w-4 h-4" /> تسجيل الخروج
+                    <LogOut className="w-4 h-4" /> Log Out
                   </Link>
                 </div>
               )}
@@ -241,22 +238,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* ── Floating AI Button ────────────────────────────────── */}
-      <div className="fixed bottom-6 left-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50">
         {aiOpen && (
-          <div className="absolute bottom-14 left-0 w-72 rounded-xl shadow-2xl p-4 mb-2"
+          <div className="absolute bottom-14 right-0 w-72 rounded-xl shadow-2xl p-4 mb-2"
             style={{ background: '#0d1628', border: '1px solid rgba(0,217,255,0.25)', boxShadow: '0 0 30px rgba(0,217,255,0.15)' }}>
             <div className="flex items-center gap-2 mb-3">
               <Bot className="w-5 h-5" style={{ color: '#00d9ff' }} />
-              <h4 className="font-bold text-sm text-white">مساعد M20 الذكي</h4>
-              <button onClick={() => setAiOpen(false)} className="mr-auto" style={{ color: '#4a5568' }}>
+              <h4 className="font-bold text-sm text-white">M20 AI Assistant</h4>
+              <button onClick={() => setAiOpen(false)} className="ml-auto" style={{ color: '#4a5568' }}>
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs mb-3" style={{ color: '#8a94a6' }}>مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
+            <p className="text-xs mb-3" style={{ color: '#8a94a6' }}>Hi! How can I help you today?</p>
             <div className="space-y-1.5 mb-3">
-              {['تحليل أفضل المنتجات', 'اقترح كلمات مفتاحية', 'ما ACOS المناسب؟'].map(q => (
+              {['Analyze top products', 'Suggest keywords', 'What is a good ACOS?'].map(q => (
                 <button key={q}
-                  className="w-full text-right text-xs px-3 py-2 rounded-lg transition-colors"
+                  className="w-full text-left text-xs px-3 py-2 rounded-lg transition-colors"
                   style={{ background: 'rgba(0,217,255,0.06)', border: '1px solid rgba(0,217,255,0.15)', color: '#e2e8f0' }}>
                   {q}
                 </button>
@@ -265,7 +262,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/support" onClick={() => setAiOpen(false)}
               className="block text-center text-xs transition-colors"
               style={{ color: '#00d9ff' }}>
-              فتح المحادثة الكاملة →
+              Open full chat →
             </Link>
           </div>
         )}

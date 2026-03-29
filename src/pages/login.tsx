@@ -5,19 +5,19 @@ import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3 } from 
 import Link from 'next/link';
 
 const FEATURES = [
-  { icon: BarChart3, text: 'تحليل يومي بالذكاء الاصطناعي' },
-  { icon: TrendingUp, text: 'توصيات كلمات مفتاحية' },
-  { icon: Bot,       text: 'نظام محاسبة متكامل' },
-  { icon: Shield,    text: 'قائمة سوداء ذكية' },
+  { icon: BarChart3,  text: 'Daily AI-powered analysis'        },
+  { icon: TrendingUp, text: 'Keyword recommendations'           },
+  { icon: Bot,        text: 'Integrated accounting system'      },
+  { icon: Shield,     text: 'Smart product blacklisting'        },
 ];
 
 const CYAN = '#00d9ff';
 
 export default function Login() {
-  const [email, setEmail]       = useState('');
+  const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading]   = useState(false);
+  const [loading,  setLoading]  = useState(false);
   const router = useRouter();
   const { dark, toggle } = useTheme();
 
@@ -27,19 +27,28 @@ export default function Login() {
     setTimeout(() => router.push('/dashboard'), 900);
   };
 
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    background: 'rgba(0,217,255,0.06)',
+    border: '1px solid rgba(0,217,255,0.15)',
+    borderRadius: '0.5rem',
+    color: '#e2e8f0',
+    padding: '0.625rem 0.75rem',
+    outline: 'none',
+    fontSize: '0.875rem',
+  };
+
   return (
-    <div className="min-h-screen flex" dir="rtl">
+    <div className="min-h-screen flex" dir="ltr">
 
-      {/* ── Left Panel (brand showcase) ──────────────────────── */}
+      {/* ── Left Panel (brand) ─────────────────────────────── */}
       <div className="hidden lg:flex flex-1 flex-col justify-center items-center p-14 relative overflow-hidden"
-        style={{ background: '#080d1f', borderLeft: '1px solid rgba(0,217,255,0.12)' }}>
+        style={{ background: '#080d1f', borderRight: '1px solid rgba(0,217,255,0.12)' }}>
 
-        {/* Subtle radial glow */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,217,255,0.06) 0%, transparent 70%)' }} />
 
         <div className="relative z-10 max-w-sm w-full">
-          {/* Logo */}
           <div className="flex items-center gap-3 mb-10">
             <div className="w-11 h-11 rounded-xl flex items-center justify-center"
               style={{ background: 'linear-gradient(135deg,#00d9ff,#00f0ff)', boxShadow: '0 0 24px rgba(0,217,255,0.4)' }}>
@@ -47,15 +56,15 @@ export default function Login() {
             </div>
             <div>
               <h1 className="font-bold text-white text-lg leading-tight">M20 Autopilot</h1>
-              <p className="text-xs" style={{ color: CYAN }}>منصة التشغيل الآلي</p>
+              <p className="text-xs" style={{ color: CYAN }}>Amazon Ad Automation</p>
             </div>
           </div>
 
           <h2 className="text-3xl font-bold text-white mb-4 leading-snug">
-            حوّل إعلاناتك<br />بالذكاء الاصطناعي
+            Transform Your Ads<br />with AI
           </h2>
           <p className="text-sm mb-10" style={{ color: '#8a94a6' }}>
-            منصة ذكية لتحسين إعلانات أمازون وزيادة المبيعات مع خفض ACOS.
+            An intelligent platform to optimize Amazon advertising and grow sales while reducing ACOS.
           </p>
 
           <div className="space-y-3">
@@ -71,12 +80,11 @@ export default function Login() {
             ))}
           </div>
 
-          {/* Trust stats */}
           <div className="mt-10 flex gap-6">
             {[
-              { v: '+500', l: 'بائع' },
-              { v: '-32%', l: 'ACOS' },
-              { v: '5.2x', l: 'ROAS' },
+              { v: '500+', l: 'Sellers'  },
+              { v: '-32%', l: 'ACOS'     },
+              { v: '5.2x', l: 'ROAS'     },
             ].map((s, i) => (
               <div key={i} className="text-center">
                 <p className="text-xl font-bold" style={{ color: CYAN }}>{s.v}</p>
@@ -87,13 +95,12 @@ export default function Login() {
         </div>
       </div>
 
-      {/* ── Right Panel (form) ──────────────────────────────── */}
+      {/* ── Right Panel (form) ─────────────────────────────── */}
       <div className="flex-1 flex items-center justify-center p-6 relative"
         style={{ background: '#0a0612' }}>
 
-        {/* Theme toggle */}
         <button onClick={toggle}
-          className="absolute top-4 left-4 p-2 rounded-lg"
+          className="absolute top-4 right-4 p-2 rounded-lg"
           style={{ color: '#a0aec0', background: 'rgba(0,217,255,0.05)', border: '1px solid rgba(0,217,255,0.12)' }}>
           {dark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
         </button>
@@ -108,49 +115,41 @@ export default function Login() {
             <span className="font-bold text-white">M20 Autopilot</span>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-1">تسجيل الدخول</h1>
-          <p className="text-sm mb-8" style={{ color: '#8a94a6' }}>أدخل بياناتك للوصول إلى حسابك</p>
+          <h1 className="text-2xl font-bold text-white mb-1">Sign In</h1>
+          <p className="text-sm mb-8" style={{ color: '#8a94a6' }}>Enter your credentials to access your account</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            {/* Email */}
             <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>
-                البريد الإلكتروني
-              </label>
+              <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>Email</label>
               <input
                 type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="ahmed@example.com" className="input-field" dir="ltr" />
+                placeholder="you@example.com" style={inputStyle} />
             </div>
 
-            {/* Password */}
             <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>
-                كلمة المرور
-              </label>
+              <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>Password</label>
               <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'} value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••" className="input-field" dir="ltr" />
+                  placeholder="••••••••" style={{ ...inputStyle, paddingRight: '2.5rem' }} />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#4a5568' }}>
+                  className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: '#4a5568' }}>
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            {/* Remember + forgot */}
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 cursor-pointer" style={{ color: '#a0aec0' }}>
                 <input type="checkbox" className="rounded accent-[#00d9ff]" />
-                تذكرني
+                Remember me
               </label>
               <button type="button" className="text-sm transition-colors" style={{ color: CYAN }}>
-                نسيت كلمة المرور؟
+                Forgot password?
               </button>
             </div>
 
-            {/* Submit */}
             <button type="submit" disabled={loading}
               className="w-full py-3 rounded-xl font-bold text-[#0a0612] flex items-center justify-center gap-2 transition-all"
               style={{
@@ -159,15 +158,15 @@ export default function Login() {
                 opacity: loading ? 0.7 : 1,
               }}>
               {loading
-                ? <><span className="w-4 h-4 border-2 border-[#0a0612]/30 border-t-[#0a0612] rounded-full animate-spin" /> جارٍ الدخول...</>
-                : 'تسجيل الدخول'}
+                ? <><span className="w-4 h-4 border-2 border-[#0a0612]/30 border-t-[#0a0612] rounded-full animate-spin" /> Signing in...</>
+                : 'Sign In'}
             </button>
           </form>
 
           <p className="text-center text-sm mt-6" style={{ color: '#8a94a6' }}>
-            ليس لديك حساب؟{' '}
+            Don't have an account?{' '}
             <Link href="/" className="font-semibold transition-colors" style={{ color: CYAN }}>
-              إنشاء حساب مجاني
+              Start free trial
             </Link>
           </p>
         </div>

@@ -2,33 +2,36 @@ import { useState, useRef, useEffect } from 'react';
 import { chatMessages } from '@/data/mock';
 import { Send, Bot, User } from 'lucide-react';
 
+const CARD = { background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.12)', borderRadius: '0.875rem' } as const;
+
 const quickQuestions = [
-  'ما الفرق بين ACOS و ROAS؟',
-  'كيف أخفض ACOS؟',
-  'ما أفضل ميزانية لحملتي؟',
-  'كيف أختار الكلمات المفتاحية؟',
+  "What's the difference between ACOS and ROAS?",
+  "How do I lower my ACOS?",
+  "What's a good daily budget?",
+  "How do I choose the best keywords?",
 ];
 
 const autoReplies: Record<string, string> = {
-  'اشرح': 'بكل سرور! يرجى تحديد ما تريد شرحه وسأجيبك بالتفصيل.',
-  'ACOS': 'ACOS = إنفاق الإعلان ÷ مبيعات الإعلان × 100\n\nكلما انخفض ACOS كان أفضل. الهدف المعقول عادةً بين 20-30% حسب هامش ربحك.\n\nمثال: أنفقت 200 ر.س وحققت 1000 ر.س → ACOS = 20%',
-  'ROAS': 'ROAS = مبيعات الإعلان ÷ إنفاق الإعلان\n\nكلما ارتفع كان أفضل. ROAS 4 يعني كل ريال تنفقه يُعيد 4 ريالات مبيعات.',
-  'ميزانية': 'لتحديد الميزانية المثالية:\n1. ابدأ بميزانية صغيرة (50-100 ر.س يومياً)\n2. راقب ACOS لأسبوع\n3. إذا كان ROAS أعلى من 4 — زِد الميزانية\n4. إذا كان ACOS أعلى من 40% — أوقف وراجع الكلمات',
-  'كلمات': 'لاختيار الكلمات المفتاحية المثالية:\n1. ابدأ بـ Broad Match لاكتشاف ما يصلح\n2. انتقل لـ Phrase ثم Exact للكلمات الجيدة\n3. استخدم كلمات سلبية لحجب النقرات الغير مجدية\n4. راجع تقرير استعلامات البحث أسبوعياً',
+  'ACOS':    'ACOS = Ad Spend ÷ Ad Sales × 100\n\nLower is better. A typical target is 20–30% depending on your margin.\n\nExample: You spent $200 and made $1,000 → ACOS = 20%',
+  'ROAS':    'ROAS = Ad Sales ÷ Ad Spend\n\nHigher is better. A ROAS of 5 means every $1 spent generates $5 in sales.',
+  'budget':  'To find the ideal budget:\n1. Start small ($50–100/day)\n2. Monitor ACOS for a week\n3. If ROAS > 4 — increase budget\n4. If ACOS > 40% — pause and review keywords',
+  'keyword': 'To choose the best keywords:\n1. Start with Broad Match to discover what works\n2. Move to Phrase then Exact for top performers\n3. Add negative keywords to block irrelevant clicks\n4. Review the Search Term Report weekly',
+  'lower':   'To lower your ACOS:\n1. Pause low-converting keywords\n2. Add negative keywords to cut irrelevant clicks\n3. Increase bids on your best-performing keywords\n4. Improve your product listing quality',
 };
 
 function getBotReply(msg: string): string {
+  const lower = msg.toLowerCase();
   for (const key of Object.keys(autoReplies)) {
-    if (msg.includes(key)) return autoReplies[key];
+    if (lower.includes(key.toLowerCase())) return autoReplies[key];
   }
-  return 'شكراً لسؤالك! سيرد عليك فريق M20 قريباً. في الوقت الحالي يمكنك مراجعة مركز المساعدة للإجابات الشائعة.';
+  return "Thanks for your message! The M20 support team will get back to you shortly. In the meantime, check our Help Center for quick answers to common questions.";
 }
 
 export default function Support() {
   const [messages, setMessages] = useState(chatMessages);
-  const [input, setInput] = useState('');
-  const [typing, setTyping] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [input, setInput]       = useState('');
+  const [typing, setTyping]     = useState(false);
+  const bottomRef               = useRef<HTMLDivElement>(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
@@ -47,33 +50,46 @@ export default function Support() {
   return (
     <div className="space-y-4 h-full flex flex-col max-h-[calc(100vh-8rem)]">
       <div>
-        <h1 className="text-xl font-bold flex items-center gap-2"><Bot className="w-5 h-5 text-green-600" /> المساعد الذكي</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">اسأل عن أي شيء متعلق بإعلانات أمازون والمنصة</p>
+        <h1 className="text-xl font-bold text-white flex items-center gap-2">
+          <Bot className="w-5 h-5" style={{ color: '#00d9ff' }} /> AI Assistant
+        </h1>
+        <p className="text-sm" style={{ color: '#8a94a6' }}>Ask anything about Amazon advertising or the platform</p>
       </div>
 
-      <div className="card flex-1 flex flex-col overflow-hidden" style={{ minHeight: '400px', maxHeight: '500px' }}>
+      <div className="flex-1 flex flex-col overflow-hidden" style={{ ...CARD, minHeight: '400px', maxHeight: '500px' }}>
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {/* Welcome message */}
           <div className="flex gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-              <Bot className="w-4 h-4 text-green-600" />
+            <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(0,217,255,0.1)', border: '1px solid rgba(0,217,255,0.25)' }}>
+              <Bot className="w-4 h-4" style={{ color: '#00d9ff' }} />
             </div>
             <div className="flex-1">
-              <p className="text-xs text-gray-400 mb-1">M20 AI</p>
-              <div className="bg-gray-100 dark:bg-gray-800 rounded-xl rounded-tr-sm px-3 py-2 text-sm max-w-sm">
-                مرحباً! أنا مساعد M20 الذكي. كيف يمكنني مساعدتك اليوم؟
+              <p className="text-xs mb-1" style={{ color: '#4a5568' }}>M20 AI</p>
+              <div className="rounded-xl rounded-tl-sm px-3 py-2 text-sm max-w-sm"
+                style={{ background: 'rgba(0,217,255,0.08)', border: '1px solid rgba(0,217,255,0.15)', color: '#e2e8f0' }}>
+                Hello! I'm the M20 AI assistant. How can I help you today?
               </div>
             </div>
           </div>
 
           {messages.map(m => (
             <div key={m.id} className={`flex gap-2.5 ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${m.sender === 'bot' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-gray-200 dark:bg-gray-700'}`}>
-                {m.sender === 'bot' ? <Bot className="w-4 h-4 text-green-600" /> : <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />}
+              <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                style={m.sender === 'bot'
+                  ? { background: 'rgba(0,217,255,0.1)', border: '1px solid rgba(0,217,255,0.25)' }
+                  : { background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                {m.sender === 'bot'
+                  ? <Bot className="w-4 h-4" style={{ color: '#00d9ff' }} />
+                  : <User className="w-4 h-4" style={{ color: '#8a94a6' }} />}
               </div>
               <div className={`flex-1 ${m.sender === 'user' ? 'flex flex-col items-end' : ''}`}>
-                <p className="text-xs text-gray-400 mb-1">{m.sender === 'bot' ? 'M20 AI' : 'أنت'}</p>
-                <div className={`inline-block rounded-xl px-3 py-2 text-sm max-w-xs lg:max-w-sm whitespace-pre-line ${m.sender === 'user' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-tl-sm' : 'bg-gray-100 dark:bg-gray-800 rounded-tr-sm'}`}>
+                <p className="text-xs mb-1" style={{ color: '#4a5568' }}>{m.sender === 'bot' ? 'M20 AI' : 'You'}</p>
+                <div className="inline-block rounded-xl px-3 py-2 text-sm max-w-xs lg:max-w-sm whitespace-pre-line"
+                  style={m.sender === 'user'
+                    ? { background: 'linear-gradient(135deg,rgba(0,217,255,0.2),rgba(0,240,255,0.15))', border: '1px solid rgba(0,217,255,0.3)', color: '#e2e8f0', borderTopRightRadius: '4px' }
+                    : { background: 'rgba(0,217,255,0.06)', border: '1px solid rgba(0,217,255,0.12)', color: '#e2e8f0', borderTopLeftRadius: '4px' }}>
                   {m.message}
                 </div>
               </div>
@@ -82,14 +98,17 @@ export default function Support() {
 
           {typing && (
             <div className="flex gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                <Bot className="w-4 h-4 text-green-600" />
+              <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(0,217,255,0.1)', border: '1px solid rgba(0,217,255,0.25)' }}>
+                <Bot className="w-4 h-4" style={{ color: '#00d9ff' }} />
               </div>
-              <div className="bg-gray-100 dark:bg-gray-800 rounded-xl rounded-tr-sm px-4 py-3">
+              <div className="rounded-xl rounded-tl-sm px-4 py-3"
+                style={{ background: 'rgba(0,217,255,0.06)', border: '1px solid rgba(0,217,255,0.12)' }}>
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  {[0, 150, 300].map(d => (
+                    <div key={d} className="w-2 h-2 rounded-full animate-bounce"
+                      style={{ background: '#00d9ff', animationDelay: `${d}ms` }} />
+                  ))}
                 </div>
               </div>
             </div>
@@ -98,22 +117,26 @@ export default function Support() {
         </div>
 
         {/* Quick Questions */}
-        <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex gap-1.5 overflow-x-auto">
+        <div className="px-4 py-2 flex gap-1.5 overflow-x-auto" style={{ borderTop: '1px solid rgba(0,217,255,0.08)' }}>
           {quickQuestions.map(q => (
             <button key={q} onClick={() => send(q)}
-              className="text-xs px-2.5 py-1 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 whitespace-nowrap text-gray-600 dark:text-gray-400">
+              className="text-xs px-2.5 py-1 rounded-full whitespace-nowrap transition-colors"
+              style={{ border: '1px solid rgba(0,217,255,0.15)', color: '#8a94a6', background: 'rgba(0,217,255,0.04)' }}>
               {q}
             </button>
           ))}
         </div>
 
         {/* Input */}
-        <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-800">
+        <div className="px-4 py-3" style={{ borderTop: '1px solid rgba(0,217,255,0.1)' }}>
           <form onSubmit={e => { e.preventDefault(); send(); }} className="flex gap-2">
             <input type="text" value={input} onChange={e => setInput(e.target.value)}
-              placeholder="اكتب سؤالك هنا..." className="flex-1 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-gray-400 dark:focus:border-gray-500 bg-white dark:bg-gray-900" />
+              placeholder="Type your question here..."
+              className="flex-1 rounded-lg px-3 py-2 text-sm outline-none text-white placeholder-[#4a5568]"
+              style={{ background: 'rgba(0,217,255,0.06)', border: '1px solid rgba(0,217,255,0.15)' }} />
             <button type="submit" disabled={!input.trim()}
-              className="p-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg disabled:opacity-40 hover:opacity-90">
+              className="p-2 rounded-lg text-[#0a0612] transition-all"
+              style={{ background: input.trim() ? 'linear-gradient(135deg,#00d9ff,#00f0ff)' : 'rgba(0,217,255,0.2)', cursor: input.trim() ? 'pointer' : 'not-allowed' }}>
               <Send className="w-4 h-4" />
             </button>
           </form>

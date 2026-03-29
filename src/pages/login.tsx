@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from '@/components/ThemeProvider';
-import { Zap, Eye, EyeOff, Moon, Sun } from 'lucide-react';
+import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 
+const FEATURES = [
+  { icon: BarChart3, text: 'تحليل يومي بالذكاء الاصطناعي' },
+  { icon: TrendingUp, text: 'توصيات كلمات مفتاحية' },
+  { icon: Bot,       text: 'نظام محاسبة متكامل' },
+  { icon: Shield,    text: 'قائمة سوداء ذكية' },
+];
+
+const CYAN = '#00d9ff';
+
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]   = useState(false);
   const router = useRouter();
   const { dark, toggle } = useTheme();
 
@@ -20,74 +29,146 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex" dir="rtl">
-      {/* Left panel */}
-      <div className="hidden lg:flex flex-1 bg-black items-center justify-center p-12">
-        <div className="max-w-xs text-white">
-          <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-6">
-            <Zap className="w-5 h-5 text-white" />
+
+      {/* ── Left Panel (brand showcase) ──────────────────────── */}
+      <div className="hidden lg:flex flex-1 flex-col justify-center items-center p-14 relative overflow-hidden"
+        style={{ background: '#080d1f', borderLeft: '1px solid rgba(0,217,255,0.12)' }}>
+
+        {/* Subtle radial glow */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,217,255,0.06) 0%, transparent 70%)' }} />
+
+        <div className="relative z-10 max-w-sm w-full">
+          {/* Logo */}
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-11 h-11 rounded-xl flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg,#00d9ff,#00f0ff)', boxShadow: '0 0 24px rgba(0,217,255,0.4)' }}>
+              <Zap className="w-5 h-5 text-[#0a0612]" />
+            </div>
+            <div>
+              <h1 className="font-bold text-white text-lg leading-tight">M20 Autopilot</h1>
+              <p className="text-xs" style={{ color: CYAN }}>منصة التشغيل الآلي</p>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold mb-3">M20 Autopilot</h2>
-          <p className="text-gray-400 text-sm leading-relaxed">منصة ذكية لتحسين إعلانات أمازون وزيادة المبيعات مع خفض ACOS.</p>
-          <div className="mt-8 space-y-3">
-            {['تحليل يومي بالذكاء الاصطناعي', 'توصيات كلمات مفتاحية', 'نظام محاسبة متكامل', 'قائمة سوداء ذكية'].map(f => (
-              <div key={f} className="flex items-center gap-2 text-sm text-gray-300">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                {f}
+
+          <h2 className="text-3xl font-bold text-white mb-4 leading-snug">
+            حوّل إعلاناتك<br />بالذكاء الاصطناعي
+          </h2>
+          <p className="text-sm mb-10" style={{ color: '#8a94a6' }}>
+            منصة ذكية لتحسين إعلانات أمازون وزيادة المبيعات مع خفض ACOS.
+          </p>
+
+          <div className="space-y-3">
+            {FEATURES.map((f, i) => (
+              <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                style={{ background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.1)' }}>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(0,217,255,0.1)' }}>
+                  <f.icon className="w-3.5 h-3.5" style={{ color: CYAN }} />
+                </div>
+                <span className="text-sm" style={{ color: '#e2e8f0' }}>{f.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Trust stats */}
+          <div className="mt-10 flex gap-6">
+            {[
+              { v: '+500', l: 'بائع' },
+              { v: '-32%', l: 'ACOS' },
+              { v: '5.2x', l: 'ROAS' },
+            ].map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="text-xl font-bold" style={{ color: CYAN }}>{s.v}</p>
+                <p className="text-xs" style={{ color: '#4a5568' }}>{s.l}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Right panel */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950">
-        <button onClick={toggle} className="absolute top-4 left-4 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
-          {dark ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-gray-500" />}
+      {/* ── Right Panel (form) ──────────────────────────────── */}
+      <div className="flex-1 flex items-center justify-center p-6 relative"
+        style={{ background: '#0a0612' }}>
+
+        {/* Theme toggle */}
+        <button onClick={toggle}
+          className="absolute top-4 left-4 p-2 rounded-lg"
+          style={{ color: '#a0aec0', background: 'rgba(0,217,255,0.05)', border: '1px solid rgba(0,217,255,0.12)' }}>
+          {dark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
         </button>
 
         <div className="w-full max-w-sm">
-          <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white" />
+          {/* Mobile logo */}
+          <div className="flex items-center gap-2.5 mb-8 lg:hidden">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg,#00d9ff,#00f0ff)' }}>
+              <Zap className="w-4 h-4 text-[#0a0612]" />
             </div>
-            <span className="font-bold text-gray-900 dark:text-white">M20 Autopilot</span>
+            <span className="font-bold text-white">M20 Autopilot</span>
           </div>
 
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">تسجيل الدخول</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-7">أدخل بياناتك للوصول إلى حسابك</p>
+          <h1 className="text-2xl font-bold text-white mb-1">تسجيل الدخول</h1>
+          <p className="text-sm mb-8" style={{ color: '#8a94a6' }}>أدخل بياناتك للوصول إلى حسابك</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
+            {/* Email */}
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">البريد الإلكتروني</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+              <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>
+                البريد الإلكتروني
+              </label>
+              <input
+                type="email" value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="ahmed@example.com" className="input-field" dir="ltr" />
             </div>
+
+            {/* Password */}
             <div>
-              <label className="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">كلمة المرور</label>
+              <label className="block text-sm font-medium mb-1.5" style={{ color: '#e2e8f0' }}>
+                كلمة المرور
+              </label>
               <div className="relative">
-                <input type={showPass ? 'text' : 'password'} value={password}
-                  onChange={e => setPassword(e.target.value)} placeholder="••••••••" className="input-field" dir="ltr" />
+                <input
+                  type={showPass ? 'text' : 'password'} value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••" className="input-field" dir="ltr" />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#4a5568' }}>
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
+
+            {/* Remember + forgot */}
             <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer text-gray-600 dark:text-gray-400">
-                <input type="checkbox" className="rounded" /> تذكرني
+              <label className="flex items-center gap-2 cursor-pointer" style={{ color: '#a0aec0' }}>
+                <input type="checkbox" className="rounded accent-[#00d9ff]" />
+                تذكرني
               </label>
-              <button type="button" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">نسيت كلمة المرور؟</button>
+              <button type="button" className="text-sm transition-colors" style={{ color: CYAN }}>
+                نسيت كلمة المرور؟
+              </button>
             </div>
+
+            {/* Submit */}
             <button type="submit" disabled={loading}
-              className="w-full bg-black dark:bg-white text-white dark:text-black py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2">
-              {loading ? <><span className="w-4 h-4 border-2 border-white/30 dark:border-black/30 border-t-white dark:border-t-black rounded-full animate-spin" />جارٍ الدخول...</> : 'تسجيل الدخول'}
+              className="w-full py-3 rounded-xl font-bold text-[#0a0612] flex items-center justify-center gap-2 transition-all"
+              style={{
+                background: 'linear-gradient(135deg,#00d9ff,#00f0ff)',
+                boxShadow: '0 0 20px rgba(0,217,255,0.3)',
+                opacity: loading ? 0.7 : 1,
+              }}>
+              {loading
+                ? <><span className="w-4 h-4 border-2 border-[#0a0612]/30 border-t-[#0a0612] rounded-full animate-spin" /> جارٍ الدخول...</>
+                : 'تسجيل الدخول'}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+          <p className="text-center text-sm mt-6" style={{ color: '#8a94a6' }}>
             ليس لديك حساب؟{' '}
-            <Link href="/" className="text-gray-900 dark:text-white font-medium hover:underline">إنشاء حساب</Link>
+            <Link href="/" className="font-semibold transition-colors" style={{ color: CYAN }}>
+              إنشاء حساب مجاني
+            </Link>
           </p>
         </div>
       </div>

@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #eef5ff;
+  /* ── Cyber Color Palette ── */
+  --color-cyber-bg:    #0a0612;
+  --color-cyber-bg2:   #0d1628;
+  --color-cyber-bg3:   #080d1f;
+
+  --color-cyber:       #00d9ff;
+  --color-cyber-light: #00f0ff;
+  --color-cyber-dark:  #0099cc;
+
+  --color-amazon:      #FF9900;
+
+  /* Keep brand scale for backward compat */
+  --color-brand-50:  #eef5ff;
   --color-brand-100: #d9e8ff;
   --color-brand-200: #bcd7ff;
   --color-brand-300: #8ebeff;
@@ -12,70 +24,239 @@
   --color-brand-800: #1733b6;
   --color-brand-900: #19308f;
   --color-brand-950: #141f57;
+
   --font-sans: 'Tajawal', sans-serif;
 }
 
+/* ── Base Styles ─────────────────────────────────────────── */
 @layer base {
-  * {
+  *, *::before, *::after {
+    box-sizing: border-box;
     font-family: 'Tajawal', sans-serif;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Dark (default) */
   body {
-    @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+    background-color: #0a0612;
+    color: #ffffff;
+    min-height: 100vh;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  /* Light mode override */
+  .light body {
+    background-color: #f8fafc;
+    color: #0f172a;
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
-  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar        { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  { background: rgba(0, 217, 255, 0.25); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0, 217, 255, 0.5); }
+
+  /* Selection highlight */
+  ::selection { background: rgba(0, 217, 255, 0.25); color: #fff; }
 }
 
+/* ── Utility: Card (Glassmorphism) ───────────────────────── */
 @utility card {
-  @apply bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm;
+  background: rgba(0, 217, 255, 0.05);
+  border: 1px solid rgba(0, 217, 255, 0.15);
+  border-radius: 0.875rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-@utility btn-primary {
-  @apply bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+/* Light mode card */
+.light .card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
-@utility btn-secondary {
-  @apply bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg font-medium transition-colors;
+/* ── Utility: Card Hover ─────────────────────────────────── */
+@utility card-hover {
+  background: rgba(0, 217, 255, 0.05);
+  border: 1px solid rgba(0, 217, 255, 0.15);
+  border-radius: 0.875rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  border-color: rgba(0, 217, 255, 0.35);
+  box-shadow: 0 0 16px rgba(0, 217, 255, 0.08);
 }
 
-@utility btn-success {
-  @apply bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-colors;
+/* ── Utility: Cyber Glow Border ──────────────────────────── */
+@utility cyber-border {
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  border-radius: 0.875rem;
 }
 
-@utility btn-danger {
-  @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors;
-}
-
+/* ── Utility: Input Field ────────────────────────────────── */
 @utility input-field {
-  @apply w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 outline-none transition-all;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  background: rgba(0, 217, 255, 0.04);
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: 'Tajawal', sans-serif;
+}
+.input-field::placeholder { color: #4a5568; }
+.input-field:focus {
+  border-color: rgba(0, 217, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
 }
 
+/* Light mode input */
+.light .input-field {
+  border-color: #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+}
+.light .input-field::placeholder { color: #9ca3af; }
+.light .input-field:focus {
+  border-color: #00d9ff;
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.12);
+}
+
+/* ── Utility: Cyber Button ───────────────────────────────── */
+@utility btn-cyber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #0a0612;
+  background: linear-gradient(135deg, #00d9ff, #00f0ff);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+.btn-cyber:hover {
+  opacity: 0.9;
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+}
+.btn-cyber:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Utility: Outline Cyber Button ──────────────────────── */
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #00d9ff;
+  background: rgba(0, 217, 255, 0.06);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.btn-outline:hover {
+  background: rgba(0, 217, 255, 0.12);
+  border-color: rgba(0, 217, 255, 0.5);
+  box-shadow: 0 0 14px rgba(0, 217, 255, 0.15);
+}
+
+/* ── Utility: Badge variants ─────────────────────────────── */
 @utility badge {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
 }
 
 @utility badge-success {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 @utility badge-warning {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 @utility badge-danger {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 @utility badge-info {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(0, 217, 255, 0.12);
+  color: #00d9ff;
+  border: 1px solid rgba(0, 217, 255, 0.3);
+}
+
+/* ── Glow helpers ────────────────────────────────────────── */
+@utility glow-cyber {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3), 0 0 40px rgba(0, 217, 255, 0.1);
+}
+
+@utility glow-success {
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+}
+
+@utility glow-danger {
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+}
+
+/* ── Table row hover ─────────────────────────────────────── */
+@utility tr-hover {
+  transition: background 0.15s;
+}
+.tr-hover:hover {
+  background: rgba(0, 217, 255, 0.04);
+}
+
+/* ── Cyber gradient text ─────────────────────────────────── */
+@utility text-gradient {
+  background: linear-gradient(135deg, #00d9ff, #00f0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Thin cyber divider ──────────────────────────────────── */
+@utility cyber-divider {
+  border-color: rgba(0, 217, 255, 0.12);
 }

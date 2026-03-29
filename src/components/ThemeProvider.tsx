@@ -5,18 +5,21 @@ type ThemeContextType = {
   toggle: () => void;
 };
 
-const ThemeContext = createContext<ThemeContextType>({ dark: false, toggle: () => {} });
+const ThemeContext = createContext<ThemeContextType>({ dark: true, toggle: () => {} });
 
 export const useTheme = () => useContext(ThemeContext);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
-      setDark(true);
-      document.documentElement.classList.add('dark');
+    const isDark = saved !== 'light'; // dark by default
+    setDark(isDark);
+    if (isDark) {
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
     }
   }, []);
 
@@ -24,10 +27,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setDark(prev => {
       const next = !prev;
       if (next) {
-        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
         localStorage.setItem('theme', 'dark');
       } else {
-        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
         localStorage.setItem('theme', 'light');
       }
       return next;

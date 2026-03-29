@@ -104,7 +104,9 @@ export async function getAIAnalysis(
   metrics: BotMetrics,
   ruleDecision: BotDecision
 ): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
+  // Strip any accidental trailing text (e.g. "No" copied from surrounding prose)
+  const rawKey = process.env.OPENAI_API_KEY ?? '';
+  const apiKey = rawKey.replace(/No$/, '').trim();
   if (!apiKey) return 'مفتاح OpenAI غير مضبوط.';
 
   const prompt = `You are an Amazon Ads expert analyzing campaign performance for an Arabic seller.

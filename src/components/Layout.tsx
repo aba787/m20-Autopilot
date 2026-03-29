@@ -7,24 +7,25 @@ import {
   LayoutDashboard, Megaphone, Package, Lightbulb, Bell, FileText,
   Link2, History, HeadphonesIcon, HelpCircle,
   Settings, Moon, Sun, Menu, X, ChevronDown, User, LogOut, Search,
-  Calculator, Newspaper, ShieldOff, Bot, Zap
+  Calculator, Newspaper, ShieldOff, Bot, Zap, Sparkles
 } from 'lucide-react';
 
 const menuItems = [
-  { href: '/dashboard',   label: 'Dashboard',        icon: LayoutDashboard },
-  { href: '/campaigns',   label: 'Campaigns',         icon: Megaphone       },
-  { href: '/products',    label: 'Products & Keywords',icon: Package         },
-  { href: '/blacklist',   label: 'Blacklist',         icon: ShieldOff       },
-  { href: '/ai-engine',   label: 'AI Engine',         icon: Lightbulb       },
-  { href: '/accounting',  label: 'Accounting',        icon: Calculator      },
-  { href: '/alerts',      label: 'Alerts',            icon: Bell            },
-  { href: '/reports',     label: 'Reports',           icon: FileText        },
-  { href: '/amazon-news', label: 'Amazon News',       icon: Newspaper       },
-  { href: '/integration', label: 'Amazon Connect',    icon: Link2           },
-  { href: '/audit',       label: 'Change Log',        icon: History         },
-  { href: '/support',     label: 'AI Assistant',      icon: HeadphonesIcon  },
-  { href: '/help',        label: 'Help Center',       icon: HelpCircle      },
-  { href: '/settings',    label: 'Settings',          icon: Settings        },
+  { href: '/dashboard',       label: 'Dashboard',          icon: LayoutDashboard },
+  { href: '/campaigns',       label: 'Campaigns',          icon: Megaphone       },
+  { href: '/products',        label: 'Products & Keywords',icon: Package         },
+  { href: '/blacklist',       label: 'Blacklist',          icon: ShieldOff       },
+  { href: '/ai-engine',       label: 'AI Engine',          icon: Lightbulb       },
+  { href: '/ads-generator',   label: 'Ad Generator',       icon: Sparkles        },
+  { href: '/accounting',      label: 'Accounting',         icon: Calculator      },
+  { href: '/alerts',          label: 'Alerts',             icon: Bell            },
+  { href: '/reports',         label: 'Reports',            icon: FileText        },
+  { href: '/amazon-news',     label: 'Amazon News',        icon: Newspaper       },
+  { href: '/integration',     label: 'Amazon Connect',     icon: Link2           },
+  { href: '/audit',           label: 'Change Log',         icon: History         },
+  { href: '/support',         label: 'AI Assistant',       icon: HeadphonesIcon  },
+  { href: '/help',            label: 'Help Center',        icon: HelpCircle      },
+  { href: '/settings',        label: 'Settings',           icon: Settings        },
 ];
 
 const alertBadge: Record<string, number> = { '/alerts': 3, '/ai-engine': 6 };

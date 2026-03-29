@@ -2,6 +2,44 @@
 // M20 Autopilot — Campaign Bot
 // ============================
 
+// ─── Master system prompt (shared context for all bots) ──────────────────────
+export const MASTER_SYSTEM_PROMPT = `You are the main system controller for an Amazon Ads automation platform called M20 Autopilot.
+
+Your job is to manage and ensure the correct behavior of 4 systems:
+1) Campaign Management Bot (Core Bot)
+2) Customer Support Bot
+3) Ad Generator Bot
+4) Accounting System
+
+GENERAL RULES:
+- The platform language MUST be English
+- Do NOT generate fake data
+- Do NOT promise profits or guaranteed results
+- Always be realistic and data-driven
+- If something is missing, say it clearly`;
+
+// ─── Campaign bot system prompt ───────────────────────────────────────────────
+export const CAMPAIGN_BOT_PROMPT = `${MASTER_SYSTEM_PROMPT}
+
+You are acting as the CAMPAIGN MANAGEMENT BOT (System 1).
+
+Responsibilities:
+- Suggest campaigns
+- Optimize keywords
+- Pause unprofitable campaigns
+- Scale profitable campaigns
+
+You MUST:
+- Use metrics like ACOS, ROAS, CTR
+- Base decisions on data (spend, sales, clicks)
+- Prefer logic (rules) over guessing
+
+Valid actions: pause | scale | decrease_bid | add_negative | keep
+
+Respond in English only. Be direct and practical. 2-3 sentences max.
+No fake promises. No guaranteed results.`;
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 export interface CampaignData {
   id: number;
   name: string;
@@ -39,138 +77,142 @@ export interface BotResult {
   timestamp: string;
 }
 
-// ─── Step 1: Calculate metrics ───────────────────────────────────────────────
+// ─── Step 1: Calculate metrics ────────────────────────────────────────────────
 export function calculateMetrics(campaign: CampaignData): BotMetrics {
   const acos = campaign.sales > 0 ? (campaign.spend / campaign.sales) * 100 : 0;
   const roas = campaign.spend > 0 ? campaign.sales / campaign.spend : 0;
-  const ctr = campaign.impressions > 0 ? (campaign.clicks / campaign.impressions) * 100 : 0;
+  const ctr  = campaign.impressions > 0 ? (campaign.clicks / campaign.impressions) * 100 : 0;
   return { acos, roas, ctr };
 }
 
-// ─── Step 2: Rule-based decision engine (fast, no AI cost) ───────────────────
+// ─── Step 2: Rule-based decision engine (fast, deterministic) ─────────────────
 export function applyRules(metrics: BotMetrics, campaign: CampaignData): BotDecision {
-  const targetAcos = campaign.target_acos ?? 30;
+  const target = campaign.target_acos ?? 30;
 
-  // Critical: ACOS way too high + enough data
-  if (metrics.acos > targetAcos * 2.5 && campaign.clicks > 50) {
+  // Critical: ACOS > 2.5× target with sufficient data
+  if (metrics.acos > target * 2.5 && campaign.clicks > 50) {
     return {
       action: 'pause',
-      reason: `ACOS ${metrics.acos.toFixed(1)}% يتجاوز الهدف بأكثر من 150%`,
+      reason: `ACOS ${metrics.acos.toFixed(1)}% exceeds target by more than 150% (target: ${target}%)`,
       priority: 'critical',
-      suggestedChange: 'إيقاف الحملة وإعادة مراجعة الكلمات المفتاحية',
+      suggestedChange: 'Pause campaign and review keyword targeting before resuming',
     };
   }
 
-  // High: ACOS high + enough clicks
-  if (metrics.acos > targetAcos && campaign.clicks > 25) {
+  // High: ACOS above target with enough clicks
+  if (metrics.acos > target && campaign.clicks > 25) {
     return {
       action: 'decrease_bid',
-      reason: `ACOS ${metrics.acos.toFixed(1)}% أعلى من الهدف (${targetAcos}%)`,
+      reason: `ACOS ${metrics.acos.toFixed(1)}% is above target (${target}%) with ${campaign.clicks} clicks`,
       priority: 'high',
-      suggestedChange: `خفض العرض بنسبة 15-20%`,
+      suggestedChange: 'Reduce bids by 15–20% and monitor for 3–5 days',
     };
   }
 
-  // Good: ACOS well below target → scale
-  if (metrics.acos < targetAcos * 0.7 && metrics.roas > 4) {
+  // Excellent: ACOS well below target + strong ROAS → scale
+  if (metrics.acos < target * 0.7 && metrics.roas > 4) {
     return {
       action: 'scale',
-      reason: `ACOS ${metrics.acos.toFixed(1)}% ممتاز و ROAS ${metrics.roas.toFixed(1)}`,
+      reason: `ACOS ${metrics.acos.toFixed(1)}% is excellent and ROAS ${metrics.roas.toFixed(1)} is strong`,
       priority: 'medium',
-      suggestedChange: 'زيادة الميزانية بنسبة 20-30%',
+      suggestedChange: 'Increase daily budget by 20–30% to capture more sales',
     };
   }
 
-  // Low CTR → add negative keywords
+  // Low CTR + spending with few clicks → add negative keywords
   if (metrics.ctr < 0.8 && campaign.clicks < 20 && campaign.spend > 200) {
     return {
       action: 'add_negative',
-      reason: `CTR منخفض جداً (${metrics.ctr.toFixed(2)}%) مع إنفاق مرتفع`,
+      reason: `Very low CTR (${metrics.ctr.toFixed(2)}%) despite $${campaign.spend} spend`,
       priority: 'medium',
-      suggestedChange: 'مراجعة الكلمات المفتاحية وإضافة كلمات سلبية',
+      suggestedChange: 'Review search term report and add irrelevant terms as negative keywords',
     };
   }
 
   return {
     action: 'keep',
-    reason: `الأداء مستقر — ACOS ${metrics.acos.toFixed(1)}% / ROAS ${metrics.roas.toFixed(1)}`,
+    reason: `Performance is stable — ACOS ${metrics.acos.toFixed(1)}% / ROAS ${metrics.roas.toFixed(1)}`,
     priority: 'low',
   };
 }
 
-// ─── Step 3: AI analysis via GPT-4o-mini ─────────────────────────────────────
+// ─── Shared OpenAI caller ─────────────────────────────────────────────────────
+export async function callOpenAI(
+  systemPrompt: string,
+  userMessage: string,
+  maxTokens = 200,
+  temperature = 0.4,
+  jsonMode = false,
+): Promise<string> {
+  const rawKey = process.env.OPENAI_API_KEY ?? '';
+  const apiKey = rawKey.replace(/No$/, '').trim();
+  if (!apiKey) return 'OpenAI API key is not configured.';
+
+  try {
+    const body: Record<string, any> = {
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user',   content: userMessage  },
+      ],
+      max_tokens: maxTokens,
+      temperature,
+    };
+    if (jsonMode) body.response_format = { type: 'json_object' };
+
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err?.error?.message ?? `HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content?.trim() ?? 'No response from AI.';
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+}
+
+// ─── Step 3: AI campaign analysis ────────────────────────────────────────────
 export async function getAIAnalysis(
   campaign: CampaignData,
   metrics: BotMetrics,
-  ruleDecision: BotDecision
+  ruleDecision: BotDecision,
 ): Promise<string> {
-  // Strip any accidental trailing text (e.g. "No" copied from surrounding prose)
-  const rawKey = process.env.OPENAI_API_KEY ?? '';
-  const apiKey = rawKey.replace(/No$/, '').trim();
-  if (!apiKey) return 'مفتاح OpenAI غير مضبوط.';
-
-  const prompt = `You are an Amazon Ads expert analyzing campaign performance for an Arabic seller.
-Answer in Arabic only.
+  const userMessage = `Analyze this Amazon Ads campaign:
 
 Campaign: ${campaign.name}
-Spend: ${campaign.spend} SAR
-Sales: ${campaign.sales} SAR
+Spend: $${campaign.spend}
+Sales: $${campaign.sales}
 ACOS: ${metrics.acos.toFixed(1)}%
 ROAS: ${metrics.roas.toFixed(2)}
 CTR: ${metrics.ctr.toFixed(2)}%
 Clicks: ${campaign.clicks}
 Orders: ${campaign.orders}
-Budget: ${campaign.budget} SAR
-Rule Decision: ${ruleDecision.action} — ${ruleDecision.reason}
+Budget: $${campaign.budget}
 
-Give a brief (2-3 sentences) expert analysis confirming or refining the rule decision.
-Be direct and practical. Mention one specific action the seller should take.
-No fake promises.`;
+Rule engine decision: ${ruleDecision.action.toUpperCase()} — ${ruleDecision.reason}
+${ruleDecision.suggestedChange ? `Suggested change: ${ruleDecision.suggestedChange}` : ''}
 
-  try {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 200,
-        temperature: 0.4,
-      }),
-    });
+Give a brief (2-3 sentences) expert analysis confirming or refining this decision.
+Be direct. Mention one specific action the seller should take. No fake promises.`;
 
-    if (!res.ok) {
-      const err = await res.json();
-      return `خطأ من OpenAI: ${err?.error?.message ?? res.status}`;
-    }
-
-    const data = await res.json();
-    return data.choices?.[0]?.message?.content?.trim() ?? 'لا يوجد رد من الذكاء الاصطناعي.';
-  } catch (e: any) {
-    return `خطأ في الاتصال: ${e.message}`;
-  }
+  return callOpenAI(CAMPAIGN_BOT_PROMPT, userMessage, 220, 0.4);
 }
 
 // ─── Step 4: Run the bot on a list of campaigns ───────────────────────────────
 export async function runBot(campaigns: CampaignData[]): Promise<BotResult[]> {
   const results: BotResult[] = [];
-
   for (const campaign of campaigns) {
-    const metrics = calculateMetrics(campaign);
+    const metrics     = calculateMetrics(campaign);
     const ruleDecision = applyRules(metrics, campaign);
-    const aiAnalysis = await getAIAnalysis(campaign, metrics, ruleDecision);
-
-    results.push({
-      campaign,
-      metrics,
-      ruleDecision,
-      aiAnalysis,
-      timestamp: new Date().toISOString(),
-    });
+    const aiAnalysis  = await getAIAnalysis(campaign, metrics, ruleDecision);
+    results.push({ campaign, metrics, ruleDecision, aiAnalysis, timestamp: new Date().toISOString() });
   }
-
   return results;
 }

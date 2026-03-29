@@ -14,7 +14,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
-    const isDark = saved !== 'light'; // dark by default
+    const isDark = saved !== 'light';
     setDark(isDark);
     if (isDark) {
       document.documentElement.classList.remove('light');

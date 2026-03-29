@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Sparkles, Search, Tag, FileText, Target, Loader2, AlertTriangle, Copy, Check, RotateCcw } from 'lucide-react';
 
-const CARD  = { background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.12)', borderRadius: '0.875rem' } as const;
+const CARD  = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 const INPUT: React.CSSProperties = {
-  background: 'rgba(0,217,255,0.06)', border: '1px solid rgba(0,217,255,0.15)',
-  borderRadius: '0.5rem', color: '#e2e8f0', padding: '0.5rem 0.75rem',
+  background: 'var(--input-bg)', border: '1px solid var(--input-border)',
+  borderRadius: '0.5rem', color: 'var(--text-secondary)', padding: '0.5rem 0.75rem',
   outline: 'none', fontSize: '0.875rem', width: '100%',
 };
-const CYAN = '#00d9ff';
+
 
 interface AdResult {
   keywords: string[];
@@ -95,9 +95,9 @@ export default function AdsGenerator() {
       {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-white flex items-center gap-2">
-          <Sparkles className="w-5 h-5" style={{ color: CYAN }} /> Ad Generator
+          <Sparkles className="w-5 h-5" style={{ color: 'var(--accent)' }} /> Ad Generator
         </h1>
-        <p className="text-sm" style={{ color: '#8a94a6' }}>AI-powered Amazon ad content — keywords, headlines, description & targeting</p>
+        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>AI-powered Amazon ad content — keywords, headlines, description & targeting</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5">
@@ -105,24 +105,24 @@ export default function AdsGenerator() {
         <div className="space-y-4">
           <div className="p-4" style={CARD}>
             <h3 className="font-bold text-sm mb-4 text-white flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4" style={{ color: CYAN }} /> Product Details
+              <Sparkles className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Product Details
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium mb-1" style={{ color: '#a0aec0' }}>Product Name *</label>
+                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Product Name *</label>
                 <input type="text" value={productName} onChange={e => setProductName(e.target.value)}
                   placeholder="e.g. Wireless Noise-Cancelling Headphones"
                   style={INPUT}
                   onKeyDown={e => e.key === 'Enter' && generate()} />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1" style={{ color: '#a0aec0' }}>Category <span style={{ color: '#4a5568' }}>(optional)</span></label>
+                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Category <span style={{ color: 'var(--text-dim)' }}>(optional)</span></label>
                 <input type="text" value={category} onChange={e => setCategory(e.target.value)}
                   placeholder="e.g. Electronics, Beauty, Home"
                   style={INPUT} />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1" style={{ color: '#a0aec0' }}>Brand <span style={{ color: '#4a5568' }}>(optional)</span></label>
+                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Brand <span style={{ color: 'var(--text-dim)' }}>(optional)</span></label>
                 <input type="text" value={brand} onChange={e => setBrand(e.target.value)}
                   placeholder="e.g. SoundMax"
                   style={INPUT} />
@@ -131,8 +131,8 @@ export default function AdsGenerator() {
               <button onClick={generate} disabled={!productName.trim() || loading}
                 className="w-full py-2.5 rounded-lg font-semibold text-sm text-[#0a0612] flex items-center justify-center gap-2 transition-all"
                 style={{
-                  background: productName.trim() && !loading ? 'linear-gradient(135deg,#00d9ff,#00f0ff)' : 'rgba(0,217,255,0.2)',
-                  boxShadow: productName.trim() && !loading ? '0 0 16px rgba(0,217,255,0.3)' : 'none',
+                  background: productName.trim() && !loading ? 'var(--accent-gradient)' : 'var(--accent-gradient-dim)',
+                  boxShadow: productName.trim() && !loading ? 'var(--accent-glow)' : 'none',
                   cursor: productName.trim() && !loading ? 'pointer' : 'not-allowed',
                 }}>
                 {loading
@@ -152,8 +152,8 @@ export default function AdsGenerator() {
                 { icon: Search,   text: '1 professional description' },
                 { icon: Target,   text: 'Targeting strategy & bid guidance' },
               ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2 text-sm" style={{ color: '#a0aec0' }}>
-                  <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: CYAN }} />
+                <div key={text} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
+                  <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--accent)' }} />
                   {text}
                 </div>
               ))}
@@ -163,17 +163,17 @@ export default function AdsGenerator() {
           {/* History */}
           {history.length > 0 && (
             <div style={{ ...CARD, overflow: 'hidden' }}>
-              <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(0,217,255,0.08)' }}>
+              <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                 <h3 className="font-bold text-sm text-white">Recent</h3>
               </div>
               {history.map((item, i) => (
                 <button key={i} onClick={() => loadHistory(item)}
                   className="w-full text-left px-4 py-3 transition-colors"
-                  style={{ borderBottom: i < history.length - 1 ? '1px solid rgba(0,217,255,0.06)' : 'none', display: 'block' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(0,217,255,0.04)'}
+                  style={{ borderBottom: i < history.length - 1 ? '1px solid var(--border-subtle)' : 'none', display: 'block' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--hover-bg)'}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}>
                   <p className="text-sm font-medium text-white truncate">{item.productName}</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#4a5568' }}>{item.generatedAt}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-dim)' }}>{item.generatedAt}</p>
                 </button>
               ))}
             </div>
@@ -184,12 +184,12 @@ export default function AdsGenerator() {
         <div className="lg:col-span-2">
           {error && (
             <div className="p-3 text-sm flex items-center gap-2 rounded-xl mb-4"
-              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: '#ef4444' }}>
+              style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: 'var(--error)' }}>
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
               <span>{error}</span>
               {error.toLowerCase().includes('quota') && (
                 <a href="https://platform.openai.com/billing" target="_blank" rel="noreferrer"
-                  className="ml-auto underline whitespace-nowrap" style={{ color: '#ef4444' }}>Add billing →</a>
+                  className="ml-auto underline whitespace-nowrap" style={{ color: 'var(--error)' }}>Add billing →</a>
               )}
             </div>
           )}
@@ -197,11 +197,11 @@ export default function AdsGenerator() {
           {!result && !loading && !error && (
             <div className="flex flex-col items-center justify-center h-80" style={CARD}>
               <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
-                style={{ background: 'rgba(0,217,255,0.08)', border: '1px solid rgba(0,217,255,0.2)' }}>
-                <Sparkles className="w-8 h-8" style={{ color: CYAN }} />
+                style={{ background: 'var(--accent-bg)', border: '1px solid var(--accent-border)' }}>
+                <Sparkles className="w-8 h-8" style={{ color: 'var(--accent)' }} />
               </div>
               <p className="font-bold text-white mb-1">Enter a Product Name</p>
-              <p className="text-sm text-center max-w-xs" style={{ color: '#8a94a6' }}>
+              <p className="text-sm text-center max-w-xs" style={{ color: 'var(--text-muted)' }}>
                 Fill in the product details on the left and click Generate to get AI-powered ad content.
               </p>
             </div>
@@ -209,34 +209,34 @@ export default function AdsGenerator() {
 
           {loading && (
             <div className="flex flex-col items-center justify-center h-80" style={CARD}>
-              <Loader2 className="w-10 h-10 animate-spin mb-4" style={{ color: CYAN }} />
+              <Loader2 className="w-10 h-10 animate-spin mb-4" style={{ color: 'var(--accent)' }} />
               <p className="font-bold text-white mb-1">Generating Ad Content</p>
-              <p className="text-sm" style={{ color: '#8a94a6' }}>GPT-4o mini is working on it…</p>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>GPT-4o mini is working on it…</p>
             </div>
           )}
 
           {result && (
             <div style={{ ...CARD, overflow: 'hidden' }}>
               {/* Tab bar */}
-              <div className="flex items-center overflow-x-auto" style={{ borderBottom: '1px solid rgba(0,217,255,0.12)' }}>
+              <div className="flex items-center overflow-x-auto" style={{ borderBottom: '1px solid var(--border-primary)' }}>
                 {tabs.map(t => {
                   const Icon = t.icon;
                   return (
                     <button key={t.key} onClick={() => setActiveTab(t.key)}
                       className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors"
                       style={activeTab === t.key
-                        ? { color: CYAN, borderBottom: `2px solid ${CYAN}` }
-                        : { color: '#8a94a6', borderBottom: '2px solid transparent' }}>
+                        ? { color: 'var(--accent)', borderBottom: '2px solid var(--accent)' }
+                        : { color: 'var(--text-muted)', borderBottom: '2px solid transparent' }}>
                       <Icon className="w-3.5 h-3.5" /> {t.label}
                     </button>
                   );
                 })}
                 <div className="ml-auto px-3 flex items-center gap-2">
-                  <span className="text-xs" style={{ color: '#4a5568' }}>
+                  <span className="text-xs" style={{ color: 'var(--text-dim)' }}>
                     {productName}{brand ? ` · ${brand}` : ''}
                   </span>
                   <button onClick={() => { setResult(null); setProductName(''); setCategory(''); setBrand(''); }}
-                    title="Reset" className="p-1 rounded transition-colors" style={{ color: '#4a5568' }}>
+                    title="Reset" className="p-1 rounded transition-colors" style={{ color: 'var(--text-dim)' }}>
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -247,7 +247,7 @@ export default function AdsGenerator() {
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <Tag className="w-4 h-4" style={{ color: CYAN }} /> Keywords ({result.keywords?.length ?? 0})
+                      <Tag className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Keywords ({result.keywords?.length ?? 0})
                     </h3>
                     <CopyButton text={result.keywords?.join(', ') ?? ''} />
                   </div>
@@ -255,13 +255,13 @@ export default function AdsGenerator() {
                     {(result.keywords ?? []).map((kw, i) => (
                       <span key={i}
                         className="text-sm px-3 py-1.5 rounded-full font-medium cursor-pointer transition-all"
-                        style={{ background: 'rgba(0,217,255,0.08)', color: CYAN, border: '1px solid rgba(0,217,255,0.2)' }}
+                        style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--accent-border)' }}
                         onClick={() => navigator.clipboard.writeText(kw)}>
                         {kw}
                       </span>
                     ))}
                   </div>
-                  <p className="text-xs mt-4" style={{ color: '#4a5568' }}>Click any keyword to copy it individually</p>
+                  <p className="text-xs mt-4" style={{ color: 'var(--text-dim)' }}>Click any keyword to copy it individually</p>
                 </div>
               )}
 
@@ -270,7 +270,7 @@ export default function AdsGenerator() {
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <FileText className="w-4 h-4" style={{ color: CYAN }} /> Headlines ({result.headlines?.length ?? 0})
+                      <FileText className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Headlines ({result.headlines?.length ?? 0})
                     </h3>
                     <CopyButton text={result.headlines?.join('\n') ?? ''} />
                   </div>
@@ -278,10 +278,10 @@ export default function AdsGenerator() {
                     {(result.headlines ?? []).map((h, i) => (
                       <div key={i}
                         className="flex items-center justify-between p-3 rounded-xl"
-                        style={{ background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.1)' }}>
+                        style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)' }}>
                         <div className="flex items-center gap-2 min-w-0 flex-1">
                           <span className="text-xs font-bold flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[#0a0612]"
-                            style={{ background: 'linear-gradient(135deg,#00d9ff,#00f0ff)' }}>{i + 1}</span>
+                            style={{ background: 'var(--accent-gradient)' }}>{i + 1}</span>
                           <p className="text-sm font-medium text-white truncate">{h}</p>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
@@ -301,15 +301,15 @@ export default function AdsGenerator() {
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <Search className="w-4 h-4" style={{ color: CYAN }} /> Product Description
+                      <Search className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Product Description
                     </h3>
                     <CopyButton text={result.description ?? ''} />
                   </div>
                   <div className="p-4 rounded-xl text-sm leading-relaxed whitespace-pre-wrap"
-                    style={{ background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.1)', color: '#e2e8f0' }}>
+                    style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
                     {result.description}
                   </div>
-                  <p className="text-xs mt-2" style={{ color: '#4a5568' }}>
+                  <p className="text-xs mt-2" style={{ color: 'var(--text-dim)' }}>
                     {result.description?.length ?? 0} characters — optimized for Amazon search
                   </p>
                 </div>
@@ -320,12 +320,12 @@ export default function AdsGenerator() {
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <Target className="w-4 h-4" style={{ color: CYAN }} /> Targeting Strategy
+                      <Target className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Targeting Strategy
                     </h3>
                     <CopyButton text={result.targeting ?? ''} />
                   </div>
                   <div className="p-4 rounded-xl text-sm leading-relaxed"
-                    style={{ background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.1)', color: '#e2e8f0' }}>
+                    style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
                     {result.targeting}
                   </div>
                 </div>

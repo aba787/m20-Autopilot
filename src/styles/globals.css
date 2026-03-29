@@ -1,18 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Cyber Color Palette ── */
   --color-cyber-bg:    #0a0612;
   --color-cyber-bg2:   #0d1628;
   --color-cyber-bg3:   #080d1f;
-
   --color-cyber:       #00d9ff;
   --color-cyber-light: #00f0ff;
   --color-cyber-dark:  #0099cc;
-
   --color-amazon:      #FF9900;
-
-  /* Keep brand scale for backward compat */
   --color-brand-50:  #eef5ff;
   --color-brand-100: #d9e8ff;
   --color-brand-200: #bcd7ff;
@@ -24,108 +19,159 @@
   --color-brand-800: #1733b6;
   --color-brand-900: #19308f;
   --color-brand-950: #141f57;
+  --font-sans: 'Inter', 'Tajawal', sans-serif;
+}
 
-  --font-sans: 'Tajawal', sans-serif;
+/* ── Theme Tokens ──────────────────────────────────────────── */
+:root {
+  --bg-primary:       #0a0612;
+  --bg-secondary:     #0d1628;
+  --bg-tertiary:      #080d1f;
+  --bg-elevated:      #111827;
+  --text-primary:     #ffffff;
+  --text-secondary:   #e2e8f0;
+  --text-muted:       #8a94a6;
+  --text-dim:         #4a5568;
+  --border-primary:   rgba(0,217,255,0.12);
+  --border-subtle:    rgba(0,217,255,0.08);
+  --card-bg:          rgba(0,217,255,0.04);
+  --card-border:      rgba(0,217,255,0.12);
+  --card-shadow:      none;
+  --input-bg:         rgba(0,217,255,0.06);
+  --input-border:     rgba(0,217,255,0.15);
+  --hover-bg:         rgba(0,217,255,0.04);
+  --accent:           #00d9ff;
+  --accent-light:     #00f0ff;
+  --accent-bg:        rgba(0,217,255,0.08);
+  --accent-bg-strong: rgba(0,217,255,0.12);
+  --accent-border:    rgba(0,217,255,0.25);
+  --accent-gradient:  linear-gradient(135deg, #00d9ff, #00f0ff);
+  --accent-gradient-dim: rgba(0,217,255,0.2);
+  --accent-glow:      0 0 16px rgba(0,217,255,0.4);
+  --btn-text:         #0a0612;
+  --nav-bg:           rgba(8,13,31,0.85);
+  --error:            #ef4444;
+  --error-bg:         rgba(239,68,68,0.08);
+  --error-border:     rgba(239,68,68,0.25);
+  --success:          #10b981;
+  --success-bg:       rgba(16,185,129,0.1);
+  --success-border:   rgba(16,185,129,0.25);
+  --warning:          #f59e0b;
+  --warning-bg:       rgba(245,158,11,0.1);
+  --warning-border:   rgba(245,158,11,0.25);
+  --scrollbar-thumb:  rgba(0,217,255,0.25);
+  --scrollbar-hover:  rgba(0,217,255,0.5);
+  --selection-bg:     rgba(0,217,255,0.25);
+  --selection-color:  #fff;
+  --tr-hover:         rgba(0,217,255,0.04);
+}
+
+.light {
+  --bg-primary:       #f8fafc;
+  --bg-secondary:     #ffffff;
+  --bg-tertiary:      #f1f5f9;
+  --bg-elevated:      #e2e8f0;
+  --text-primary:     #0f172a;
+  --text-secondary:   #334155;
+  --text-muted:       #64748b;
+  --text-dim:         #94a3b8;
+  --border-primary:   rgba(0,0,0,0.08);
+  --border-subtle:    rgba(0,0,0,0.04);
+  --card-bg:          #ffffff;
+  --card-border:      rgba(0,0,0,0.08);
+  --card-shadow:      0 1px 4px rgba(0,0,0,0.06);
+  --input-bg:         #ffffff;
+  --input-border:     #e2e8f0;
+  --hover-bg:         rgba(0,0,0,0.02);
+  --accent:           #0891b2;
+  --accent-light:     #06b6d4;
+  --accent-bg:        rgba(8,145,178,0.06);
+  --accent-bg-strong: rgba(8,145,178,0.1);
+  --accent-border:    rgba(8,145,178,0.2);
+  --accent-gradient:  linear-gradient(135deg, #0891b2, #06b6d4);
+  --accent-gradient-dim: rgba(8,145,178,0.2);
+  --accent-glow:      0 1px 6px rgba(8,145,178,0.15);
+  --btn-text:         #ffffff;
+  --nav-bg:           rgba(255,255,255,0.9);
+  --error:            #dc2626;
+  --error-bg:         rgba(220,38,38,0.06);
+  --error-border:     rgba(220,38,38,0.15);
+  --success:          #059669;
+  --success-bg:       rgba(5,150,105,0.06);
+  --success-border:   rgba(5,150,105,0.15);
+  --warning:          #d97706;
+  --warning-bg:       rgba(217,119,6,0.06);
+  --warning-border:   rgba(217,119,6,0.15);
+  --scrollbar-thumb:  rgba(0,0,0,0.12);
+  --scrollbar-hover:  rgba(0,0,0,0.25);
+  --selection-bg:     rgba(8,145,178,0.2);
+  --selection-color:  #0f172a;
+  --tr-hover:         rgba(0,0,0,0.02);
 }
 
 /* ── Base Styles ─────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Inter', 'Tajawal', sans-serif;
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Dark (default) */
+  html { scroll-behavior: smooth; }
   body {
-    background-color: #0a0612;
-    color: #ffffff;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     min-height: 100vh;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
-
-  /* Light mode override */
-  .light body {
-    background-color: #f8fafc;
-    color: #0f172a;
-  }
-
-  /* Scrollbar */
   ::-webkit-scrollbar        { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track  { background: transparent; }
-  ::-webkit-scrollbar-thumb  { background: rgba(0, 217, 255, 0.25); border-radius: 99px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(0, 217, 255, 0.5); }
-
-  /* Selection highlight */
-  ::selection { background: rgba(0, 217, 255, 0.25); color: #fff; }
+  ::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+  ::selection { background: var(--selection-bg); color: var(--selection-color); }
 }
 
 /* ── Utility: Card (Glassmorphism) ───────────────────────── */
 @utility card {
-  background: rgba(0, 217, 255, 0.05);
-  border: 1px solid rgba(0, 217, 255, 0.15);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 0.875rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--card-shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.25s ease;
 }
 
-/* Light mode card */
-.light .card {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-/* ── Utility: Card Hover ─────────────────────────────────── */
 @utility card-hover {
-  background: rgba(0, 217, 255, 0.05);
-  border: 1px solid rgba(0, 217, 255, 0.15);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 0.875rem;
+  box-shadow: var(--card-shadow);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .card-hover:hover {
-  border-color: rgba(0, 217, 255, 0.35);
+  border-color: var(--accent-border);
   box-shadow: 0 0 16px rgba(0, 217, 255, 0.08);
 }
 
-/* ── Utility: Cyber Glow Border ──────────────────────────── */
 @utility cyber-border {
-  border: 1px solid rgba(0, 217, 255, 0.2);
+  border: 1px solid var(--border-primary);
   border-radius: 0.875rem;
 }
 
-/* ── Utility: Input Field ────────────────────────────────── */
 @utility input-field {
   width: 100%;
   padding: 0.625rem 1rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(0, 217, 255, 0.2);
-  background: rgba(0, 217, 255, 0.04);
-  color: #ffffff;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-primary);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  font-family: 'Tajawal', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.25s;
+  font-family: 'Inter', 'Tajawal', sans-serif;
 }
-.input-field::placeholder { color: #4a5568; }
+.input-field::placeholder { color: var(--text-dim); }
 .input-field:focus {
-  border-color: rgba(0, 217, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
 }
 
-/* Light mode input */
-.light .input-field {
-  border-color: #e2e8f0;
-  background: #ffffff;
-  color: #0f172a;
-}
-.light .input-field::placeholder { color: #9ca3af; }
-.light .input-field:focus {
-  border-color: #00d9ff;
-  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.12);
-}
-
-/* ── Utility: Cyber Button ───────────────────────────────── */
 @utility btn-cyber {
   display: inline-flex;
   align-items: center;
@@ -135,19 +181,18 @@
   border-radius: 0.5rem;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #0a0612;
-  background: linear-gradient(135deg, #00d9ff, #00f0ff);
+  color: var(--btn-text);
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
   border: none;
   cursor: pointer;
   transition: opacity 0.2s, box-shadow 0.2s;
 }
 .btn-cyber:hover {
   opacity: 0.9;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.35);
+  box-shadow: var(--accent-glow);
 }
 .btn-cyber:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ── Utility: Outline Cyber Button ──────────────────────── */
 @utility btn-outline {
   display: inline-flex;
   align-items: center;
@@ -157,106 +202,66 @@
   border-radius: 0.5rem;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #00d9ff;
-  background: rgba(0, 217, 255, 0.06);
-  border: 1px solid rgba(0, 217, 255, 0.3);
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .btn-outline:hover {
-  background: rgba(0, 217, 255, 0.12);
-  border-color: rgba(0, 217, 255, 0.5);
+  background: var(--accent-bg-strong);
+  border-color: var(--accent);
   box-shadow: 0 0 14px rgba(0, 217, 255, 0.15);
 }
 
-/* ── Utility: Badge variants ─────────────────────────────── */
 @utility badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.1rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
+  display: inline-flex; align-items: center; padding: 0.1rem 0.6rem;
+  border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
 }
-
 @utility badge-success {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.1rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  display: inline-flex; align-items: center; padding: 0.1rem 0.6rem;
+  border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
+  background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border);
 }
-
 @utility badge-warning {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.1rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  display: inline-flex; align-items: center; padding: 0.1rem 0.6rem;
+  border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
+  background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border);
 }
-
 @utility badge-danger {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.1rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  display: inline-flex; align-items: center; padding: 0.1rem 0.6rem;
+  border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
+  background: var(--error-bg); color: var(--error); border: 1px solid var(--error-border);
 }
-
 @utility badge-info {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.1rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  background: rgba(0, 217, 255, 0.12);
-  color: #00d9ff;
-  border: 1px solid rgba(0, 217, 255, 0.3);
+  display: inline-flex; align-items: center; padding: 0.1rem 0.6rem;
+  border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
+  background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border);
 }
 
-/* ── Glow helpers ────────────────────────────────────────── */
-@utility glow-cyber {
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3), 0 0 40px rgba(0, 217, 255, 0.1);
-}
+@utility glow-cyber   { box-shadow: 0 0 20px rgba(0,217,255,0.3), 0 0 40px rgba(0,217,255,0.1); }
+@utility glow-success { box-shadow: 0 0 16px rgba(16,185,129,0.25); }
+@utility glow-danger  { box-shadow: 0 0 16px rgba(239,68,68,0.25); }
 
-@utility glow-success {
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
-}
+@utility tr-hover { transition: background 0.15s; }
+.tr-hover:hover { background: var(--tr-hover); }
 
-@utility glow-danger {
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
-}
-
-/* ── Table row hover ─────────────────────────────────────── */
-@utility tr-hover {
-  transition: background 0.15s;
-}
-.tr-hover:hover {
-  background: rgba(0, 217, 255, 0.04);
-}
-
-/* ── Cyber gradient text ─────────────────────────────────── */
 @utility text-gradient {
-  background: linear-gradient(135deg, #00d9ff, #00f0ff);
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ── Thin cyber divider ──────────────────────────────────── */
-@utility cyber-divider {
-  border-color: rgba(0, 217, 255, 0.12);
-}
+@utility cyber-divider { border-color: var(--border-primary); }
+
+.light .text-white { color: var(--text-primary); }
+.light .placeholder-\[\#4a5568\]::placeholder { color: var(--text-dim); }
+.light .bg-\[\#10b981\] { background-color: var(--success); }
+.light .text-\[\#0a0612\] { color: var(--btn-text); }
+
+.light select option { background: var(--bg-secondary); color: var(--text-primary); }
+
+.light .recharts-default-tooltip { background: var(--bg-secondary) !important; border-color: var(--accent-border) !important; }
+.light .recharts-tooltip-item { color: var(--text-primary) !important; }
+.light .recharts-tooltip-label { color: var(--text-primary) !important; }

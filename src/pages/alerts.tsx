@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { alerts as initialAlerts } from '@/data/mock';
 import { Bell, AlertTriangle, AlertCircle, CheckCircle2, X } from 'lucide-react';
 
-const CARD = { background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.12)', borderRadius: '0.875rem' } as const;
+const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
 const severityConfig: Record<string, { label: string; color: string; icon: any; border: string; bg: string }> = {
-  critical: { label: 'Critical', color: '#ef4444', icon: AlertCircle,   border: 'rgba(239,68,68,0.3)',    bg: 'rgba(239,68,68,0.05)'    },
-  warning:  { label: 'Warning',  color: '#f59e0b', icon: AlertTriangle, border: 'rgba(245,158,11,0.3)',   bg: 'rgba(245,158,11,0.05)'   },
-  success:  { label: 'Good',     color: '#10b981', icon: CheckCircle2,  border: 'rgba(16,185,129,0.3)',   bg: 'rgba(16,185,129,0.05)'   },
+  critical: { label: 'Critical', color: 'var(--error)', icon: AlertCircle,   border: 'rgba(239,68,68,0.3)',    bg: 'rgba(239,68,68,0.05)'    },
+  warning:  { label: 'Warning',  color: 'var(--warning)', icon: AlertTriangle, border: 'rgba(245,158,11,0.3)',   bg: 'rgba(245,158,11,0.05)'   },
+  success:  { label: 'Good',     color: 'var(--success)', icon: CheckCircle2,  border: 'rgba(16,185,129,0.3)',   bg: 'rgba(16,185,129,0.05)'   },
 };
 
 export default function Alerts() {
@@ -34,30 +34,30 @@ export default function Alerts() {
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
             <Bell className="w-5 h-5 text-amber-400" /> Alerts
           </h1>
-          <p className="text-sm" style={{ color: '#8a94a6' }}>{unreadCount} unread</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{unreadCount} unread</p>
         </div>
-        <button onClick={markAllRead} className="text-sm transition-colors" style={{ color: '#00d9ff' }}>
+        <button onClick={markAllRead} className="text-sm transition-colors" style={{ color: 'var(--accent)' }}>
           Mark all as read
         </button>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
-        <div className="flex items-center rounded-lg overflow-hidden text-sm" style={{ border: '1px solid rgba(0,217,255,0.15)' }}>
+        <div className="flex items-center rounded-lg overflow-hidden text-sm" style={{ border: '1px solid var(--input-border)' }}>
           <button onClick={() => setFilter('all')}
             className="px-3 py-1.5 font-medium transition-colors"
-            style={filter === 'all' ? { background: 'rgba(0,217,255,0.15)', color: '#00d9ff' } : { color: '#8a94a6' }}>
+            style={filter === 'all' ? { background: 'var(--accent-bg-strong)', color: 'var(--accent)' } : { color: 'var(--text-muted)' }}>
             All ({items.length})
           </button>
           <button onClick={() => setFilter('unread')}
             className="px-3 py-1.5 font-medium transition-colors"
-            style={filter === 'unread' ? { background: 'rgba(0,217,255,0.15)', color: '#00d9ff' } : { color: '#8a94a6' }}>
+            style={filter === 'unread' ? { background: 'var(--accent-bg-strong)', color: 'var(--accent)' } : { color: 'var(--text-muted)' }}>
             Unread ({unreadCount})
           </button>
         </div>
         <select value={severityFilter} onChange={e => setSeverityFilter(e.target.value)}
           className="rounded-lg px-3 py-1.5 text-sm outline-none text-white"
-          style={{ background: 'rgba(0,217,255,0.06)', border: '1px solid rgba(0,217,255,0.15)' }}>
+          style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)' }}>
           <option value="all">All Types</option>
           <option value="critical">Critical</option>
           <option value="warning">Warning</option>
@@ -79,21 +79,21 @@ export default function Alerts() {
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                     <h3 className="font-bold text-sm text-white">{a.title}</h3>
                     <span className="text-xs px-1.5 py-0.5 rounded font-medium"
-                      style={{ color: cfg.color, background: 'rgba(0,0,0,0.2)' }}>{cfg.label}</span>
-                    {!a.read && <span className="w-2 h-2 rounded-full" style={{ background: '#00d9ff' }} />}
+                      style={{ color: cfg.color, background: 'var(--hover-bg)' }}>{cfg.label}</span>
+                    {!a.read && <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />}
                   </div>
-                  <p className="text-sm" style={{ color: '#a0aec0' }}>{a.message}</p>
-                  <p className="text-xs mt-1" style={{ color: '#4a5568' }}>{a.time}</p>
+                  <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{a.message}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>{a.time}</p>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
                   {!a.read && (
                     <button onClick={() => markRead(a.id)}
                       className="p-1.5 rounded text-xs transition-colors"
-                      style={{ color: '#00d9ff' }} title="Mark as read">✓</button>
+                      style={{ color: 'var(--accent)' }} title="Mark as read">✓</button>
                   )}
                   <button onClick={() => dismiss(a.id)}
                     className="p-1.5 rounded transition-colors"
-                    style={{ color: '#4a5568' }}>
+                    style={{ color: 'var(--text-dim)' }}>
                     <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -103,9 +103,9 @@ export default function Alerts() {
         })}
         {filtered.length === 0 && (
           <div className="p-12 text-center" style={CARD}>
-            <Bell className="w-10 h-10 mx-auto mb-3" style={{ color: '#4a5568' }} />
+            <Bell className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--text-dim)' }} />
             <p className="font-bold text-white">No Alerts</p>
-            <p className="text-sm mt-1" style={{ color: '#8a94a6' }}>All good! Everything is running smoothly.</p>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>All good! Everything is running smoothly.</p>
           </div>
         )}
       </div>

@@ -13,10 +13,13 @@ Amazon Advertising Optimization SaaS Dashboard — full English, LTR layout, Cyb
 - **Auth**: JWT (via `SESSION_SECRET`) stored in HTTP-only cookies + localStorage
 - **Port**: 5000
 
-## Design System
-- **Background**: #0a0612 (deep purple-black)
-- **Card BG**: rgba(0,217,255,0.04) with rgba(0,217,255,0.12) border — glassmorphism
-- **Accent**: #00d9ff (cyan)
+## Design System (CSS Custom Properties Theme)
+- **Theme Toggle**: Dark (default) / Light mode via `.light` class on `<html>`; persisted to localStorage
+- **All colors**: Defined as CSS custom properties in `src/styles/globals.css` (`:root` = dark, `.light` = overrides)
+- **Dark mode**: `--bg-primary: #0a0612`, `--accent: #00d9ff`, `--card-bg: rgba(0,217,255,0.04)`
+- **Light mode**: `--bg-primary: #f8fafc`, `--accent: #0891b2`, `--card-bg: #ffffff`
+- **Inline styles**: Use `var(--token)` (e.g. `background: 'var(--card-bg)'`); no hardcoded hex in pages
+- **CARD constant**: `{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' }`
 - **Direction**: LTR (`dir="ltr"`) — sidebar on left
 
 ## Architecture

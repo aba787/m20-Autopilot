@@ -5,10 +5,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 type Period = 'daily' | 'weekly' | 'monthly';
 
-const CARD = { background: 'rgba(0,217,255,0.04)', border: '1px solid rgba(0,217,255,0.12)', borderRadius: '0.875rem' } as const;
-const TICK = { fill: '#8a94a6', fontSize: 10 };
-const GRID = 'rgba(0,217,255,0.08)';
-const TT   = { background: '#0d1628', border: '1px solid rgba(0,217,255,0.2)', borderRadius: 8 };
+const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
+const TICK = { fill: 'var(--text-muted)', fontSize: 10 };
+const GRID = 'var(--accent-bg)';
+const TT   = { background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)', borderRadius: 8 };
 
 export default function Reports() {
   const [period, setPeriod] = useState<Period>('daily');
@@ -34,24 +34,24 @@ export default function Reports() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
-            <FileText className="w-5 h-5" style={{ color: '#00d9ff' }} /> Reports
+            <FileText className="w-5 h-5" style={{ color: 'var(--accent)' }} /> Reports
           </h1>
-          <p className="text-sm" style={{ color: '#8a94a6' }}>Performance & spend reports</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Performance & spend reports</p>
         </div>
         <button onClick={download}
           className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
-          style={{ border: '1px solid rgba(0,217,255,0.2)', color: '#00d9ff', background: 'rgba(0,217,255,0.05)' }}>
+          style={{ border: '1px solid var(--accent-border)', color: 'var(--accent)', background: 'var(--card-bg)' }}>
           <Download className="w-4 h-4" /> Export CSV
         </button>
       </div>
 
       {/* Period toggle */}
       <div className="flex items-center rounded-lg overflow-hidden text-sm w-fit"
-        style={{ border: '1px solid rgba(0,217,255,0.15)' }}>
+        style={{ border: '1px solid var(--input-border)' }}>
         {(['daily', 'weekly', 'monthly'] as Period[]).map(p => (
           <button key={p} onClick={() => setPeriod(p)}
             className="px-4 py-1.5 font-medium transition-colors"
-            style={period === p ? { background: 'rgba(0,217,255,0.15)', color: '#00d9ff' } : { color: '#8a94a6' }}>
+            style={period === p ? { background: 'var(--accent-bg-strong)', color: 'var(--accent)' } : { color: 'var(--text-muted)' }}>
             {p.charAt(0).toUpperCase() + p.slice(1)}
           </button>
         ))}
@@ -60,13 +60,13 @@ export default function Reports() {
       {/* KPI summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: 'Total Sales',    value: `$${totalSales.toLocaleString()}`,  color: '#10b981' },
-          { label: 'Total Spend',    value: `$${totalSpend.toLocaleString()}`,  color: '#e2e8f0' },
-          { label: 'Avg ROAS',       value: avgRoas,                             color: '#10b981' },
-          { label: 'Total Orders',   value: totalOrders.toLocaleString(),        color: '#e2e8f0' },
+          { label: 'Total Sales',    value: `$${totalSales.toLocaleString()}`,  color: 'var(--success)' },
+          { label: 'Total Spend',    value: `$${totalSpend.toLocaleString()}`,  color: 'var(--text-secondary)' },
+          { label: 'Avg ROAS',       value: avgRoas,                             color: 'var(--success)' },
+          { label: 'Total Orders',   value: totalOrders.toLocaleString(),        color: 'var(--text-secondary)' },
         ].map((k, i) => (
           <div key={i} className="p-4" style={CARD}>
-            <p className="text-xs mb-1" style={{ color: '#8a94a6' }}>{k.label}</p>
+            <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>{k.label}</p>
             <p className="text-xl font-bold" style={{ color: k.color }}>{k.value}</p>
           </div>
         ))}
@@ -82,7 +82,7 @@ export default function Reports() {
             <YAxis tick={TICK} />
             <Tooltip contentStyle={TT} formatter={(v: number) => `$${v.toLocaleString()}`} />
             <Line type="monotone" dataKey="sales" stroke="#10b981" strokeWidth={2} dot={false} name="Sales" />
-            <Line type="monotone" dataKey="spend" stroke="#00d9ff" strokeWidth={2} dot={false} name="Spend" strokeDasharray="4 2" />
+            <Line type="monotone" dataKey="spend" stroke="var(--accent)" strokeWidth={2} dot={false} name="Spend" strokeDasharray="4 2" />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -96,7 +96,7 @@ export default function Reports() {
             <XAxis dataKey="date" tick={TICK} />
             <YAxis tick={TICK} />
             <Tooltip contentStyle={TT} />
-            <Bar dataKey="roas" fill="#00d9ff" radius={[3,3,0,0]} name="ROAS" />
+            <Bar dataKey="roas" fill="var(--accent)" radius={[3,3,0,0]} name="ROAS" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -105,19 +105,19 @@ export default function Reports() {
       <div style={{ ...CARD, overflow: 'hidden' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead style={{ background: 'rgba(0,217,255,0.04)', borderBottom: '1px solid rgba(0,217,255,0.1)' }}>
+            <thead style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border-primary)' }}>
               <tr>
                 {['Period', 'Spend', 'Sales', 'ROAS', 'ACOS%', 'Orders'].map(h => (
-                  <th key={h} className="text-left py-2.5 px-4 font-medium" style={{ color: '#8a94a6' }}>{h}</th>
+                  <th key={h} className="text-left py-2.5 px-4 font-medium" style={{ color: 'var(--text-muted)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {data.map((d, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid rgba(0,217,255,0.06)' }}>
+                <tr key={i} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                   <td className="py-3 px-4 font-medium text-white">{d.date}</td>
                   <td className="py-3 px-4 text-white">${d.spend.toLocaleString()}</td>
-                  <td className="py-3 px-4 font-medium" style={{ color: '#10b981' }}>${d.sales.toLocaleString()}</td>
+                  <td className="py-3 px-4 font-medium" style={{ color: 'var(--success)' }}>${d.sales.toLocaleString()}</td>
                   <td className="py-3 px-4">
                     <span className="font-bold" style={{ color: d.roas >= 4 ? '#10b981' : '#f59e0b' }}>{d.roas}</span>
                   </td>

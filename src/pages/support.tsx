@@ -55,8 +55,8 @@ export default function Support() {
       // Update history
       setHistory(prev => [
         ...prev,
-        { role: 'user',      content: msg   },
-        { role: 'assistant', content: reply },
+        { role: 'user'      as const, content: msg   },
+        { role: 'assistant' as const, content: reply },
       ].slice(-12));  // keep last 12 turns
 
       setMessages(prev => prev.map(m => m.id === tempBotId

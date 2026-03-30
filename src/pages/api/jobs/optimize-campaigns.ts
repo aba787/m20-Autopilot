@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     let campaignsQ = supabaseAdmin
       .from('campaigns')
-      .select('*, profiles!inner(bot_mode, target_acos)')
+      .select('*, profiles!inner(*)')
       .eq('status', 'Active');
 
     if (user_id) campaignsQ = campaignsQ.eq('user_id', user_id);

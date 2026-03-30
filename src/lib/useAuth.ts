@@ -35,17 +35,17 @@ export function useAuth(): AuthContext {
 }
 
 async function fetchProfile(userId: string): Promise<User | null> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('profiles')
-    .select('id, email, full_name, bot_mode, target_acos, role')
+    .select('*')
     .eq('id', userId)
     .single();
-  if (!data) return null;
+  if (error || !data) return null;
   return {
     id: data.id,
     email: data.email,
     full_name: data.full_name ?? null,
-    bot_mode: data.bot_mode ?? 'safe',
+    bot_mode: data.bot_mode || 'safe',
     target_acos: data.target_acos ?? 30,
     role: data.role ?? 'user',
   } as User;

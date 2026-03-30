@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     const { data, error } = await supabaseAdmin
-      .from('profiles').select('id, email, full_name, bot_mode, target_acos, created_at')
+      .from('profiles').select('*')
       .eq('id', user.id).single();
     if (error) return res.status(500).json({ error: error.message });
     return res.status(200).json({ profile: data });
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const { data, error } = await supabaseAdmin
       .from('profiles').update(updates).eq('id', user.id)
-      .select('id, email, full_name, bot_mode, target_acos').single();
+      .select('*').single();
 
     if (error) return res.status(400).json({ error: error.message });
     return res.status(200).json({ profile: data });

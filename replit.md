@@ -107,10 +107,17 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 18. `/admin` — Admin dashboard (stats, user management, role toggle, delete) — admin role only
 
 ## Setup Required
-1. Run `supabase/fix-and-seed.sql` in Supabase SQL Editor
+1. Run `supabase/fix-and-seed.sql` in Supabase SQL Editor (creates tables, RLS policies, triggers)
 2. Set secrets: SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
-3. Set env var: NEXT_PUBLIC_SUPABASE_URL
-4. Create test users in Supabase Dashboard > Authentication > Users > Add User
-   - `admin@test.com` / `Admin1234!` → then run: `UPDATE profiles SET role='admin' WHERE email='admin@test.com';`
-   - `test@example.com` / `Test1234!`
+3. Set env var: NEXT_PUBLIC_SUPABASE_URL (anon key is exposed via next.config.js env mapping)
+4. Call `POST /api/seed` to create test accounts (uses Supabase Auth admin API):
+   - `admin@test.com` / `Admin1234!` (admin role)
+   - `test@example.com` / `Test1234!` (user role)
+   - `user@test.com` / `User1234!` (user role)
 5. Or register at /login — auto-creates profile via trigger
+
+## Auth Architecture
+- **Client-side**: `supabaseClient.ts` uses `@supabase/supabase-js` with `signInWithPassword`/`signUp`/`signOut`
+- **Server-side**: `requireAuth` in `auth.ts` extracts Bearer token → `adminDb.auth.getUser(token)` → profile lookup
+- **Role-based**: `requireAdmin` checks `profile.role === 'admin'`; admin pages redirect non-admins
+- **DB resilience**: All profile queries use `select('*')` to avoid failures when optional columns are missing

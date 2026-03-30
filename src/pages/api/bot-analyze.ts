@@ -1,10 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { runBot, calculateMetrics, applyRules, getAIAnalysis, type CampaignData } from '@/lib/campaignBot';
+import { requireAuth } from '@/lib/auth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  const user = await requireAuth(req, res);
+  if (!user) return;
 
   try {
     const { campaigns, singleCampaign } = req.body as {

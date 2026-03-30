@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { MASTER_SYSTEM_PROMPT, callOpenAI } from '@/lib/campaignBot';
+import { MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
+import { requireAuth } from '@/lib/auth';
 
 const SUPPORT_SYSTEM_PROMPT = `${MASTER_SYSTEM_PROMPT}
 
@@ -26,6 +27,9 @@ Always respond in English.`;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const user = await requireAuth(req, res);
+  if (!user) return;
 
   const { message, history } = req.body as {
     message: string;

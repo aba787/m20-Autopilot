@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let query = adminDb
     .from('profiles')
-    .select('id, email, full_name, bot_mode, target_acos, role, created_at', { count: 'exact' })
+    .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range(from, to);
 

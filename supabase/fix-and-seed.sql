@@ -6,7 +6,20 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Fix profiles table — add ALL missing columns
+-- Create profiles table if it doesn't exist
+CREATE TABLE IF NOT EXISTS profiles (
+  id         UUID PRIMARY KEY,
+  email      TEXT UNIQUE NOT NULL,
+  full_name  TEXT,
+  avatar_url TEXT,
+  bot_mode   TEXT NOT NULL DEFAULT 'safe',
+  target_acos NUMERIC(5,2) DEFAULT 30.00,
+  role       TEXT NOT NULL DEFAULT 'user',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Add any missing columns (safe for existing tables)
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS full_name TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS avatar_url TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS target_acos NUMERIC(5,2) DEFAULT 30.00;
@@ -14,7 +27,7 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bot_mode TEXT NOT NULL DEFAULT 'safe';
 
--- Make sure id references auth.users
+-- Link profiles.id to auth.users
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -27,7 +40,7 @@ BEGIN
         ADD CONSTRAINT profiles_id_fkey
         FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE;
     EXCEPTION WHEN others THEN
-      RAISE NOTICE 'Could not add foreign key to auth.users — may already exist or table structure differs';
+      RAISE NOTICE 'Could not add foreign key to auth.users';
     END;
   END IF;
 END $$;
@@ -216,10 +229,6 @@ CREATE POLICY "Service role full access" ON profiles
   USING (true) WITH CHECK (true);
 
 -- ============================================================
--- Seed test users via Supabase Auth
--- After running this, create users manually in Supabase Dashboard:
--- Authentication > Users > Add User
--- 1. admin@test.com / Admin1234! → then UPDATE profiles SET role='admin' WHERE email='admin@test.com';
--- 2. test@example.com / Test1234!
--- 3. user@test.com / User1234!
+-- After running this SQL, call POST /api/seed to create test users.
+-- The seed endpoint creates users in Supabase Auth + profiles automatically.
 -- ============================================================

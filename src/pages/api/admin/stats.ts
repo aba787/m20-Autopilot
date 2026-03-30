@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const [usersRes, activeRes, campaignsRes, actionsRes] = await Promise.all([
     adminDb.from('profiles').select('id', { count: 'exact', head: true }),
-    adminDb.from('profiles').select('id', { count: 'exact', head: true }).gte('updated_at', thirtyDaysAgo),
+    adminDb.from('profiles').select('id', { count: 'exact', head: true }).gte('created_at', thirtyDaysAgo),
     adminDb.from('campaigns').select('id', { count: 'exact', head: true }),
     adminDb.from('action_logs').select('id', { count: 'exact', head: true }),
   ]);

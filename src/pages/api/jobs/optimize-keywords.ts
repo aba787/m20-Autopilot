@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     let q = supabaseAdmin
       .from('keywords')
-      .select('*, profiles!inner(bot_mode, target_acos)')
+      .select('*, profiles!inner(*)')
       .eq('status', 'Active');
 
     if (user_id) q = q.eq('user_id', user_id);

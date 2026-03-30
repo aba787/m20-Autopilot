@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       mode: admin.bot_mode,
       status: 'executed',
       payload: { target_user_id: id, target_email: data.email, old_role: oldRole, new_role: role },
-    }).catch(() => {});
+    }).catch(err => { console.error('Failed to log admin role change:', err); });
 
     return res.status(200).json({ user: data });
   }
@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       mode: admin.bot_mode,
       status: 'executed',
       payload: { target_user_id: id, target_email: target?.email, target_name: target?.full_name, target_role: target?.role },
-    }).catch(() => {});
+    }).catch(err => { console.error('Failed to log admin user deletion:', err); });
 
     return res.status(200).json({ success: true });
   }

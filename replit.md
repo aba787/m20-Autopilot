@@ -110,7 +110,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 1. Run `supabase/fix-and-seed.sql` in Supabase SQL Editor (creates tables, RLS policies, triggers)
 2. Set secrets: SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
 3. Set env var: NEXT_PUBLIC_SUPABASE_URL (anon key is exposed via next.config.js env mapping)
-4. Call `POST /api/seed` to create test accounts (uses Supabase Auth admin API):
+4. Call `POST /api/seed` to create test accounts (optionally set SEED_SECRET env var and pass x-seed-secret header):
    - `admin@test.com` / `Admin1234!` (admin role)
    - `test@example.com` / `Test1234!` (user role)
    - `user@test.com` / `User1234!` (user role)

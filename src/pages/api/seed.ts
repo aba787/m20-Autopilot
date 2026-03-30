@@ -40,8 +40,12 @@ const TEST_USERS: TestUser[] = [
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  if (process.env.NODE_ENV === 'production') {
-    return res.status(403).json({ error: 'Seed endpoint is disabled in production' });
+  const seedSecret = process.env.SEED_SECRET;
+  if (seedSecret) {
+    const provided = req.headers['x-seed-secret'] as string | undefined;
+    if (provided !== seedSecret) {
+      return res.status(403).json({ error: 'Invalid or missing x-seed-secret header' });
+    }
   }
 
   const results: string[] = [];

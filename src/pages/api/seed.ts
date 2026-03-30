@@ -37,11 +37,6 @@ const TEST_USERS: TestUser[] = [
   },
 ];
 
-async function trySet(id: string, col: string, val: string | number): Promise<boolean> {
-  const { error } = await adminDb.from('profiles').update({ [col]: val }).eq('id', id);
-  return !error;
-}
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
@@ -78,6 +73,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       if (createErr) {
+        if (createErr.message?.includes('already') || createErr.message?.includes('duplicate')) {
+          results.push(`${u.email}: already exists (duplicate), skipping`);
+          continue;
+        }
         results.push(`${u.email}: create FAILED — ${createErr.message}`);
         failures++;
         continue;
@@ -93,12 +92,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .eq('id', userId)
       .single();
 
-    if (existingProfile) {
-      results.push(`  → profile exists`);
-    } else {
+    if (!existingProfile) {
       const { error: insErr } = await adminDb
         .from('profiles')
-        .insert({ id: userId, email: u.email });
+        .insert({ id: userId, email: u.email, full_name: u.full_name, role: u.role });
 
       if (insErr) {
         results.push(`  → profile insert failed: ${insErr.message}`);
@@ -106,23 +103,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         continue;
       }
       results.push(`  → profile created`);
+    } else {
+      const { error: updErr } = await adminDb
+        .from('profiles')
+        .update({ full_name: u.full_name, role: u.role })
+        .eq('id', userId);
+
+      if (updErr) {
+        results.push(`  → profile update failed: ${updErr.message}`);
+        failures++;
+        continue;
+      }
+      results.push(`  → profile updated`);
     }
 
-    const extras: Record<string, string | number> = {
-      full_name: u.full_name,
+    const optionalFields: Record<string, string | number> = {
       bot_mode: u.bot_mode,
       target_acos: u.target_acos,
-      role: u.role,
     };
 
-    const setCols: string[] = [];
-    for (const [col, val] of Object.entries(extras)) {
-      if (await trySet(userId, col, val)) {
-        setCols.push(col);
-      }
+    const setOptional: string[] = [];
+    for (const [col, val] of Object.entries(optionalFields)) {
+      const { error } = await adminDb.from('profiles').update({ [col]: val }).eq('id', userId);
+      if (!error) setOptional.push(col);
     }
-    if (setCols.length > 0) {
-      results.push(`  → set: ${setCols.join(', ')}`);
+    if (setOptional.length > 0) {
+      results.push(`  → optional fields set: ${setOptional.join(', ')}`);
     }
   }
 

@@ -16,8 +16,8 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login:  (email: string, password: string)                         => Promise<{ error?: string }>;
-  register: (email: string, password: string, full_name?: string)  => Promise<{ error?: string }>;
+  login:  (email: string, password: string)                         => Promise<{ error?: string; user?: User }>;
+  register: (email: string, password: string, full_name?: string)  => Promise<{ error?: string; user?: User }>;
   logout: ()                                                        => Promise<void>;
   updateUser: (updates: Partial<User>)                             => void;
 }
@@ -65,7 +65,7 @@ export function useAuthState(): AuthContext {
     localStorage.setItem('m20_token', data.token);
     setToken(data.token);
     setUser(data.user);
-    return {};
+    return { user: data.user as User };
   }, []);
 
   const register = useCallback(async (email: string, password: string, full_name?: string) => {
@@ -79,7 +79,7 @@ export function useAuthState(): AuthContext {
     localStorage.setItem('m20_token', data.token);
     setToken(data.token);
     setUser(data.user);
-    return {};
+    return { user: data.user as User };
   }, []);
 
   const logout = useCallback(async () => {

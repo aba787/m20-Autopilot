@@ -27,11 +27,36 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    const emailTrimmed = email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (tab === 'register' && !name.trim()) {
+      setError('Full name is required');
+      return;
+    }
+    if (!emailTrimmed) {
+      setError('Email is required');
+      return;
+    }
+    if (!emailRegex.test(emailTrimmed)) {
+      setError('Invalid email format');
+      return;
+    }
+    if (!password) {
+      setError('Password is required');
+      return;
+    }
+    if (tab === 'register' && password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
     setLoading(true);
     try {
       const result = tab === 'login'
-        ? await login(email, password)
-        : await register(email, password, name.trim() || undefined);
+        ? await login(emailTrimmed, password)
+        : await register(emailTrimmed, password, name.trim());
       if (result.error) { setError(result.error); }
       else               { router.push('/dashboard'); }
     } finally {

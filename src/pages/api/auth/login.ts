@@ -9,15 +9,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { email, password } = req.body as { email?: string; password?: string };
   if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
 
+  const emailLower = email.toLowerCase().trim();
   const { data: profile, error } = await supabaseAdmin
     .from('profiles')
-    .select('id, email, password_hash, full_name, bot_mode, target_acos, role')
-    .eq('email', email.toLowerCase().trim())
+    .select('*')
+    .eq('email', emailLower)
     .single();
+
+  if (error) {
+    console.error('LOGIN DB ERROR:', JSON.stringify(error));
+    if (error.message?.includes('schema cache') || error.message?.includes('column')) {
+      return res.status(500).json({ error: 'Database is not set up yet. Please run supabase/fix-and-seed.sql in Supabase SQL Editor.' });
+    }
+  }
 
   if (error || !profile) return res.status(401).json({ error: 'Invalid email or password' });
 
-  const valid = await bcrypt.compare(password, profile.password_hash ?? '');
+  if (!profile.password_hash) {
+    return res.status(500).json({ error: 'Database schema incomplete — password_hash column missing. Please run supabase/fix-and-seed.sql in Supabase SQL Editor.' });
+  }
+
+  const valid = await bcrypt.compare(password, profile.password_hash);
   if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
 
   const role = profile.role ?? 'user';

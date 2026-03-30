@@ -50,7 +50,7 @@ export async function requireAuth(
 
   const { data: profile, error } = await adminDb
     .from('profiles')
-    .select('id, email, full_name, bot_mode, target_acos, role')
+    .select('*')
     .eq('id', payload.sub)
     .single();
 

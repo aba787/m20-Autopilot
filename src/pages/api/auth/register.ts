@@ -63,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { data: profile, error } = await supabaseAdmin
     .from('profiles')
     .insert({ id: undefined, email: emailLower, password_hash, full_name: full_name.trim(), bot_mode: 'safe', target_acos: 30 })
-    .select('id, email, full_name, bot_mode, target_acos, role')
+    .select('*')
     .single();
 
   if (error || !profile) {

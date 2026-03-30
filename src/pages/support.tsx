@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, AlertTriangle } from 'lucide-react';
+import { useAuth, authFetch } from '@/lib/useAuth';
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
@@ -20,6 +21,8 @@ interface Message {
 }
 
 export default function Support() {
+  const { token } = useAuth();
+  const apiFetch = authFetch(token);
   const [messages, setMessages] = useState<Message[]>([]);
   const [history,  setHistory]  = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [input,    setInput]    = useState('');
@@ -41,9 +44,8 @@ export default function Support() {
     setLoading(true);
 
     try {
-      const res  = await fetch('/api/support-chat', {
+      const res  = await apiFetch('/api/support-chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg, history }),
       });
       const data = await res.json();

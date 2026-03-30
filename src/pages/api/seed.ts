@@ -1,7 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db as adminDb } from '@/lib/supabaseAdmin';
 
-const TEST_USERS = [
+interface TestUser {
+  email: string;
+  password: string;
+  full_name: string;
+  bot_mode: string;
+  target_acos: number;
+  role: string;
+}
+
+const TEST_USERS: TestUser[] = [
   {
     email: 'admin@test.com',
     password: 'Admin1234!',
@@ -28,7 +37,7 @@ const TEST_USERS = [
   },
 ];
 
-async function trySet(id: string, col: string, val: any): Promise<boolean> {
+async function trySet(id: string, col: string, val: string | number): Promise<boolean> {
   const { error } = await adminDb.from('profiles').update({ [col]: val }).eq('id', id);
   return !error;
 }
@@ -43,8 +52,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const results: string[] = [];
 
   for (const u of TEST_USERS) {
-    const { data: existing } = await adminDb.auth.admin.listUsers();
-    const found = existing?.users?.find((x: any) => x.email === u.email);
+    const { data: existing } = await adminDb.auth.admin.listUsers({ perPage: 1000 });
+    const found = existing?.users?.find((x) => x.email === u.email);
 
     let userId: string;
 
@@ -94,7 +103,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       results.push(`  → profile created`);
     }
 
-    const extras: Record<string, any> = {
+    const extras: Record<string, string | number> = {
       full_name: u.full_name,
       bot_mode: u.bot_mode,
       target_acos: u.target_acos,
@@ -116,9 +125,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     success: true,
     results,
     accounts: [
-      { emoji: '👑', email: 'admin@test.com', password: 'Admin1234!', role: 'admin' },
-      { emoji: '👤', email: 'test@example.com', password: 'Test1234!', role: 'user' },
-      { emoji: '👤', email: 'user@test.com', password: 'User1234!', role: 'user' },
+      { label: 'admin', email: 'admin@test.com', password: 'Admin1234!', role: 'admin' },
+      { label: 'user1', email: 'test@example.com', password: 'Test1234!', role: 'user' },
+      { label: 'user2', email: 'user@test.com', password: 'User1234!', role: 'user' },
     ],
   });
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { campaigns as mockCampaigns, products } from '@/data/mock';
 import { Bot, TrendingUp, TrendingDown, AlertTriangle, Tag, CheckCircle2, X, Zap, Play, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import type { BotResult } from '@/lib/campaignBot';
+import { useAuth, authFetch } from '@/lib/useAuth';
 
 type BotAction = 'pause' | 'scale' | 'decrease_bid' | 'add_negative' | 'keep';
 
@@ -28,6 +29,8 @@ function toBotFormat(c: typeof mockCampaigns[0]) {
 }
 
 export default function AiEngine() {
+  const { token } = useAuth();
+  const apiFetch = authFetch(token);
   const [results, setResults]     = useState<BotResult[]>([]);
   const [loading, setLoading]     = useState(false);
   const [loadingId, setLoadingId] = useState<number | null>(null);
@@ -41,23 +44,23 @@ export default function AiEngine() {
   const runFullBot = async () => {
     setLoading(true); setError(''); setResults([]);
     try {
-      const res  = await fetch('/api/bot-analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ campaigns: mockCampaigns.map(toBotFormat) }) });
+      const res  = await apiFetch('/api/bot-analyze', { method: 'POST', body: JSON.stringify({ campaigns: mockCampaigns.map(toBotFormat) }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Unknown error');
       setResults(data.results);
-    } catch (e: any) { setError(e.message); }
+    } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Unknown error'); }
     finally { setLoading(false); }
   };
 
   const analyzeOne = async (campaign: typeof mockCampaigns[0]) => {
     setLoadingId(campaign.id); setError('');
     try {
-      const res  = await fetch('/api/bot-analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ singleCampaign: toBotFormat(campaign) }) });
+      const res  = await apiFetch('/api/bot-analyze', { method: 'POST', body: JSON.stringify({ singleCampaign: toBotFormat(campaign) }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error');
       setResults(prev => [data.result, ...prev.filter(r => r.campaign.id !== campaign.id)]);
       setExpanded(campaign.id);
-    } catch (e: any) { setError(e.message); }
+    } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Unknown error'); }
     finally { setLoadingId(null); }
   };
 

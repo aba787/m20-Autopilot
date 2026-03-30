@@ -7,16 +7,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const admin = await requireAdmin(req, res);
   if (!admin) return;
 
-  const [usersRes, adminsRes, campaignsRes, actionsRes] = await Promise.all([
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  const [usersRes, activeRes, campaignsRes, actionsRes] = await Promise.all([
     adminDb.from('profiles').select('id', { count: 'exact', head: true }),
-    adminDb.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'admin'),
+    adminDb.from('profiles').select('id', { count: 'exact', head: true }).gte('updated_at', thirtyDaysAgo),
     adminDb.from('campaigns').select('id', { count: 'exact', head: true }),
     adminDb.from('action_logs').select('id', { count: 'exact', head: true }),
   ]);
 
   return res.status(200).json({
     totalUsers: usersRes.count ?? 0,
-    totalAdmins: adminsRes.count ?? 0,
+    activeAccounts: activeRes.count ?? 0,
     totalCampaigns: campaignsRes.count ?? 0,
     totalActions: actionsRes.count ?? 0,
   });

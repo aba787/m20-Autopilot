@@ -18,7 +18,7 @@ interface AdminUser {
 
 interface Stats {
   totalUsers: number;
-  totalAdmins: number;
+  activeAccounts: number;
   totalCampaigns: number;
   totalActions: number;
 }
@@ -144,8 +144,8 @@ export default function AdminPage() {
 
   const statCards = [
     { label: 'Total Users', value: stats?.totalUsers ?? '—', icon: Users, color: 'var(--accent)' },
-    { label: 'Admins', value: stats?.totalAdmins ?? '—', icon: ShieldCheck, color: 'var(--warning)' },
-    { label: 'Campaigns', value: stats?.totalCampaigns ?? '—', icon: BarChart3, color: 'var(--success)' },
+    { label: 'Active Accounts', value: stats?.activeAccounts ?? '—', icon: ShieldCheck, color: 'var(--warning)' },
+    { label: 'Total Campaigns', value: stats?.totalCampaigns ?? '—', icon: BarChart3, color: 'var(--success)' },
     { label: 'Actions Logged', value: stats?.totalActions ?? '—', icon: Activity, color: '#a78bfa' },
   ];
 

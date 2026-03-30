@@ -88,6 +88,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const resolved = refreshed.data?.users?.find((x) => x.email === u.email);
           if (resolved) {
             userId = resolved.id;
+            await adminDb.auth.admin.updateUserById(userId, {
+              password: u.password,
+              email_confirm: true,
+            });
+            results.push(`  → password reset for resolved user`);
           } else {
             results.push(`  → could not resolve user by email`);
             failures++;

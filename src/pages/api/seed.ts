@@ -50,10 +50,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const results: string[] = [];
+  let failures = 0;
+
+  const { data: existing } = await adminDb.auth.admin.listUsers({ perPage: 1000 });
+  const existingUsers = existing?.users ?? [];
 
   for (const u of TEST_USERS) {
-    const { data: existing } = await adminDb.auth.admin.listUsers({ perPage: 1000 });
-    const found = existing?.users?.find((x) => x.email === u.email);
+    const found = existingUsers.find((x) => x.email === u.email);
 
     let userId: string;
 
@@ -76,6 +79,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       if (createErr) {
         results.push(`${u.email}: create FAILED — ${createErr.message}`);
+        failures++;
         continue;
       }
 
@@ -98,6 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       if (insErr) {
         results.push(`  → profile insert failed: ${insErr.message}`);
+        failures++;
         continue;
       }
       results.push(`  → profile created`);
@@ -121,8 +126,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  return res.status(200).json({
-    success: true,
+  const status = failures > 0 ? 207 : 200;
+  return res.status(status).json({
+    success: failures === 0,
     results,
     accounts: [
       { label: 'admin', email: 'admin@test.com', password: 'Admin1234!', role: 'admin' },

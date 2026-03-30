@@ -6,7 +6,8 @@ import {
   LayoutDashboard, Megaphone, Package, Lightbulb, Bell, FileText,
   Link2, History, HeadphonesIcon, HelpCircle,
   Settings, Moon, Sun, Menu, X, ChevronDown, User, LogOut, Search,
-  Calculator, Newspaper, ShieldOff, Bot, Zap, Sparkles, CheckCircle
+  Calculator, Newspaper, ShieldOff, Bot, Zap, Sparkles, CheckCircle,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth, authFetch } from '@/lib/useAuth';
 
@@ -96,6 +97,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <nav className="flex-1 overflow-y-auto py-2 px-2">
+          {user?.role === 'admin' && (() => {
+            const active = router.pathname === '/admin';
+            return (
+              <Link href="/admin"
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2 rounded-lg mb-1 text-sm font-medium transition-all duration-200"
+                style={active ? {
+                  background: 'rgba(245,158,11,0.12)', color: 'var(--warning)',
+                  border: '1px solid rgba(245,158,11,0.3)', boxShadow: '0 0 12px rgba(245,158,11,0.1)',
+                } : { color: 'var(--warning)', border: '1px solid transparent', background: 'rgba(245,158,11,0.05)' }}>
+                <ShieldCheck className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--warning)' }} />
+                <span className="flex-1 truncate">Admin Panel</span>
+              </Link>
+            );
+          })()}
           {menuItems.map(item => {
             const active = router.pathname === item.href;
             const Icon   = item.icon;

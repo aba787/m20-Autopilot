@@ -10,9 +10,10 @@ export interface AuthUser {
   full_name: string | null;
   bot_mode: 'safe' | 'semi' | 'auto';
   target_acos: number;
+  role: 'admin' | 'user';
 }
 
-export function signToken(payload: { sub: string; email: string }) {
+export function signToken(payload: { sub: string; email: string; role?: string }) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 }
 
@@ -49,7 +50,7 @@ export async function requireAuth(
 
   const { data: profile, error } = await adminDb
     .from('profiles')
-    .select('id, email, full_name, bot_mode, target_acos')
+    .select('id, email, full_name, bot_mode, target_acos, role')
     .eq('id', payload.sub)
     .single();
 
@@ -58,7 +59,20 @@ export async function requireAuth(
     return null;
   }
 
-  return profile as AuthUser;
+  return { ...profile, role: profile.role ?? 'user' } as AuthUser;
+}
+
+export async function requireAdmin(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Promise<AuthUser | null> {
+  const user = await requireAuth(req, res);
+  if (!user) return null;
+  if (user.role !== 'admin') {
+    res.status(403).json({ error: 'Admin access required' });
+    return null;
+  }
+  return user;
 }
 
 export function setAuthCookie(res: NextApiResponse, token: string) {

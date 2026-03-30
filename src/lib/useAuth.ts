@@ -6,6 +6,7 @@ export interface User {
   full_name: string | null;
   bot_mode: 'safe' | 'semi' | 'auto';
   target_acos: number;
+  role: 'admin' | 'user';
 }
 
 interface AuthState {

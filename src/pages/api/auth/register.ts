@@ -63,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { data: profile, error } = await supabaseAdmin
     .from('profiles')
     .insert({ id: undefined, email: emailLower, password_hash, full_name: full_name.trim(), bot_mode: 'safe', target_acos: 30 })
-    .select('id, email, full_name, bot_mode, target_acos')
+    .select('id, email, full_name, bot_mode, target_acos, role')
     .single();
 
   if (error || !profile) {
@@ -73,11 +73,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(isDuplicate ? 409 : 500).json({ error: userMessage });
   }
 
-  const token = signToken({ sub: profile.id, email: profile.email });
+  const role = profile.role ?? 'user';
+  const token = signToken({ sub: profile.id, email: profile.email, role });
   setAuthCookie(res, token);
 
   return res.status(201).json({
     token,
-    user: { id: profile.id, email: profile.email, full_name: profile.full_name, bot_mode: profile.bot_mode, target_acos: profile.target_acos },
+    user: { id: profile.id, email: profile.email, full_name: profile.full_name, bot_mode: profile.bot_mode, target_acos: profile.target_acos, role },
   });
 }

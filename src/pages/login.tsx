@@ -58,7 +58,12 @@ export default function Login() {
         ? await login(emailTrimmed, password)
         : await register(emailTrimmed, password, name.trim());
       if (result.error) { setError(result.error); }
-      else               { router.push('/dashboard'); }
+      else {
+        const meRes = await fetch('/api/auth/me', {
+          headers: { Authorization: `Bearer ${localStorage.getItem('m20_token') ?? ''}` },
+        }).then(r => r.ok ? r.json() : null).catch(() => null);
+        router.push(meRes?.user?.role === 'admin' ? '/admin' : '/dashboard');
+      }
     } finally {
       setLoading(false);
     }

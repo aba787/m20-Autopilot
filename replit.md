@@ -29,14 +29,14 @@ Amazon Advertising Optimization SaaS Dashboard — full English, LTR layout, Cyb
 - `src/data/mock.ts` — Fallback mock data (pages still work without DB entries)
 - `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT)
 - `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (used in all API routes)
-- `src/lib/auth.ts` — JWT sign/verify, requireAuth(), logAction(), createNotification()
+- `src/lib/auth.ts` — JWT sign/verify, requireAuth(), requireAdmin(), logAction(), createNotification()
 - `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper
 - `src/pages/api/` — All backend routes (see list below)
 - `supabase/schema.sql` — Full DB schema to run in Supabase SQL Editor
 
 ## Database Schema (Supabase)
 Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
-- **profiles** — users, password_hash, bot_mode, target_acos
+- **profiles** — users, password_hash, bot_mode, target_acos, role (admin/user)
 - **amazon_connections** — per-user Amazon API tokens (access/refresh)
 - **campaigns** — campaign metrics per day (user_id FK)
 - **keywords** — keyword bids/performance (user_id FK)
@@ -66,6 +66,9 @@ Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
 - `POST /api/ad-generator` — Generate ad content via GPT-4o mini, saves to DB if auth'd
 - `POST /api/support-chat` — AI customer support (strict platform-only scope)
 - `POST /api/bot-analyze` — Campaign analysis (rule engine + GPT)
+- `GET  /api/admin/stats` — Admin stats (total users, admins, campaigns, actions)
+- `GET  /api/admin/users` — List users with search/filter/pagination (admin only)
+- `PATCH/DELETE /api/admin/users/[id]` — Toggle role or delete user (admin only)
 - `POST /api/jobs/optimize-campaigns` — Background job (X-Job-Secret header required)
 - `POST /api/jobs/optimize-keywords` — Background job (X-Job-Secret header required)
 
@@ -92,9 +95,11 @@ Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
 15. `/support` — AI chat assistant (real GPT, strict scope)
 16. `/help` — FAQ
 17. `/settings` — Account settings (bot mode, ACOS target)
+18. `/admin` — Admin dashboard (stats, user management, role toggle, delete) — admin role only
 
 ## Setup Required
 1. Run `supabase/schema.sql` in Supabase SQL Editor
+   - Then run `supabase/admin-migration.sql` to add role column + test admin/user accounts
 2. Set secrets: SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
 3. Set env var: NEXT_PUBLIC_SUPABASE_URL
 4. Register an account at /login → will create a profile row in Supabase

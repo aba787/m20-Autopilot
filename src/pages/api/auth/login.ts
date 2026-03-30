@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { data: profile, error } = await supabaseAdmin
     .from('profiles')
-    .select('id, email, password_hash, full_name, bot_mode, target_acos')
+    .select('id, email, password_hash, full_name, bot_mode, target_acos, role')
     .eq('email', email.toLowerCase().trim())
     .single();
 
@@ -20,11 +20,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const valid = await bcrypt.compare(password, profile.password_hash ?? '');
   if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
 
-  const token = signToken({ sub: profile.id, email: profile.email });
+  const role = profile.role ?? 'user';
+  const token = signToken({ sub: profile.id, email: profile.email, role });
   setAuthCookie(res, token);
 
   return res.status(200).json({
     token,
-    user: { id: profile.id, email: profile.email, full_name: profile.full_name, bot_mode: profile.bot_mode, target_acos: profile.target_acos },
+    user: { id: profile.id, email: profile.email, full_name: profile.full_name, bot_mode: profile.bot_mode, target_acos: profile.target_acos, role },
   });
 }

@@ -63,7 +63,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         password: u.password,
         email_confirm: true,
       });
-      results.push(updateErr ? `  → password update failed: ${updateErr.message}` : `  → password reset OK`);
+      if (updateErr) {
+        results.push(`  → password update failed: ${updateErr.message}`);
+        failures++;
+      } else {
+        results.push(`  → password reset OK`);
+      }
     } else {
       const { data: created, error: createErr } = await adminDb.auth.admin.createUser({
         email: u.email,
@@ -74,16 +79,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       if (createErr) {
         if (createErr.message?.includes('already') || createErr.message?.includes('duplicate')) {
-          results.push(`${u.email}: already exists (duplicate), skipping`);
+          results.push(`${u.email}: already exists (duplicate), resolving by email`);
+          const refreshed = await adminDb.auth.admin.listUsers({ perPage: 1000 });
+          const resolved = refreshed.data?.users?.find((x) => x.email === u.email);
+          if (resolved) {
+            userId = resolved.id;
+          } else {
+            results.push(`  → could not resolve user by email`);
+            failures++;
+            continue;
+          }
+        } else {
+          results.push(`${u.email}: create FAILED — ${createErr.message}`);
+          failures++;
           continue;
         }
-        results.push(`${u.email}: create FAILED — ${createErr.message}`);
-        failures++;
-        continue;
+      } else {
+        userId = created.user.id;
+        results.push(`${u.email}: created auth user (${userId})`);
       }
-
-      userId = created.user.id;
-      results.push(`${u.email}: created auth user (${userId})`);
     }
 
     const { data: existingProfile } = await adminDb

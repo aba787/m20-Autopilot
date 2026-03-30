@@ -10,8 +10,19 @@ Amazon Advertising Optimization SaaS Dashboard — full English, LTR layout, Cyb
 - **Icons**: Lucide React
 - **AI**: OpenAI GPT-4o mini (via `OPENAI_API_KEY`)
 - **Database**: Supabase PostgreSQL (`SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_URL`)
-- **Auth**: JWT (via `SESSION_SECRET`) stored in HTTP-only cookies + localStorage
+- **Auth**: Supabase Auth (client-side `signInWithPassword` / `signUp` / `signOut`)
 - **Port**: 5000
+
+## Auth System (Supabase Auth)
+- **Client-side**: `src/lib/supabaseClient.ts` — browser Supabase client using `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- **Login**: `supabase.auth.signInWithPassword({ email, password })` — handled in `useAuth` hook
+- **Register**: `supabase.auth.signUp({ email, password })` — creates auth.users entry + profiles row
+- **Logout**: `supabase.auth.signOut()`
+- **Session**: Supabase manages tokens automatically, stored via `useAuth` hook
+- **Server-side verification**: `requireAuth()` in `src/lib/auth.ts` uses `adminDb.auth.getUser(token)` to verify Supabase JWT
+- **Profile fetch**: After auth, role fetched from `profiles` table: `supabase.from('profiles').select('role').eq('id', user.id).single()`
+- **Role redirect**: Admin → `/admin`, User → `/dashboard`
+- **Auto profile creation**: Trigger `on_auth_user_created` on `auth.users` auto-creates profiles row on signup
 
 ## Design System (CSS Custom Properties Theme)
 - **Theme Toggle**: Dark (default) / Light mode via `.light` class on `<html>`; persisted to localStorage
@@ -29,14 +40,15 @@ Amazon Advertising Optimization SaaS Dashboard — full English, LTR layout, Cyb
 - `src/data/mock.ts` — Fallback mock data (pages still work without DB entries)
 - `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT)
 - `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (used in all API routes)
-- `src/lib/auth.ts` — JWT sign/verify, requireAuth(), requireAdmin(), logAction(), createNotification()
-- `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper
+- `src/lib/supabaseClient.ts` — Client-side Supabase client (used for auth in browser)
+- `src/lib/auth.ts` — requireAuth() (Supabase JWT verify), requireAdmin(), logAction(), createNotification()
+- `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper (uses Supabase Auth)
 - `src/pages/api/` — All backend routes (see list below)
-- `supabase/schema.sql` — Full DB schema to run in Supabase SQL Editor
+- `supabase/fix-and-seed.sql` — Full DB schema + triggers to run in Supabase SQL Editor
 
 ## Database Schema (Supabase)
-Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
-- **profiles** — users, password_hash, bot_mode, target_acos, role (admin/user)
+Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
+- **profiles** — users linked to auth.users(id), bot_mode, target_acos, role (admin/user)
 - **amazon_connections** — per-user Amazon API tokens (access/refresh)
 - **campaigns** — campaign metrics per day (user_id FK)
 - **keywords** — keyword bids/performance (user_id FK)
@@ -47,10 +59,7 @@ Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
 - **job_runs** — background job execution history
 
 ## API Routes
-- `POST /api/auth/register` — Create account (email, password, full_name)
-- `POST /api/auth/login` — Sign in
-- `POST /api/auth/logout` — Clear cookie
-- `GET  /api/auth/me` — Validate token, return user profile
+- `GET  /api/auth/me` — Validate Supabase token, return user profile
 - `GET  /api/campaigns` — List campaigns (auth required, supports ?from=&to=&status=)
 - `POST /api/campaigns` — Create campaign
 - `GET/PATCH /api/campaigns/[id]` — Get or update single campaign
@@ -77,9 +86,9 @@ Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
 - **semi** — AI generates suggestion, status=pending, user must approve in audit log
 - **auto** — AI executes immediately (status=executed)
 
-## Pages (16 total)
+## Pages (18 total)
 1. `/` — Landing page
-2. `/login` — Sign in + Create Account (tab toggle, real auth)
+2. `/login` — Sign in + Create Account (tab toggle, Supabase Auth)
 3. `/dashboard` — KPIs, charts, alerts
 4. `/campaigns` — Sortable campaigns table
 5. `/products` — Products + keywords
@@ -98,8 +107,10 @@ Run `supabase/schema.sql` in Supabase SQL Editor to create all tables:
 18. `/admin` — Admin dashboard (stats, user management, role toggle, delete) — admin role only
 
 ## Setup Required
-1. Run `supabase/schema.sql` in Supabase SQL Editor
-   - Then run `supabase/admin-migration.sql` to add role column + test admin/user accounts
+1. Run `supabase/fix-and-seed.sql` in Supabase SQL Editor
 2. Set secrets: SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
 3. Set env var: NEXT_PUBLIC_SUPABASE_URL
-4. Register an account at /login → will create a profile row in Supabase
+4. Create test users in Supabase Dashboard > Authentication > Users > Add User
+   - `admin@test.com` / `Admin1234!` → then run: `UPDATE profiles SET role='admin' WHERE email='admin@test.com';`
+   - `test@example.com` / `Test1234!`
+5. Or register at /login — auto-creates profile via trigger

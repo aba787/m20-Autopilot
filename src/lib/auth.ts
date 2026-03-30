@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
 import { db as adminDb } from './supabaseAdmin';
-
-const JWT_SECRET = process.env.SESSION_SECRET ?? 'fallback-dev-secret-change-me';
 
 export interface AuthUser {
   id: string;
@@ -13,23 +10,10 @@ export interface AuthUser {
   role: 'admin' | 'user';
 }
 
-export function signToken(payload: { sub: string; email: string; role?: string }) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
-}
-
-export function verifyToken(token: string): { sub: string; email: string; role?: string } | null {
-  try {
-    return jwt.verify(token, JWT_SECRET) as { sub: string; email: string; role?: string };
-  } catch {
-    return null;
-  }
-}
-
-export function getTokenFromRequest(req: NextApiRequest): string | null {
+function getTokenFromRequest(req: NextApiRequest): string | null {
   const auth = req.headers.authorization;
   if (auth?.startsWith('Bearer ')) return auth.slice(7);
-  const cookie = req.cookies?.m20_token;
-  return cookie ?? null;
+  return null;
 }
 
 export async function requireAuth(
@@ -42,8 +26,9 @@ export async function requireAuth(
     return null;
   }
 
-  const payload = verifyToken(token);
-  if (!payload) {
+  const { data: { user: authUser }, error: authError } = await adminDb.auth.getUser(token);
+
+  if (authError || !authUser) {
     res.status(401).json({ error: 'Invalid or expired token' });
     return null;
   }
@@ -51,11 +36,11 @@ export async function requireAuth(
   const { data: profile, error } = await adminDb
     .from('profiles')
     .select('*')
-    .eq('id', payload.sub)
+    .eq('id', authUser.id)
     .single();
 
   if (error || !profile) {
-    res.status(401).json({ error: 'User not found' });
+    res.status(401).json({ error: 'User profile not found' });
     return null;
   }
 
@@ -75,18 +60,6 @@ export async function requireAdmin(
   return user;
 }
 
-export function setAuthCookie(res: NextApiResponse, token: string) {
-  res.setHeader('Set-Cookie',
-    `m20_token=${token}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${60 * 60 * 24 * 7}`
-  );
-}
-
-export function clearAuthCookie(res: NextApiResponse) {
-  res.setHeader('Set-Cookie',
-    `m20_token=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`
-  );
-}
-
 export async function logAction(params: {
   user_id: string;
   campaign_id?: string;
@@ -100,16 +73,16 @@ export async function logAction(params: {
   error?: string | null;
 }) {
   await adminDb.from('action_logs').insert({
-    user_id:     params.user_id,
+    user_id: params.user_id,
     campaign_id: params.campaign_id ?? null,
-    keyword_id:  params.keyword_id  ?? null,
+    keyword_id: params.keyword_id ?? null,
     action_type: params.action_type,
-    actor:       params.actor,
-    mode:        params.mode,
-    status:      params.status,
-    payload:     params.payload,
-    result:      params.result ?? null,
-    error:       params.error  ?? null,
+    actor: params.actor,
+    mode: params.mode,
+    status: params.status,
+    payload: params.payload,
+    result: params.result ?? null,
+    error: params.error ?? null,
   });
 }
 
@@ -122,12 +95,12 @@ export async function createNotification(params: {
   campaign_id?: string;
 }) {
   await adminDb.from('notifications').insert({
-    user_id:     params.user_id,
-    title:       params.title,
-    body:        params.body,
-    type:        params.type,
-    read:        false,
-    link:        params.link        ?? null,
+    user_id: params.user_id,
+    title: params.title,
+    body: params.body,
+    type: params.type,
+    read: false,
+    link: params.link ?? null,
     campaign_id: params.campaign_id ?? null,
   });
 }

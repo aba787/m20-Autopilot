@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
+import { createContext as rc } from 'react';
+import { supabase } from './supabaseClient';
 
 export interface User {
   id: string;
@@ -16,16 +18,14 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login:  (email: string, password: string)                         => Promise<{ error?: string; user?: User }>;
-  register: (email: string, password: string, full_name?: string)  => Promise<{ error?: string; user?: User }>;
-  logout: ()                                                        => Promise<void>;
-  updateUser: (updates: Partial<User>)                             => void;
+  login: (email: string, password: string) => Promise<{ error?: string; user?: User }>;
+  register: (email: string, password: string, full_name?: string) => Promise<{ error?: string; user?: User }>;
+  logout: () => Promise<void>;
+  updateUser: (updates: Partial<User>) => void;
 }
 
 export type AuthContext = AuthState & AuthActions;
 
-// ── Context (created externally in _app.tsx) ──────────────────────────────────
-import { createContext as rc } from 'react';
 export const AuthCtx = rc<AuthContext | null>(null);
 
 export function useAuth(): AuthContext {
@@ -34,57 +34,114 @@ export function useAuth(): AuthContext {
   return ctx;
 }
 
-// ── Hook implementation used in AuthProvider ──────────────────────────────────
+async function fetchProfile(userId: string): Promise<User | null> {
+  const { data } = await supabase
+    .from('profiles')
+    .select('id, email, full_name, bot_mode, target_acos, role')
+    .eq('id', userId)
+    .single();
+  if (!data) return null;
+  return {
+    id: data.id,
+    email: data.email,
+    full_name: data.full_name ?? null,
+    bot_mode: data.bot_mode ?? 'safe',
+    target_acos: data.target_acos ?? 30,
+    role: data.role ?? 'user',
+  } as User;
+}
+
 export function useAuthState(): AuthContext {
-  const [user,    setUser]    = useState<User | null>(null);
-  const [token,   setToken]   = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = typeof window !== 'undefined' ? localStorage.getItem('m20_token') : null;
-    if (stored) {
-      setToken(stored);
-      fetch('/api/auth/me', { headers: { Authorization: `Bearer ${stored}` } })
-        .then(r => r.json())
-        .then(d => { if (d.user) setUser(d.user); else { localStorage.removeItem('m20_token'); setToken(null); } })
-        .catch(() => { localStorage.removeItem('m20_token'); setToken(null); })
-        .finally(() => setLoading(false));
-    } else {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
+        setToken(session.access_token);
+        const profile = await fetchProfile(session.user.id);
+        if (profile) setUser(profile);
+      }
       setLoading(false);
-    }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session?.user) {
+          setToken(session.access_token);
+          const profile = await fetchProfile(session.user.id);
+          if (profile) setUser(profile);
+        } else {
+          setToken(null);
+          setUser(null);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const res  = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
-    const data = await res.json();
-    if (!res.ok) return { error: data.error ?? 'Login failed' };
-    localStorage.setItem('m20_token', data.token);
-    setToken(data.token);
-    setUser(data.user);
-    return { user: data.user as User };
+
+    if (error) return { error: error.message };
+
+    const authUser = data.user;
+    setToken(data.session.access_token);
+
+    const profile = await fetchProfile(authUser.id);
+    if (profile) {
+      setUser(profile);
+      return { user: profile };
+    }
+
+    return { error: 'Profile not found' };
   }, []);
 
   const register = useCallback(async (email: string, password: string, full_name?: string) => {
-    const res  = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, full_name }),
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: full_name ?? '' },
+      },
     });
-    const data = await res.json();
-    if (!res.ok) return { error: data.error ?? 'Registration failed' };
-    localStorage.setItem('m20_token', data.token);
-    setToken(data.token);
-    setUser(data.user);
-    return { user: data.user as User };
+
+    if (error) return { error: error.message };
+    if (!data.user) return { error: 'Registration failed' };
+
+    setToken(data.session?.access_token ?? null);
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .upsert({
+        id: data.user.id,
+        email: email.toLowerCase().trim(),
+        full_name: full_name?.trim() ?? null,
+        bot_mode: 'safe',
+        target_acos: 30,
+        role: 'user',
+      });
+
+    if (profileError) {
+      console.error('Profile creation error:', profileError);
+    }
+
+    const profile = await fetchProfile(data.user.id);
+    if (profile) {
+      setUser(profile);
+      return { user: profile };
+    }
+
+    return { user: { id: data.user.id, email: email.toLowerCase().trim(), full_name: full_name?.trim() ?? null, bot_mode: 'safe' as const, target_acos: 30, role: 'user' as const } };
   }, []);
 
   const logout = useCallback(async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    localStorage.removeItem('m20_token');
+    await supabase.auth.signOut();
     setToken(null);
     setUser(null);
     window.location.href = '/login';
@@ -97,7 +154,6 @@ export function useAuthState(): AuthContext {
   return { user, token, loading, login, register, logout, updateUser };
 }
 
-// ── Authenticated fetch helper ────────────────────────────────────────────────
 export function authFetch(token: string | null) {
   return (url: string, opts: RequestInit = {}) =>
     fetch(url, {

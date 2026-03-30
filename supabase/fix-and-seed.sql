@@ -1,5 +1,5 @@
 -- ============================================================
--- M20 Autopilot — COMPLETE Database Fix
+-- M20 Autopilot — Database Setup (Supabase Auth)
 -- Copy ALL of this and paste into Supabase SQL Editor
 -- Dashboard > SQL Editor > New Query > Paste > Run
 -- ============================================================
@@ -7,14 +7,55 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Fix profiles table — add ALL missing columns
-ALTER TABLE profiles ADD COLUMN IF NOT EXISTS password_hash TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS full_name TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS avatar_url TEXT;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS target_acos NUMERIC(5,2) DEFAULT 30.00;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bot_mode TEXT NOT NULL DEFAULT 'safe';
 
--- Create all missing tables
+-- Make sure id references auth.users
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.table_constraints
+    WHERE constraint_name = 'profiles_id_fkey'
+    AND table_name = 'profiles'
+  ) THEN
+    BEGIN
+      ALTER TABLE profiles
+        ADD CONSTRAINT profiles_id_fkey
+        FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE;
+    EXCEPTION WHEN others THEN
+      RAISE NOTICE 'Could not add foreign key to auth.users — may already exist or table structure differs';
+    END;
+  END IF;
+END $$;
+
+-- Auto-create profile on signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name, bot_mode, target_acos, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', ''),
+    'safe',
+    30.00,
+    'user'
+  )
+  ON CONFLICT (id) DO NOTHING;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Create all other tables
 CREATE TABLE IF NOT EXISTS amazon_connections (
   id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id          UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
@@ -154,17 +195,31 @@ CREATE TRIGGER trg_profiles_updated_at
   BEFORE UPDATE ON profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
--- Seed test users with passwords
--- test@example.com / Test1234!
--- admin@test.com  / Admin1234!
--- user@test.com   / User1234!
-INSERT INTO profiles (email, password_hash, full_name, bot_mode, target_acos, role)
-VALUES
-  ('test@example.com', '$2b$10$GYog2wMcsIbEMj05gMhpt.8T2wFD7GG5wxUYhppxt6aWLZ5Tdv3zG', 'Test User', 'safe', 30.00, 'user'),
-  ('admin@test.com',   '$2b$10$sBIWj.fA9q2SAlqyt..NX.UD9CWZg59zgo9qCfcMtOxq4L8K2RVSe', 'Admin User', 'auto', 25.00, 'admin'),
-  ('user@test.com',    '$2b$10$QTfISOQF48NdqVh7vHG.wueVSPlMB3Jld2E4bNf7Usw1780mLVxlO', 'Regular User', 'safe', 30.00, 'user')
-ON CONFLICT (email) DO UPDATE SET
-  password_hash = EXCLUDED.password_hash,
-  full_name     = EXCLUDED.full_name,
-  target_acos   = EXCLUDED.target_acos,
-  role          = EXCLUDED.role;
+-- Enable RLS on profiles
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
+CREATE POLICY "Users can view own profile" ON profiles
+  FOR SELECT USING (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
+CREATE POLICY "Users can update own profile" ON profiles
+  FOR UPDATE USING (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
+CREATE POLICY "Users can insert own profile" ON profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Service role full access" ON profiles;
+CREATE POLICY "Service role full access" ON profiles
+  FOR ALL TO service_role
+  USING (true) WITH CHECK (true);
+
+-- ============================================================
+-- Seed test users via Supabase Auth
+-- After running this, create users manually in Supabase Dashboard:
+-- Authentication > Users > Add User
+-- 1. admin@test.com / Admin1234! → then UPDATE profiles SET role='admin' WHERE email='admin@test.com';
+-- 2. test@example.com / Test1234!
+-- 3. user@test.com / User1234!
+-- ============================================================

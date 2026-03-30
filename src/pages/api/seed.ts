@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { User } from '@supabase/supabase-js';
 import { db as adminDb } from '@/lib/supabaseAdmin';
 
 interface TestUser {
@@ -52,10 +53,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let failures = 0;
 
   const { data: existing } = await adminDb.auth.admin.listUsers({ perPage: 1000 });
-  const existingUsers = existing?.users ?? [];
+  const existingUsers: User[] = existing?.users ?? [];
 
   for (const u of TEST_USERS) {
-    const found = existingUsers.find((x) => x.email === u.email);
+    const found = existingUsers.find((x: User) => x.email === u.email);
 
     let userId: string;
 
@@ -85,7 +86,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (createErr.message?.includes('already') || createErr.message?.includes('duplicate')) {
           results.push(`${u.email}: already exists (duplicate), resolving by email`);
           const refreshed = await adminDb.auth.admin.listUsers({ perPage: 1000 });
-          const resolved = refreshed.data?.users?.find((x) => x.email === u.email);
+          const refreshedUsers: User[] = refreshed.data?.users ?? [];
+          const resolved = refreshedUsers.find((x: User) => x.email === u.email);
           if (resolved) {
             userId = resolved.id;
             await adminDb.auth.admin.updateUserById(userId, {

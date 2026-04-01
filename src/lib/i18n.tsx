@@ -295,12 +295,6 @@ const translations: Record<string, Record<string, string>> = {
   'layout.quickSuggest2': { en: 'Suggest keywords', ar: 'اقتراح كلمات مفتاحية' },
   'layout.quickSuggest3': { en: 'What is a good ACOS?', ar: 'ما هو ACOS الجيد؟' },
 
-  'settings.storeUrl': { en: 'Store URL', ar: 'رابط المتجر' },
-  'settings.currency': { en: 'Currency', ar: 'العملة' },
-  'settings.timezone': { en: 'Timezone', ar: 'المنطقة الزمنية' },
-  'settings.targetAcos': { en: 'Target ACOS (%)', ar: 'ACOS المستهدف (%)' },
-  'settings.dangerZone': { en: 'Danger Zone', ar: 'منطقة الخطر' },
-  'settings.deleteAccount': { en: 'Delete Account', ar: 'حذف الحساب' },
   'settings.deleteDesc': { en: 'Permanently delete your account and all data', ar: 'حذف حسابك وجميع بياناتك نهائياً' },
   'settings.sarOption': { en: 'Saudi Riyal (SAR)', ar: 'ريال سعودي (SAR)' },
   'settings.usdOption': { en: 'US Dollar (USD)', ar: 'دولار أمريكي (USD)' },
@@ -313,8 +307,6 @@ const translations: Record<string, Record<string, string>> = {
 
   'connect.health': { en: 'Health', ar: 'الصحة' },
   'connect.syncHistory': { en: 'Sync History', ar: 'سجل المزامنة' },
-
-  'common.noResults': { en: 'No results found', ar: 'لم يتم العثور على نتائج' },
 };
 
 export function addTranslations(newTranslations: Record<string, Record<string, string>>) {

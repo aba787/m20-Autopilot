@@ -1,6 +1,6 @@
 # M20 Autopilot
 
-Amazon Advertising Optimization SaaS Dashboard — full English, LTR layout, Cyber/Dark theme.
+Amazon Advertising Optimization SaaS Dashboard — Bilingual (Arabic + English), LTR/RTL layout, Cyber/Dark theme.
 
 ## Tech Stack
 - **Framework**: Next.js (Pages Router)
@@ -31,13 +31,15 @@ Amazon Advertising Optimization SaaS Dashboard — full English, LTR layout, Cyb
 - **Light mode**: `--bg-primary: #f8fafc`, `--accent: #0891b2`, `--card-bg: #ffffff`
 - **Inline styles**: Use `var(--token)` (e.g. `background: 'var(--card-bg)'`); no hardcoded hex in pages
 - **CARD constant**: `{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' }`
-- **Direction**: LTR (`dir="ltr"`) — sidebar on left
+- **Direction**: LTR/RTL — dynamically switches based on selected language (sidebar adjusts accordingly)
+- **i18n**: `src/lib/i18n.tsx` — React context-based translation system supporting Arabic + English with tone settings (friendly/professional/brief)
 
 ## Architecture
 - `src/pages/` — All page routes (Next.js Pages Router)
 - `src/components/Layout.tsx` — App shell: left sidebar + header + floating AI button; uses real auth
 - `src/components/ThemeProvider.tsx` — Dark mode context
-- `src/data/mock.ts` — Fallback mock data (pages still work without DB entries)
+- `src/lib/i18n.tsx` — i18n context (language, tone, automation state, translations)
+- `src/data/mock.ts` — Fallback mock data with product images, TACoS, spend, dailyBudget
 - `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT)
 - `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (used in all API routes)
 - `src/lib/supabaseClient.ts` — Client-side Supabase client (used for auth in browser)
@@ -89,9 +91,9 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 ## Pages (18 total)
 1. `/` — Landing page
 2. `/login` — Sign in + Create Account (tab toggle, Supabase Auth)
-3. `/dashboard` — KPIs, charts, alerts
+3. `/dashboard` — KPIs (Sales, Orders, Cost, ACOS, Clicks, Profit, Ad Spend, Units, TACoS, Daily Budget), charts with enhanced tooltips, date filter (Today/7d/30d/Custom), budget warning alert
 4. `/campaigns` — Sortable campaigns table
-5. `/products` — Products + keywords
+5. `/products` — Products with images, full names (text wrapping), performance metrics (Sales, Spend, Profit, ACOS, TACoS)
 6. `/blacklist` — Excluded products
 7. `/ai-engine` — AI + rules analysis (GPT-4o mini)
 8. `/ads-generator` — Ad content generator (keywords, headlines, description, targeting)
@@ -101,9 +103,9 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 12. `/amazon-news` — Seller news
 13. `/integration` — Amazon account connection
 14. `/audit` — Full change log
-15. `/support` — AI chat assistant (real GPT, strict scope)
+15. `/support` — AI chat assistant (bilingual AR+EN, FAQ system, GPT fallback, tone-aware)
 16. `/help` — FAQ
-17. `/settings` — Account settings (bot mode, ACOS target)
+17. `/settings` — Account settings (language, response tone, automation toggle with warning, bot mode, ACOS target)
 18. `/admin` — Admin dashboard (stats, user management, role toggle, delete) — admin role only
 
 ## Setup Required

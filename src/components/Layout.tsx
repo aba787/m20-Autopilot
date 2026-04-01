@@ -10,23 +10,24 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useAuth, authFetch } from '@/lib/useAuth';
+import { useI18n } from '@/lib/i18n';
 
-const menuItems = [
-  { href: '/dashboard',     label: 'Dashboard',          icon: LayoutDashboard },
-  { href: '/campaigns',     label: 'Campaigns',          icon: Megaphone       },
-  { href: '/products',      label: 'Products & Keywords',icon: Package         },
-  { href: '/blacklist',     label: 'Blacklist',          icon: ShieldOff       },
-  { href: '/ai-engine',     label: 'AI Engine',          icon: Lightbulb       },
-  { href: '/ads-generator', label: 'Ad Generator',       icon: Sparkles        },
-  { href: '/accounting',    label: 'Accounting',         icon: Calculator      },
-  { href: '/alerts',        label: 'Alerts',             icon: Bell            },
-  { href: '/reports',       label: 'Reports',            icon: FileText        },
-  { href: '/amazon-news',   label: 'Amazon News',        icon: Newspaper       },
-  { href: '/integration',   label: 'Amazon Connect',     icon: Link2           },
-  { href: '/audit',         label: 'Change Log',         icon: History         },
-  { href: '/support',       label: 'AI Assistant',       icon: HeadphonesIcon  },
-  { href: '/help',          label: 'Help Center',        icon: HelpCircle      },
-  { href: '/settings',      label: 'Settings',           icon: Settings        },
+const menuKeys = [
+  { href: '/dashboard',     key: 'nav.dashboard',      icon: LayoutDashboard },
+  { href: '/campaigns',     key: 'nav.campaigns',      icon: Megaphone       },
+  { href: '/products',      key: 'nav.products',       icon: Package         },
+  { href: '/blacklist',     key: 'nav.blacklist',      icon: ShieldOff       },
+  { href: '/ai-engine',     key: 'nav.aiEngine',       icon: Lightbulb       },
+  { href: '/ads-generator', key: 'nav.adGenerator',    icon: Sparkles        },
+  { href: '/accounting',    key: 'nav.accounting',     icon: Calculator      },
+  { href: '/alerts',        key: 'nav.alerts',         icon: Bell            },
+  { href: '/reports',       key: 'nav.reports',        icon: FileText        },
+  { href: '/amazon-news',   key: 'nav.amazonNews',     icon: Newspaper       },
+  { href: '/integration',   key: 'nav.amazonConnect',  icon: Link2           },
+  { href: '/audit',         key: 'nav.changeLog',      icon: History         },
+  { href: '/support',       key: 'nav.aiAssistant',    icon: HeadphonesIcon  },
+  { href: '/help',          key: 'nav.helpCenter',     icon: HelpCircle      },
+  { href: '/settings',      key: 'nav.settings',       icon: Settings        },
 ];
 
 interface DBNotif { id: string; title: string; body: string; type: string; read: boolean; created_at: string; }
@@ -43,6 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { dark, toggle } = useTheme();
   const { user, token, logout } = useAuth();
   const af = authFetch(token);
+  const { t, lang, dir, automationEnabled } = useI18n();
 
   useEffect(() => {
     if (!token) return;
@@ -72,16 +74,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const modeLabel   = user?.bot_mode ? `Bot: ${user.bot_mode}` : 'Guest';
   const modeColor   = user?.bot_mode === 'auto' ? 'var(--success)' : user?.bot_mode === 'semi' ? 'var(--warning)' : 'var(--accent)';
 
+  const quickSuggestions = lang === 'ar'
+    ? ['تحليل أفضل المنتجات', 'اقتراح كلمات مفتاحية', 'ما هو ACOS الجيد؟']
+    : ['Analyze top products', 'Suggest keywords', 'What is a good ACOS?'];
+
   return (
-    <div className="flex h-screen overflow-hidden" dir="ltr">
+    <div className="flex h-screen overflow-hidden" dir={dir}>
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
           onClick={() => setSidebarOpen(false)} />
       )}
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-60 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} flex flex-col`}
-        style={{ background: 'var(--bg-secondary)', borderRight: '1px solid var(--border-primary)' }}>
+        className={`fixed lg:static inset-y-0 ${lang === 'ar' ? 'right-0' : 'left-0'} z-50 w-60 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : (lang === 'ar' ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0')} flex flex-col`}
+        style={{ background: 'var(--bg-secondary)', borderRight: lang === 'ar' ? 'none' : '1px solid var(--border-primary)', borderLeft: lang === 'ar' ? '1px solid var(--border-primary)' : 'none' }}>
 
         <div className="p-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
           <Link href="/dashboard" className="flex items-center gap-2.5">
@@ -91,7 +97,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <div>
               <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>
-              <p className="text-[10px] leading-tight" style={{ color: 'var(--text-dim)' }}>Amazon Ad Dashboard</p>
+              <p className="text-[10px] leading-tight" style={{ color: 'var(--text-dim)' }}>
+                {lang === 'ar' ? 'لوحة إعلانات أمازون' : 'Amazon Ad Dashboard'}
+              </p>
             </div>
           </Link>
         </div>
@@ -108,11 +116,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   border: '1px solid rgba(245,158,11,0.3)', boxShadow: '0 0 12px rgba(245,158,11,0.1)',
                 } : { color: 'var(--warning)', border: '1px solid transparent', background: 'rgba(245,158,11,0.05)' }}>
                 <ShieldCheck className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--warning)' }} />
-                <span className="flex-1 truncate">Admin Panel</span>
+                <span className="flex-1 truncate">{t('nav.adminPanel')}</span>
               </Link>
             );
           })()}
-          {menuItems.map(item => {
+          {menuKeys.map(item => {
             const active = router.pathname === item.href;
             const Icon   = item.icon;
             return (
@@ -124,13 +132,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   border: '1px solid var(--accent-border)', boxShadow: '0 0 12px rgba(0,217,255,0.1)',
                 } : { color: 'var(--text-muted)', border: '1px solid transparent' }}>
                 <Icon className="w-4 h-4 flex-shrink-0" style={active ? { color: 'var(--accent)' } : {}} />
-                <span className="flex-1 truncate">{item.label}</span>
+                <span className="flex-1 truncate">{t(item.key)}</span>
               </Link>
             );
           })}
         </nav>
 
         <div className="p-3 flex-shrink-0" style={{ borderTop: '1px solid var(--border-primary)' }}>
+          {automationEnabled && (
+            <div className="mb-2 px-2 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5"
+              style={{ background: 'rgba(16,185,129,0.1)', color: 'var(--success)', border: '1px solid rgba(16,185,129,0.25)' }}>
+              <span>🟢</span> {t('auto.on')}
+            </div>
+          )}
           <div className="flex items-center gap-2.5 p-2 rounded-lg" style={{ background: 'var(--card-bg)' }}>
             <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }}>
@@ -156,7 +170,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden sm:flex items-center gap-2 rounded-lg px-3 py-1.5 w-52"
               style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
               <Search className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--text-dim)' }} />
-              <input type="text" placeholder="Search..."
+              <input type="text" placeholder={t('common.search')}
                 className="bg-transparent border-none outline-none text-sm w-full"
                 style={{ color: 'var(--text-secondary)' }} />
             </div>
@@ -182,13 +196,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)' }}>
                   <div className="p-3 flex items-center justify-between sticky top-0"
                     style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)' }}>
-                    <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>Notifications</h3>
-                    <button onClick={markAllRead} className="text-xs" style={{ color: 'var(--accent)' }}>Mark all read</button>
+                    <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{t('common.notifications')}</h3>
+                    <button onClick={markAllRead} className="text-xs" style={{ color: 'var(--accent)' }}>{t('common.markAllRead')}</button>
                   </div>
                   {notifications.length === 0 && (
                     <div className="p-6 text-center">
                       <CheckCircle className="w-8 h-8 mx-auto mb-2" style={{ color: 'var(--success)' }} />
-                      <p className="text-sm" style={{ color: 'var(--text-dim)' }}>All caught up!</p>
+                      <p className="text-sm" style={{ color: 'var(--text-dim)' }}>{t('common.allCaughtUp')}</p>
                     </div>
                   )}
                   {notifications.map(n => (
@@ -234,19 +248,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="flex items-center gap-2 p-3 text-sm"
                     style={{ color: 'var(--text-secondary)' }}
                     onClick={() => setProfileOpen(false)}>
-                    <Settings className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Settings
+                    <Settings className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('nav.settings')}
                   </Link>
                   <button
                     className="w-full flex items-center gap-2 p-3 text-sm"
                     style={{ color: 'var(--error)' }}
                     onClick={() => { setProfileOpen(false); logout(); }}>
-                    <LogOut className="w-4 h-4" /> Log Out
+                    <LogOut className="w-4 h-4" /> {t('common.logOut')}
                   </button>
                 </div>
               )}
             </div>
           </div>
         </header>
+
+        {automationEnabled && (
+          <div className="px-4 py-2 flex items-center gap-2 text-sm font-medium"
+            style={{ background: 'rgba(16,185,129,0.08)', borderBottom: '1px solid rgba(16,185,129,0.2)', color: 'var(--success)' }}>
+            <Bot className="w-4 h-4" />
+            <span>🟢 {t('auto.on')} — {lang === 'ar' ? 'البوت يدير الحملات تلقائيًا' : 'Bot is managing campaigns automatically'}</span>
+          </div>
+        )}
 
         <main className="flex-1 overflow-y-auto p-4 lg:p-6" style={{ background: 'var(--bg-primary)' }}>
           {children}
@@ -255,22 +277,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <div className="fixed bottom-6 right-6 z-50">
         {aiOpen && (
-          <div className="absolute bottom-14 right-0 w-72 rounded-xl shadow-2xl p-4 mb-2"
+          <div className="absolute bottom-14 right-0 w-80 rounded-xl shadow-2xl p-4 mb-2"
             style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)', boxShadow: '0 0 30px rgba(0,217,255,0.15)' }}>
             <div className="flex items-center gap-2 mb-3">
               <Bot className="w-5 h-5" style={{ color: 'var(--accent)' }} />
-              <h4 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>M20 AI Assistant</h4>
+              <h4 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
+                {lang === 'ar' ? 'المساعد الذكي M20' : 'M20 AI Assistant'}
+              </h4>
               <button onClick={() => setAiOpen(false)} className="ml-auto" style={{ color: 'var(--text-dim)' }}>
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
-              Hi{user ? `, ${displayName}` : ''}! How can I help you today?
+            <p className="text-sm mb-3" style={{ color: 'var(--text-muted)' }}>
+              {lang === 'ar'
+                ? `أهلاً${user ? ` ${displayName}` : ''}! كيف أقدر أساعدك اليوم؟`
+                : `Hi${user ? `, ${displayName}` : ''}! How can I help you today?`}
             </p>
             <div className="space-y-1.5 mb-3">
-              {['Analyze top products', 'Suggest keywords', 'What is a good ACOS?'].map(q => (
+              {quickSuggestions.map(q => (
                 <Link key={q} href="/support"
-                  className="block text-xs px-3 py-2 rounded-lg transition-colors"
+                  className="block text-sm px-3 py-2 rounded-lg transition-colors"
                   style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)', color: 'var(--text-secondary)' }}
                   onClick={() => setAiOpen(false)}>
                   {q}
@@ -278,8 +304,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </div>
             <Link href="/support" onClick={() => setAiOpen(false)}
-              className="block text-center text-xs" style={{ color: 'var(--accent)' }}>
-              Open full chat →
+              className="block text-center text-sm font-medium" style={{ color: 'var(--accent)' }}>
+              {lang === 'ar' ? 'فتح المحادثة الكاملة ←' : 'Open full chat →'}
             </Link>
           </div>
         )}

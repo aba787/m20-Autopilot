@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import { AuthCtx, useAuthState } from '@/lib/useAuth';
+import { I18nProvider } from '@/lib/i18n';
 
 const noLayoutPages = ['/', '/login'];
 
@@ -18,15 +19,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider>
-      <AuthProvider>
-        {useLayout ? (
-          <Layout>
+      <I18nProvider>
+        <AuthProvider>
+          {useLayout ? (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          ) : (
             <Component {...pageProps} />
-          </Layout>
-        ) : (
-          <Component {...pageProps} />
-        )}
-      </AuthProvider>
+          )}
+        </AuthProvider>
+      </I18nProvider>
     </ThemeProvider>
   );
 }

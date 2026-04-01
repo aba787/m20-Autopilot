@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sparkles, Search, Tag, FileText, Target, Loader2, AlertTriangle, Copy, Check, RotateCcw } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 const CARD  = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 const INPUT: React.CSSProperties = {
@@ -7,7 +8,6 @@ const INPUT: React.CSSProperties = {
   borderRadius: '0.5rem', color: 'var(--text-secondary)', padding: '0.5rem 0.75rem',
   outline: 'none', fontSize: '0.875rem', width: '100%',
 };
-
 
 interface AdResult {
   keywords: string[];
@@ -39,6 +39,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 export default function AdsGenerator() {
+  const { t } = useI18n();
   const [productName, setProductName] = useState('');
   const [category,    setCategory]    = useState('');
   const [brand,       setBrand]       = useState('');
@@ -84,47 +85,43 @@ export default function AdsGenerator() {
   };
 
   const tabs = [
-    { key: 'keywords',    label: 'Keywords',    icon: Tag       },
-    { key: 'headlines',   label: 'Headlines',   icon: FileText  },
-    { key: 'description', label: 'Description', icon: Search    },
-    { key: 'targeting',   label: 'Targeting',   icon: Target    },
+    { key: 'keywords',    label: t('adGen.keywords'),    icon: Tag       },
+    { key: 'headlines',   label: t('adGen.headlines'),   icon: FileText  },
+    { key: 'description', label: t('adGen.description'), icon: Search    },
+    { key: 'targeting',   label: t('adGen.targeting'),   icon: Target    },
   ] as const;
 
   return (
     <div className="space-y-5">
-      {/* Header */}
       <div>
         <h1 className="text-xl font-bold text-white flex items-center gap-2">
-          <Sparkles className="w-5 h-5" style={{ color: 'var(--accent)' }} /> Ad Generator
+          <Sparkles className="w-5 h-5" style={{ color: 'var(--accent)' }} /> {t('adGen.title')}
         </h1>
-        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>AI-powered Amazon ad content — keywords, headlines, description & targeting</p>
+        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('adGen.subtitle')}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5">
-        {/* Input form */}
         <div className="space-y-4">
           <div className="p-4" style={CARD}>
             <h3 className="font-bold text-sm mb-4 text-white flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Product Details
+              <Sparkles className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('adGen.productDetails')}
             </h3>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Product Name *</label>
+                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>{t('adGen.productName')}</label>
                 <input type="text" value={productName} onChange={e => setProductName(e.target.value)}
-                  placeholder="e.g. Wireless Noise-Cancelling Headphones"
+                  placeholder={t('adGen.namePlaceholder')}
                   style={INPUT}
                   onKeyDown={e => e.key === 'Enter' && generate()} />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Category <span style={{ color: 'var(--text-dim)' }}>(optional)</span></label>
+                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>{t('adGen.category')}</label>
                 <input type="text" value={category} onChange={e => setCategory(e.target.value)}
-                  placeholder="e.g. Electronics, Beauty, Home"
                   style={INPUT} />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Brand <span style={{ color: 'var(--text-dim)' }}>(optional)</span></label>
+                <label className="block text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>{t('adGen.brand')}</label>
                 <input type="text" value={brand} onChange={e => setBrand(e.target.value)}
-                  placeholder="e.g. SoundMax"
                   style={INPUT} />
               </div>
 
@@ -136,31 +133,12 @@ export default function AdsGenerator() {
                   cursor: productName.trim() && !loading ? 'pointer' : 'not-allowed',
                 }}>
                 {loading
-                  ? <><Loader2 className="w-4 h-4 animate-spin text-[#0a0612]" /> Generating...</>
-                  : <><Sparkles className="w-4 h-4" /> Generate Ad Content</>}
+                  ? <><Loader2 className="w-4 h-4 animate-spin text-[#0a0612]" /> {t('adGen.generating')}</>
+                  : <><Sparkles className="w-4 h-4" /> {t('adGen.generate')}</>}
               </button>
             </div>
           </div>
 
-          {/* How it works */}
-          <div className="p-4" style={CARD}>
-            <h3 className="font-bold text-sm mb-3 text-white">What You Get</h3>
-            <div className="space-y-2">
-              {[
-                { icon: Tag,      text: '10 buyer-intent keywords' },
-                { icon: FileText, text: '5 high-converting headlines' },
-                { icon: Search,   text: '1 professional description' },
-                { icon: Target,   text: 'Targeting strategy & bid guidance' },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
-                  <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--accent)' }} />
-                  {text}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* History */}
           {history.length > 0 && (
             <div style={{ ...CARD, overflow: 'hidden' }}>
               <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -180,17 +158,12 @@ export default function AdsGenerator() {
           )}
         </div>
 
-        {/* Results panel */}
         <div className="lg:col-span-2">
           {error && (
             <div className="p-3 text-sm flex items-center gap-2 rounded-xl mb-4"
               style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: 'var(--error)' }}>
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
               <span>{error}</span>
-              {error.toLowerCase().includes('quota') && (
-                <a href="https://platform.openai.com/billing" target="_blank" rel="noreferrer"
-                  className="ml-auto underline whitespace-nowrap" style={{ color: 'var(--error)' }}>Add billing →</a>
-              )}
             </div>
           )}
 
@@ -200,9 +173,9 @@ export default function AdsGenerator() {
                 style={{ background: 'var(--accent-bg)', border: '1px solid var(--accent-border)' }}>
                 <Sparkles className="w-8 h-8" style={{ color: 'var(--accent)' }} />
               </div>
-              <p className="font-bold text-white mb-1">Enter a Product Name</p>
+              <p className="font-bold text-white mb-1">{t('adGen.productName').replace(' *', '')}</p>
               <p className="text-sm text-center max-w-xs" style={{ color: 'var(--text-muted)' }}>
-                Fill in the product details on the left and click Generate to get AI-powered ad content.
+                {t('adGen.subtitle')}
               </p>
             </div>
           )}
@@ -210,24 +183,23 @@ export default function AdsGenerator() {
           {loading && (
             <div className="flex flex-col items-center justify-center h-80" style={CARD}>
               <Loader2 className="w-10 h-10 animate-spin mb-4" style={{ color: 'var(--accent)' }} />
-              <p className="font-bold text-white mb-1">Generating Ad Content</p>
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>GPT-4o mini is working on it…</p>
+              <p className="font-bold text-white mb-1">{t('adGen.generating')}</p>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>GPT-4o mini</p>
             </div>
           )}
 
           {result && (
             <div style={{ ...CARD, overflow: 'hidden' }}>
-              {/* Tab bar */}
               <div className="flex items-center overflow-x-auto" style={{ borderBottom: '1px solid var(--border-primary)' }}>
-                {tabs.map(t => {
-                  const Icon = t.icon;
+                {tabs.map(tb => {
+                  const Icon = tb.icon;
                   return (
-                    <button key={t.key} onClick={() => setActiveTab(t.key)}
+                    <button key={tb.key} onClick={() => setActiveTab(tb.key)}
                       className="flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors"
-                      style={activeTab === t.key
+                      style={activeTab === tb.key
                         ? { color: 'var(--accent)', borderBottom: '2px solid var(--accent)' }
                         : { color: 'var(--text-muted)', borderBottom: '2px solid transparent' }}>
-                      <Icon className="w-3.5 h-3.5" /> {t.label}
+                      <Icon className="w-3.5 h-3.5" /> {tb.label}
                     </button>
                   );
                 })}
@@ -242,12 +214,11 @@ export default function AdsGenerator() {
                 </div>
               </div>
 
-              {/* Keywords */}
               {activeTab === 'keywords' && (
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <Tag className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Keywords ({result.keywords?.length ?? 0})
+                      <Tag className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('adGen.keywords')} ({result.keywords?.length ?? 0})
                     </h3>
                     <CopyButton text={result.keywords?.join(', ') ?? ''} />
                   </div>
@@ -261,16 +232,14 @@ export default function AdsGenerator() {
                       </span>
                     ))}
                   </div>
-                  <p className="text-xs mt-4" style={{ color: 'var(--text-dim)' }}>Click any keyword to copy it individually</p>
                 </div>
               )}
 
-              {/* Headlines */}
               {activeTab === 'headlines' && (
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <FileText className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Headlines ({result.headlines?.length ?? 0})
+                      <FileText className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('adGen.headlines')} ({result.headlines?.length ?? 0})
                     </h3>
                     <CopyButton text={result.headlines?.join('\n') ?? ''} />
                   </div>
@@ -296,12 +265,11 @@ export default function AdsGenerator() {
                 </div>
               )}
 
-              {/* Description */}
               {activeTab === 'description' && (
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <Search className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Product Description
+                      <Search className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('adGen.description')}
                     </h3>
                     <CopyButton text={result.description ?? ''} />
                   </div>
@@ -309,18 +277,14 @@ export default function AdsGenerator() {
                     style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
                     {result.description}
                   </div>
-                  <p className="text-xs mt-2" style={{ color: 'var(--text-dim)' }}>
-                    {result.description?.length ?? 0} characters — optimized for Amazon search
-                  </p>
                 </div>
               )}
 
-              {/* Targeting */}
               {activeTab === 'targeting' && (
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
-                      <Target className="w-4 h-4" style={{ color: 'var(--accent)' }} /> Targeting Strategy
+                      <Target className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('adGen.targeting')}
                     </h3>
                     <CopyButton text={result.targeting ?? ''} />
                   </div>

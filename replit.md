@@ -32,7 +32,7 @@ Amazon Advertising Optimization SaaS Dashboard — Bilingual (Arabic + English),
 - **Inline styles**: Use `var(--token)` (e.g. `background: 'var(--card-bg)'`); no hardcoded hex in pages
 - **CARD constant**: `{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' }`
 - **Direction**: LTR/RTL — dynamically switches based on selected language (sidebar adjusts accordingly)
-- **i18n**: `src/lib/i18n.tsx` — React context-based translation system supporting Arabic + English with tone settings (friendly/professional/brief)
+- **i18n**: `src/lib/i18n.tsx` — React context-based translation system supporting Arabic + English with tone settings (friendly/professional/brief). 270+ translation keys covering all 18 pages. `addTranslations()` API for future languages. localStorage persistence via `m20_prefs` key. Bot language auto-detection via `detectLanguage()` in `campaignBot.ts`.
 
 ## Architecture
 - `src/pages/` — All page routes (Next.js Pages Router)

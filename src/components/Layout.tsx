@@ -70,13 +70,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-  const displayName = user?.full_name?.split(' ')[0] ?? user?.email?.split('@')[0] ?? 'User';
-  const modeLabel   = user?.bot_mode ? `Bot: ${user.bot_mode}` : 'Guest';
+  const displayName = user?.full_name?.split(' ')[0] ?? user?.email?.split('@')[0] ?? t('common.user');
+  const modeLabel   = user?.bot_mode ? `${t('layout.botMode')}: ${user.bot_mode}` : t('common.guest');
   const modeColor   = user?.bot_mode === 'auto' ? 'var(--success)' : user?.bot_mode === 'semi' ? 'var(--warning)' : 'var(--accent)';
 
-  const quickSuggestions = lang === 'ar'
-    ? ['تحليل أفضل المنتجات', 'اقتراح كلمات مفتاحية', 'ما هو ACOS الجيد؟']
-    : ['Analyze top products', 'Suggest keywords', 'What is a good ACOS?'];
+  const quickSuggestions = [t('layout.quickSuggest1'), t('layout.quickSuggest2'), t('layout.quickSuggest3')];
 
   return (
     <div className="flex h-screen overflow-hidden" dir={dir}>
@@ -98,7 +96,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>
               <p className="text-[10px] leading-tight" style={{ color: 'var(--text-dim)' }}>
-                {lang === 'ar' ? 'لوحة إعلانات أمازون' : 'Amazon Ad Dashboard'}
+                {t('layout.appSubtitle')}
               </p>
             </div>
           </Link>
@@ -266,7 +264,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="px-4 py-2 flex items-center gap-2 text-sm font-medium"
             style={{ background: 'rgba(16,185,129,0.08)', borderBottom: '1px solid rgba(16,185,129,0.2)', color: 'var(--success)' }}>
             <Bot className="w-4 h-4" />
-            <span>🟢 {t('auto.on')} — {lang === 'ar' ? 'البوت يدير الحملات تلقائيًا' : 'Bot is managing campaigns automatically'}</span>
+            <span>🟢 {t('auto.on')} — {t('auto.banner')}</span>
           </div>
         )}
 
@@ -282,16 +280,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2 mb-3">
               <Bot className="w-5 h-5" style={{ color: 'var(--accent)' }} />
               <h4 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
-                {lang === 'ar' ? 'المساعد الذكي M20' : 'M20 AI Assistant'}
+                {t('layout.aiAssistantTitle')}
               </h4>
               <button onClick={() => setAiOpen(false)} className="ml-auto" style={{ color: 'var(--text-dim)' }}>
                 <X className="w-4 h-4" />
               </button>
             </div>
             <p className="text-sm mb-3" style={{ color: 'var(--text-muted)' }}>
-              {lang === 'ar'
-                ? `أهلاً${user ? ` ${displayName}` : ''}! كيف أقدر أساعدك اليوم؟`
-                : `Hi${user ? `, ${displayName}` : ''}! How can I help you today?`}
+              {`${t('common.hi')}${user ? ` ${displayName}` : ''}! ${t('common.howCanIHelp')}`}
             </p>
             <div className="space-y-1.5 mb-3">
               {quickSuggestions.map(q => (
@@ -305,7 +301,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <Link href="/support" onClick={() => setAiOpen(false)}
               className="block text-center text-sm font-medium" style={{ color: 'var(--accent)' }}>
-              {lang === 'ar' ? 'فتح المحادثة الكاملة ←' : 'Open full chat →'}
+              {t('common.openFullChat')}
             </Link>
           </div>
         )}

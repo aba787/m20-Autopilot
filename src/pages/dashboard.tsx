@@ -28,7 +28,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: p.color }} />
           <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>
-            {p.name === 'sales' ? 'Sales / المبيعات' : 'Spend / الإنفاق'}:
+            {p.name === 'sales' ? p.name : p.name}:
           </span>
           <span style={{ color: 'var(--text-primary)', fontWeight: 700, fontSize: 15 }}>
             {p.value?.toLocaleString()} {CUR}

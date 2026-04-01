@@ -18,8 +18,8 @@ const inputStyle: React.CSSProperties = {
 export default function Settings() {
   const { t, lang, setLang, tone, setTone, automationEnabled, setAutomationEnabled } = useI18n();
   const [amazonLink,   setAmazonLink]   = useState('https://www.amazon.com/s?me=XXXXXXXX');
-  const [currency,     setCurrency]     = useState('USD');
-  const [timezone,     setTimezone]     = useState('America/New_York');
+  const [currency,     setCurrency]     = useState('SAR');
+  const [timezone,     setTimezone]     = useState('Asia/Riyadh');
   const [targetAcos,   setTargetAcos]   = useState('25');
   const [emailAlerts,  setEmailAlerts]  = useState(true);
   const [autoOptimize, setAutoOptimize] = useState(false);
@@ -122,7 +122,7 @@ export default function Settings() {
           <Link2 className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('settings.amazonStore')}
         </h2>
         <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Store URL</label>
+          <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>{t('settings.storeUrl')}</label>
           <input type="url" value={amazonLink} onChange={e => setAmazonLink(e.target.value)}
             style={{ ...inputStyle, fontFamily: 'monospace' }}
             dir="ltr" placeholder="https://www.amazon.com/..." />
@@ -135,18 +135,16 @@ export default function Settings() {
         </h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Currency</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>{t('settings.currency')}</label>
             <select value={currency} onChange={e => setCurrency(e.target.value)}
               style={{ ...inputStyle, cursor: 'pointer' }}>
-              <option value="USD">US Dollar (USD)</option>
-              <option value="SAR">Saudi Riyal (SAR)</option>
-              <option value="GBP">British Pound (GBP)</option>
-              <option value="EUR">Euro (EUR)</option>
-              <option value="CAD">Canadian Dollar (CAD)</option>
+              <option value="SAR">{t('settings.sarOption')}</option>
+              <option value="USD">{t('settings.usdOption')}</option>
+              <option value="AED">{t('settings.aedOption')}</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Timezone</label>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>{t('settings.timezone')}</label>
             <select value={timezone} onChange={e => setTimezone(e.target.value)}
               style={{ ...inputStyle, cursor: 'pointer' }}>
               <option value="Asia/Riyadh">Riyadh (AST)</option>
@@ -163,7 +161,7 @@ export default function Settings() {
           <SettingsIcon className="w-4 h-4 text-amber-400" /> {t('settings.perfGoals')}
         </h2>
         <div>
-          <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Target ACOS (%)</label>
+          <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>{t('settings.targetAcos')}</label>
           <div className="flex items-center gap-3">
             <input type="number" value={targetAcos} onChange={e => setTargetAcos(e.target.value)}
               style={{ ...inputStyle, width: '7rem' }}
@@ -204,14 +202,14 @@ export default function Settings() {
         </h2>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-semibold text-white">{lang === 'ar' ? 'حذف جميع البيانات' : 'Delete All Data'}</p>
+            <p className="text-sm font-semibold text-white">{t('settings.deleteAccount')}</p>
             <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
-              {lang === 'ar' ? 'حذف نهائي لجميع بيانات الحساب — لا يمكن التراجع' : 'Permanently delete all account data — cannot be undone'}
+              {t('settings.deleteDesc')}
             </p>
           </div>
           <button className="text-sm px-3 py-1.5 rounded transition-colors"
             style={{ color: 'var(--error)', border: '1px solid rgba(239,68,68,0.3)' }}>
-            {lang === 'ar' ? 'حذف الحساب' : 'Delete Account'}
+            {t('settings.deleteAccount')}
           </button>
         </div>
       </div>

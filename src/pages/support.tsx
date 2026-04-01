@@ -44,9 +44,17 @@ interface Message {
   loading?: boolean;
 }
 
-function findFaqAnswer(msg: string, lang: string): string | null {
+function detectLang(text: string): 'ar' | 'en' {
+  const arabicChars = (text.match(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g) || []).length;
+  const latinChars = (text.match(/[a-zA-Z]/g) || []).length;
+  if (arabicChars === 0 && latinChars === 0) return 'en';
+  return arabicChars >= latinChars ? 'ar' : 'en';
+}
+
+function findFaqAnswer(msg: string): string | null {
+  const detected = detectLang(msg);
   const normalizedMsg = msg.toLowerCase().replace(/[?؟!.]/g, '').trim();
-  const faq = lang === 'ar' ? faqAr : faqEn;
+  const faq = detected === 'ar' ? faqAr : faqEn;
   for (const [key, answer] of Object.entries(faq)) {
     const normalizedKey = key.toLowerCase().replace(/[?؟!.]/g, '').trim();
     if (normalizedMsg.includes(normalizedKey) || normalizedKey.includes(normalizedMsg)) {
@@ -84,7 +92,7 @@ export default function Support() {
     const userMsg: Message = { id: Date.now(), sender: 'user', message: msg };
     const tempBotId = Date.now() + 1;
 
-    const faqAnswer = findFaqAnswer(msg, lang);
+    const faqAnswer = findFaqAnswer(msg);
     if (faqAnswer) {
       setMessages(prev => [...prev, userMsg, { id: tempBotId, sender: 'bot', message: faqAnswer }]);
       setHistory(prev => [

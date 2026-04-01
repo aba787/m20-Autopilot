@@ -85,7 +85,7 @@ export default function Products() {
             <table className="w-full text-sm">
               <thead style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border-primary)' }}>
                 <tr>
-                  {[t('dash.product'), 'ASIN', t('dash.sales'), t('dash.spend'), t('dash.profit'), t('dash.acos'), 'TACoS', t('products.allStatus').replace('كل الحالات', 'Status').replace('All Status', 'Status'), 'Action'].map(h => (
+                  {[t('dash.product'), 'ASIN', t('dash.sales'), t('dash.spend'), t('dash.profit'), t('dash.acos'), 'TACoS', t('products.status'), t('products.action')].map(h => (
                     <th key={h} className="text-left py-2.5 px-3 font-semibold text-sm" style={{ color: 'var(--text-muted)' }}>{h}</th>
                   ))}
                 </tr>

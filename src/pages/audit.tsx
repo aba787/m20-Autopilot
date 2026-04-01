@@ -1,16 +1,18 @@
 import { auditLog } from '@/data/mock';
 import { History, User, Bot } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
 export default function Audit() {
+  const { t } = useI18n();
   return (
     <div className="space-y-4">
       <div>
         <h1 className="text-xl font-bold text-white flex items-center gap-2">
-          <History className="w-5 h-5" style={{ color: 'var(--accent)' }} /> Change Log
+          <History className="w-5 h-5" style={{ color: 'var(--accent)' }} /> {t('audit.title')}
         </h1>
-        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>All changes made to campaigns and keywords</p>
+        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('audit.subtitle')}</p>
       </div>
 
       <div style={{ ...CARD, overflow: 'hidden' }}>
@@ -18,7 +20,7 @@ export default function Audit() {
           <table className="w-full text-sm">
             <thead style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border-primary)' }}>
               <tr>
-                {['Action', 'Target', 'Details', 'Reason', 'Source', 'Date'].map(h => (
+                {[t('audit.action'), t('audit.target'), t('audit.details'), t('audit.reason'), t('audit.source'), t('accounting.date')].map(h => (
                   <th key={h} className="text-left py-2.5 px-4 font-medium" style={{ color: 'var(--text-muted)' }}>{h}</th>
                 ))}
               </tr>

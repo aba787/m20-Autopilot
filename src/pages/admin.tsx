@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth, authFetch } from '@/lib/useAuth';
+import { useI18n } from '@/lib/i18n';
 import {
   Users, ShieldCheck, BarChart3, Activity,
   Search, Trash2, ChevronLeft, ChevronRight, AlertCircle, Crown,
@@ -31,6 +32,7 @@ const CARD: React.CSSProperties = {
 };
 
 export default function AdminPage() {
+  const { t } = useI18n();
   const { user, token, loading: authLoading } = useAuth();
   const router = useRouter();
   const af = authFetch(token);
@@ -113,7 +115,7 @@ export default function AdminPage() {
 
   const deleteUser = async (u: AdminUser) => {
     if (u.id === user?.id) return;
-    if (!confirm(`Delete user "${u.email}"? This cannot be undone.`)) return;
+    if (!confirm(`Delete user "${u.email}"?`)) return;
     setActionLoading(u.id);
     try {
       const res = await af(`/api/admin/users/${u.id}`, { method: 'DELETE' });
@@ -143,17 +145,17 @@ export default function AdminPage() {
   }
 
   const statCards = [
-    { label: 'Total Users', value: stats?.totalUsers ?? '—', icon: Users, color: 'var(--accent)' },
-    { label: 'Active Accounts', value: stats?.activeAccounts ?? '—', icon: ShieldCheck, color: 'var(--warning)' },
-    { label: 'Total Campaigns', value: stats?.totalCampaigns ?? '—', icon: BarChart3, color: 'var(--success)' },
-    { label: 'Actions Logged', value: stats?.totalActions ?? '—', icon: Activity, color: '#a78bfa' },
+    { label: t('admin.totalUsers'), value: stats?.totalUsers ?? '—', icon: Users, color: 'var(--accent)' },
+    { label: t('admin.activeAccounts'), value: stats?.activeAccounts ?? '—', icon: ShieldCheck, color: 'var(--warning)' },
+    { label: t('admin.totalCampaigns'), value: stats?.totalCampaigns ?? '—', icon: BarChart3, color: 'var(--success)' },
+    { label: t('admin.actionsLogged'), value: stats?.totalActions ?? '—', icon: Activity, color: '#a78bfa' },
   ];
 
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Admin Dashboard</h1>
-        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Manage users and monitor platform activity</p>
+        <h1 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{t('admin.title')}</h1>
+        <p className="text-sm" style={{ color: 'var(--text-muted)' }}></p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -175,14 +177,14 @@ export default function AdminPage() {
 
       <div className="p-5" style={CARD}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-          <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>User Management</h2>
+          <h2 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{t('admin.userManagement')}</h2>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="flex items-center gap-2 rounded-lg px-3 py-1.5 flex-1 sm:flex-initial sm:w-56"
               style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)' }}>
               <Search className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--text-dim)' }} />
               <input
                 type="text"
-                placeholder="Search email or name..."
+                placeholder={t('admin.search')}
                 value={search}
                 onChange={e => { setSearch(e.target.value); setPage(1); }}
                 className="bg-transparent border-none outline-none text-sm w-full"
@@ -195,7 +197,7 @@ export default function AdminPage() {
               className="px-3 py-1.5 rounded-lg text-sm outline-none"
               style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)', color: 'var(--text-secondary)' }}
             >
-              <option value="">All Roles</option>
+              <option value="">{t('admin.allRoles')}</option>
               <option value="admin">Admin</option>
               <option value="user">User</option>
             </select>
@@ -217,7 +219,7 @@ export default function AdminPage() {
         ) : users.length === 0 ? (
           <div className="text-center py-12">
             <Users className="w-10 h-10 mx-auto mb-2" style={{ color: 'var(--text-dim)' }} />
-            <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No users found</p>
+            <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('common.noResults')}</p>
           </div>
         ) : (
           <>
@@ -225,7 +227,7 @@ export default function AdminPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--border-primary)' }}>
-                    {['User', 'Email', 'Role', 'Bot Mode', 'Target ACOS', 'Joined', 'Actions'].map(h => (
+                    {[t('common.user'), 'Email', 'Role', t('layout.botMode'), 'Target ACOS', 'Joined', t('products.action')].map(h => (
                       <th key={h} className="text-left pb-3 font-medium text-xs" style={{ color: 'var(--text-muted)' }}>{h}</th>
                     ))}
                   </tr>
@@ -261,14 +263,14 @@ export default function AdminPage() {
                       </td>
                       <td className="py-3">
                         {u.id === user?.id ? (
-                          <span className="text-xs" style={{ color: 'var(--text-dim)' }}>You</span>
+                          <span className="text-xs" style={{ color: 'var(--text-dim)' }}>{t('bot.you')}</span>
                         ) : (
                           <div className="flex items-center gap-1">
                             <button
                               onClick={() => toggleRole(u)}
                               disabled={actionLoading === u.id}
                               className="px-2 py-1 rounded text-xs font-medium transition-all"
-                              title={u.role === 'admin' ? 'Demote to user' : 'Promote to admin'}
+                              title={u.role === 'admin' ? t('admin.demote') : t('admin.promote')}
                               style={{
                                 background: u.role === 'admin' ? 'var(--accent-bg)' : 'rgba(245,158,11,0.1)',
                                 color: u.role === 'admin' ? 'var(--accent)' : 'var(--warning)',
@@ -276,13 +278,13 @@ export default function AdminPage() {
                                 opacity: actionLoading === u.id ? 0.5 : 1,
                               }}
                             >
-                              {u.role === 'admin' ? 'Demote' : 'Promote'}
+                              {u.role === 'admin' ? t('admin.demote') : t('admin.promote')}
                             </button>
                             <button
                               onClick={() => deleteUser(u)}
                               disabled={actionLoading === u.id}
                               className="p-1 rounded transition-all"
-                              title="Delete user"
+                              title={t('admin.deleteUser')}
                               style={{ color: 'var(--error)', opacity: actionLoading === u.id ? 0.5 : 1 }}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -299,7 +301,7 @@ export default function AdminPage() {
             {totalPages > 1 && (
               <div className="flex items-center justify-between mt-4 pt-3" style={{ borderTop: '1px solid var(--border-subtle)' }}>
                 <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
-                  Showing {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
+                  {(page - 1) * limit + 1}–{Math.min(page * limit, total)} / {total}
                 </p>
                 <div className="flex items-center gap-1">
                   <button

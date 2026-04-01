@@ -3,19 +3,11 @@ import { campaigns as mockCampaigns, products } from '@/data/mock';
 import { Bot, TrendingUp, TrendingDown, AlertTriangle, Tag, CheckCircle2, X, Zap, Play, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import type { BotResult } from '@/lib/campaignBot';
 import { useAuth, authFetch } from '@/lib/useAuth';
+import { useI18n } from '@/lib/i18n';
 
 type BotAction = 'pause' | 'scale' | 'decrease_bid' | 'add_negative' | 'keep';
 
-
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
-
-const actionConfig: Record<BotAction, { label: string; color: string; borderColor: string; icon: any }> = {
-  pause:        { label: 'Pause',         color: 'var(--error)', borderColor: 'rgba(239,68,68,0.25)',    icon: X          },
-  scale:        { label: 'Scale Up',      color: 'var(--success)', borderColor: 'rgba(16,185,129,0.25)',   icon: TrendingUp  },
-  decrease_bid: { label: 'Decrease Bid',  color: 'var(--warning)', borderColor: 'rgba(245,158,11,0.25)',   icon: TrendingDown},
-  add_negative: { label: 'Add Negative',  color: 'var(--accent)',      borderColor: 'var(--accent-border)',    icon: Tag         },
-  keep:         { label: 'Keep Running',  color: '#64748b', borderColor: 'rgba(100,116,139,0.25)',  icon: CheckCircle2},
-};
 
 const priorityStyle: Record<string, React.CSSProperties> = {
   critical: { background: 'rgba(239,68,68,0.12)',  color: 'var(--error)', border: '1px solid rgba(239,68,68,0.25)'  },
@@ -29,6 +21,7 @@ function toBotFormat(c: typeof mockCampaigns[0]) {
 }
 
 export default function AiEngine() {
+  const { t } = useI18n();
   const { token } = useAuth();
   const apiFetch = authFetch(token);
   const [results, setResults]     = useState<BotResult[]>([]);
@@ -37,6 +30,14 @@ export default function AiEngine() {
   const [error, setError]         = useState('');
   const [expanded, setExpanded]   = useState<number | null>(null);
   const [applied, setApplied]     = useState<number[]>([]);
+
+  const actionConfig: Record<BotAction, { label: string; color: string; borderColor: string; icon: any }> = {
+    pause:        { label: t('aiEngine.pause'),       color: 'var(--error)', borderColor: 'rgba(239,68,68,0.25)',    icon: X          },
+    scale:        { label: t('aiEngine.scaleUp'),     color: 'var(--success)', borderColor: 'rgba(16,185,129,0.25)',   icon: TrendingUp  },
+    decrease_bid: { label: t('aiEngine.decreaseBid'), color: 'var(--warning)', borderColor: 'rgba(245,158,11,0.25)',   icon: TrendingDown},
+    add_negative: { label: t('aiEngine.addNegative'), color: 'var(--accent)',      borderColor: 'var(--accent-border)',    icon: Tag         },
+    keep:         { label: t('aiEngine.keep'),        color: '#64748b', borderColor: 'rgba(100,116,139,0.25)',  icon: CheckCircle2},
+  };
 
   const strongProducts = products.filter(p => p.acos <= 22 && p.profit > 5000).slice(0, 3);
   const weakProducts   = products.filter(p => p.status === 'poor' || p.status === 'weak').slice(0, 3);
@@ -69,24 +70,22 @@ export default function AiEngine() {
 
   return (
     <div className="space-y-5">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
-            <Bot className="w-5 h-5" style={{ color: 'var(--accent)' }} /> AI Engine
+            <Bot className="w-5 h-5" style={{ color: 'var(--accent)' }} /> {t('aiEngine.title')}
           </h1>
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Intelligent campaign analysis — Rules + GPT-4o mini</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('aiEngine.subtitle')}</p>
         </div>
         <button onClick={runFullBot} disabled={loading}
           className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-[#0a0612] transition-all"
           style={{ background: 'var(--accent-gradient)', opacity: loading ? 0.7 : 1, boxShadow: 'var(--accent-glow)' }}>
           {loading
-            ? <><Loader2 className="w-4 h-4 animate-spin" /> Analyzing...</>
-            : <><Zap className="w-4 h-4" /> Analyze All Campaigns</>}
+            ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('aiEngine.analyzing')}</>
+            : <><Zap className="w-4 h-4" /> {t('aiEngine.analyzeAll')}</>}
         </button>
       </div>
 
-      {/* Error */}
       {error && (
         <div className="p-3 text-sm flex items-center gap-2 rounded-xl"
           style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)', color: 'var(--error)' }}>
@@ -94,13 +93,12 @@ export default function AiEngine() {
         </div>
       )}
 
-      {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: 'Campaigns Analyzed', value: results.length,  color: 'text-white'          },
-          { label: 'Critical — Needs Action', value: criticalCount, color: 'text-[#ef4444]'   },
-          { label: 'Ready to Scale',       value: scaleCount,    color: 'text-[#10b981]'       },
-          { label: 'Applied',              value: applied.length, color: 'text-accent'      },
+          { label: t('aiEngine.campaignsAnalyzed'), value: results.length,  color: 'text-white'          },
+          { label: t('aiEngine.criticalAction'), value: criticalCount, color: 'text-[#ef4444]'   },
+          { label: t('aiEngine.readyToScale'),   value: scaleCount,    color: 'text-[#10b981]'       },
+          { label: t('aiEngine.applied'),        value: applied.length, color: 'text-accent'      },
         ].map((s, i) => (
           <div key={i} className="p-4" style={CARD}>
             <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>{s.label}</p>
@@ -109,20 +107,18 @@ export default function AiEngine() {
         ))}
       </div>
 
-      {/* Two columns */}
       <div className="grid lg:grid-cols-2 gap-5">
-        {/* Campaigns table */}
         <div style={{ ...CARD, overflow: 'hidden' }}>
           <div className="px-4 py-3 flex items-center justify-between"
             style={{ borderBottom: '1px solid var(--border-primary)' }}>
-            <h2 className="font-bold text-sm text-white">Campaigns</h2>
-            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{mockCampaigns.length} campaigns</span>
+            <h2 className="font-bold text-sm text-white">{t('campaigns.title')}</h2>
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{mockCampaigns.length} {t('campaigns.count')}</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead style={{ background: 'var(--hover-bg)' }}>
                 <tr>
-                  {['Campaign', 'ACOS', 'ROAS', 'Action'].map(h => (
+                  {[t('campaigns.campaign'), 'ACOS', 'ROAS', t('products.action')].map(h => (
                     <th key={h} className="text-left py-2 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{h}</th>
                   ))}
                 </tr>
@@ -179,9 +175,7 @@ export default function AiEngine() {
           </div>
         </div>
 
-        {/* Right panel */}
         <div className="space-y-3">
-          {/* Expanded result */}
           {expanded !== null && results.find(r => r.campaign.id === expanded) && (() => {
             const r   = results.find(r => r.campaign.id === expanded)!;
             const cfg = actionConfig[r.ruleDecision.action as BotAction] ?? actionConfig.keep;
@@ -210,7 +204,7 @@ export default function AiEngine() {
                 </div>
 
                 <div className="mb-3 p-2.5 rounded" style={{ background: 'var(--hover-bg)' }}>
-                  <p className="text-[10px] font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Rule Decision</p>
+                  <p className="text-[10px] font-medium mb-1" style={{ color: 'var(--text-muted)' }}>{t('aiEngine.ruleDecision')}</p>
                   <p className="text-sm font-bold" style={{ color: cfg.color }}>{cfg.label}</p>
                   <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{r.ruleDecision.reason}</p>
                   {r.ruleDecision.suggestedChange && (
@@ -220,7 +214,7 @@ export default function AiEngine() {
 
                 <div className="mb-3 p-2.5 rounded" style={{ background: 'var(--hover-bg)' }}>
                   <p className="text-[10px] font-medium mb-1 flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
-                    <Bot className="w-3 h-3" style={{ color: 'var(--accent)' }} /> GPT-4o mini Analysis
+                    <Bot className="w-3 h-3" style={{ color: 'var(--accent)' }} /> {t('aiEngine.gptAnalysis')}
                   </p>
                   <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{r.aiAnalysis}</p>
                 </div>
@@ -229,40 +223,38 @@ export default function AiEngine() {
                   <button onClick={() => setApplied(p => [...p, r.campaign.id])}
                     className="w-full flex items-center justify-center gap-1.5 text-xs py-2 rounded-lg font-semibold text-[#0a0612]"
                     style={{ background: 'var(--accent-gradient)' }}>
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Mark as Applied
+                    <CheckCircle2 className="w-3.5 h-3.5" /> {t('aiEngine.markApplied')}
                   </button>
                 ) : (
                   <div className="w-full flex items-center justify-center gap-1.5 text-xs py-2 rounded-lg font-medium"
                     style={{ color: 'var(--success)', border: '1px solid rgba(16,185,129,0.25)', background: 'rgba(16,185,129,0.08)' }}>
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Applied
+                    <CheckCircle2 className="w-3.5 h-3.5" /> {t('aiEngine.applied')}
                   </div>
                 )}
               </div>
             );
           })()}
 
-          {/* Top performers */}
           <div className="p-4" style={CARD}>
             <h3 className="font-bold text-sm mb-3 flex items-center gap-1.5" style={{ color: 'var(--success)' }}>
-              <TrendingUp className="w-4 h-4" /> Top Performing Products
+              <TrendingUp className="w-4 h-4" /> {t('aiEngine.topPerforming')}
             </h3>
             <div className="space-y-2">
               {strongProducts.map(p => (
                 <div key={p.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-white truncate">{p.name.split('-')[0].trim()}</p>
-                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>ACOS {p.acos}% · {p.units} units</p>
+                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>ACOS {p.acos}% · {p.units} {t('dash.units')}</p>
                   </div>
-                  <span className="text-sm font-bold ml-2" style={{ color: 'var(--success)' }}>${p.profit.toLocaleString()}</span>
+                  <span className="text-sm font-bold ml-2" style={{ color: 'var(--success)' }}>{p.profit.toLocaleString()} SAR</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Weak products */}
           <div className="p-4" style={CARD}>
             <h3 className="font-bold text-sm mb-3 flex items-center gap-1.5" style={{ color: 'var(--error)' }}>
-              <AlertTriangle className="w-4 h-4" /> Needs Attention
+              <AlertTriangle className="w-4 h-4" /> {t('aiEngine.needsAttention')}
             </h3>
             <div className="space-y-2">
               {weakProducts.map(p => (
@@ -272,7 +264,7 @@ export default function AiEngine() {
                     <p className="text-xs" style={{ color: 'var(--error)' }}>ACOS {p.acos}%</p>
                   </div>
                   <span className="text-sm font-bold ml-2" style={{ color: p.profit > 0 ? '#f59e0b' : '#ef4444' }}>
-                    ${p.profit.toLocaleString()}
+                    {p.profit.toLocaleString()} SAR
                   </span>
                 </div>
               ))}
@@ -282,21 +274,20 @@ export default function AiEngine() {
           {results.length === 0 && expanded === null && (
             <div className="p-8 text-center" style={CARD}>
               <Bot className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-dim)' }} />
-              <p className="font-bold text-white mb-1">Start Analysis</p>
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Click "Analyze All Campaigns" or press ▶ next to any campaign to analyze it individually.</p>
+              <p className="font-bold text-white mb-1">{t('aiEngine.startAnalysis')}</p>
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('aiEngine.startDesc')}</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* How it works */}
       <div className="p-4" style={CARD}>
-        <h3 className="font-bold text-sm mb-3 text-white">How the Engine Works</h3>
+        <h3 className="font-bold text-sm mb-3 text-white">{t('aiEngine.howItWorks')}</h3>
         <div className="grid sm:grid-cols-3 gap-3">
           {[
-            { step: '1', title: 'Calculate Metrics',  desc: 'ACOS · ROAS · CTR · Conversion Rate for each campaign' },
-            { step: '2', title: 'Rule-Based Decision', desc: 'Fast deterministic logic: pause / scale / decrease bid based on numbers' },
-            { step: '3', title: 'GPT-4o Refinement',  desc: 'AI adds context and explanation — final decision stays with you' },
+            { step: '1', title: t('aiEngine.step1'),  desc: 'ACOS · ROAS · CTR · Conversion Rate' },
+            { step: '2', title: t('aiEngine.step2'), desc: 'Fast deterministic logic: pause / scale / decrease bid' },
+            { step: '3', title: t('aiEngine.step3'),  desc: 'AI adds context and explanation' },
           ].map(s => (
             <div key={s.step} className="flex items-start gap-3">
               <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-[#0a0612]"

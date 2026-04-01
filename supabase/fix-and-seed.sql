@@ -27,6 +27,10 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DE
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'user';
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bot_mode TEXT NOT NULL DEFAULT 'safe';
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS automation_enabled BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS daily_budget NUMERIC(10,2) NOT NULL DEFAULT 50.00;
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS language TEXT NOT NULL DEFAULT 'en';
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS tone TEXT NOT NULL DEFAULT 'friendly';
 
 -- Link profiles.id to auth.users
 DO $$
@@ -162,6 +166,28 @@ CREATE TABLE IF NOT EXISTS ad_generations (
   created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS products (
+  id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id     UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  asin        TEXT NOT NULL,
+  name        TEXT NOT NULL,
+  brand       TEXT,
+  image       TEXT,
+  status      TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','weak','poor','paused')),
+  sales       NUMERIC(12,2) NOT NULL DEFAULT 0,
+  spend       NUMERIC(12,2) NOT NULL DEFAULT 0,
+  profit      NUMERIC(12,2) NOT NULL DEFAULT 0,
+  acos        NUMERIC(6,2) NOT NULL DEFAULT 0,
+  tacos       NUMERIC(6,2) NOT NULL DEFAULT 0,
+  units       INTEGER NOT NULL DEFAULT 0,
+  clicks      INTEGER NOT NULL DEFAULT 0,
+  impressions INTEGER NOT NULL DEFAULT 0,
+  orders      INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, asin)
+);
+
 CREATE TABLE IF NOT EXISTS accounting_snapshots (
   id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id      UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
@@ -197,6 +223,7 @@ CREATE INDEX IF NOT EXISTS idx_action_logs_user          ON action_logs(user_id,
 CREATE INDEX IF NOT EXISTS idx_notifications_user_unread ON notifications(user_id, read, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_accounting_user_date      ON accounting_snapshots(user_id, date DESC);
 CREATE INDEX IF NOT EXISTS idx_keywords_user_campaign    ON keywords(user_id, campaign_id);
+CREATE INDEX IF NOT EXISTS idx_products_user             ON products(user_id, status);
 
 -- Auto-update trigger
 CREATE OR REPLACE FUNCTION update_updated_at()

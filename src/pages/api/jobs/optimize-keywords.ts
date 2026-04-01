@@ -36,6 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     for (const kw of keywords ?? []) {
       const profile   = (kw as any).profiles;
+      const automationEnabled = profile?.automation_enabled ?? false;
+
+      if (!automationEnabled) {
+        processed.push({ keyword_id: kw.id, action: 'skipped', reason: 'automation_disabled' });
+        continue;
+      }
+
       const botMode    = profile?.bot_mode   ?? 'safe';
       const targetAcos = profile?.target_acos ?? 30;
 

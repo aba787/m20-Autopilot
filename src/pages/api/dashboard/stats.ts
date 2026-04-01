@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const fmt = (d: Date) => d.toISOString().split('T')[0];
 
-  const [currentPeriod, previousPeriod, notifications, pendingActions] = await Promise.all([
+  const [currentPeriod, previousPeriod, notifications, pendingActions, profileResult] = await Promise.all([
     supabaseAdmin.from('accounting_snapshots').select('*')
       .eq('user_id', user.id).gte('date', fmt(thirtyDaysAgo)).lte('date', fmt(today))
       .order('date', { ascending: true }),
@@ -27,6 +27,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     supabaseAdmin.from('action_logs').select('id, action_type, status, created_at, payload')
       .eq('user_id', user.id).eq('status', 'pending').order('created_at', { ascending: false }).limit(5),
+
+    supabaseAdmin.from('profiles').select('daily_budget, automation_enabled')
+      .eq('id', user.id).single(),
   ]);
 
   const aggregate = (rows: any[]) => rows.reduce((acc, r) => ({
@@ -47,6 +50,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const acos = cur.revenue  > 0 ? (cur.ad_spend / cur.revenue)  * 100 : 0;
   const roas = cur.ad_spend > 0 ?  cur.revenue  / cur.ad_spend        : 0;
 
+  const dailyBudget = Number(profileResult.data?.daily_budget ?? 50);
+  const automationEnabled = !!profileResult.data?.automation_enabled;
+
   return res.status(200).json({
     kpis: {
       revenue:      { value: cur.revenue,      change: pctChange(cur.revenue,      prev.revenue)      },
@@ -57,11 +63,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       units:        { value: cur.units,        change: pctChange(cur.units,        prev.units)        },
       acos:         { value: acos,             change: pctChange(acos, prev.revenue > 0 ? (prev.ad_spend / prev.revenue) * 100 : 0) },
       roas:         { value: roas,             change: pctChange(roas, prev.ad_spend > 0 ? prev.revenue / prev.ad_spend : 0)       },
+      daily_budget: { value: dailyBudget },
     },
     chart: (currentPeriod.data ?? []).map(r => ({
       date: r.date, revenue: r.revenue, ad_spend: r.ad_spend, profit: r.net_profit,
     })),
     unread_notifications: (notifications.data ?? []).filter(n => !n.read).length,
     pending_actions:      pendingActions.data ?? [],
+    budget_warning:       dailyBudget < 40,
+    automation_enabled:   automationEnabled,
   });
 }

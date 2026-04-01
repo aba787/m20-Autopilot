@@ -42,6 +42,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     for (const campaign of campaigns ?? []) {
       try {
         const profile = (campaign as any).profiles;
+        const automationEnabled = profile?.automation_enabled ?? false;
+
+        if (!automationEnabled) {
+          results.push({ campaign_id: campaign.id, action: 'skipped', reason: 'automation_disabled' });
+          continue;
+        }
+
         const botMode  = profile?.bot_mode  ?? 'safe';
         const targetAcos = profile?.target_acos ?? 30;
 

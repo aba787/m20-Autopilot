@@ -57,6 +57,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - **action_logs** — all AI + user actions with status (pending/approved/rejected/executed/failed)
 - **notifications** — per-user alerts (info/warning/error/success)
 - **ad_generations** — saved Ad Generator outputs
+- **products** — per-user product catalog with performance metrics (sales, spend, profit, ACOS, TACoS, units, clicks)
 - **accounting_snapshots** — daily revenue/spend/profit snapshots
 - **job_runs** — background job execution history
 
@@ -65,7 +66,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `GET  /api/campaigns` — List campaigns (auth required, supports ?from=&to=&status=)
 - `POST /api/campaigns` — Create campaign
 - `GET/PATCH /api/campaigns/[id]` — Get or update single campaign
-- `GET  /api/dashboard/stats` — KPIs with period comparison, chart data, pending actions
+- `GET  /api/dashboard/stats` — KPIs with period comparison, chart data, pending actions, budget warning, automation status
 - `GET  /api/accounting` — Revenue/spend/profit snapshots with totals
 - `POST /api/accounting` — Upsert daily snapshot
 - `GET  /api/notifications` — List notifications + unread count
@@ -73,15 +74,25 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `GET  /api/action-logs` — Full audit log with campaign names
 - `POST /api/action-logs/[id]/approve` — Approve or reject pending AI action
 - `GET/POST /api/amazon-connection` — Amazon account connections
-- `GET/PATCH /api/settings` — User profile (bot_mode, target_acos, full_name)
+- `GET/PATCH /api/settings` — User profile (bot_mode, target_acos, full_name, automation_enabled, daily_budget, language, tone) + budget_warning
+- `GET  /api/budget-check` — Budget threshold check (< 40 SAR) + automation status
+- `GET  /api/products` — List user products (supports ?status=&search=)
+- `POST /api/products` — Create/upsert product (by asin)
+- `GET/PATCH/DELETE /api/products/[id]` — Single product operations
 - `POST /api/ad-generator` — Generate ad content via GPT-4o mini, saves to DB if auth'd
 - `POST /api/support-chat` — AI customer support (strict platform-only scope)
 - `POST /api/bot-analyze` — Campaign analysis (rule engine + GPT)
 - `GET  /api/admin/stats` — Admin stats (total users, admins, campaigns, actions)
 - `GET  /api/admin/users` — List users with search/filter/pagination (admin only)
 - `PATCH/DELETE /api/admin/users/[id]` — Toggle role or delete user (admin only)
-- `POST /api/jobs/optimize-campaigns` — Background job (X-Job-Secret header required)
-- `POST /api/jobs/optimize-keywords` — Background job (X-Job-Secret header required)
+- `POST /api/jobs/optimize-campaigns` — Background job (X-Job-Secret header required, skips if automation_enabled=false)
+- `POST /api/jobs/optimize-keywords` — Background job (X-Job-Secret header required, skips if automation_enabled=false)
+
+## Backend Logic
+- **Budget check**: `daily_budget < 40 SAR` → `budget_warning: true` returned from `/api/dashboard/stats`, `/api/settings`, `/api/budget-check`
+- **Automation gate**: `automation_enabled = false` → optimization jobs skip processing for that user; bot does not run
+- **Currency**: All monetary values are in SAR (Saudi Riyal)
+- **Settings persistence**: `automation_enabled`, `daily_budget`, `language`, `tone` stored in profiles table; frontend hydrates from localStorage + API
 
 ## Bot Modes (per user in profiles.bot_mode)
 - **safe** — AI suggests only, no auto-execution (rule engine only, no GPT cost)

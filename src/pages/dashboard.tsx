@@ -52,13 +52,31 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Dashboard() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [dateFilter, setDateFilter] = useState<DateFilter>('30days');
   const [customFrom, setCustomFrom] = useState('');
   const [customTo, setCustomTo] = useState('');
   const [chartType, setChartType] = useState<ChartType>('line');
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [editValue, setEditValue] = useState('');
+  const [budgetValue, setBudgetValue] = useState(kpiData.dailyBudget);
+  const [budgetError, setBudgetError] = useState('');
+
+  const saveBudget = () => {
+    const num = parseFloat(editValue.replace(/[^\d.]/g, ''));
+    if (isNaN(num) || num < 10) {
+      setBudgetError(lang === 'ar' ? 'الحد الأدنى 10 ريال' : 'Minimum budget is 10 SAR');
+      return;
+    }
+    setBudgetValue(num);
+    setBudgetError('');
+    setEditingIdx(null);
+  };
+
+  const cancelEdit = () => {
+    setBudgetError('');
+    setEditingIdx(null);
+  };
 
   const chartData = useMemo(() => {
     switch (dateFilter) {
@@ -86,8 +104,8 @@ export default function Dashboard() {
     unitsSold: Math.round(kpiData.unitsSold * kpiScale),
     acos: kpiData.acos,
     tacos: kpiData.tacos,
-    dailyBudget: kpiData.dailyBudget,
-  }), [kpiScale]);
+    dailyBudget: budgetValue,
+  }), [kpiScale, budgetValue]);
 
   const kpis = [
     { label: t('dash.sales'),       value: scaledKpi.sales.toLocaleString() + ' ' + CUR,  icon: TrendingUp,       change: '+28%',  up: true,  colorKey: 'sales' },
@@ -102,7 +120,7 @@ export default function Dashboard() {
     { label: t('dash.dailyBudget'), value: scaledKpi.dailyBudget + ' ' + CUR,             icon: Wallet,           change: '',      up: true,  colorKey: 'budget', highlight: scaledKpi.dailyBudget < 40, editable: true },
   ];
 
-  const showBudgetWarning = kpiData.dailyBudget < 40;
+  const showBudgetWarning = budgetValue < 40;
 
   return (
     <div className="space-y-6">
@@ -185,21 +203,25 @@ export default function Dashboard() {
                 )}
               </div>
               {k.editable && isEditing ? (
-                <div className="flex items-center gap-1">
-                  <input type="text" value={editValue} onChange={e => setEditValue(e.target.value)}
-                    className="text-xl font-bold w-full rounded px-1 outline-none"
-                    style={{ background: 'var(--input-bg)', border: '1px solid var(--accent-border)', color: 'var(--text-primary)' }}
-                    autoFocus onKeyDown={e => { if (e.key === 'Enter') setEditingIdx(null); if (e.key === 'Escape') setEditingIdx(null); }} />
-                  <button onClick={() => setEditingIdx(null)} className="p-0.5" style={{ color: '#10b981' }}><Check className="w-4 h-4" /></button>
-                  <button onClick={() => setEditingIdx(null)} className="p-0.5" style={{ color: 'var(--text-dim)' }}><X className="w-4 h-4" /></button>
+                <div>
+                  <div className="flex items-center gap-1">
+                    <input type="number" min="10" step="1" value={editValue} onChange={e => { setEditValue(e.target.value); setBudgetError(''); }}
+                      className="text-xl font-bold w-full rounded px-2 py-0.5 outline-none"
+                      style={{ background: 'var(--input-bg)', border: `1px solid ${budgetError ? '#ef4444' : 'var(--accent-border)'}`, color: 'var(--text-primary)' }}
+                      autoFocus onKeyDown={e => { if (e.key === 'Enter') saveBudget(); if (e.key === 'Escape') cancelEdit(); }} />
+                    <button onClick={saveBudget} className="p-1 rounded hover:bg-emerald-500/20 transition-colors" style={{ color: '#10b981' }} title="Save"><Check className="w-4 h-4" /></button>
+                    <button onClick={cancelEdit} className="p-1 rounded hover:bg-red-500/20 transition-colors" style={{ color: '#ef4444' }} title="Cancel"><X className="w-4 h-4" /></button>
+                  </div>
+                  {budgetError && <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{budgetError}</p>}
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{k.value}</p>
                   {k.editable && (
-                    <button onClick={() => { setEditingIdx(i); setEditValue(k.value); }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded"
-                      style={{ color: 'var(--text-dim)' }}>
+                    <button onClick={() => { setEditingIdx(i); setEditValue(String(budgetValue)); setBudgetError(''); }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-white/10"
+                      style={{ color: 'var(--text-dim)' }}
+                      title={lang === 'ar' ? 'تعديل الميزانية' : 'Edit budget'}>
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
                   )}

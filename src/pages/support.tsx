@@ -138,12 +138,9 @@ export default function Support() {
   return (
     <div className="space-y-4 h-full flex flex-col" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
       <div>
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-          <Bot className="w-5 h-5" style={{ color: 'var(--accent)' }} /> {t('bot.title')}
+        <h1 className="text-3xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+          <Bot className="w-7 h-7" style={{ color: 'var(--accent)' }} /> {t('bot.title')}
         </h1>
-        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-          {t('bot.subtitle')}
-        </p>
       </div>
 
       {error && (

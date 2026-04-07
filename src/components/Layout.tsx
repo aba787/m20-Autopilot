@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTheme } from './ThemeProvider';
@@ -7,10 +7,10 @@ import {
   Link2, History, HeadphonesIcon, HelpCircle,
   Settings, Moon, Sun, Menu, X, ChevronDown, User, LogOut, Search,
   Calculator, Newspaper, ShieldOff, Bot, Zap, Sparkles, CheckCircle,
-  ShieldCheck,
+  ShieldCheck, Globe, Send, Loader2,
 } from 'lucide-react';
 import { useAuth, authFetch } from '@/lib/useAuth';
-import { useI18n } from '@/lib/i18n';
+import { useI18n, supportedLanguages } from '@/lib/i18n';
 
 const menuKeys = [
   { href: '/dashboard',     key: 'nav.dashboard',      icon: LayoutDashboard },
@@ -25,26 +25,81 @@ const menuKeys = [
   { href: '/amazon-news',   key: 'nav.amazonNews',     icon: Newspaper       },
   { href: '/integration',   key: 'nav.amazonConnect',  icon: Link2           },
   { href: '/audit',         key: 'nav.changeLog',      icon: History         },
-  { href: '/support',       key: 'nav.aiAssistant',    icon: HeadphonesIcon  },
   { href: '/help',          key: 'nav.helpCenter',     icon: HelpCircle      },
   { href: '/settings',      key: 'nav.settings',       icon: Settings        },
 ];
 
 interface DBNotif { id: string; title: string; body: string; type: string; read: boolean; created_at: string; }
 
+interface ChatMessage {
+  id: number;
+  sender: 'user' | 'bot';
+  message: string;
+  loading?: boolean;
+}
+
+const quickQuestionsEn = [
+  "How to lower ACOS?",
+  "Suggest keywords",
+  "What is a good ACOS?",
+];
+const quickQuestionsAr = [
+  "كيف أخفض الـ ACOS؟",
+  "اقتراح كلمات مفتاحية",
+  "ما هو ACOS الجيد؟",
+];
+
+const faqEn: Record<string, string> = {
+  "how to lower acos": "Here are proven strategies to lower your ACOS:\n\n1. Add negative keywords to stop irrelevant clicks\n2. Focus on high-converting keywords\n3. Reduce bids on keywords with high ACOS\n4. Improve your product listing\n5. Use the AI Engine for recommendations",
+  "suggest keywords": "To find the best keywords:\n\n1. Start with your product's main features\n2. Use Amazon's auto-suggest\n3. Focus on high CTR and good ROAS\n4. Check the AI Engine for suggestions",
+  "what is a good acos": "A good ACOS depends on your margin:\n\n• Excellent: < 15%\n• Good: 15-25%\n• Average: 25-35%\n• Poor: > 35%\n\nTarget ACOS should be below your profit margin.",
+};
+
+const faqAr: Record<string, string> = {
+  "كيف أخفض الـ acos": "استراتيجيات لتخفيض ACOS:\n\n1. إضافة كلمات سلبية\n2. التركيز على الكلمات عالية التحويل\n3. تقليل العطاءات للكلمات ذات ACOS عالي\n4. تحسين قائمة المنتج\n5. استخدم محرك الذكاء",
+  "اقتراح كلمات مفتاحية": "لاختيار أفضل الكلمات:\n\n1. ابدأ بميزات المنتج الرئيسية\n2. استخدم اقتراحات أمازون\n3. ركّز على CTR عالي و ROAS جيد\n4. تحقق من محرك الذكاء",
+  "ما هو acos الجيد": "الـ ACOS الجيد يعتمد على هامش الربح:\n\n• ممتاز: أقل من 15%\n• جيد: 15-25%\n• متوسط: 25-35%\n• ضعيف: أكثر من 35%",
+};
+
+function detectLang(text: string): 'ar' | 'en' {
+  const arabicChars = (text.match(/[\u0600-\u06FF]/g) || []).length;
+  const latinChars = (text.match(/[a-zA-Z]/g) || []).length;
+  return arabicChars >= latinChars && arabicChars > 0 ? 'ar' : 'en';
+}
+
+function findFaqAnswer(msg: string): string | null {
+  const detected = detectLang(msg);
+  const normalized = msg.toLowerCase().replace(/[?؟!.]/g, '').trim();
+  const faq = detected === 'ar' ? faqAr : faqEn;
+  for (const [key, answer] of Object.entries(faq)) {
+    const nk = key.toLowerCase().replace(/[?؟!.]/g, '').trim();
+    if (normalized.includes(nk) || nk.includes(normalized)) return answer;
+  }
+  return null;
+}
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen,  setSidebarOpen]  = useState(false);
   const [notifOpen,    setNotifOpen]    = useState(false);
   const [profileOpen,  setProfileOpen]  = useState(false);
-  const [aiOpen,       setAiOpen]       = useState(false);
+  const [langOpen,     setLangOpen]     = useState(false);
   const [notifications, setNotifications] = useState<DBNotif[]>([]);
   const [unread,       setUnread]       = useState(0);
+
+  const [chatOpen,     setChatOpen]     = useState(false);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatInput,    setChatInput]    = useState('');
+  const [chatLoading,  setChatLoading]  = useState(false);
+  const [chatHistory,  setChatHistory]  = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
+  const chatBottomRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { dark, toggle } = useTheme();
   const { user, token, logout } = useAuth();
   const af = authFetch(token);
-  const { t, lang, dir, automationEnabled } = useI18n();
+  const { t, lang, setLang, dir, automationEnabled } = useI18n();
+
+  useEffect(() => { chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chatMessages]);
 
   useEffect(() => {
     if (!token) return;
@@ -70,11 +125,52 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
+  const sendChat = useCallback(async (text?: string) => {
+    const msg = text || chatInput.trim();
+    if (!msg || chatLoading) return;
+    setChatInput('');
+
+    const userMsg: ChatMessage = { id: Date.now(), sender: 'user', message: msg };
+    const tempBotId = Date.now() + 1;
+
+    const faqAnswer = findFaqAnswer(msg);
+    if (faqAnswer) {
+      setChatMessages(prev => [...prev, userMsg, { id: tempBotId, sender: 'bot', message: faqAnswer }]);
+      setChatHistory(prev => [...prev, { role: 'user' as const, content: msg }, { role: 'assistant' as const, content: faqAnswer }].slice(-12));
+      return;
+    }
+
+    setChatMessages(prev => [...prev, userMsg, { id: tempBotId, sender: 'bot', message: '', loading: true }]);
+    setChatLoading(true);
+
+    try {
+      const res = await af('/api/support-chat', {
+        method: 'POST',
+        body: JSON.stringify({ message: msg, history: chatHistory, language: lang, tone: 'friendly' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Something went wrong');
+      const reply = data.reply as string;
+      setChatHistory(prev => [...prev, { role: 'user' as const, content: msg }, { role: 'assistant' as const, content: reply }].slice(-12));
+      setChatMessages(prev => prev.map(m => m.id === tempBotId ? { ...m, message: reply, loading: false } : m));
+    } catch {
+      setChatMessages(prev => prev.filter(m => m.id !== tempBotId));
+    } finally {
+      setChatLoading(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatInput, chatLoading, chatHistory, lang, token]);
+
   const displayName = user?.full_name?.split(' ')[0] ?? user?.email?.split('@')[0] ?? t('common.user');
   const modeLabel   = user?.bot_mode ? `${t('layout.botMode')}: ${user.bot_mode}` : t('common.guest');
   const modeColor   = user?.bot_mode === 'auto' ? 'var(--success)' : user?.bot_mode === 'semi' ? 'var(--warning)' : 'var(--accent)';
 
-  const quickSuggestions = [t('layout.quickSuggest1'), t('layout.quickSuggest2'), t('layout.quickSuggest3')];
+  const quickSuggestions = lang === 'ar' ? quickQuestionsAr : quickQuestionsEn;
+  const welcomeMessage = lang === 'ar'
+    ? 'أهلاً! أنا المساعد الذكي M20. كيف أقدر أساعدك؟'
+    : "Hi! I'm the M20 AI Assistant. How can I help you?";
+
+  const closeAllPopups = () => { setNotifOpen(false); setProfileOpen(false); setLangOpen(false); };
 
   return (
     <div className="flex h-screen overflow-hidden" dir={dir}>
@@ -89,9 +185,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         <div className="p-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
               style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', boxShadow: 'var(--accent-glow)' }}>
-              <Zap className="w-4 h-4" style={{ color: 'var(--btn-text)' }} />
+              <Zap className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />
             </div>
             <div>
               <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>
@@ -113,7 +209,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   background: 'rgba(245,158,11,0.12)', color: 'var(--warning)',
                   border: '1px solid rgba(245,158,11,0.3)', boxShadow: '0 0 12px rgba(245,158,11,0.1)',
                 } : { color: 'var(--warning)', border: '1px solid transparent', background: 'rgba(245,158,11,0.05)' }}>
-                <ShieldCheck className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--warning)' }} />
+                <ShieldCheck className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--warning)' }} />
                 <span className="flex-1 truncate">{t('nav.adminPanel')}</span>
               </Link>
             );
@@ -129,7 +225,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   background: 'var(--accent-bg-strong)', color: 'var(--accent)',
                   border: '1px solid var(--accent-border)', boxShadow: '0 0 12px rgba(0,217,255,0.1)',
                 } : { color: 'var(--text-muted)', border: '1px solid transparent' }}>
-                <Icon className="w-4 h-4 flex-shrink-0" style={active ? { color: 'var(--accent)' } : {}} />
+                <Icon className="w-5 h-5 flex-shrink-0" style={active ? { color: 'var(--accent)' } : {}} />
                 <span className="flex-1 truncate">{t(item.key)}</span>
               </Link>
             );
@@ -144,9 +240,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           )}
           <div className="flex items-center gap-2.5 p-2 rounded-lg" style={{ background: 'var(--card-bg)' }}>
-            <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
               style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }}>
-              <User className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+              <User className="w-4 h-4" style={{ color: 'var(--accent)' }} />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium truncate" style={{ color: 'var(--text-primary)' }}>{displayName}</p>
@@ -167,7 +263,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
             <div className="hidden sm:flex items-center gap-2 rounded-lg px-3 py-1.5 w-52"
               style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
-              <Search className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--text-dim)' }} />
+              <Search className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--text-dim)' }} />
               <input type="text" placeholder={t('common.search')}
                 className="bg-transparent border-none outline-none text-sm w-full"
                 style={{ color: 'var(--text-secondary)' }} />
@@ -175,16 +271,41 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-1">
+            <div className="relative">
+              <button onClick={() => { setLangOpen(!langOpen); setNotifOpen(false); setProfileOpen(false); }}
+                className="p-2 rounded-lg flex items-center gap-1.5" style={{ color: 'var(--text-muted)' }}>
+                <Globe className="w-5 h-5" />
+                <span className="hidden sm:inline text-xs font-medium">{supportedLanguages.find(l => l.code === lang)?.nativeLabel}</span>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-12 w-44 rounded-xl shadow-2xl z-50 overflow-hidden"
+                  style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)' }}>
+                  {supportedLanguages.map(l => (
+                    <button key={l.code} onClick={() => { setLang(l.code); setLangOpen(false); }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm transition-colors"
+                      style={{
+                        color: lang === l.code ? 'var(--accent)' : 'var(--text-secondary)',
+                        background: lang === l.code ? 'var(--accent-bg-strong)' : 'transparent',
+                        borderBottom: '1px solid var(--border-subtle)',
+                      }}>
+                      <span className="font-medium">{l.nativeLabel}</span>
+                      <span className="text-xs" style={{ color: 'var(--text-dim)' }}>({l.label})</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button onClick={toggle} className="p-2 rounded-lg" style={{ color: 'var(--text-muted)' }}>
-              {dark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+              {dark ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5" />}
             </button>
 
             <div className="relative">
-              <button onClick={() => { setNotifOpen(!notifOpen); setProfileOpen(false); }}
+              <button onClick={() => { setNotifOpen(!notifOpen); setProfileOpen(false); setLangOpen(false); }}
                 className="p-2 rounded-lg relative" style={{ color: 'var(--text-muted)' }}>
-                <Bell className="w-4 h-4" />
+                <Bell className="w-5 h-5" />
                 {unread > 0 && (
-                  <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+                  <span className="absolute top-1 right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
                     style={{ background: 'var(--error)' }}>{unread > 9 ? '9+' : unread}</span>
                 )}
               </button>
@@ -225,11 +346,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="relative">
-              <button onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
+              <button onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); setLangOpen(false); }}
                 className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center"
+                <div className="w-7 h-7 rounded-full flex items-center justify-center"
                   style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }}>
-                  <User className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+                  <User className="w-4 h-4" style={{ color: 'var(--accent)' }} />
                 </div>
                 <span className="hidden sm:block text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{displayName}</span>
                 <ChevronDown className="w-3.5 h-3.5 hidden sm:block" style={{ color: 'var(--text-dim)' }} />
@@ -246,13 +367,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="flex items-center gap-2 p-3 text-sm"
                     style={{ color: 'var(--text-secondary)' }}
                     onClick={() => setProfileOpen(false)}>
-                    <Settings className="w-4 h-4" style={{ color: 'var(--accent)' }} /> {t('nav.settings')}
+                    <Settings className="w-5 h-5" style={{ color: 'var(--accent)' }} /> {t('nav.settings')}
                   </Link>
                   <button
                     className="w-full flex items-center gap-2 p-3 text-sm"
                     style={{ color: 'var(--error)' }}
                     onClick={() => { setProfileOpen(false); logout(); }}>
-                    <LogOut className="w-4 h-4" /> {t('common.logOut')}
+                    <LogOut className="w-5 h-5" /> {t('common.logOut')}
                   </button>
                 </div>
               )}
@@ -263,7 +384,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {automationEnabled && (
           <div className="px-4 py-2 flex items-center gap-2 text-sm font-medium"
             style={{ background: 'rgba(16,185,129,0.08)', borderBottom: '1px solid rgba(16,185,129,0.2)', color: 'var(--success)' }}>
-            <Bot className="w-4 h-4" />
+            <Bot className="w-5 h-5" />
             <span>🟢 {t('auto.on')} — {t('auto.banner')}</span>
           </div>
         )}
@@ -273,45 +394,112 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </main>
       </div>
 
-      <div className="fixed bottom-6 right-6 z-50">
-        {aiOpen && (
-          <div className="absolute bottom-14 right-0 w-80 rounded-xl shadow-2xl p-4 mb-2"
-            style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)', boxShadow: '0 0 30px rgba(0,217,255,0.15)' }}>
-            <div className="flex items-center gap-2 mb-3">
-              <Bot className="w-5 h-5" style={{ color: 'var(--accent)' }} />
-              <h4 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>
+      <div className={`fixed bottom-6 z-50 ${dir === 'rtl' ? 'left-6' : 'right-6'}`}>
+        {chatOpen && (
+          <div className={`absolute bottom-16 w-[340px] rounded-2xl shadow-2xl overflow-hidden flex flex-col ${dir === 'rtl' ? 'left-0' : 'right-0'}`}
+            style={{
+              background: 'var(--bg-secondary)',
+              border: '1px solid var(--accent-border)',
+              boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
+              height: '480px',
+            }}>
+            <div className="flex items-center gap-2 px-4 py-3 flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))' }}>
+              <Bot className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />
+              <h4 className="font-bold text-sm flex-1" style={{ color: 'var(--btn-text)' }}>
                 {t('layout.aiAssistantTitle')}
               </h4>
-              <button onClick={() => setAiOpen(false)} className="ml-auto" style={{ color: 'var(--text-dim)' }}>
-                <X className="w-4 h-4" />
+              <button onClick={() => setChatOpen(false)} style={{ color: 'var(--btn-text)' }}>
+                <X className="w-5 h-5" />
               </button>
             </div>
-            <p className="text-sm mb-3" style={{ color: 'var(--text-muted)' }}>
-              {`${t('common.hi')}${user ? ` ${displayName}` : ''}! ${t('common.howCanIHelp')}`}
-            </p>
-            <div className="space-y-1.5 mb-3">
-              {quickSuggestions.map(q => (
-                <Link key={q} href="/support"
-                  className="block text-sm px-3 py-2 rounded-lg transition-colors"
-                  style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)', color: 'var(--text-secondary)' }}
-                  onClick={() => setAiOpen(false)}>
-                  {q}
-                </Link>
+
+            <div className="flex-1 overflow-y-auto p-3 space-y-3">
+              <div className="flex gap-2">
+                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }}>
+                  <Bot className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+                </div>
+                <div className="rounded-xl rounded-tl-sm px-3 py-2 text-sm max-w-[240px]"
+                  style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
+                  {welcomeMessage}
+                </div>
+              </div>
+
+              {chatMessages.length === 0 && (
+                <div className="space-y-1.5 pt-1">
+                  {quickSuggestions.map(q => (
+                    <button key={q} onClick={() => sendChat(q)} disabled={chatLoading}
+                      className="block w-full text-start text-xs px-3 py-2 rounded-lg transition-colors"
+                      style={{ border: '1px solid var(--input-border)', color: 'var(--text-muted)', background: 'var(--card-bg)' }}>
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {chatMessages.map(m => (
+                <div key={m.id} className={`flex gap-2 ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={m.sender === 'bot'
+                      ? { background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }
+                      : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    {m.sender === 'bot'
+                      ? <Bot className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+                      : <User className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />}
+                  </div>
+                  <div>
+                    {m.loading ? (
+                      <div className="rounded-xl rounded-tl-sm px-3 py-2"
+                        style={{ background: 'var(--input-bg)', border: '1px solid var(--card-border)' }}>
+                        <div className="flex gap-1">
+                          {[0, 150, 300].map(d => (
+                            <div key={d} className="w-1.5 h-1.5 rounded-full animate-bounce"
+                              style={{ background: 'var(--accent)', animationDelay: `${d}ms` }} />
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-xl px-3 py-2 text-sm max-w-[240px] whitespace-pre-line"
+                        style={m.sender === 'user'
+                          ? { background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)', color: 'var(--text-secondary)', borderTopRightRadius: '4px' }
+                          : { background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)', borderTopLeftRadius: '4px' }}>
+                        {m.message}
+                      </div>
+                    )}
+                  </div>
+                </div>
               ))}
+              <div ref={chatBottomRef} />
             </div>
-            <Link href="/support" onClick={() => setAiOpen(false)}
-              className="block text-center text-sm font-medium" style={{ color: 'var(--accent)' }}>
-              {t('common.openFullChat')}
-            </Link>
+
+            <div className="px-3 py-2.5 flex-shrink-0" style={{ borderTop: '1px solid var(--border-primary)' }}>
+              <form onSubmit={e => { e.preventDefault(); sendChat(); }} className="flex gap-2">
+                <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)}
+                  placeholder={t('bot.placeholder')}
+                  disabled={chatLoading}
+                  className="flex-1 rounded-lg px-3 py-2 text-sm outline-none"
+                  style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)', color: 'var(--text-primary)' }} />
+                <button type="submit" disabled={!chatInput.trim() || chatLoading}
+                  className="p-2 rounded-lg transition-all flex-shrink-0"
+                  style={{
+                    background: chatInput.trim() && !chatLoading ? 'linear-gradient(135deg, var(--accent), var(--accent-light))' : 'var(--input-bg)',
+                    cursor: chatInput.trim() && !chatLoading ? 'pointer' : 'not-allowed',
+                    color: 'var(--btn-text)',
+                  }}>
+                  {chatLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                </button>
+              </form>
+            </div>
           </div>
         )}
-        <button onClick={() => setAiOpen(!aiOpen)}
-          className="w-12 h-12 rounded-full flex items-center justify-center transition-all"
+        <button onClick={() => setChatOpen(!chatOpen)}
+          className="w-14 h-14 rounded-full flex items-center justify-center transition-all"
           style={{
             background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
-            boxShadow: aiOpen ? '0 0 30px rgba(0,217,255,0.5)' : '0 0 18px rgba(0,217,255,0.35)',
+            boxShadow: chatOpen ? '0 0 30px rgba(0,217,255,0.5)' : '0 0 18px rgba(0,217,255,0.35)',
           }}>
-          {aiOpen ? <X className="w-5 h-5" style={{ color: 'var(--btn-text)' }} /> : <Bot className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />}
+          {chatOpen ? <X className="w-6 h-6" style={{ color: 'var(--btn-text)' }} /> : <Bot className="w-6 h-6" style={{ color: 'var(--btn-text)' }} />}
         </button>
       </div>
     </div>

@@ -1,7 +1,19 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 
-export type Lang = 'en' | 'ar';
+export type Lang = string;
 export type Tone = 'friendly' | 'professional' | 'brief';
+
+export interface LangConfig {
+  code: string;
+  label: string;
+  nativeLabel: string;
+  dir: 'ltr' | 'rtl';
+}
+
+export const supportedLanguages: LangConfig[] = [
+  { code: 'en', label: 'English', nativeLabel: 'English', dir: 'ltr' },
+  { code: 'ar', label: 'Arabic', nativeLabel: 'العربية', dir: 'rtl' },
+];
 
 const translations: Record<string, Record<string, string>> = {
   'nav.dashboard': { en: 'Dashboard', ar: 'لوحة التحكم' },
@@ -49,6 +61,8 @@ const translations: Record<string, Record<string, string>> = {
   'dash.custom': { en: 'Custom', ar: 'مخصص' },
   'dash.salesLabel': { en: 'Sales', ar: 'المبيعات' },
   'dash.spendLabel': { en: 'Spend', ar: 'الإنفاق' },
+  'dash.lineChart': { en: 'Line Chart', ar: 'خط بياني' },
+  'dash.barChart': { en: 'Bar Chart', ar: 'أعمدة بيانية' },
 
   'budget.lowWarning': {
     en: '⚠️ Current budget is low. For better results, it is recommended to have at least 40 SAR daily per product.',
@@ -92,6 +106,10 @@ const translations: Record<string, Record<string, string>> = {
   'settings.save': { en: 'Save Settings', ar: 'حفظ الإعدادات' },
   'settings.saved': { en: '✓ Saved!', ar: '✓ تم الحفظ!' },
   'settings.langAndTone': { en: 'Language & Tone', ar: 'اللغة والنبرة' },
+  'settings.deleteDesc': { en: 'Permanently delete your account and all data', ar: 'حذف حسابك وجميع بياناتك نهائياً' },
+  'settings.sarOption': { en: 'Saudi Riyal (SAR)', ar: 'ريال سعودي (SAR)' },
+  'settings.usdOption': { en: 'US Dollar (USD)', ar: 'دولار أمريكي (USD)' },
+  'settings.aedOption': { en: 'UAE Dirham (AED)', ar: 'درهم إماراتي (AED)' },
 
   'products.title': { en: 'Products & Keywords', ar: 'المنتجات والكلمات المفتاحية' },
   'products.search': { en: 'Search by name or ASIN...', ar: 'البحث بالاسم أو ASIN...' },
@@ -122,6 +140,8 @@ const translations: Record<string, Record<string, string>> = {
   },
   'bot.billingContact': { en: 'For billing or account issues, email', ar: 'لمشاكل الفواتير أو الحساب، تواصل عبر' },
   'bot.you': { en: 'You', ar: 'أنت' },
+  'bot.send': { en: 'Send', ar: 'إرسال' },
+  'bot.typing': { en: 'Typing...', ar: 'يكتب...' },
 
   'common.search': { en: 'Search...', ar: 'بحث...' },
   'common.notifications': { en: 'Notifications', ar: 'الإشعارات' },
@@ -224,6 +244,10 @@ const translations: Record<string, Record<string, string>> = {
   'aiEngine.decreaseBid': { en: 'Decrease Bid', ar: 'تقليل المزايدة' },
   'aiEngine.addNegative': { en: 'Add Negative', ar: 'إضافة كلمة سلبية' },
   'aiEngine.keep': { en: 'Keep Running', ar: 'استمرار التشغيل' },
+  'aiEngine.topPerforming': { en: 'Top Performing Products', ar: 'المنتجات الأفضل أداءً' },
+  'aiEngine.needsAttention': { en: 'Needs Attention', ar: 'تحتاج اهتمام' },
+  'aiEngine.startAnalysis': { en: 'Start Analysis', ar: 'ابدأ التحليل' },
+  'aiEngine.startDesc': { en: 'Click "Analyze All" or press play next to any campaign.', ar: 'انقر "تحليل الكل" أو اضغط تشغيل بجانب أي حملة.' },
 
   'adGen.title': { en: 'Ad Generator', ar: 'منشئ الإعلانات' },
   'adGen.subtitle': { en: 'AI-powered Amazon ad content generator', ar: 'منشئ محتوى إعلاني مدعوم بالذكاء الاصطناعي' },
@@ -257,6 +281,8 @@ const translations: Record<string, Record<string, string>> = {
   'connect.readData': { en: 'Read advertising data', ar: 'قراءة بيانات الإعلانات' },
   'connect.manageCampaigns': { en: 'Manage campaigns', ar: 'إدارة الحملات' },
   'connect.accessReports': { en: 'Access reports', ar: 'الوصول للتقارير' },
+  'connect.health': { en: 'Health', ar: 'الصحة' },
+  'connect.syncHistory': { en: 'Sync History', ar: 'سجل المزامنة' },
 
   'audit.title': { en: 'Change Log', ar: 'سجل التغييرات' },
   'audit.subtitle': { en: 'All changes made to campaigns and settings', ar: 'جميع التغييرات على الحملات والإعدادات' },
@@ -294,24 +320,17 @@ const translations: Record<string, Record<string, string>> = {
   'layout.quickSuggest1': { en: 'Analyze top products', ar: 'تحليل أفضل المنتجات' },
   'layout.quickSuggest2': { en: 'Suggest keywords', ar: 'اقتراح كلمات مفتاحية' },
   'layout.quickSuggest3': { en: 'What is a good ACOS?', ar: 'ما هو ACOS الجيد؟' },
-
-  'settings.deleteDesc': { en: 'Permanently delete your account and all data', ar: 'حذف حسابك وجميع بياناتك نهائياً' },
-  'settings.sarOption': { en: 'Saudi Riyal (SAR)', ar: 'ريال سعودي (SAR)' },
-  'settings.usdOption': { en: 'US Dollar (USD)', ar: 'دولار أمريكي (USD)' },
-  'settings.aedOption': { en: 'UAE Dirham (AED)', ar: 'درهم إماراتي (AED)' },
-
-  'aiEngine.topPerforming': { en: 'Top Performing Products', ar: 'المنتجات الأفضل أداءً' },
-  'aiEngine.needsAttention': { en: 'Needs Attention', ar: 'تحتاج اهتمام' },
-  'aiEngine.startAnalysis': { en: 'Start Analysis', ar: 'ابدأ التحليل' },
-  'aiEngine.startDesc': { en: 'Click "Analyze All" or press play next to any campaign.', ar: 'انقر "تحليل الكل" أو اضغط تشغيل بجانب أي حملة.' },
-
-  'connect.health': { en: 'Health', ar: 'الصحة' },
-  'connect.syncHistory': { en: 'Sync History', ar: 'سجل المزامنة' },
 };
 
 export function addTranslations(newTranslations: Record<string, Record<string, string>>) {
   for (const [key, value] of Object.entries(newTranslations)) {
     translations[key] = { ...translations[key], ...value };
+  }
+}
+
+export function addLanguage(config: LangConfig) {
+  if (!supportedLanguages.find(l => l.code === config.code)) {
+    supportedLanguages.push(config);
   }
 }
 
@@ -385,8 +404,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     return translations[key]?.[lang] || translations[key]?.['en'] || key;
   }, [lang]);
 
-  const dir = lang === 'ar' ? 'rtl' : 'ltr';
-  const isRtl = lang === 'ar';
+  const langConfig = supportedLanguages.find(l => l.code === lang);
+  const dir = langConfig?.dir || 'ltr';
+  const isRtl = dir === 'rtl';
 
   return (
     <I18nContext.Provider value={{ lang, setLang, tone, setTone, t, dir, isRtl, automationEnabled, setAutomationEnabled }}>

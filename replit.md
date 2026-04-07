@@ -6,7 +6,7 @@ Amazon Advertising Optimization SaaS Dashboard — Bilingual (Arabic + English),
 - **Framework**: Next.js (Pages Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4 + inline styles (cyber design system)
-- **Charts**: Recharts
+- **Charts**: Recharts (Line, Bar, Pie)
 - **Icons**: Lucide React
 - **AI**: OpenAI GPT-4o mini (via `OPENAI_API_KEY`)
 - **Database**: Supabase PostgreSQL (`SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_URL`)
@@ -32,13 +32,24 @@ Amazon Advertising Optimization SaaS Dashboard — Bilingual (Arabic + English),
 - **Inline styles**: Use `var(--token)` (e.g. `background: 'var(--card-bg)'`); no hardcoded hex in pages
 - **CARD constant**: `{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' }`
 - **Direction**: LTR/RTL — dynamically switches based on selected language (sidebar adjusts accordingly)
-- **i18n**: `src/lib/i18n.tsx` — React context-based translation system supporting Arabic + English with tone settings (friendly/professional/brief). 270+ translation keys covering all 18 pages. `addTranslations()` API for future languages. localStorage persistence via `m20_prefs` key. Bot language auto-detection via `detectLanguage()` in `campaignBot.ts`.
+- **Metric Colors**: Each KPI card has a unique color tag for quick visual differentiation (Sales=green, Orders=blue, Cost=red, ACOS=amber, Clicks=purple, Profit=emerald, AdSpend=pink, Units=cyan, TACoS=orange, Budget=yellow)
+
+## i18n System
+- **File**: `src/lib/i18n.tsx` — React context-based, scalable translation system
+- **Dynamic languages**: `supportedLanguages` array with `LangConfig` (code, label, nativeLabel, dir). Use `addLanguage()` to add new languages without refactoring
+- **Currently supported**: English (LTR), Arabic (RTL)
+- **270+ translation keys** covering all 18 pages
+- **`addTranslations()`** API for adding new translation keys at runtime
+- **Language persistence**: localStorage (`m20_prefs` key) + database (`profiles.language`)
+- **Instant switching**: Client-side, no page reload. Layout direction flips automatically
+- **Language selector**: In the top bar header, next to dark/light mode toggle (Globe icon + dropdown)
+- **Bot language auto-detection**: via `detectLanguage()` in `campaignBot.ts`
 
 ## Architecture
 - `src/pages/` — All page routes (Next.js Pages Router)
-- `src/components/Layout.tsx` — App shell: left sidebar + header + floating AI button; uses real auth
+- `src/components/Layout.tsx` — App shell: left sidebar + header (with language selector) + embedded chatbot widget
 - `src/components/ThemeProvider.tsx` — Dark mode context
-- `src/lib/i18n.tsx` — i18n context (language, tone, automation state, translations)
+- `src/lib/i18n.tsx` — i18n context (language, tone, automation state, translations, addLanguage)
 - `src/data/mock.ts` — Fallback mock data with product images, TACoS, spend, dailyBudget
 - `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT)
 - `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (used in all API routes)
@@ -47,6 +58,14 @@ Amazon Advertising Optimization SaaS Dashboard — Bilingual (Arabic + English),
 - `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper (uses Supabase Auth)
 - `src/pages/api/` — All backend routes (see list below)
 - `supabase/fix-and-seed.sql` — Full DB schema + triggers to run in Supabase SQL Editor
+
+## Chatbot Widget
+- **Embedded widget**: Floating button (bottom corner) opens a full chat window overlay — NOT a separate page
+- **Available on all pages**: Chat stays accessible across the entire app
+- **FAQ system**: Local FAQ matching for instant answers (no API call needed)
+- **GPT fallback**: Calls `/api/support-chat` for non-FAQ questions
+- **Per-user conversations**: Each user has their own chat history in the widget
+- **Bilingual**: Auto-detects Arabic/English input, responds in the same language
 
 ## Database Schema (Supabase)
 Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
@@ -102,9 +121,9 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 ## Pages (18 total)
 1. `/` — Landing page
 2. `/login` — Sign in + Create Account (tab toggle, Supabase Auth)
-3. `/dashboard` — KPIs (Sales, Orders, Cost, ACOS, Clicks, Profit, Ad Spend, Units, TACoS, Daily Budget), charts with enhanced tooltips, date filter (Today/7d/30d/Custom), budget warning alert
+3. `/dashboard` — KPIs with colored metric cards (each has unique color badge), editable values (pencil icon), charts with type switcher (Line/Bar), date filter, budget warning
 4. `/campaigns` — Sortable campaigns table
-5. `/products` — Products with images, full names (text wrapping), performance metrics (Sales, Spend, Profit, ACOS, TACoS)
+5. `/products` — Product cards layout (image, name, brand, metrics) with detail sidebar, search and filters
 6. `/blacklist` — Excluded products
 7. `/ai-engine` — AI + rules analysis (GPT-4o mini)
 8. `/ads-generator` — Ad content generator (keywords, headlines, description, targeting)
@@ -114,7 +133,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 12. `/amazon-news` — Seller news
 13. `/integration` — Amazon account connection
 14. `/audit` — Full change log
-15. `/support` — AI chat assistant (bilingual AR+EN, FAQ system, GPT fallback, tone-aware)
+15. `/support` — Full-page AI chat assistant (bilingual AR+EN, FAQ system, GPT fallback, tone-aware)
 16. `/help` — FAQ
 17. `/settings` — Account settings (language, response tone, automation toggle with warning, bot mode, ACOS target)
 18. `/admin` — Admin dashboard (stats, user management, role toggle, delete) — admin role only

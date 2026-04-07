@@ -99,7 +99,7 @@ export default function Dashboard() {
     { label: t('dash.adSpend'),     value: scaledKpi.spend.toLocaleString() + ' ' + CUR,   icon: DollarSign,       change: '+8%',   up: false, colorKey: 'adSpend' },
     { label: t('dash.unitsSold'),   value: scaledKpi.unitsSold.toLocaleString(),            icon: Package,          change: '+19%',  up: true,  colorKey: 'units' },
     { label: t('dash.tacos'),       value: scaledKpi.tacos + '%',                           icon: Percent,          change: '-1.5%', up: false, colorKey: 'tacos' },
-    { label: t('dash.dailyBudget'), value: scaledKpi.dailyBudget + ' ' + CUR,             icon: Wallet,           change: '',      up: true,  colorKey: 'budget', highlight: scaledKpi.dailyBudget < 40  },
+    { label: t('dash.dailyBudget'), value: scaledKpi.dailyBudget + ' ' + CUR,             icon: Wallet,           change: '',      up: true,  colorKey: 'budget', highlight: scaledKpi.dailyBudget < 40, editable: true },
   ];
 
   const showBudgetWarning = kpiData.dailyBudget < 40;
@@ -184,7 +184,7 @@ export default function Dashboard() {
                   </span>
                 )}
               </div>
-              {isEditing ? (
+              {k.editable && isEditing ? (
                 <div className="flex items-center gap-1">
                   <input type="text" value={editValue} onChange={e => setEditValue(e.target.value)}
                     className="text-xl font-bold w-full rounded px-1 outline-none"
@@ -196,11 +196,13 @@ export default function Dashboard() {
               ) : (
                 <div className="flex items-center gap-2">
                   <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{k.value}</p>
-                  <button onClick={() => { setEditingIdx(i); setEditValue(k.value); }}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded"
-                    style={{ color: 'var(--text-dim)' }}>
-                    <Pencil className="w-3.5 h-3.5" />
-                  </button>
+                  {k.editable && (
+                    <button onClick={() => { setEditingIdx(i); setEditValue(k.value); }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded"
+                      style={{ color: 'var(--text-dim)' }}>
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               )}
               <div className="absolute top-2 left-2 w-1.5 h-6 rounded-full" style={{ background: mc.text }} />

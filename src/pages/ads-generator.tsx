@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Sparkles, Search, Tag, FileText, Target, Loader2, AlertTriangle, Copy, Check, RotateCcw } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { useAuth, authFetch } from '@/lib/useAuth';
 
 const CARD  = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 const INPUT: React.CSSProperties = {
@@ -40,6 +41,8 @@ function CopyButton({ text }: { text: string }) {
 
 export default function AdsGenerator() {
   const { t } = useI18n();
+  const { token } = useAuth();
+  const af = authFetch(token);
   const [productName, setProductName] = useState('');
   const [category,    setCategory]    = useState('');
   const [brand,       setBrand]       = useState('');
@@ -53,9 +56,8 @@ export default function AdsGenerator() {
     if (!productName.trim()) return;
     setLoading(true); setError(''); setResult(null);
     try {
-      const res  = await fetch('/api/ad-generator', {
+      const res  = await af('/api/ad-generator', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productName: productName.trim(), category: category.trim() || undefined, brand: brand.trim() || undefined }),
       });
       const data = await res.json();

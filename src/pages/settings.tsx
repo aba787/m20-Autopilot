@@ -26,7 +26,6 @@ export default function Settings() {
   const [targetAcos,   setTargetAcos]   = useState('25');
   const [emailAlerts,    setEmailAlerts]    = useState(true);
   const [marketingEmails, setMarketingEmails] = useState(true);
-  const [autoOptimize,  setAutoOptimize]  = useState(false);
   const [saved,        setSaved]        = useState(false);
   const [showAutoWarning, setShowAutoWarning] = useState(false);
 
@@ -38,7 +37,7 @@ export default function Settings() {
         const data = await res.json();
         if (data.email_notifications !== undefined) setMarketingEmails(data.email_notifications);
         if (data.target_acos) setTargetAcos(String(data.target_acos));
-        if (data.automation_enabled !== undefined) setAutoOptimize(data.automation_enabled);
+        if (data.automation_enabled !== undefined) setAutomationEnabled(data.automation_enabled);
       }
     } catch {}
   }, [token]);
@@ -237,7 +236,7 @@ export default function Settings() {
                 {lang === 'ar' ? 'السماح للذكاء الاصطناعي بتطبيق التوصيات تلقائيًا' : 'Allow AI to apply recommendations automatically'}
               </p>
             </div>
-            <Toggle value={autoOptimize} onChange={() => setAutoOptimize(!autoOptimize)} />
+            <Toggle value={automationEnabled} onChange={() => setAutomationEnabled(!automationEnabled)} />
           </div>
         </div>
       </div>

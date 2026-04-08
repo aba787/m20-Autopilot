@@ -68,6 +68,7 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - **FAQ system**: Local FAQ matching for instant answers (no API call needed)
 - **GPT fallback**: Calls `/api/support-chat` for non-FAQ questions
 - **Memory**: 24-message rolling history for context-rich conversations
+- **Persistence**: Messages saved to localStorage per user (key: `m20_chat_{userId}`), survives page refreshes
 - **Bilingual**: Auto-detects Arabic/English input, responds in the same language
 
 ## Database Schema (Supabase)
@@ -100,7 +101,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 ### Campaigns
 - `GET  /api/campaigns` — List campaigns (auth required, supports ?from=&to=&status=)
 - `POST /api/campaigns` — Create campaign
-- `GET/PATCH /api/campaigns/[id]` — Get or update single campaign
+- `GET/PATCH /api/campaigns/[id]` — Get or update single campaign (PATCH whitelisted: budget, status only)
 - `POST /api/campaigns/bulk` — Bulk actions (pause/enable/delete/update_budget)
 
 ### Ad Groups, Search Terms, Keywords
@@ -113,7 +114,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `POST /api/ai/keyword-analysis` — AI keyword intelligence (analyzes performance, recommends actions)
 - `POST /api/support-chat` — AI customer support (strict platform-only scope)
 - `POST /api/bot-analyze` — Campaign analysis (rule engine + GPT)
-- `POST /api/ad-generator` — Generate ad content via GPT-4o mini
+- `POST /api/ad-generator` — Generate ad content via GPT-4o mini (auth required)
 
 ### Amazon Integration
 - `POST /api/amazon/callback` — OAuth code exchange for tokens

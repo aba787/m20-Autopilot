@@ -13,6 +13,10 @@ export const landingT = {
       stat3Label: "Avg. Sales Lift",
       chartTitle: "Campaign Performance",
       chartPeriod: "Last 30 days",
+      optimized: "Optimized",
+      sales: "Sales",
+      metaTitle: "M20 Autopilot — AI-Powered Amazon Ads Management",
+      metaDesc: "Transform complex ad management into clear decisions. AI-driven insights that maximize your ROI — automatically, 24/7.",
     },
     features: {
       title: "Key Features",
@@ -123,6 +127,10 @@ export const landingT = {
       stat3Label: "متوسط زيادة المبيعات",
       chartTitle: "أداء الحملات",
       chartPeriod: "آخر 30 يوماً",
+      optimized: "محسَّن",
+      sales: "مبيعات",
+      metaTitle: "M20 Autopilot — إدارة إعلانات أمازون بالذكاء الاصطناعي",
+      metaDesc: "حوّل إدارة الإعلانات المعقدة إلى قرارات واضحة. رؤى مدعومة بالذكاء الاصطناعي لتحقيق أعلى عائد — تلقائياً، على مدار الساعة.",
     },
     features: {
       title: "المزايا الرئيسية",

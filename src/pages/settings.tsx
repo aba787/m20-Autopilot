@@ -62,6 +62,7 @@ export default function Settings() {
           body: JSON.stringify({
             email_notifications: marketingEmails,
             target_acos: parseFloat(targetAcos) || 25,
+            automation_enabled: automationEnabled,
           }),
         });
       } catch {}

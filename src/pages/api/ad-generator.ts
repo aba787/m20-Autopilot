@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
 import { db as supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireAuth } from '@/lib/auth';
 
 const AD_GEN_SYSTEM_PROMPT = `${MASTER_SYSTEM_PROMPT}
 
@@ -34,6 +35,9 @@ export interface AdGenResult {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const user = await requireAuth(req, res);
+  if (!user) return;
 
   const { productName, category, brand } = req.body as {
     productName: string;
@@ -84,23 +88,16 @@ Return ONLY valid JSON with no extra text.`;
       return res.status(500).json({ error: 'Failed to parse AI response as JSON' });
     }
 
-    const authHeader = req.headers.authorization;
-    if (authHeader?.startsWith('Bearer ')) {
-      const token = authHeader.slice(7);
-      const { data: { user: authUser } } = await supabaseAdmin.auth.getUser(token);
-      if (authUser) {
-        await supabaseAdmin.from('ad_generations').insert({
-          user_id:     authUser.id,
-          product_name: productName.trim(),
-          category:    category?.trim() || null,
-          brand:       brand?.trim()    || null,
-          keywords:    result.keywords  ?? [],
-          headlines:   result.headlines ?? [],
-          description: result.description ?? '',
-          targeting:   result.targeting   ?? '',
-        });
-      }
-    }
+    await supabaseAdmin.from('ad_generations').insert({
+      user_id:     user.id,
+      product_name: productName.trim(),
+      category:    category?.trim() || null,
+      brand:       brand?.trim()    || null,
+      keywords:    result.keywords  ?? [],
+      headlines:   result.headlines ?? [],
+      description: result.description ?? '',
+      targeting:   result.targeting   ?? '',
+    });
 
     return res.status(200).json({ result });
   } catch (e: any) {

@@ -28,8 +28,8 @@ export default function Landing() {
   return (
     <>
       <Head>
-        <title>M20 Autopilot — AI-Powered Amazon Ads Management</title>
-        <meta name="description" content="Transform complex ad management into clear decisions. AI-driven insights that maximize your ROI — automatically, 24/7." />
+        <title>{tx.hero.metaTitle}</title>
+        <meta name="description" content={tx.hero.metaDesc} />
       </Head>
 
       <div className="landing-page" dir={isAr ? 'rtl' : 'ltr'}>
@@ -111,7 +111,7 @@ export default function Landing() {
                       </div>
                       <div className="floating-stat fs-3">
                         <span className="fs-value">89%</span>
-                        <span className="fs-label">{isAr ? 'محسَّن' : 'Optimized'}</span>
+                        <span className="fs-label">{tx.hero.optimized}</span>
                       </div>
                     </div>
                   </div>
@@ -137,7 +137,7 @@ export default function Landing() {
                     <div className="chart-mini-stats">
                       <div className="chart-mini-stat"><span className="cms-val positive">+47%</span><span className="cms-lbl">ROAS</span></div>
                       <div className="chart-mini-stat"><span className="cms-val">-32%</span><span className="cms-lbl">ACOS</span></div>
-                      <div className="chart-mini-stat"><span className="cms-val positive">+$12K</span><span className="cms-lbl">{isAr ? 'مبيعات' : 'Sales'}</span></div>
+                      <div className="chart-mini-stat"><span className="cms-val positive">+$12K</span><span className="cms-lbl">{tx.hero.sales}</span></div>
                     </div>
                   </div>
                 </div>

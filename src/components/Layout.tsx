@@ -100,6 +100,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const af = authFetch(token);
   const { t, lang, setLang, dir, automationEnabled } = useI18n();
 
+  useEffect(() => {
+    if (!user?.id) return;
+    try {
+      const stored = localStorage.getItem(`m20_chat_${user.id}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.messages) setChatMessages(parsed.messages);
+        if (parsed.history) setChatHistory(parsed.history);
+      }
+    } catch {}
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.id || chatMessages.length === 0) return;
+    try {
+      localStorage.setItem(`m20_chat_${user.id}`, JSON.stringify({
+        messages: chatMessages.filter(m => !m.loading).slice(-50),
+        history: chatHistory.slice(-24),
+      }));
+    } catch {}
+  }, [chatMessages, chatHistory, user?.id]);
+
   useEffect(() => { chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chatMessages]);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from '@/components/ThemeProvider';
-import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3, AlertCircle, ArrowLeft, Mail } from 'lucide-react';
+import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3, AlertCircle, ArrowLeft, Mail, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/useAuth';
 
@@ -13,9 +13,11 @@ const FEATURES = [
 ];
 
 export default function Login() {
-  const [tab,      setTab]      = useState<'login' | 'register' | 'forgot'>('login');
+  const [tab,      setTab]      = useState<'login' | 'register' | 'forgot' | 'reset'>('login');
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [resetToken, setResetToken] = useState('');
   const [name,     setName]     = useState('');
   const [showPass, setShowPass] = useState(false);
   const [loading,  setLoading]  = useState(false);
@@ -25,6 +27,13 @@ export default function Login() {
   const { dark, toggle } = useTheme();
   const { login, register } = useAuth();
 
+  useEffect(() => {
+    if (router.query.reset === 'true' && router.query.token) {
+      setResetToken(router.query.token as string);
+      setTab('reset');
+    }
+  }, [router.query]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -32,6 +41,36 @@ export default function Login() {
 
     const emailTrimmed = email.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (tab === 'reset') {
+      if (!password || password.length < 8) {
+        setError('Password must be at least 8 characters');
+        return;
+      }
+      if (password !== confirmPassword) {
+        setError('Passwords do not match');
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: resetToken, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Something went wrong');
+        setSuccess('Password updated successfully! You can now sign in.');
+        setPassword('');
+        setConfirmPassword('');
+        setTimeout(() => { setTab('login'); setSuccess(''); }, 3000);
+      } catch (err: any) {
+        setError(err.message || 'Failed to reset password');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
 
     if (tab === 'forgot') {
       if (!emailTrimmed || !emailRegex.test(emailTrimmed)) {
@@ -171,7 +210,20 @@ export default function Login() {
             <span className="font-bold" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</span>
           </div>
 
-          {tab === 'forgot' ? (
+          {tab === 'reset' ? (
+            <>
+              <div className="flex items-center gap-2.5 mb-6">
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center"
+                  style={{ background: 'var(--accent-bg-strong)' }}>
+                  <Lock className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Set new password</h1>
+                  <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Enter your new password below</p>
+                </div>
+              </div>
+            </>
+          ) : tab === 'forgot' ? (
             <>
               <button onClick={() => { setTab('login'); setError(''); setSuccess(''); }}
                 className="flex items-center gap-1 text-sm mb-4" style={{ color: 'var(--accent)' }}>
@@ -229,14 +281,18 @@ export default function Login() {
                   placeholder="Ahmed M." style={inputStyle} />
               </div>
             )}
-            <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Email</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                required placeholder="you@example.com" style={inputStyle} />
-            </div>
+            {tab !== 'reset' && (
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Email</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  required placeholder="you@example.com" style={inputStyle} />
+              </div>
+            )}
             {tab !== 'forgot' && (
               <div>
-                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Password</label>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>
+                  {tab === 'reset' ? 'New Password' : 'Password'}
+                </label>
                 <div className="relative">
                   <input type={showPass ? 'text' : 'password'} value={password}
                     onChange={e => setPassword(e.target.value)}
@@ -247,9 +303,20 @@ export default function Login() {
                     {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {tab === 'register' && (
+                {(tab === 'register' || tab === 'reset') && (
                   <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 8 characters</p>
                 )}
+              </div>
+            )}
+            {tab === 'reset' && (
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Confirm Password</label>
+                <div className="relative">
+                  <input type={showPass ? 'text' : 'password'} value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    required minLength={8} placeholder="••••••••"
+                    style={{ ...inputStyle, paddingRight: '2.5rem' }} />
+                </div>
               </div>
             )}
 
@@ -263,21 +330,30 @@ export default function Login() {
               </div>
             )}
 
-            <button type="submit" disabled={loading || !email || (tab !== 'forgot' && !password)}
+            <button type="submit" disabled={loading || (tab === 'reset' ? !password || !confirmPassword : (!email || (tab !== 'forgot' && !password)))}
               className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all"
               style={{
                 background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
                 color: 'var(--btn-text)',
                 boxShadow: 'var(--accent-glow)',
-                opacity: (loading || !email || (tab !== 'forgot' && !password)) ? 0.7 : 1,
+                opacity: (loading || (tab === 'reset' ? !password || !confirmPassword : (!email || (tab !== 'forgot' && !password)))) ? 0.7 : 1,
               }}>
               {loading
-                ? <><span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" /> {tab === 'forgot' ? 'Sending...' : tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
-                : tab === 'forgot' ? 'Send Reset Link' : tab === 'login' ? 'Sign In' : 'Create Account'}
+                ? <><span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" /> {tab === 'reset' ? 'Updating...' : tab === 'forgot' ? 'Sending...' : tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
+                : tab === 'reset' ? 'Update Password' : tab === 'forgot' ? 'Send Reset Link' : tab === 'login' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
-          {tab !== 'forgot' && (
+          {(tab === 'reset' || tab === 'forgot') && (
+            <p className="text-center text-sm mt-6" style={{ color: 'var(--text-muted)' }}>
+              <button onClick={() => { setTab('login'); setError(''); setSuccess(''); }}
+                className="font-semibold" style={{ color: 'var(--accent)' }}>
+                Back to Sign In
+              </button>
+            </p>
+          )}
+
+          {(tab === 'login' || tab === 'register') && (
             <p className="text-center text-sm mt-6" style={{ color: 'var(--text-muted)' }}>
               {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
               <button onClick={() => { setTab(tab === 'login' ? 'register' : 'login'); setError(''); setSuccess(''); }}

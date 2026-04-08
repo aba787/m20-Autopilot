@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Settings as SettingsIcon, Save, Link2, Globe, Bell, Shield, Bot, Languages, MessageSquare } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { useAuth, authFetch } from '@/lib/useAuth';
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
@@ -17,14 +18,32 @@ const inputStyle: React.CSSProperties = {
 
 export default function Settings() {
   const { t, lang, setLang, tone, setTone, automationEnabled, setAutomationEnabled } = useI18n();
+  const { token } = useAuth();
+  const af = authFetch(token);
   const [amazonLink,   setAmazonLink]   = useState('https://www.amazon.com/s?me=XXXXXXXX');
   const [currency,     setCurrency]     = useState('SAR');
   const [timezone,     setTimezone]     = useState('Asia/Riyadh');
   const [targetAcos,   setTargetAcos]   = useState('25');
-  const [emailAlerts,  setEmailAlerts]  = useState(true);
-  const [autoOptimize, setAutoOptimize] = useState(false);
+  const [emailAlerts,    setEmailAlerts]    = useState(true);
+  const [marketingEmails, setMarketingEmails] = useState(true);
+  const [autoOptimize,  setAutoOptimize]  = useState(false);
   const [saved,        setSaved]        = useState(false);
   const [showAutoWarning, setShowAutoWarning] = useState(false);
+
+  const loadProfile = useCallback(async () => {
+    if (!token) return;
+    try {
+      const res = await af('/api/settings');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.email_notifications !== undefined) setMarketingEmails(data.email_notifications);
+        if (data.target_acos) setTargetAcos(String(data.target_acos));
+        if (data.automation_enabled !== undefined) setAutoOptimize(data.automation_enabled);
+      }
+    } catch {}
+  }, [token]);
+
+  useEffect(() => { loadProfile(); }, [loadProfile]);
 
   useEffect(() => {
     if (automationEnabled) {
@@ -34,7 +53,22 @@ export default function Settings() {
     }
   }, [automationEnabled]);
 
-  const save = () => { setSaved(true); setTimeout(() => setSaved(false), 2000); };
+  const save = async () => {
+    if (token) {
+      try {
+        await af('/api/settings', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email_notifications: marketingEmails,
+            target_acos: parseFloat(targetAcos) || 25,
+          }),
+        });
+      } catch {}
+    }
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
 
   const Toggle = ({ value, onChange }: { value: boolean; onChange: () => void }) => (
     <div onClick={onChange}
@@ -183,6 +217,17 @@ export default function Settings() {
               </p>
             </div>
             <Toggle value={emailAlerts} onChange={() => setEmailAlerts(!emailAlerts)} />
+          </div>
+          <div className="flex items-center justify-between" style={{ paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <div>
+              <p className="text-sm font-semibold text-white">
+                {lang === 'ar' ? 'رسائل التحديثات والإعلانات' : 'Updates & Announcements'}
+              </p>
+              <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
+                {lang === 'ar' ? 'استلام رسائل بريدية حول الميزات الجديدة والتحديثات' : 'Receive emails about new features, tips, and platform updates'}
+              </p>
+            </div>
+            <Toggle value={marketingEmails} onChange={() => setMarketingEmails(!marketingEmails)} />
           </div>
           <div className="flex items-center justify-between" style={{ paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
             <div>

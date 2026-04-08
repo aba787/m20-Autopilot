@@ -143,9 +143,23 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `GET  /api/admin/users` — List users with search/filter/pagination (admin only)
 - `PATCH/DELETE /api/admin/users/[id]` — Toggle role or delete user (admin only)
 
+### Email
+- `POST /api/email/welcome` — Send welcome email to authenticated user (called after signup)
+- `POST /api/email/send` — Send bulk email to users (admin only, respects email_notifications preference)
+
 ### Background Jobs
 - `POST /api/jobs/optimize-campaigns` — Background campaign optimization
 - `POST /api/jobs/optimize-keywords` — Background keyword optimization
+
+## Email System
+- **Service**: Resend (`RESEND_API_KEY`)
+- **Library**: `src/lib/email.ts` — sendEmail(), sendWelcomeEmail(), sendPasswordResetEmail(), sendVerificationEmail(), sendBulkEmail()
+- **Templates**: HTML emails with M20 Autopilot branding (dark theme, mobile-friendly, cyan accent)
+- **Transactional**: Welcome email (auto on signup), password reset, email verification
+- **Marketing**: Announcements/updates via admin bulk send (`POST /api/email/send`)
+- **User preferences**: `email_notifications` boolean in profiles table (opt-in/out from Settings page)
+- **From address**: Configured via `EMAIL_FROM` env var or defaults to `M20 Autopilot <onboarding@resend.dev>`
+- **Welcome email flow**: After client-side signup → fire-and-forget POST to `/api/email/welcome`
 
 ## Backend Logic
 - **Budget check**: `daily_budget < 40 SAR` → `budget_warning: true` returned from dashboard/settings
@@ -187,6 +201,8 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `SUPABASE_ANON_KEY` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon key
 - `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key (server-side only)
 - `OPENAI_API_KEY` — OpenAI API key for AI features
+- `RESEND_API_KEY` — Resend API key for email sending
+- `EMAIL_FROM` — Email sender address (optional, defaults to `M20 Autopilot <onboarding@resend.dev>`)
 - `AMAZON_CLIENT_ID` — Amazon Ads API client ID (optional, for Amazon integration)
 - `AMAZON_CLIENT_SECRET` — Amazon Ads API client secret (optional)
 - `AMAZON_REDIRECT_URI` — Amazon OAuth redirect URI (optional)

@@ -125,10 +125,18 @@ export function useAuthState(): AuthContext {
         bot_mode: 'safe',
         target_acos: 30,
         role: 'user',
+        email_notifications: true,
       });
 
     if (profileError) {
       console.error('Profile creation error:', profileError);
+    }
+
+    if (data.session?.access_token) {
+      fetch('/api/email/welcome', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${data.session.access_token}` },
+      }).catch(() => {});
     }
 
     const profile = await fetchProfile(data.user.id);

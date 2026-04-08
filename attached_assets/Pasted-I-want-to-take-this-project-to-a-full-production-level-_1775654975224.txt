@@ -1,0 +1,142 @@
+I want to take this project to a full production-level platform, not just a demo or basic dashboard.
+
+Please review the following requirements carefully:
+
+🔹 1. Multi-Language System (Core Feature)
+
+The platform must support at least 7 languages (minimum), with scalable i18n
+
+Required languages (minimum):
+
+English (LTR)
+Arabic (RTL)
+Spanish
+French
+German
+Turkish
+Chinese
+
+Requirements:
+
+Fully dynamic i18n system (no hardcoded text)
+Easy to add new languages without refactoring
+Automatic RTL/LTR switching based on language
+Save selected language in:
+localStorage
+database (profiles.language)
+Instant switching (no page reload)
+
+This is a core feature, not optional.
+
+🔹 2. AI System (Must Be Advanced)
+
+Current AI is good, but not enough.
+
+We need:
+
+AI Keyword Analysis (NOT rule-based)
+→ Use AI to analyze search terms and suggest:
+profitable keywords
+negative keywords
+Improved Chatbot Memory
+→ Longer conversation memory per user
+Real Data Integration
+→ AI must work on real Amazon data (not mock data)
+Smarter Automation:
+→ AI should recommend AND execute optimizations (based on user mode: safe / semi / auto)
+
+Goal:
+Make it significantly stronger than M19.
+
+🔹 3. Campaign Management (Critical)
+
+Current system is incomplete.
+
+We need full Amazon structure:
+
+Campaign → Ad Group → Ads / Keywords
+
+Missing parts to implement:
+
+ad_groups table
+ads table
+search_terms table
+negative_keywords table
+
+Features required:
+
+Full campaign structure support
+Search term analysis
+Negative keyword management
+Bulk operations (edit multiple campaigns at once)
+Real execution (not just suggestions)
+
+🔹 4. Amazon Integration (Production Level)
+
+This is mandatory:
+
+Real connection to Amazon Advertising API
+Sync campaigns, metrics, keywords
+Execute actions:
+change bids
+pause campaigns
+adjust budgets
+
+No mock data — real data only.
+
+🔹 5. Database Enhancements
+
+Add missing tables:
+
+ad_groups
+ads
+search_terms
+negative_keywords
+rules (user-defined automation rules)
+subscriptions (plans & billing)
+
+Also:
+
+Ensure all tables are linked to user_id
+Clean structure, scalable schema
+
+🔹 6. Security (Must Be Completed)
+
+Current security is incomplete.
+
+We need:
+
+Full RLS on ALL tables (not only profiles)
+Email verification
+Password reset (fully working, not just UI)
+Server-side protection (not only client-side)
+Login attempt logging (basic security tracking)
+
+🔹 7. Subscriptions System
+
+Add subscription plans (Free / Pro / etc.)
+Limit features based on plan
+Prepare for billing integration (Stripe or similar)
+
+🔹 8. Performance & UX
+
+Fast loading (no lag)
+Clean dashboard layout
+Scalable architecture
+Ready for production deployment
+
+🔹 Final Goal:
+
+This platform must be:
+
+Production-ready
+Fully connected to Amazon
+AI-powered (real intelligence, not static logic)
+Scalable globally
+Stronger than M19 in automation and insights
+
+Let me know:
+
+Estimated timeline
+Suggested architecture improvements
+Any risks or limitations before we proceed

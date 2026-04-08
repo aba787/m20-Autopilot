@@ -99,7 +99,7 @@ export default function Support() {
         ...prev,
         { role: 'user' as const, content: msg },
         { role: 'assistant' as const, content: faqAnswer },
-      ].slice(-12));
+      ].slice(-24));
       return;
     }
 
@@ -121,7 +121,7 @@ export default function Support() {
         ...prev,
         { role: 'user'      as const, content: msg   },
         { role: 'assistant' as const, content: reply },
-      ].slice(-12));
+      ].slice(-24));
 
       setMessages(prev => prev.map(m => m.id === tempBotId
         ? { ...m, message: reply, loading: false }

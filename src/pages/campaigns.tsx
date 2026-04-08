@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { campaigns } from '@/data/mock';
-import { Search, ChevronUp, ChevronDown } from 'lucide-react';
+import { Search, ChevronUp, ChevronDown, Pause, Play, Trash2, CheckSquare, Square } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { useAuth, authFetch } from '@/lib/useAuth';
 
 type SortKey = 'spend' | 'sales' | 'roas' | 'acos' | 'ctr';
 
@@ -10,11 +11,15 @@ const CUR = 'SAR';
 
 export default function Campaigns() {
   const { t } = useI18n();
+  const { token } = useAuth();
+  const af = authFetch(token);
   const [search, setSearch]           = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter]   = useState('all');
   const [sortKey, setSortKey]         = useState<SortKey>('sales');
   const [sortDir, setSortDir]         = useState<'asc' | 'desc'>('desc');
+  const [selected, setSelected]       = useState<Set<number>>(new Set());
+  const [bulkLoading, setBulkLoading] = useState(false);
 
   const types = ['all', ...Array.from(new Set(campaigns.map(c => c.type)))];
 
@@ -30,6 +35,33 @@ export default function Campaigns() {
   const toggleSort = (k: SortKey) => {
     if (sortKey === k) setSortDir(d => d === 'desc' ? 'asc' : 'desc');
     else { setSortKey(k); setSortDir('desc'); }
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (selected.size === filtered.length) setSelected(new Set());
+    else setSelected(new Set(filtered.map(c => c.id)));
+  };
+
+  const handleBulkAction = async (action: string) => {
+    if (selected.size === 0) return;
+    setBulkLoading(true);
+    try {
+      await af('/api/campaigns/bulk', {
+        method: 'POST',
+        body: JSON.stringify({ action, campaign_ids: Array.from(selected) }),
+      });
+      setSelected(new Set());
+    } finally {
+      setBulkLoading(false);
+    }
   };
 
   const Th = ({ label, k }: { label: string; k: SortKey }) => (
@@ -54,7 +86,7 @@ export default function Campaigns() {
         </div>
       </div>
 
-      <div className="p-3 flex flex-wrap gap-2" style={CARD}>
+      <div className="p-3 flex flex-wrap gap-2 items-center" style={CARD}>
         <div className="flex items-center gap-2 rounded-lg px-3 py-1.5 flex-1 min-w-48"
           style={{ background: 'var(--input-bg)', border: '1px solid var(--border-primary)' }}>
           <Search className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--text-dim)' }} />
@@ -75,11 +107,43 @@ export default function Campaigns() {
         </select>
       </div>
 
+      {selected.size > 0 && (
+        <div className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent)' }}>
+          <span className="text-sm font-medium" style={{ color: 'var(--accent)' }}>
+            {selected.size} selected
+          </span>
+          <div className="flex items-center gap-2 ml-auto">
+            <button onClick={() => handleBulkAction('pause')} disabled={bulkLoading}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+              style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)' }}>
+              <Pause className="w-3 h-3" /> Pause All
+            </button>
+            <button onClick={() => handleBulkAction('enable')} disabled={bulkLoading}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+              style={{ background: 'rgba(16,185,129,0.15)', color: '#10b981', border: '1px solid rgba(16,185,129,0.3)' }}>
+              <Play className="w-3 h-3" /> Enable All
+            </button>
+            <button onClick={() => handleBulkAction('delete')} disabled={bulkLoading}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+              style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <Trash2 className="w-3 h-3" /> Delete
+            </button>
+          </div>
+        </div>
+      )}
+
       <div style={{ ...CARD, overflow: 'hidden' }}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border-primary)' }}>
               <tr>
+                <th className="py-2.5 px-3 w-8">
+                  <button onClick={toggleAll} className="flex items-center justify-center">
+                    {selected.size === filtered.length && filtered.length > 0
+                      ? <CheckSquare className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+                      : <Square className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />}
+                  </button>
+                </th>
                 <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('campaigns.campaign')}</th>
                 <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('common.status')}</th>
                 <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('campaigns.budget')}</th>
@@ -96,9 +160,16 @@ export default function Campaigns() {
               {filtered.map(c => (
                 <tr key={c.id}
                   className="transition-colors"
-                  style={{ borderBottom: '1px solid var(--border-subtle)' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLTableRowElement).style.background = 'var(--hover-bg)'}
-                  onMouseLeave={e => (e.currentTarget as HTMLTableRowElement).style.background = 'transparent'}>
+                  style={{ borderBottom: '1px solid var(--border-subtle)', background: selected.has(c.id) ? 'var(--accent-bg-strong)' : 'transparent' }}
+                  onMouseEnter={e => { if (!selected.has(c.id)) (e.currentTarget as HTMLTableRowElement).style.background = 'var(--hover-bg)'; }}
+                  onMouseLeave={e => { if (!selected.has(c.id)) (e.currentTarget as HTMLTableRowElement).style.background = 'transparent'; }}>
+                  <td className="py-3 px-3">
+                    <button onClick={() => toggleSelect(c.id)} className="flex items-center justify-center">
+                      {selected.has(c.id)
+                        ? <CheckSquare className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+                        : <Square className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />}
+                    </button>
+                  </td>
                   <td className="py-3 px-3">
                     <p className="font-medium text-white">{c.name}</p>
                     <p className="text-xs" style={{ color: 'var(--text-dim)' }}>{c.type}</p>

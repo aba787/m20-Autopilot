@@ -7,7 +7,7 @@ import {
   Link2, History, HeadphonesIcon, HelpCircle,
   Settings, Moon, Sun, Menu, X, ChevronDown, User, LogOut, Search,
   Calculator, Newspaper, ShieldOff, Bot, Zap, Sparkles, CheckCircle,
-  ShieldCheck, Globe, Send, Loader2,
+  ShieldCheck, Globe, Send, Loader2, Crown,
 } from 'lucide-react';
 import { useAuth, authFetch } from '@/lib/useAuth';
 import { useI18n, supportedLanguages } from '@/lib/i18n';
@@ -26,6 +26,7 @@ const menuKeys = [
   { href: '/integration',   key: 'nav.amazonConnect',  icon: Link2           },
   { href: '/audit',         key: 'nav.changeLog',      icon: History         },
   { href: '/help',          key: 'nav.helpCenter',     icon: HelpCircle      },
+  { href: '/subscriptions', key: 'nav.subscriptions',  icon: Crown           },
   { href: '/settings',      key: 'nav.settings',       icon: Settings        },
 ];
 
@@ -136,7 +137,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const faqAnswer = findFaqAnswer(msg);
     if (faqAnswer) {
       setChatMessages(prev => [...prev, userMsg, { id: tempBotId, sender: 'bot', message: faqAnswer }]);
-      setChatHistory(prev => [...prev, { role: 'user' as const, content: msg }, { role: 'assistant' as const, content: faqAnswer }].slice(-12));
+      setChatHistory(prev => [...prev, { role: 'user' as const, content: msg }, { role: 'assistant' as const, content: faqAnswer }].slice(-24));
       return;
     }
 
@@ -151,7 +152,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Something went wrong');
       const reply = data.reply as string;
-      setChatHistory(prev => [...prev, { role: 'user' as const, content: msg }, { role: 'assistant' as const, content: reply }].slice(-12));
+      setChatHistory(prev => [...prev, { role: 'user' as const, content: msg }, { role: 'assistant' as const, content: reply }].slice(-24));
       setChatMessages(prev => prev.map(m => m.id === tempBotId ? { ...m, message: reply, loading: false } : m));
     } catch {
       setChatMessages(prev => prev.filter(m => m.id !== tempBotId));

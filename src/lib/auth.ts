@@ -47,6 +47,25 @@ export async function requireAuth(
   return { ...profile, role: profile.role ?? 'user' } as AuthUser;
 }
 
+export async function optionalAuth(
+  req: NextApiRequest,
+): Promise<AuthUser | null> {
+  const token = getTokenFromRequest(req);
+  if (!token) return null;
+
+  const { data: { user: authUser }, error: authError } = await adminDb.auth.getUser(token);
+  if (authError || !authUser) return null;
+
+  const { data: profile, error } = await adminDb
+    .from('profiles')
+    .select('*')
+    .eq('id', authUser.id)
+    .single();
+
+  if (error || !profile) return null;
+  return { ...profile, role: profile.role ?? 'user' } as AuthUser;
+}
+
 export async function requireAdmin(
   req: NextApiRequest,
   res: NextApiResponse,

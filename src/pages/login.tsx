@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from '@/components/ThemeProvider';
-import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3, AlertCircle } from 'lucide-react';
+import { Zap, Eye, EyeOff, Moon, Sun, Bot, TrendingUp, Shield, BarChart3, AlertCircle, ArrowLeft, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/useAuth';
 
@@ -13,13 +13,14 @@ const FEATURES = [
 ];
 
 export default function Login() {
-  const [tab,      setTab]      = useState<'login' | 'register'>('login');
+  const [tab,      setTab]      = useState<'login' | 'register' | 'forgot'>('login');
   const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
   const [name,     setName]     = useState('');
   const [showPass, setShowPass] = useState(false);
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState('');
+  const [success,  setSuccess]  = useState('');
   const router = useRouter();
   const { dark, toggle } = useTheme();
   const { login, register } = useAuth();
@@ -27,9 +28,33 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     const emailTrimmed = email.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (tab === 'forgot') {
+      if (!emailTrimmed || !emailRegex.test(emailTrimmed)) {
+        setError('Please enter a valid email address');
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailTrimmed }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Something went wrong');
+        setSuccess('If an account exists with this email, you will receive a password reset link.');
+      } catch (err: any) {
+        setSuccess('If an account exists with this email, you will receive a password reset link.');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
 
     if (tab === 'register' && !name.trim()) {
       setError('Full name is required');
@@ -146,30 +171,53 @@ export default function Login() {
             <span className="font-bold" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</span>
           </div>
 
-          <div className="flex rounded-xl overflow-hidden mb-6" style={{ border: '1px solid var(--input-border)' }}>
-            {(['login', 'register'] as const).map(t => (
-              <button key={t} onClick={() => { setTab(t); setError(''); }}
-                className="flex-1 py-2.5 text-sm font-semibold transition-all capitalize"
-                style={tab === t
-                  ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', color: 'var(--btn-text)' }
-                  : { color: 'var(--text-muted)', background: 'transparent' }}>
-                {t === 'login' ? 'Sign In' : 'Create Account'}
+          {tab === 'forgot' ? (
+            <>
+              <button onClick={() => { setTab('login'); setError(''); setSuccess(''); }}
+                className="flex items-center gap-1 text-sm mb-4" style={{ color: 'var(--accent)' }}>
+                <ArrowLeft className="w-4 h-4" /> Back to login
               </button>
-            ))}
-          </div>
+              <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Reset password</h1>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                Enter your email and we&apos;ll send you a reset link
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="flex rounded-xl overflow-hidden mb-6" style={{ border: '1px solid var(--input-border)' }}>
+                {(['login', 'register'] as const).map(t => (
+                  <button key={t} onClick={() => { setTab(t); setError(''); setSuccess(''); }}
+                    className="flex-1 py-2.5 text-sm font-semibold transition-all capitalize"
+                    style={tab === t
+                      ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', color: 'var(--btn-text)' }
+                      : { color: 'var(--text-muted)', background: 'transparent' }}>
+                    {t === 'login' ? 'Sign In' : 'Create Account'}
+                  </button>
+                ))}
+              </div>
 
-          <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
-            {tab === 'login' ? 'Welcome back' : 'Get started free'}
-          </h1>
-          <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-            {tab === 'login' ? 'Enter your credentials to access your account' : '14-day free trial · No credit card required'}
-          </p>
+              <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
+                {tab === 'login' ? 'Welcome back' : 'Get started free'}
+              </h1>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                {tab === 'login' ? 'Enter your credentials to access your account' : '14-day free trial · No credit card required'}
+              </p>
+            </>
+          )}
 
           {error && (
             <div className="flex items-center gap-2 p-3 rounded-xl mb-4 text-sm"
               style={{ background: 'var(--error-bg)', border: '1px solid var(--error-border)', color: 'var(--error)' }}>
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="flex items-center gap-2 p-3 rounded-xl mb-4 text-sm"
+              style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', color: '#10b981' }}>
+              <Mail className="w-4 h-4 flex-shrink-0" />
+              {success}
             </div>
           )}
 
@@ -186,53 +234,58 @@ export default function Login() {
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 required placeholder="you@example.com" style={inputStyle} />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Password</label>
-              <div className="relative">
-                <input type={showPass ? 'text' : 'password'} value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required minLength={8} placeholder="••••••••"
-                  style={{ ...inputStyle, paddingRight: '2.5rem' }} />
-                <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-dim)' }}>
-                  {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            {tab !== 'forgot' && (
+              <div>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Password</label>
+                <div className="relative">
+                  <input type={showPass ? 'text' : 'password'} value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required minLength={8} placeholder="••••••••"
+                    style={{ ...inputStyle, paddingRight: '2.5rem' }} />
+                  <button type="button" onClick={() => setShowPass(!showPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-dim)' }}>
+                    {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {tab === 'register' && (
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 8 characters</p>
+                )}
               </div>
-              {tab === 'register' && (
-                <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 8 characters</p>
-              )}
-            </div>
+            )}
 
             {tab === 'login' && (
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center gap-2 cursor-pointer" style={{ color: 'var(--text-muted)' }}>
                   <input type="checkbox" className="rounded" style={{ accentColor: 'var(--accent)' }} /> Remember me
                 </label>
-                <button type="button" className="text-sm" style={{ color: 'var(--accent)' }}>Forgot password?</button>
+                <button type="button" onClick={() => { setTab('forgot'); setError(''); setSuccess(''); }}
+                  className="text-sm" style={{ color: 'var(--accent)' }}>Forgot password?</button>
               </div>
             )}
 
-            <button type="submit" disabled={loading || !email || !password}
+            <button type="submit" disabled={loading || !email || (tab !== 'forgot' && !password)}
               className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all"
               style={{
                 background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
                 color: 'var(--btn-text)',
                 boxShadow: 'var(--accent-glow)',
-                opacity: (loading || !email || !password) ? 0.7 : 1,
+                opacity: (loading || !email || (tab !== 'forgot' && !password)) ? 0.7 : 1,
               }}>
               {loading
-                ? <><span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" /> {tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
-                : tab === 'login' ? 'Sign In' : 'Create Account'}
+                ? <><span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" /> {tab === 'forgot' ? 'Sending...' : tab === 'login' ? 'Signing in...' : 'Creating account...'}</>
+                : tab === 'forgot' ? 'Send Reset Link' : tab === 'login' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
 
-          <p className="text-center text-sm mt-6" style={{ color: 'var(--text-muted)' }}>
-            {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
-            <button onClick={() => { setTab(tab === 'login' ? 'register' : 'login'); setError(''); }}
-              className="font-semibold" style={{ color: 'var(--accent)' }}>
-              {tab === 'login' ? 'Start free trial' : 'Sign in'}
-            </button>
-          </p>
+          {tab !== 'forgot' && (
+            <p className="text-center text-sm mt-6" style={{ color: 'var(--text-muted)' }}>
+              {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
+              <button onClick={() => { setTab(tab === 'login' ? 'register' : 'login'); setError(''); setSuccess(''); }}
+                className="font-semibold" style={{ color: 'var(--accent)' }}>
+                {tab === 'login' ? 'Start free trial' : 'Sign in'}
+              </button>
+            </p>
+          )}
         </div>
       </div>
     </div>

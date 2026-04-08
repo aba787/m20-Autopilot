@@ -1,0 +1,655 @@
+import "./adpilot.css";
+import { useState, useEffect } from "react";
+import robotImg from "/robot-skull.jpeg";
+
+const t = {
+  en: {
+    nav: { features: "Features", howItWorks: "How It Works", pricing: "Pricing", faq: "FAQ", cta: "Get Started", langBtn: "العربية" },
+    hero: {
+      badge: "AI-Powered Amazon Ads Management",
+      title: "m20 Autopilot",
+      subtitle: "The Intelligence That Runs Your Amazon Ads",
+      desc: "Transform complex ad management into clear decisions. Get AI-driven insights that maximize your ROI — automatically, 24/7.",
+      btnPrimary: "Start Free Trial",
+      btnSecondary: "Watch Demo",
+      stat1Label: "ACOS Reduction",
+      stat2Label: "ROAS Increase",
+      stat3Label: "Avg. Sales Lift",
+      chartTitle: "Campaign Performance",
+      chartPeriod: "Last 30 days",
+    },
+    features: {
+      title: "Key Features",
+      subtitle: "Smart tools that turn complex data into clear, actionable decisions",
+      cards: [
+        { title: "Clear Dashboard", desc: "All your key metrics in one place" },
+        { title: "Smart Recommendations", desc: "AI-driven, actionable suggestions" },
+        { title: "Instant Alerts", desc: "Real-time notifications on what matters" },
+        { title: "Smart Management", desc: "Automated bid and budget control" },
+        { title: "Full Visibility", desc: "360° view of all your campaigns" },
+        { title: "Real Results", desc: "Measurable growth, every week" },
+        { title: "Accounting", desc: "Full cost tracking and financial reporting" },
+      ],
+      trust: ["✓ Full Arabic UI Support", "✓ Secure Amazon Integration", "✓ 24/7 Multilingual Support"],
+    },
+    process: {
+      title: "How It Works",
+      subtitle: "4 simple steps to transform your advertising",
+      steps: [
+        { title: "Connect Account", desc: "Link your Amazon Ads securely in minutes" },
+        { title: "View Data", desc: "All your important numbers in one dashboard" },
+        { title: "Get Recommendations", desc: "Smart, actionable AI suggestions" },
+        { title: "Improve Results", desc: "See clear improvements immediately" },
+      ],
+    },
+    comparison: {
+      title: "Real Results",
+      beforeTitle: "Before m20 Autopilot",
+      afterTitle: "After m20 Autopilot",
+      before: ["Scattered data everywhere", "High ACOS", "Random decisions", "Hours wasted daily", "Budget drain"],
+      after: ["Crystal-clear insights", "Low ACOS", "AI recommendations", "Save 5+ hours/week", "Better ROI"],
+    },
+    ai: {
+      title: "AI Engine",
+      subtitle: "Working 24/7 to analyze and optimize your campaigns",
+      cards: [
+        { title: "Weak Campaign Detection", desc: "Identify underperformers instantly" },
+        { title: "Negative Keyword Mining", desc: "Eliminate wasted spend automatically" },
+        { title: "Budget Suggestions", desc: "Smart allocation recommendations" },
+        { title: "Instant Smart Alerts", desc: "Get notified before problems escalate" },
+        { title: "Cost Accounting", desc: "Track every dollar spent and earned" },
+      ],
+    },
+    pricing: {
+      title: "Plans & Pricing",
+      badge: "50% First Months",
+      perMonth: "SAR / month",
+      custom: "Custom",
+      tailored: "Tailored to your needs",
+      btnStart: "Get Started",
+      btnContact: "Contact Us",
+      plans: [
+        {
+          name: "Starter", sub: "Perfect to begin", price: "299",
+          features: ["1 Store", "Analytics Dashboard", "Recommendations", "Daily Alerts", "Accounting Reports"],
+        },
+        {
+          name: "Pro", sub: "Most Popular", price: "799", featured: true,
+          features: ["5 Stores", "Advanced Dashboard", "AI Recommendations", "24/7 Alerts", "Priority Support", "Full Accounting Suite"],
+        },
+        {
+          name: "Enterprise", sub: "For large operations", price: "custom",
+          features: ["Unlimited Stores", "All Features", "Private API Access", "24/7 Support", "Dedicated Account Manager", "Custom Accounting"],
+        },
+      ],
+    },
+    faq: {
+      title: "Frequently Asked Questions",
+      items: [
+        { q: "Do I need prior experience?", a: "No. The platform is built for beginners. An AI assistant explains everything clearly." },
+        { q: "Is my data secure?", a: "Yes. Enterprise-grade encryption with full compliance to security standards." },
+        { q: "When will I see results?", a: "Most users see measurable improvements within the first week." },
+        { q: "Can I cancel anytime?", a: "Yes. No commitments or cancellation fees. Cancel whenever you want." },
+        { q: "How many stores are supported?", a: "Starter: 1 store, Pro: 5 stores, Enterprise: unlimited." },
+        { q: "Is there a free trial?", a: "Yes. Free demo access with no credit card required." },
+        { q: "Which markets are supported?", a: "All Amazon marketplaces globally, with Arabic UI support." },
+        { q: "What support hours?", a: "24/7 multilingual support — Arabic and English." },
+      ],
+    },
+    cta: {
+      title: "Start Managing Ads on Autopilot",
+      desc: "Join hundreds of sellers who have already improved their results with m20 Autopilot",
+      btnPrimary: "Start Free Trial",
+      btnSecondary: "Book a Demo",
+    },
+    footer: {
+      desc: "AI-powered Amazon Ads management for global sellers.",
+      col1: "Platform",
+      col2: "Support",
+      col3: "Contact",
+      links1: ["Features", "Pricing", "Sign Up"],
+      links2: ["FAQ", "Contact Us", "Request Support"],
+      links3: ["support@m20autopilot.com", "+966 50 1234567", "Riyadh, Saudi Arabia"],
+      copyright: "© 2024 m20 Autopilot. All rights reserved.",
+    },
+  },
+  ar: {
+    nav: { features: "المزايا", howItWorks: "كيف تعمل", pricing: "الباقات", faq: "الأسئلة", cta: "ابدأ الآن", langBtn: "English" },
+    hero: {
+      badge: "إدارة إعلانات أمازون بالذكاء الاصطناعي",
+      title: "m20 Autopilot",
+      subtitle: "الذكاء الذي يدير إعلانات أمازون بدلاً منك",
+      desc: "حوّل إدارة الإعلانات من معقد إلى بسيط. احصل على رؤى مدعومة بالذكاء الاصطناعي لتحقيق أعلى عائد على استثمارك — تلقائياً، على مدار الساعة.",
+      btnPrimary: "ابدأ تجربتك المجانية",
+      btnSecondary: "شاهد العرض",
+      stat1Label: "انخفاض ACOS",
+      stat2Label: "ارتفاع ROAS",
+      stat3Label: "متوسط زيادة المبيعات",
+      chartTitle: "أداء الحملات",
+      chartPeriod: "آخر 30 يوماً",
+    },
+    features: {
+      title: "المزايا الرئيسية",
+      subtitle: "أدوات ذكية تحوّل البيانات المعقدة إلى قرارات واضحة وقابلة للتنفيذ",
+      cards: [
+        { title: "لوحة تحكم واضحة", desc: "جميع المقاييس الأساسية في مكان واحد" },
+        { title: "توصيات ذكية", desc: "اقتراحات مدعومة بالذكاء الاصطناعي وقابلة للتنفيذ" },
+        { title: "تنبيهات فورية", desc: "إشعارات في الوقت الفعلي لما يهمك" },
+        { title: "إدارة ذكية", desc: "تحكم تلقائي في العروض والميزانية" },
+        { title: "رؤية شاملة", desc: "نظرة 360° على جميع حملاتك" },
+        { title: "نتائج ملموسة", desc: "نمو قابل للقياس كل أسبوع" },
+        { title: "المحاسبة", desc: "تتبع كامل للتكاليف وتقارير مالية" },
+      ],
+      trust: ["✓ واجهة عربية كاملة", "✓ ربط آمن مع أمازون", "✓ دعم متعدد اللغات 24/7"],
+    },
+    process: {
+      title: "كيف تعمل المنصة",
+      subtitle: "4 خطوات بسيطة لتحويل إعلاناتك",
+      steps: [
+        { title: "ربط الحساب", desc: "اربط Amazon Ads بأمان في دقائق" },
+        { title: "شاهد البيانات", desc: "جميع أرقامك المهمة في لوحة واحدة" },
+        { title: "استقبل التوصيات", desc: "اقتراحات ذكية قابلة للتنفيذ" },
+        { title: "حسّن النتائج", desc: "شاهد تحسناً واضحاً فورياً" },
+      ],
+    },
+    comparison: {
+      title: "النتائج الفعلية",
+      beforeTitle: "قبل m20 Autopilot",
+      afterTitle: "بعد m20 Autopilot",
+      before: ["بيانات مبعثرة في كل مكان", "ACOS مرتفع", "قرارات عشوائية", "ساعات مهدرة يومياً", "هدر في الميزانية"],
+      after: ["رؤى واضحة بالكامل", "ACOS منخفض", "توصيات ذكية", "وفّر 5+ ساعات أسبوعياً", "عائد أفضل على الاستثمار"],
+    },
+    ai: {
+      title: "محرك الذكاء الاصطناعي",
+      subtitle: "يعمل 24/7 لتحليل وتحسين حملاتك الإعلانية",
+      cards: [
+        { title: "اكتشاف الحملات الضعيفة", desc: "تحديد الأداء المنخفض فورياً" },
+        { title: "استخراج الكلمات السلبية", desc: "إزالة الإنفاق المهدر تلقائياً" },
+        { title: "اقتراحات الميزانية", desc: "توصيات توزيع ذكية" },
+        { title: "تنبيهات ذكية فورية", desc: "إشعار قبل تفاقم المشاكل" },
+        { title: "محاسبة التكاليف", desc: "تتبع كل ريال يُنفق ويُكسب" },
+      ],
+    },
+    pricing: {
+      title: "الباقات والأسعار",
+      badge: "50% للأشهر الأولى",
+      perMonth: "ر.س / شهرياً",
+      custom: "مخصص",
+      tailored: "حسب احتياجاتك",
+      btnStart: "ابدأ الآن",
+      btnContact: "تواصل معنا",
+      plans: [
+        {
+          name: "Starter", sub: "للبداية المثالية", price: "299",
+          features: ["متجر واحد", "لوحة تحليلات", "توصيات", "تنبيهات يومية", "تقارير محاسبية"],
+        },
+        {
+          name: "Pro", sub: "الأكثر شيوعاً", price: "799", featured: true,
+          features: ["5 متاجر", "لوحة متقدمة", "توصيات AI", "تنبيهات 24/7", "دعم أولوية", "محاسبة متكاملة"],
+        },
+        {
+          name: "Enterprise", sub: "للعمليات الكبيرة", price: "custom",
+          features: ["متاجر غير محدودة", "جميع المزايا", "API خاص", "دعم 24/7", "مدير حساب مخصص", "محاسبة مخصصة"],
+        },
+      ],
+    },
+    faq: {
+      title: "الأسئلة الشائعة",
+      items: [
+        { q: "هل أحتاج خبرة مسبقة؟", a: "لا. المنصة مصممة للمبتدئين. مساعد ذكي يشرح كل شيء بوضوح." },
+        { q: "هل بياناتي آمنة؟", a: "نعم. تشفير على مستوى المؤسسات مع الالتزام الكامل بمعايير الأمان." },
+        { q: "متى سأرى النتائج؟", a: "معظم المستخدمين يرون تحسنات ملموسة في الأسبوع الأول." },
+        { q: "هل يمكنني الإلغاء في أي وقت؟", a: "نعم. لا التزامات أو رسوم إلغاء. ألغِ متى تشاء." },
+        { q: "كم عدد المتاجر المدعومة؟", a: "Starter: متجر واحد، Pro: 5 متاجر، Enterprise: غير محدود." },
+        { q: "هل توجد نسخة تجريبية؟", a: "نعم. وصول تجريبي مجاني دون الحاجة لبطاقة ائتمانية." },
+        { q: "ما الأسواق المدعومة؟", a: "جميع أسواق أمازون عالمياً مع دعم كامل للغة العربية." },
+        { q: "ما أوقات الدعم؟", a: "دعم متعدد اللغات على مدار الساعة — عربي وإنجليزي." },
+      ],
+    },
+    cta: {
+      title: "ابدأ بإدارة إعلاناتك تلقائياً",
+      desc: "انضم إلى مئات البائعين الذين حسّنوا نتائجهم بالفعل مع m20 Autopilot",
+      btnPrimary: "ابدأ تجربتك المجانية",
+      btnSecondary: "احجز عرضاً",
+    },
+    footer: {
+      desc: "إدارة إعلانات أمازون بالذكاء الاصطناعي للبائعين العالميين.",
+      col1: "المنصة",
+      col2: "الدعم",
+      col3: "تواصل",
+      links1: ["المزايا", "الباقات", "التسجيل"],
+      links2: ["الأسئلة الشائعة", "تواصل معنا", "طلب دعم"],
+      links3: ["support@m20autopilot.com", "+966 50 1234567", "الرياض، المملكة العربية السعودية"],
+      copyright: "© 2024 m20 Autopilot. جميع الحقوق محفوظة.",
+    },
+  },
+};
+
+type Lang = "en" | "ar";
+
+const IconDashboard = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <rect x="10" y="30" width="10" height="20" rx="3" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.2)" />
+    <rect x="25" y="15" width="10" height="35" rx="3" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.2)" />
+    <rect x="40" y="25" width="10" height="25" rx="3" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.2)" />
+    <path d="M5 50H55" stroke="#00d9ff" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+const IconLightning = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <path d="M35 10L15 35H30L25 50L45 25H30L35 10Z" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.2)" strokeLinejoin="round" />
+  </svg>
+);
+const IconBell = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <path d="M30 10C22.268 10 16 16.268 16 24V36L12 42H48L44 36V24C44 16.268 37.732 10 30 10Z" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.1)" strokeLinejoin="round" />
+    <path d="M25 46C25 48.7614 27.2386 51 30 51C32.7614 51 35 48.7614 35 46" stroke="#00d9ff" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="30" cy="10" r="3" fill="#00d9ff" />
+  </svg>
+);
+const IconTarget = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <circle cx="30" cy="30" r="22" stroke="#00d9ff" strokeWidth="2" strokeDasharray="6 6" />
+    <circle cx="30" cy="30" r="14" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.1)" />
+    <circle cx="30" cy="30" r="4" fill="#00d9ff" />
+    <path d="M30 4V10M30 50V56M4 30H10M50 30H56" stroke="#00d9ff" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+const IconEye = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <path d="M30 20C18 20 8 30 8 30C8 30 18 40 30 40C42 40 52 30 52 30C52 30 42 20 30 20Z" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.1)" strokeLinejoin="round" />
+    <circle cx="30" cy="30" r="6" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.3)" />
+    <circle cx="30" cy="30" r="2" fill="#00d9ff" />
+  </svg>
+);
+const IconTrend = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <path d="M8 48L22 34L32 44L52 18" stroke="#00d9ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M40 18H52V30" stroke="#00d9ff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    <defs>
+      <linearGradient id="trend-grad" x1="30" y1="18" x2="30" y2="50" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#00d9ff" /><stop offset="1" stopColor="#00d9ff" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+    <path d="M8 48L22 34L32 44L52 18V50H8V48Z" fill="url(#trend-grad)" opacity="0.3" />
+  </svg>
+);
+const IconSearch = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <circle cx="26" cy="26" r="14" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.1)" />
+    <path d="M37 37L48 48" stroke="#00d9ff" strokeWidth="3" strokeLinecap="round" />
+    <circle cx="26" cy="26" r="6" stroke="#00d9ff" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
+  </svg>
+);
+const IconWarning = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <path d="M30 10L10 46H50L30 10Z" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.1)" strokeLinejoin="round" />
+    <path d="M30 24V34" stroke="#00d9ff" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="30" cy="40" r="1.5" fill="#00d9ff" />
+  </svg>
+);
+const IconAccounting = () => (
+  <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="custom-icon">
+    <rect x="10" y="8" width="40" height="44" rx="4" stroke="#00d9ff" strokeWidth="2" fill="rgba(0,217,255,0.05)" />
+    <path d="M20 20H40M20 28H40M20 36H32" stroke="#00d9ff" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="40" cy="42" r="8" fill="rgba(0,217,255,0.2)" stroke="#00d9ff" strokeWidth="2" />
+    <path d="M37 42H43M40 39V45" stroke="#00d9ff" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+const IconCheck = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="status-icon icon-success">
+    <circle cx="12" cy="12" r="10" stroke="#10b981" strokeWidth="2" fill="rgba(16,185,129,0.15)" />
+    <path d="M8 12.5L11 15.5L16 9.5" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconCross = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="status-icon icon-error">
+    <circle cx="12" cy="12" r="10" stroke="#ef4444" strokeWidth="2" fill="rgba(239,68,68,0.15)" />
+    <path d="M9 9L15 15M15 9L9 15" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+const AmazonPartnerBadge = () => (
+  <div className="amazon-partner-badge">
+    <svg viewBox="0 0 24 24" fill="none" className="amazon-icon" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="rgba(255,153,0,0.15)" stroke="#FF9900" strokeWidth="1.5"/>
+      <path d="M7 13.5C9.5 15.5 14.5 15.5 17 13.5" stroke="#FF9900" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M15.5 12L17 13.5L15.5 15" stroke="#FF9900" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+    <div className="amazon-badge-text">
+      <span className="amazon-badge-title">Amazon Ads</span>
+      <span className="amazon-badge-sub">Advanced Partner</span>
+    </div>
+  </div>
+);
+
+const FloatingParticles = () => (
+  <div className="particles-container">
+    {[...Array(15)].map((_, i) => (
+      <div key={i} className={`particle p-${i}`}></div>
+    ))}
+  </div>
+);
+
+const BackgroundGrid = () => <div className="bg-grid"></div>;
+
+const featureIcons = [
+  <IconDashboard />, <IconLightning />, <IconBell />,
+  <IconTarget />, <IconEye />, <IconTrend />, <IconAccounting />,
+];
+const aiIcons = [
+  <IconTarget />, <IconSearch />, <IconTrend />, <IconWarning />, <IconAccounting />,
+];
+
+function App() {
+  const [lang, setLang] = useState<Lang>("en");
+  const tx = t[lang];
+  const isAr = lang === "ar";
+
+  useEffect(() => {
+    document.documentElement.dir = isAr ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
+    document.body.style.fontFamily = isAr
+      ? "'IBM Plex Sans Arabic', 'Cairo', sans-serif"
+      : "'Inter', 'IBM Plex Sans Arabic', sans-serif";
+  }, [lang, isAr]);
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const toggleLang = () => setLang(l => l === "en" ? "ar" : "en");
+
+  return (
+    <>
+      <header>
+        <div className="nav-container">
+          <div className="logo-area">
+            <div className="logo">m20 Autopilot</div>
+            <AmazonPartnerBadge />
+          </div>
+          <nav>
+            <ul>
+              <li><a href="#features" onClick={(e) => { e.preventDefault(); scrollTo("features"); }}>{tx.nav.features}</a></li>
+              <li><a href="#process" onClick={(e) => { e.preventDefault(); scrollTo("process"); }}>{tx.nav.howItWorks}</a></li>
+              <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>{tx.nav.pricing}</a></li>
+              <li><a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo("faq"); }}>{tx.nav.faq}</a></li>
+            </ul>
+          </nav>
+          <div className="nav-actions">
+            <button className="lang-btn" onClick={toggleLang}>{tx.nav.langBtn}</button>
+            <button className="btn-primary btn-sm">{tx.nav.cta}</button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        {/* Hero */}
+        <section className="hero section">
+          <BackgroundGrid />
+          <FloatingParticles />
+          <div className="container-w">
+            <div className="hero-content">
+              <div className="hero-text">
+                <div className="hero-badge">
+                  <span className="badge-dot"></span>
+                  {tx.hero.badge}
+                </div>
+                <h1>m20 Autopilot</h1>
+                <h2 className="hero-subtitle-main">{tx.hero.subtitle}</h2>
+                <p className="hero-description">{tx.hero.desc}</p>
+                <div className="hero-buttons">
+                  <button className="btn-primary">{tx.hero.btnPrimary}</button>
+                  <button className="btn-secondary">{tx.hero.btnSecondary}</button>
+                </div>
+                <div className="hero-stats">
+                  <div className="stat-mini">
+                    <span className="stat-value-mini">-32%</span>
+                    <span className="stat-label-mini">{tx.hero.stat1Label}</span>
+                  </div>
+                  <div className="stat-mini">
+                    <span className="stat-value-mini">+47%</span>
+                    <span className="stat-label-mini">{tx.hero.stat2Label}</span>
+                  </div>
+                  <div className="stat-mini">
+                    <span className="stat-value-mini">+$12K</span>
+                    <span className="stat-label-mini">{tx.hero.stat3Label}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="hero-visual">
+                <div className="robot-visual-wrapper">
+                  <img src={robotImg} alt="m20 Autopilot AI" className="robot-image" />
+                  <div className="robot-overlay-glow"></div>
+                  <div className="robot-stats-floating">
+                    <div className="floating-stat fs-1">
+                      <span className="fs-value">-32%</span>
+                      <span className="fs-label">ACOS</span>
+                    </div>
+                    <div className="floating-stat fs-2">
+                      <span className="fs-value">+47%</span>
+                      <span className="fs-label">ROAS</span>
+                    </div>
+                    <div className="floating-stat fs-3">
+                      <span className="fs-value">89%</span>
+                      <span className="fs-label">{isAr ? "محسَّن" : "Optimized"}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="hero-chart-card">
+                  <div className="chart-card-header">
+                    <span className="chart-card-title">{tx.hero.chartTitle}</span>
+                    <span className="chart-card-period">{tx.hero.chartPeriod}</span>
+                  </div>
+                  <svg viewBox="0 0 380 100" preserveAspectRatio="none" className="mock-chart-svg">
+                    <defs>
+                      <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#00d9ff" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#00d9ff" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M0 95 C40 80,80 85,120 55 C160 25,200 65,240 35 C280 5,320 45,360 15 L380 8 L380 100 L0 100Z" fill="url(#area-gradient)" />
+                    <path d="M0 95 C40 80,80 85,120 55 C160 25,200 65,240 35 C280 5,320 45,360 15 L380 8" fill="none" stroke="#00d9ff" strokeWidth="2.5" strokeLinecap="round" />
+                    <circle cx="120" cy="55" r="3.5" fill="#00d9ff" className="point-glow" />
+                    <circle cx="240" cy="35" r="3.5" fill="#00d9ff" className="point-glow" style={{animationDelay:'1s'}} />
+                    <circle cx="360" cy="15" r="3.5" fill="#00d9ff" className="point-glow" style={{animationDelay:'2s'}} />
+                  </svg>
+                  <div className="chart-mini-stats">
+                    <div className="chart-mini-stat"><span className="cms-val positive">+47%</span><span className="cms-lbl">ROAS</span></div>
+                    <div className="chart-mini-stat"><span className="cms-val">-32%</span><span className="cms-lbl">ACOS</span></div>
+                    <div className="chart-mini-stat"><span className="cms-val positive">+$12K</span><span className="cms-lbl">{isAr ? "مبيعات" : "Sales"}</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="section" id="features" style={{ background: "rgba(255,255,255,0.01)" }}>
+          <div className="container-w">
+            <h2 className="font-display">{tx.features.title}</h2>
+            <p className="section-subtitle">{tx.features.subtitle}</p>
+            <div className="icon-cards-grid">
+              {tx.features.cards.map((card, i) => (
+                <div className="icon-card" key={i}>
+                  <div className="icon-card-bg-gradient"></div>
+                  <div className="icon-card-emoji">{featureIcons[i]}</div>
+                  <div className="icon-card-title">{card.title}</div>
+                  <div className="icon-card-desc">{card.desc}</div>
+                </div>
+              ))}
+            </div>
+            <div className="trust-grid">
+              {tx.features.trust.map((item, i) => (
+                <div className="trust-card" key={i}><div className="trust-card-text">{item}</div></div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section className="section" id="process">
+          <div className="container-w">
+            <h2 className="font-display">{tx.process.title}</h2>
+            <p className="section-subtitle">{tx.process.subtitle}</p>
+            <div className="process-grid">
+              {tx.process.steps.map((step, i) => (
+                <div className="process-item" key={i}>
+                  <div className="process-number">
+                    <span>{i + 1}</span>
+                    <div className="process-number-glow"></div>
+                  </div>
+                  <div className="process-title">{step.title}</div>
+                  <div className="process-description">{step.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Before/After */}
+        <section className="section" style={{ background: "rgba(255,255,255,0.01)" }}>
+          <div className="container-w">
+            <h2 className="font-display" style={{ textAlign: "center" }}>{tx.comparison.title}</h2>
+            <div className="split-comparison">
+              <div className="comparison-half before-half">
+                <h3><IconCross /> {tx.comparison.beforeTitle}</h3>
+                <div className="comparison-items">
+                  {tx.comparison.before.map((item, i) => (
+                    <div className="comparison-item" key={i}>
+                      <span className="comparison-icon"><IconCross /></span> {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="comparison-half after-half">
+                <h3><IconCheck /> {tx.comparison.afterTitle}</h3>
+                <div className="comparison-items">
+                  {tx.comparison.after.map((item, i) => (
+                    <div className="comparison-item" key={i}>
+                      <span className="comparison-icon"><IconCheck /></span> {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* AI Section */}
+        <section className="section">
+          <div className="container-w">
+            <h2 className="font-display">{tx.ai.title}</h2>
+            <p className="section-subtitle">{tx.ai.subtitle}</p>
+            <div className="icon-cards-grid">
+              {tx.ai.cards.map((card, i) => (
+                <div className="icon-card" key={i}>
+                  <div className="icon-card-bg-gradient"></div>
+                  <div className="icon-card-emoji">{aiIcons[i]}</div>
+                  <div className="icon-card-title">{card.title}</div>
+                  <div className="icon-card-desc">{card.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing */}
+        <section className="section" id="pricing" style={{ background: "rgba(255,255,255,0.01)" }}>
+          <div className="container-w">
+            <h2 className="font-display" style={{ textAlign: "center" }}>{tx.pricing.title}</h2>
+            <div className="pricing-grid">
+              {tx.pricing.plans.map((plan, i) => (
+                <div className={`pricing-card${plan.featured ? " featured" : ""}`} key={i}>
+                  {plan.featured && <div className="pricing-badge">{tx.pricing.badge}</div>}
+                  <h3>{plan.name}</h3>
+                  <div className="pricing-subtitle">{plan.sub}</div>
+                  <div className="price-tag">{plan.price === "custom" ? tx.pricing.custom : plan.price}</div>
+                  <div className="pricing-subtitle" style={{ fontSize: "0.8rem", marginBottom: "24px" }}>
+                    {plan.price === "custom" ? tx.pricing.tailored : tx.pricing.perMonth}
+                  </div>
+                  <button
+                    className={i === 2 ? "btn-secondary" : "btn-primary"}
+                    style={{ width: "100%", marginBottom: "24px" }}
+                  >
+                    {i === 2 ? tx.pricing.btnContact : tx.pricing.btnStart}
+                  </button>
+                  <ul className="pricing-features">
+                    {plan.features.map((f, j) => (
+                      <li key={j}><span className="check">✓</span> {f}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="section" id="faq">
+          <div className="container-w">
+            <h2 className="font-display" style={{ textAlign: "center" }}>{tx.faq.title}</h2>
+            <div className="faq-grid">
+              {tx.faq.items.map((item, i) => (
+                <div className="faq-item" key={i}>
+                  <div className="faq-item-title">{item.q}</div>
+                  <div className="faq-item-text">{item.a}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="section">
+          <div className="container-w">
+            <div className="cta-final">
+              <h2 className="font-display">{tx.cta.title}</h2>
+              <p>{tx.cta.desc}</p>
+              <div className="cta-buttons">
+                <button className="btn-primary">{tx.cta.btnPrimary}</button>
+                <button className="btn-secondary">{tx.cta.btnSecondary}</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div className="footer-grid">
+          <div className="footer-section">
+            <div className="footer-logo">m20 Autopilot</div>
+            <p className="footer-desc">{tx.footer.desc}</p>
+            <AmazonPartnerBadge />
+          </div>
+          <div className="footer-section">
+            <h4>{tx.footer.col1}</h4>
+            <ul>{tx.footer.links1.map((l, i) => <li key={i}><a href="#">{l}</a></li>)}</ul>
+          </div>
+          <div className="footer-section">
+            <h4>{tx.footer.col2}</h4>
+            <ul>{tx.footer.links2.map((l, i) => <li key={i}><a href="#">{l}</a></li>)}</ul>
+          </div>
+          <div className="footer-section">
+            <h4>{tx.footer.col3}</h4>
+            <ul>{tx.footer.links3.map((l, i) => <li key={i}><a href="#">{l}</a></li>)}</ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>{tx.footer.copyright}</p>
+          <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+            <button className="lang-btn" onClick={toggleLang} style={{ fontSize: "0.75rem", padding: "5px 12px" }}>{tx.nav.langBtn}</button>
+            <a href="#" style={{ textDecoration: "none", color: "#8a94a6" }}>Twitter</a>
+            <a href="#" style={{ textDecoration: "none", color: "#8a94a6" }}>LinkedIn</a>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}
+
+export default App;

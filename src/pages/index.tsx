@@ -1,149 +1,333 @@
+import { useState } from 'react';
 import Link from 'next/link';
-import { useTheme } from '@/components/ThemeProvider';
-import { Zap, Moon, Sun, TrendingUp, Shield, BarChart3, Bot, CheckCircle2, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import Head from 'next/head';
+import { useI18n } from '@/lib/i18n';
+import { landingT, type LandingLang } from '@/components/landing/landingTranslations';
+import {
+  IconCheck, IconCross, AmazonPartnerBadge,
+  FloatingParticles, BackgroundGrid, featureIcons, aiIcons,
+} from '@/components/landing/LandingIcons';
 
-const features = [
-  { icon: BarChart3,  title: 'Comprehensive Dashboard',   desc: 'Clear KPIs and detailed performance charts modeled after Amazon Ads' },
-  { icon: Bot,        title: 'Daily AI Analysis',          desc: 'Automatic product and keyword analysis with actionable recommendations' },
-  { icon: TrendingUp, title: 'Ad Optimization',            desc: 'Lower ACOS and increase ROAS through intelligent campaign tuning' },
-  { icon: Shield,     title: 'Smart Blacklist',            desc: 'Automatically block underperforming products to protect your budget' },
-];
 
 export default function Landing() {
-  const { dark, toggle } = useTheme();
+  const { lang: appLang } = useI18n();
+  const [langOverride, setLangOverride] = useState<LandingLang | null>(null);
+
+  const lang: LandingLang = langOverride ?? (appLang === 'ar' ? 'ar' : 'en');
+  const tx = landingT[lang];
+  const isAr = lang === 'ar';
+
+  const toggleLang = () => setLangOverride(lang === 'en' ? 'ar' : 'en');
+
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <div className="min-h-screen" dir="ltr" style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
+    <>
+      <Head>
+        <title>M20 Autopilot — AI-Powered Amazon Ads Management</title>
+        <meta name="description" content="Transform complex ad management into clear decisions. AI-driven insights that maximize your ROI — automatically, 24/7." />
+      </Head>
 
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-4"
-        style={{ background: 'var(--nav-bg)', backdropFilter: 'blur(16px)', borderBottom: '1px solid var(--border-primary)' }}>
-
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', boxShadow: 'var(--accent-glow)' }}>
-            <Zap className="w-4 h-4" style={{ color: 'var(--btn-text)' }} />
-          </div>
-          <span className="font-bold" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button onClick={toggle} className="p-2 rounded-lg" style={{ color: 'var(--text-muted)' }}>
-            {dark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
-          </button>
-          <Link href="/login" className="text-sm" style={{ color: 'var(--text-muted)' }}>Sign In</Link>
-          <Link href="/login"
-            className="text-sm font-semibold px-4 py-2 rounded-lg"
-            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', color: 'var(--btn-text)', boxShadow: 'var(--accent-glow)' }}>
-            Get Started Free
-          </Link>
-        </div>
-      </nav>
-
-      <section className="max-w-5xl mx-auto px-6 py-24 text-center">
-        <div className="inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-full mb-8"
-          style={{ background: 'var(--success-bg)', border: '1px solid var(--success-border)', color: 'var(--success)' }}>
-          <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--success)' }} />
-          Now live with Amazon.com, Amazon.co.uk & Amazon.ca
-        </div>
-
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          Supercharge Your Amazon Ads<br />
-          <span style={{ color: 'var(--accent)' }}>with AI Autopilot</span>
-        </h1>
-
-        <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
-          An all-in-one platform for Amazon sellers — analyze campaigns, optimize ACOS, and get keyword recommendations automatically.
-        </p>
-
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <Link href="/login"
-            className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold"
-            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', color: 'var(--btn-text)', boxShadow: 'var(--accent-glow)' }}>
-            Get Started Free <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link href="/dashboard"
-            className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold"
-            style={{ border: '1px solid var(--accent-border)', color: 'var(--text-secondary)', background: 'var(--card-bg)' }}>
-            View Demo
-          </Link>
-        </div>
-
-        <p className="text-xs mt-5" style={{ color: 'var(--text-dim)' }}>
-          No credit card required • 14-day free trial
-        </p>
-      </section>
-
-      <section style={{ borderTop: '1px solid var(--border-primary)', borderBottom: '1px solid var(--border-primary)', background: 'var(--bg-secondary)' }}>
-        <div className="max-w-4xl mx-auto px-6 py-12 grid grid-cols-3 gap-8 text-center">
-          {[
-            { value: '500+',  label: 'Active Sellers'    },
-            { value: '-32%',  label: 'Avg ACOS Reduction'},
-            { value: '5.2x',  label: 'Avg Customer ROAS' },
-          ].map((s, i) => (
-            <div key={i}>
-              <p className="text-3xl font-bold" style={{ color: 'var(--accent)' }}>{s.value}</p>
-              <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{s.label}</p>
+      <div className="landing-page" dir={isAr ? 'rtl' : 'ltr'}>
+        <header className="lp-header">
+          <div className="nav-container">
+            <div className="logo-area">
+              <div className="logo">m20 Autopilot</div>
+              <AmazonPartnerBadge />
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <h2 className="text-2xl font-bold text-center mb-12" style={{ color: 'var(--text-primary)' }}>Everything You Need in One Place</h2>
-        <div className="grid md:grid-cols-2 gap-5">
-          {features.map((f, i) => (
-            <div key={i}
-              className="p-6 rounded-xl transition-all duration-200"
-              style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', boxShadow: 'var(--card-shadow)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--accent-border)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 0 20px var(--accent-bg)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--card-border)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'var(--card-shadow)'; }}>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4"
-                style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }}>
-                <f.icon className="w-5 h-5" style={{ color: 'var(--accent)' }} />
-              </div>
-              <h3 className="font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{f.title}</h3>
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{f.desc}</p>
+            <nav className="lp-nav">
+              <ul>
+                <li><a href="#features" onClick={(e) => { e.preventDefault(); scrollTo('features'); }}>{tx.nav.features}</a></li>
+                <li><a href="#process" onClick={(e) => { e.preventDefault(); scrollTo('process'); }}>{tx.nav.howItWorks}</a></li>
+                <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo('pricing'); }}>{tx.nav.pricing}</a></li>
+                <li><a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>{tx.nav.faq}</a></li>
+              </ul>
+            </nav>
+            <div className="nav-actions">
+              <button className="lang-btn" onClick={toggleLang}>{tx.nav.langBtn}</button>
+              <Link href="/login" className="login-link">{tx.nav.login}</Link>
+              <Link href="/login" className="btn-primary btn-sm">{tx.nav.cta}</Link>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-20" style={{ background: 'var(--bg-tertiary)' }}>
-        <div className="max-w-2xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Ready to Grow Your Sales?</h2>
-          <p className="text-sm mb-8" style={{ color: 'var(--text-muted)' }}>Join hundreds of sellers using M20 Autopilot to dominate Amazon advertising.</p>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link href="/login"
-              className="flex items-center gap-2 px-7 py-3 rounded-xl font-bold"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', color: 'var(--btn-text)', boxShadow: 'var(--accent-glow)' }}>
-              Start Free Trial <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link href="/dashboard"
-              className="px-7 py-3 rounded-xl font-semibold"
-              style={{ border: '1px solid var(--accent-border)', color: 'var(--accent)' }}>
-              View Demo
-            </Link>
           </div>
-          <div className="flex items-center justify-center gap-6 mt-8">
-            {['No credit card required', '14-day free trial', 'Cancel anytime'].map(t => (
-              <div key={t} className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--text-dim)' }}>
-                <CheckCircle2 className="w-3.5 h-3.5" style={{ color: 'var(--success)' }} /> {t}
+        </header>
+
+        <main>
+          <section className="hero lp-section">
+            <BackgroundGrid />
+            <FloatingParticles />
+            <div className="container-w">
+              <div className="hero-content">
+                <div className="hero-text">
+                  <div className="hero-badge">
+                    <span className="badge-dot" />
+                    {tx.hero.badge}
+                  </div>
+                  <h1 className="hero-title">m20 Autopilot</h1>
+                  <h2 className="hero-subtitle-main">{tx.hero.subtitle}</h2>
+                  <p className="hero-description">{tx.hero.desc}</p>
+                  <div className="hero-buttons">
+                    <Link href="/login" className="btn-primary">{tx.hero.btnPrimary}</Link>
+                    <Link href="/dashboard" className="btn-secondary">{tx.hero.btnSecondary}</Link>
+                  </div>
+                  <div className="hero-stats">
+                    <div className="stat-mini">
+                      <span className="stat-value-mini">-32%</span>
+                      <span className="stat-label-mini">{tx.hero.stat1Label}</span>
+                    </div>
+                    <div className="stat-mini">
+                      <span className="stat-value-mini">+47%</span>
+                      <span className="stat-label-mini">{tx.hero.stat2Label}</span>
+                    </div>
+                    <div className="stat-mini">
+                      <span className="stat-value-mini">+$12K</span>
+                      <span className="stat-label-mini">{tx.hero.stat3Label}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="hero-visual">
+                  <div className="robot-visual-wrapper">
+                    <Image
+                      src="/robot-skull.jpeg"
+                      alt="m20 Autopilot AI"
+                      className="robot-image"
+                      width={600}
+                      height={320}
+                      priority
+                    />
+                    <div className="robot-overlay-glow" />
+                    <div className="robot-stats-floating">
+                      <div className="floating-stat fs-1">
+                        <span className="fs-value">-32%</span>
+                        <span className="fs-label">ACOS</span>
+                      </div>
+                      <div className="floating-stat fs-2">
+                        <span className="fs-value">+47%</span>
+                        <span className="fs-label">ROAS</span>
+                      </div>
+                      <div className="floating-stat fs-3">
+                        <span className="fs-value">89%</span>
+                        <span className="fs-label">{isAr ? 'محسَّن' : 'Optimized'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="hero-chart-card">
+                    <div className="chart-card-header">
+                      <span className="chart-card-title">{tx.hero.chartTitle}</span>
+                      <span className="chart-card-period">{tx.hero.chartPeriod}</span>
+                    </div>
+                    <svg viewBox="0 0 380 100" preserveAspectRatio="none" className="mock-chart-svg">
+                      <defs>
+                        <linearGradient id="lp-area-gradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#00d9ff" stopOpacity="0.4" />
+                          <stop offset="100%" stopColor="#00d9ff" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M0 95 C40 80,80 85,120 55 C160 25,200 65,240 35 C280 5,320 45,360 15 L380 8 L380 100 L0 100Z" fill="url(#lp-area-gradient)" />
+                      <path d="M0 95 C40 80,80 85,120 55 C160 25,200 65,240 35 C280 5,320 45,360 15 L380 8" fill="none" stroke="#00d9ff" strokeWidth="2.5" strokeLinecap="round" />
+                      <circle cx="120" cy="55" r="3.5" fill="#00d9ff" className="point-glow" />
+                      <circle cx="240" cy="35" r="3.5" fill="#00d9ff" className="point-glow" style={{animationDelay:'1s'}} />
+                      <circle cx="360" cy="15" r="3.5" fill="#00d9ff" className="point-glow" style={{animationDelay:'2s'}} />
+                    </svg>
+                    <div className="chart-mini-stats">
+                      <div className="chart-mini-stat"><span className="cms-val positive">+47%</span><span className="cms-lbl">ROAS</span></div>
+                      <div className="chart-mini-stat"><span className="cms-val">-32%</span><span className="cms-lbl">ACOS</span></div>
+                      <div className="chart-mini-stat"><span className="cms-val positive">+$12K</span><span className="cms-lbl">{isAr ? 'مبيعات' : 'Sales'}</span></div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      <footer className="py-8 text-center" style={{ borderTop: '1px solid var(--border-primary)' }}>
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <div className="w-6 h-6 rounded-md flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))' }}>
-            <Zap className="w-3.5 h-3.5" style={{ color: 'var(--btn-text)' }} />
+          <section className="lp-section" id="features" style={{ background: 'rgba(255,255,255,0.01)' }}>
+            <div className="container-w">
+              <h2 className="font-display">{tx.features.title}</h2>
+              <p className="section-subtitle">{tx.features.subtitle}</p>
+              <div className="icon-cards-grid">
+                {tx.features.cards.map((card, i) => (
+                  <div className="icon-card" key={i}>
+                    <div className="icon-card-bg-gradient" />
+                    <div className="icon-card-emoji">{featureIcons[i]}</div>
+                    <div className="icon-card-title">{card.title}</div>
+                    <div className="icon-card-desc">{card.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="trust-grid">
+                {tx.features.trust.map((item, i) => (
+                  <div className="trust-card" key={i}><div className="trust-card-text">{item}</div></div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="lp-section" id="process">
+            <div className="container-w">
+              <h2 className="font-display">{tx.process.title}</h2>
+              <p className="section-subtitle">{tx.process.subtitle}</p>
+              <div className="process-grid">
+                {tx.process.steps.map((step, i) => (
+                  <div className="process-item" key={i}>
+                    <div className="process-number">
+                      <span>{i + 1}</span>
+                      <div className="process-number-glow" />
+                    </div>
+                    <div className="process-title">{step.title}</div>
+                    <div className="process-description">{step.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="lp-section" style={{ background: 'rgba(255,255,255,0.01)' }}>
+            <div className="container-w">
+              <h2 className="font-display" style={{ textAlign: 'center' }}>{tx.comparison.title}</h2>
+              <div className="split-comparison">
+                <div className="comparison-half before-half">
+                  <h3><IconCross /> {tx.comparison.beforeTitle}</h3>
+                  <div className="comparison-items">
+                    {tx.comparison.before.map((item, i) => (
+                      <div className="comparison-item" key={i}>
+                        <span className="comparison-icon"><IconCross /></span> {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="comparison-half after-half">
+                  <h3><IconCheck /> {tx.comparison.afterTitle}</h3>
+                  <div className="comparison-items">
+                    {tx.comparison.after.map((item, i) => (
+                      <div className="comparison-item" key={i}>
+                        <span className="comparison-icon"><IconCheck /></span> {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="lp-section">
+            <div className="container-w">
+              <h2 className="font-display">{tx.ai.title}</h2>
+              <p className="section-subtitle">{tx.ai.subtitle}</p>
+              <div className="icon-cards-grid">
+                {tx.ai.cards.map((card, i) => (
+                  <div className="icon-card" key={i}>
+                    <div className="icon-card-bg-gradient" />
+                    <div className="icon-card-emoji">{aiIcons[i]}</div>
+                    <div className="icon-card-title">{card.title}</div>
+                    <div className="icon-card-desc">{card.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="lp-section" id="pricing" style={{ background: 'rgba(255,255,255,0.01)' }}>
+            <div className="container-w">
+              <h2 className="font-display" style={{ textAlign: 'center' }}>{tx.pricing.title}</h2>
+              <div className="pricing-grid">
+                {tx.pricing.plans.map((plan, i) => (
+                  <div className={`pricing-card${'featured' in plan && plan.featured ? ' featured' : ''}`} key={i}>
+                    {'featured' in plan && plan.featured && <div className="pricing-badge">{tx.pricing.badge}</div>}
+                    <h3>{plan.name}</h3>
+                    <div className="pricing-subtitle">{plan.sub}</div>
+                    <div className="price-tag">{plan.price === 'custom' ? tx.pricing.custom : plan.price}</div>
+                    <div className="pricing-subtitle" style={{ fontSize: '0.8rem', marginBottom: '24px' }}>
+                      {plan.price === 'custom' ? tx.pricing.tailored : tx.pricing.perMonth}
+                    </div>
+                    <Link
+                      href={i === 2 ? '/login' : '/login'}
+                      className={i === 2 ? 'btn-secondary' : 'btn-primary'}
+                      style={{ width: '100%', marginBottom: '24px' }}
+                    >
+                      {i === 2 ? tx.pricing.btnContact : tx.pricing.btnStart}
+                    </Link>
+                    <ul className="pricing-features">
+                      {plan.features.map((f, j) => (
+                        <li key={j}><span className="check">✓</span> {f}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="lp-section" id="faq">
+            <div className="container-w">
+              <h2 className="font-display" style={{ textAlign: 'center' }}>{tx.faq.title}</h2>
+              <div className="faq-grid">
+                {tx.faq.items.map((item, i) => (
+                  <div className="faq-item" key={i}>
+                    <div className="faq-item-title">{item.q}</div>
+                    <div className="faq-item-text">{item.a}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="lp-section">
+            <div className="container-w">
+              <div className="cta-final">
+                <h2 className="font-display">{tx.cta.title}</h2>
+                <p>{tx.cta.desc}</p>
+                <div className="cta-buttons">
+                  <Link href="/login" className="btn-primary">{tx.cta.btnPrimary}</Link>
+                  <Link href="/login" className="btn-secondary">{tx.cta.btnSecondary}</Link>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <footer className="lp-footer">
+          <div className="footer-grid">
+            <div className="footer-section">
+              <div className="footer-logo">m20 Autopilot</div>
+              <p className="footer-desc">{tx.footer.desc}</p>
+              <AmazonPartnerBadge />
+            </div>
+            <div className="footer-section">
+              <h4>{tx.footer.col1}</h4>
+              <ul>
+                <li><a href="#features" onClick={(e) => { e.preventDefault(); scrollTo('features'); }}>{tx.footer.links1[0]}</a></li>
+                <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo('pricing'); }}>{tx.footer.links1[1]}</a></li>
+                <li><Link href="/login">{tx.footer.links1[2]}</Link></li>
+              </ul>
+            </div>
+            <div className="footer-section">
+              <h4>{tx.footer.col2}</h4>
+              <ul>
+                <li><a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>{tx.footer.links2[0]}</a></li>
+                <li><a href="mailto:support@m20autopilot.com">{tx.footer.links2[1]}</a></li>
+                <li><a href="mailto:support@m20autopilot.com">{tx.footer.links2[2]}</a></li>
+              </ul>
+            </div>
+            <div className="footer-section">
+              <h4>{tx.footer.col3}</h4>
+              <ul>
+                {tx.footer.links3.map((l, i) => <li key={i}><span style={{ color: '#8a94a6', fontSize: '0.88rem', lineHeight: '2.2' }}>{l}</span></li>)}
+              </ul>
+            </div>
           </div>
-          <span className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</span>
-        </div>
-        <p className="text-sm" style={{ color: 'var(--text-dim)' }}>© 2026 M20 Autopilot. All rights reserved.</p>
-      </footer>
-    </div>
+          <div className="footer-bottom">
+            <p>{tx.footer.copyright}</p>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+              <button className="lang-btn" onClick={toggleLang} style={{ fontSize: '0.75rem', padding: '5px 12px' }}>{tx.nav.langBtn}</button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }

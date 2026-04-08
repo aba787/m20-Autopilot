@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import '@/styles/landing.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { useRouter } from 'next/router';

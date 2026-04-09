@@ -4,6 +4,7 @@ import { Bot, TrendingUp, TrendingDown, AlertTriangle, Tag, CheckCircle2, X, Zap
 import type { BotResult } from '@/lib/campaignBot';
 import { useAuth, authFetch } from '@/lib/useAuth';
 import { useI18n } from '@/lib/i18n';
+import ReactMarkdown from 'react-markdown';
 
 type BotAction = 'pause' | 'scale' | 'decrease_bid' | 'add_negative' | 'keep';
 
@@ -216,7 +217,7 @@ export default function AiEngine() {
                   <p className="text-[10px] font-medium mb-1 flex items-center gap-1" style={{ color: 'var(--text-muted)' }}>
                     <Bot className="w-3 h-3" style={{ color: 'var(--accent)' }} /> {t('aiEngine.gptAnalysis')}
                   </p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{r.aiAnalysis}</p>
+                  <div className="text-xs leading-relaxed page-markdown" style={{ color: 'var(--text-muted)' }}><ReactMarkdown>{r.aiAnalysis}</ReactMarkdown></div>
                 </div>
 
                 {!applied.includes(r.campaign.id) ? (

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Sparkles, Search, Tag, FileText, Target, Loader2, AlertTriangle, Copy, Check, RotateCcw } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth, authFetch } from '@/lib/useAuth';
+import ReactMarkdown from 'react-markdown';
 
 const CARD  = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 const INPUT: React.CSSProperties = {
@@ -290,9 +291,9 @@ export default function AdsGenerator() {
                     </h3>
                     <CopyButton text={result.targeting ?? ''} />
                   </div>
-                  <div className="p-4 rounded-xl text-sm leading-relaxed"
+                  <div className="p-4 rounded-xl text-sm leading-relaxed page-markdown"
                     style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
-                    {result.targeting}
+                    <ReactMarkdown>{result.targeting}</ReactMarkdown>
                   </div>
                 </div>
               )}

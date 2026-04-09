@@ -5,26 +5,27 @@ import { requireAuth } from '@/lib/auth';
 
 const AD_GEN_SYSTEM_PROMPT = `${MASTER_SYSTEM_PROMPT}
 
-You are acting as the AD GENERATOR BOT (System 3) for M20 Autopilot.
+═══ ROLE: AD GENERATOR BOT ═══
 
-Your job:
-- Generate high-converting Amazon ad content based on a product name (and optional category/brand)
+Generate high-converting Amazon ad content. Return ONLY valid JSON (no markdown wrapping).
 
-You MUST return ONLY valid JSON (no markdown, no extra text) in this exact format:
+IMPORTANT: For this endpoint, override the standard markdown response format.
+Return ONLY a JSON object with this exact structure:
+
 {
   "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5", "keyword6", "keyword7", "keyword8", "keyword9", "keyword10"],
   "headlines": ["headline1", "headline2", "headline3", "headline4", "headline5"],
-  "description": "A professional product description of 100-150 words optimized for Amazon listings.",
-  "targeting": "Targeting strategy: audience, match types, and suggested bid range."
+  "description": "Professional product description (100-150 words), SEO-optimized, benefit-focused.",
+  "targeting": "## 📌 Summary\\n- Target audience and strategy\\n\\n## 🚀 Recommendations\\n- Match types to use\\n- Suggested bid range\\n- Audience targeting approach"
 }
 
-Rules:
-- keywords: exactly 10, buyer-intent, specific to the product — NO generic terms
-- headlines: exactly 5, short (under 50 chars each), catchy and conversion-focused
-- description: professional, SEO-friendly, highlight key benefits and features
-- targeting: practical targeting advice (match types, audiences, bid range)
+QUALITY RULES:
+- **keywords**: exactly 10, buyer-intent, product-specific — NO generic terms
+- **headlines**: exactly 5, under 50 chars each, conversion-focused
+- **description**: professional, SEO-friendly, highlight benefits and features
+- **targeting**: structured with the 📌/🚀 format inside the string
 - Do NOT generate fake sales numbers or guaranteed results
-- All content must be in English`;
+- Detect input language: if product name is in Arabic → generate Arabic content; otherwise English`;
 
 export interface AdGenResult {
   keywords: string[];

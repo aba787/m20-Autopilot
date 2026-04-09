@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Loader2, AlertTriangle } from 'lucide-react';
 import { useAuth, authFetch } from '@/lib/useAuth';
 import { useI18n } from '@/lib/i18n';
+import ReactMarkdown from 'react-markdown';
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
@@ -198,11 +199,11 @@ export default function Support() {
                     </div>
                   </div>
                 ) : (
-                  <div className="inline-block rounded-xl px-4 py-3 text-sm max-w-xs lg:max-w-sm whitespace-pre-line"
+                  <div className={`inline-block rounded-xl px-4 py-3 text-sm max-w-xs lg:max-w-sm ${m.sender === 'bot' ? 'page-markdown' : 'whitespace-pre-line'}`}
                     style={m.sender === 'user'
                       ? { background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)', color: 'var(--text-secondary)', borderTopRightRadius: '4px' }
                       : { background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)', borderTopLeftRadius: '4px' }}>
-                    {m.message}
+                    {m.sender === 'bot' ? <ReactMarkdown>{m.message}</ReactMarkdown> : m.message}
                   </div>
                 )}
               </div>

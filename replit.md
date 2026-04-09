@@ -53,7 +53,7 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - `src/components/ThemeProvider.tsx` — Dark mode context
 - `src/lib/i18n.tsx` — i18n context (language, tone, automation state, translations, addLanguage)
 - `src/data/mock.ts` — Fallback mock data with product images, TACoS, spend, dailyBudget
-- `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT)
+- `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT with structured 4-section format)
 - `src/lib/amazonApi.ts` — Amazon Ads API client (OAuth, token refresh, campaign sync, bid management)
 - `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (exported as `db`, used in all API routes)
 - `src/lib/supabaseClient.ts` — Client-side Supabase client (used for auth in browser)
@@ -70,6 +70,15 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - **Memory**: 24-message rolling history for context-rich conversations
 - **Persistence**: Messages saved to localStorage per user (key: `m20_chat_{userId}`), survives page refreshes
 - **Bilingual**: Auto-detects Arabic/English input, responds in the same language
+
+## AI Structured Response Format
+- **MASTER_SYSTEM_PROMPT** in `src/lib/campaignBot.ts` — shared base prompt for all AI endpoints
+- **Mandatory 4-section markdown structure**: 📌 Summary → 📊 Analysis → 🚀 Recommendations → ⚠️ Notes (omit sections if not needed)
+- **Arabic headings**: When language is Arabic, section titles use Arabic equivalents
+- **JSON endpoints override**: `keyword-analysis.ts` and `ad-generator.ts` explicitly override markdown format — return JSON only
+- **Ad generator targeting field**: Contains markdown within the JSON string (rendered via ReactMarkdown)
+- **Markdown rendering**: `react-markdown` renders bot responses in Layout chatbot (`.chat-markdown` CSS), support page (`.page-markdown` CSS), AI engine page, and ads generator targeting tab
+- **CSS classes**: `.chat-markdown` (compact for chatbot widget), `.page-markdown` (larger for full pages) in `globals.css`
 
 ## Database Schema (Supabase)
 Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useAuth, authFetch } from '@/lib/useAuth';
 import { useI18n, supportedLanguages } from '@/lib/i18n';
+import ReactMarkdown from 'react-markdown';
 
 const menuKeys = [
   { href: '/dashboard',     key: 'nav.dashboard',      icon: LayoutDashboard },
@@ -483,11 +484,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         </div>
                       </div>
                     ) : (
-                      <div className="rounded-xl px-3 py-2 text-sm max-w-[240px] whitespace-pre-line"
+                      <div className={`rounded-xl px-3 py-2 text-sm max-w-[260px] ${m.sender === 'bot' ? 'chat-markdown' : 'whitespace-pre-line'}`}
                         style={m.sender === 'user'
                           ? { background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)', color: 'var(--text-secondary)', borderTopRightRadius: '4px' }
                           : { background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)', borderTopLeftRadius: '4px' }}>
-                        {m.message}
+                        {m.sender === 'bot' ? <ReactMarkdown>{m.message}</ReactMarkdown> : m.message}
                       </div>
                     )}
                   </div>

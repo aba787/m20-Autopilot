@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       profile: data,
       budget_warning: budget < 40,
       budget_warning_message: budget < 40
-        ? `Current daily budget (${budget} SAR) is below the recommended minimum of 40 SAR per product.`
+        ? 'For better performance, it is recommended to set a daily budget of at least 40 SAR per product.'
         : null,
     });
   }

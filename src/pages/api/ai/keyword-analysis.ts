@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { requireAuth } from '@/lib/auth';
+import { checkAIQueryLimit, incrementAIQueryCount } from '@/lib/subscriptionGuard';
 import { callOpenAI, MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
 
 const KEYWORD_ANALYSIS_PROMPT = `${MASTER_SYSTEM_PROMPT}
@@ -32,7 +32,7 @@ Every reason field must be concise (1 line), data-driven, and include the key me
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const auth = await requireAuth(req, res);
+  const auth = await checkAIQueryLimit(req, res);
   if (!auth) return;
 
   const { keywords, searchTerms, productName, campaignName, targetAcos } = req.body;
@@ -69,6 +69,7 @@ ${JSON.stringify(searchTerms || [], null, 2)}
       analysis = { summary: reply, profitable_keywords: [], negative_keywords: [], opportunities: [], new_suggestions: [], match_type_changes: [] };
     }
 
+    await incrementAIQueryCount(auth.id);
     return res.status(200).json({ success: true, analysis });
   } catch (err: any) {
     return res.status(500).json({ error: err.message || 'AI analysis failed' });

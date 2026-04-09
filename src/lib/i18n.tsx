@@ -71,13 +71,13 @@ const translations: Record<string, Record<string, string>> = {
   'dash.barChart': { en: 'Bar Chart', ar: 'أعمدة بيانية', es: 'Gráfico de Barras', fr: 'Graphique en barres', de: 'Balkendiagramm', tr: 'Çubuk Grafik', zh: '柱状图' },
 
   'budget.lowWarning': {
-    en: '⚠️ Current budget is low. For better results, it is recommended to have at least 40 SAR daily per product.',
-    ar: '⚠️ الميزانية الحالية منخفضة. للحصول على نتائج أفضل، يفضل أن تكون 40 ريال يوميًا لكل منتج.',
-    es: '⚠️ El presupuesto actual es bajo. Para mejores resultados, se recomienda al menos 40 SAR diarios por producto.',
-    fr: '⚠️ Le budget actuel est faible. Pour de meilleurs résultats, il est recommandé d\'avoir au moins 40 SAR par jour et par produit.',
-    de: '⚠️ Das aktuelle Budget ist niedrig. Für bessere Ergebnisse werden mindestens 40 SAR täglich pro Produkt empfohlen.',
-    tr: '⚠️ Mevcut bütçe düşük. Daha iyi sonuçlar için ürün başına günlük en az 40 SAR önerilir.',
-    zh: '⚠️ 当前预算偏低。为获得更好结果，建议每个产品每天至少40 SAR。'
+    en: 'For better performance, it is recommended to set a daily budget of at least 40 SAR per product.',
+    ar: 'للحصول على أداء أفضل، يُوصى بتعيين ميزانية يومية لا تقل عن 40 ريال لكل منتج.',
+    es: 'Para un mejor rendimiento, se recomienda establecer un presupuesto diario de al menos 40 SAR por producto.',
+    fr: 'Pour de meilleures performances, il est recommandé de définir un budget quotidien d\'au moins 40 SAR par produit.',
+    de: 'Für eine bessere Leistung wird empfohlen, ein Tagesbudget von mindestens 40 SAR pro Produkt festzulegen.',
+    tr: 'Daha iyi performans için ürün başına günlük en az 40 SAR bütçe belirlemeniz önerilir.',
+    zh: '为获得更好的表现，建议为每个产品设定至少40 SAR的每日预算。'
   },
 
   'auto.on': { en: 'Automation ON', ar: 'الأتمتة مفعّلة', es: 'Automatización ACTIVADA', fr: 'Automatisation ACTIVÉE', de: 'Automatisierung AN', tr: 'Otomasyon AÇIK', zh: '自动化已开启' },
@@ -188,6 +188,7 @@ const translations: Record<string, Record<string, string>> = {
 
   'campaigns.title': { en: 'Campaigns', ar: 'الحملات', es: 'Campañas', fr: 'Campagnes', de: 'Kampagnen', tr: 'Kampanyalar', zh: '广告活动' },
   'campaigns.count': { en: 'campaigns', ar: 'حملة', es: 'campañas', fr: 'campagnes', de: 'Kampagnen', tr: 'kampanya', zh: '个广告活动' },
+  'campaigns.noCampaigns': { en: 'No campaigns yet. Connect your Amazon account to sync campaigns.', ar: 'لا توجد حملات بعد. اربط حساب أمازون لمزامنة الحملات.', es: 'Sin campañas aún. Conecta tu cuenta de Amazon para sincronizar campañas.', fr: 'Aucune campagne. Connectez votre compte Amazon pour synchroniser les campagnes.', de: 'Noch keine Kampagnen. Verbinden Sie Ihr Amazon-Konto.', tr: 'Henüz kampanya yok. Kampanyaları senkronize etmek için Amazon hesabınızı bağlayın.', zh: '暂无广告活动。连接您的亚马逊账户以同步广告活动。' },
   'campaigns.search': { en: 'Search campaigns...', ar: 'البحث في الحملات...', es: 'Buscar campañas...', fr: 'Rechercher des campagnes...', de: 'Kampagnen suchen...', tr: 'Kampanya ara...', zh: '搜索广告活动...' },
   'campaigns.allStatus': { en: 'All Status', ar: 'كل الحالات', es: 'Todos los Estados', fr: 'Tous les statuts', de: 'Alle Status', tr: 'Tüm Durumlar', zh: '所有状态' },
   'campaigns.allTypes': { en: 'All Types', ar: 'كل الأنواع', es: 'Todos los Tipos', fr: 'Tous les types', de: 'Alle Typen', tr: 'Tüm Türler', zh: '所有类型' },

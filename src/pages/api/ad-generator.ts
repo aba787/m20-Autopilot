@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
 import { db as supabaseAdmin } from '@/lib/supabaseAdmin';
 import { requireAuth } from '@/lib/auth';
+import { checkAIQueryLimit, incrementAIQueryCount } from '@/lib/subscriptionGuard';
 
 const AD_GEN_SYSTEM_PROMPT = `${MASTER_SYSTEM_PROMPT}
 
@@ -37,7 +38,7 @@ export interface AdGenResult {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const user = await requireAuth(req, res);
+  const user = await checkAIQueryLimit(req, res);
   if (!user) return;
 
   const { productName, category, brand } = req.body as {
@@ -89,6 +90,7 @@ Return ONLY valid JSON with no extra text.`;
       return res.status(500).json({ error: 'Failed to parse AI response as JSON' });
     }
 
+    await incrementAIQueryCount(user.id);
     await supabaseAdmin.from('ad_generations').insert({
       user_id:     user.id,
       product_name: productName.trim(),

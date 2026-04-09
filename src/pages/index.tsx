@@ -43,7 +43,6 @@ export default function Landing() {
               <ul>
                 <li><a href="#features" onClick={(e) => { e.preventDefault(); scrollTo('features'); }}>{tx.nav.features}</a></li>
                 <li><a href="#process" onClick={(e) => { e.preventDefault(); scrollTo('process'); }}>{tx.nav.howItWorks}</a></li>
-                <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo('pricing'); }}>{tx.nav.pricing}</a></li>
                 <li><a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>{tx.nav.faq}</a></li>
               </ul>
             </nav>
@@ -231,37 +230,6 @@ export default function Landing() {
             </div>
           </section>
 
-          <section className="lp-section" id="pricing" style={{ background: 'rgba(255,255,255,0.01)' }}>
-            <div className="container-w">
-              <h2 className="font-display" style={{ textAlign: 'center' }}>{tx.pricing.title}</h2>
-              <div className="pricing-grid">
-                {tx.pricing.plans.map((plan, i) => (
-                  <div className={`pricing-card${'featured' in plan && plan.featured ? ' featured' : ''}`} key={i}>
-                    {'featured' in plan && plan.featured && <div className="pricing-badge">{tx.pricing.badge}</div>}
-                    <h3>{plan.name}</h3>
-                    <div className="pricing-subtitle">{plan.sub}</div>
-                    <div className="price-tag">{plan.price === 'custom' ? tx.pricing.custom : plan.price}</div>
-                    <div className="pricing-subtitle" style={{ fontSize: '0.8rem', marginBottom: '24px' }}>
-                      {plan.price === 'custom' ? tx.pricing.tailored : tx.pricing.perMonth}
-                    </div>
-                    <Link
-                      href={i === 2 ? '/login' : '/login'}
-                      className={i === 2 ? 'btn-secondary' : 'btn-primary'}
-                      style={{ width: '100%', marginBottom: '24px' }}
-                    >
-                      {i === 2 ? tx.pricing.btnContact : tx.pricing.btnStart}
-                    </Link>
-                    <ul className="pricing-features">
-                      {plan.features.map((f, j) => (
-                        <li key={j}><span className="check">✓</span> {f}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
           <section className="lp-section" id="faq">
             <div className="container-w">
               <h2 className="font-display" style={{ textAlign: 'center' }}>{tx.faq.title}</h2>
@@ -301,7 +269,6 @@ export default function Landing() {
               <h4>{tx.footer.col1}</h4>
               <ul>
                 <li><a href="#features" onClick={(e) => { e.preventDefault(); scrollTo('features'); }}>{tx.footer.links1[0]}</a></li>
-                <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo('pricing'); }}>{tx.footer.links1[1]}</a></li>
                 <li><Link href="/login">{tx.footer.links1[2]}</Link></li>
               </ul>
             </div>

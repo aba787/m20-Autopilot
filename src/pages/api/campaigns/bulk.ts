@@ -20,12 +20,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       switch (action) {
         case 'pause': {
-          await adminDb.from('campaigns').update({ status: 'Paused' }).eq('id', id).eq('user_id', auth.id);
+          await adminDb.from('campaigns').update({ status: 'paused' }).eq('id', id).eq('user_id', auth.id);
           results.push({ id, success: true });
           break;
         }
         case 'enable': {
-          await adminDb.from('campaigns').update({ status: 'Active' }).eq('id', id).eq('user_id', auth.id);
+          await adminDb.from('campaigns').update({ status: 'active' }).eq('id', id).eq('user_id', auth.id);
           results.push({ id, success: true });
           break;
         }

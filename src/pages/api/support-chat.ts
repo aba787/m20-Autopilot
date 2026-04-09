@@ -81,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const messages = [
       { role: 'system' as const, content: systemPrompt },
-      ...(history ?? []).slice(-8),
+      ...(history ?? []).slice(-20),
       { role: 'user' as const, content: message },
     ];
 

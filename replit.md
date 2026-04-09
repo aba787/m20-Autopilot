@@ -25,6 +25,20 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - **Role redirect**: Admin → `/admin`, User → `/dashboard`
 - **Auto profile creation**: Trigger `on_auth_user_created` on `auth.users` auto-creates profiles row on signup
 - **Password reset**: POST `/api/auth/forgot-password` — generates token, stores in `password_reset_tokens` table
+- **Login logging**: Every login attempt (success/failure) is logged to `login_attempts` table via `/api/auth/login-log`
+
+## Data Isolation (Multi-User)
+- **All pages fetch real data** from API endpoints (no mock data in dashboard, campaigns, products, ai-engine)
+- **Auth pattern**: `const { token } = useAuth(); const af = authFetch(token);` then `af('/api/endpoint')`
+- **Server-side**: All API routes use `requireAuth(req, res)` → query Supabase with `user_id` filter
+- **RLS policies**: All 17 tables have Row Level Security enforcing `auth.uid() = user_id`
+
+## Subscription System & Feature Gating
+- **Middleware**: `src/lib/subscriptionGuard.ts` — `checkAIQueryLimit()`, `requireFeature()`, `checkResourceLimit()`, `incrementAIQueryCount()`
+- **Plans**: Free (5 campaigns, 100 kw, 20 AI queries), Pro ($49, 50 campaigns, 2000 kw, 500 AI), Enterprise ($199, unlimited)
+- **AI query tracking**: All AI endpoints (bot-analyze, ad-generator, keyword-analysis) check limits before execution and increment count after
+- **Feature gating**: `requireFeature(req, res, 'feature_name')` blocks non-subscribed users with upgrade prompt
+- **Resource limits**: `checkResourceLimit(userId, 'campaigns')` checks current count vs plan limit
 
 ## Design System (CSS Custom Properties Theme)
 - **Theme Toggle**: Dark (default) / Light mode via `.light` class on `<html>`; persisted to localStorage
@@ -34,7 +48,7 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - **Inline styles**: Use `var(--token)` (e.g. `background: 'var(--card-bg)'`); no hardcoded hex in pages
 - **CARD constant**: `{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' }`
 - **Direction**: LTR/RTL — dynamically switches based on selected language (sidebar adjusts accordingly)
-- **Metric Colors**: Each KPI card has a unique color tag for quick visual differentiation
+- **Budget warning**: Recommendation style (cyan, Lightbulb icon) — not error style
 
 ## i18n System
 - **File**: `src/lib/i18n.tsx` — React context-based, scalable translation system
@@ -52,13 +66,14 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - `src/components/Layout.tsx` — App shell: left sidebar + header (with language selector) + embedded chatbot widget (24-message memory)
 - `src/components/ThemeProvider.tsx` — Dark mode context
 - `src/lib/i18n.tsx` — i18n context (language, tone, automation state, translations, addLanguage)
-- `src/data/mock.ts` — Fallback mock data with product images, TACoS, spend, dailyBudget
+- `src/data/mock.ts` — Fallback mock data (legacy, pages now use API)
 - `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT with structured 4-section format)
-- `src/lib/amazonApi.ts` — Amazon Ads API client (OAuth, token refresh, campaign sync, bid management)
+- `src/lib/amazonApi.ts` — Amazon Ads API client (OAuth, token refresh, campaign sync, bid management, keyword/ad-group fetch, negative keywords)
+- `src/lib/subscriptionGuard.ts` — Subscription feature gating middleware (AI query limits, resource limits, feature checks)
 - `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (exported as `db`, used in all API routes)
 - `src/lib/supabaseClient.ts` — Client-side Supabase client (used for auth in browser)
 - `src/lib/auth.ts` — requireAuth(req, res), optionalAuth(req), requireAdmin(), logAction(), createNotification()
-- `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper (uses Supabase Auth)
+- `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper (uses Supabase Auth) + login attempt logging
 - `src/pages/api/` — All backend routes (see list below)
 - `supabase/fix-and-seed.sql` — Full DB schema + triggers + RLS policies to run in Supabase SQL Editor
 
@@ -67,7 +82,7 @@ Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages),
 - **Available on all pages**: Chat stays accessible across the entire app
 - **FAQ system**: Local FAQ matching for instant answers (no API call needed)
 - **GPT fallback**: Calls `/api/support-chat` for non-FAQ questions
-- **Memory**: 24-message rolling history for context-rich conversations
+- **Memory**: 24-message rolling history for context-rich conversations (API keeps 20-message context window)
 - **Persistence**: Messages saved to localStorage per user (key: `m20_chat_{userId}`), survives page refreshes
 - **Bilingual**: Auto-detects Arabic/English input, responds in the same language
 
@@ -91,8 +106,8 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - **search_terms** — search term reports with spend/sales/acos
 - **negative_keywords** — negative keyword targeting (campaign/ad group level)
 - **rules** — automation rules (bid adjustments, budget changes, pause conditions)
-- **subscriptions** — user subscription plans (free/pro/enterprise)
-- **login_attempts** — security logging for login attempts
+- **subscriptions** — user subscription plans (free/pro/enterprise) with AI query tracking
+- **login_attempts** — security logging for login attempts (IP, user agent, success/failure)
 - **password_reset_tokens** — secure password reset flow
 - **action_logs** — all AI + user actions with status (pending/approved/rejected/executed/failed)
 - **notifications** — per-user alerts (info/warning/error/success)
@@ -106,6 +121,8 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 ### Auth
 - `GET  /api/auth/me` — Validate Supabase token, return user profile
 - `POST /api/auth/forgot-password` — Password reset request (generates token)
+- `POST /api/auth/reset-password` — Reset password with token
+- `POST /api/auth/login-log` — Log login attempt (success/failure with IP and user agent)
 
 ### Campaigns
 - `GET  /api/campaigns` — List campaigns (auth required, supports ?from=&to=&status=)
@@ -119,9 +136,9 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `GET/POST /api/negative-keywords` — Manage negative keywords
 - `GET/POST/PUT/DELETE /api/rules` — Automation rules CRUD
 
-### AI
+### AI (all endpoints check subscription AI query limits)
 - `POST /api/ai/keyword-analysis` — AI keyword intelligence (analyzes performance, recommends actions)
-- `POST /api/support-chat` — AI customer support (strict platform-only scope)
+- `POST /api/support-chat` — AI customer support (strict platform-only scope, 20-message context)
 - `POST /api/bot-analyze` — Campaign analysis (rule engine + GPT)
 - `POST /api/ad-generator` — Generate ad content via GPT-4o mini (auth required)
 
@@ -161,6 +178,14 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - `POST /api/jobs/optimize-campaigns` — Background campaign optimization
 - `POST /api/jobs/optimize-keywords` — Background keyword optimization
 
+## Amazon API Integration
+- **Library**: `src/lib/amazonApi.ts`
+- **OAuth flow**: `getOAuthUrl(state)` → Amazon login → `exchangeCodeForTokens(code)` → store in `amazon_connections`
+- **Token management**: Auto-refresh via `refreshAccessToken()` when token nears expiry (5-min buffer)
+- **Campaign operations**: `fetchAmazonCampaigns()`, `syncCampaigns()`, `pauseCampaign()`, `enableCampaign()`, `updateCampaignBid()`
+- **Keyword operations**: `fetchKeywords()`, `fetchAdGroups()`, `addNegativeKeyword()`
+- **Sync**: `POST /api/amazon/sync` pulls campaigns from Amazon and upserts into local DB
+
 ## Email System
 - **Service**: Resend (`RESEND_API_KEY`)
 - **Library**: `src/lib/email.ts` — sendEmail(), sendWelcomeEmail(), sendPasswordResetEmail(), sendVerificationEmail(), sendBulkEmail()
@@ -172,7 +197,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - **Welcome email flow**: After client-side signup → fire-and-forget POST to `/api/email/welcome`
 
 ## Backend Logic
-- **Budget check**: `daily_budget < 40 SAR` → `budget_warning: true` returned from dashboard/settings
+- **Budget check**: `daily_budget < 40 SAR` → recommendation-style warning (cyan, Lightbulb icon) from dashboard/settings
 - **Automation gate**: `automation_enabled = false` → optimization jobs skip processing for that user
 - **Currency**: All monetary values are in SAR (Saudi Riyal)
 - **Subscription plans**: Free (5 campaigns, 100 kw, 20 AI queries), Pro ($49, 50 campaigns, 2000 kw), Enterprise ($199, unlimited)
@@ -187,7 +212,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 2. `/login` — Sign in + Create Account + Forgot Password flow (tab toggle, Supabase Auth)
 3. `/dashboard` — KPIs with colored metric cards, editable daily budget (pencil icon, min 10 SAR), charts with type switcher
 4. `/campaigns` — Sortable campaigns table with checkbox selection and bulk actions (pause/enable/delete)
-5. `/products` — Product cards layout with detail sidebar, search and filters
+5. `/products` — Product cards layout with detail sidebar, search and filters (fetches from API)
 6. `/blacklist` — Excluded products
 7. `/ai-engine` — AI + rules analysis (GPT-4o mini)
 8. `/ads-generator` — Ad content generator
@@ -197,7 +222,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 12. `/amazon-news` — Seller news
 13. `/integration` — Amazon account connection with OAuth flow and sync history
 14. `/audit` — Full change log
-15. `/support` — Full-page AI chat assistant (bilingual, FAQ system, GPT fallback, 24-msg memory)
+15. `/support` — Full-page AI chat assistant (bilingual, FAQ system, GPT fallback, 20-msg memory)
 16. `/help` — FAQ
 17. `/settings` — Account settings (language, tone, automation, bot mode, ACOS target)
 18. `/subscriptions` — Plan cards (Free/Pro/Enterprise) with upgrade flow

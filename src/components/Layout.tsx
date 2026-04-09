@@ -27,7 +27,6 @@ const menuKeys = [
   { href: '/integration',   key: 'nav.amazonConnect',  icon: Link2           },
   { href: '/audit',         key: 'nav.changeLog',      icon: History         },
   { href: '/help',          key: 'nav.helpCenter',     icon: HelpCircle      },
-  { href: '/subscriptions', key: 'nav.subscriptions',  icon: Crown           },
   { href: '/settings',      key: 'nav.settings',       icon: Settings        },
 ];
 
@@ -335,9 +334,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
 
               {notifOpen && (
-                <div className="absolute right-0 top-12 w-80 rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto"
+                <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto sm:right-0 top-16 sm:top-12 w-auto sm:w-80 rounded-xl shadow-2xl z-50 max-h-[70vh] sm:max-h-96 overflow-y-auto"
                   style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)' }}>
-                  <div className="p-3 flex items-center justify-between sticky top-0"
+                  <div className="p-3 flex items-center justify-between sticky top-0 z-10"
                     style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)' }}>
                     <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{t('common.notifications')}</h3>
                     <button onClick={markAllRead} className="text-xs" style={{ color: 'var(--accent)' }}>{t('common.markAllRead')}</button>
@@ -359,7 +358,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         {!n.read && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }} />}
                         <p className="text-sm font-medium flex-1 truncate" style={{ color: 'var(--text-primary)' }}>{n.title}</p>
                       </div>
-                      <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{n.body}</p>
+                      <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--text-muted)' }}>{n.body}</p>
                       <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-dim)' }}>
                         {new Date(n.created_at).toLocaleString()}
                       </p>

@@ -88,10 +88,23 @@ export function useAuthState(): AuthContext {
       password,
     });
 
-    if (error) return { error: error.message };
+    if (error) {
+      fetch('/api/auth/login-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, success: false, failure_reason: error.message }),
+      }).catch(() => {});
+      return { error: error.message };
+    }
 
     const authUser = data.user;
     setToken(data.session.access_token);
+
+    fetch('/api/auth/login-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, success: true }),
+    }).catch(() => {});
 
     const profile = await fetchProfile(authUser.id);
     if (profile) {

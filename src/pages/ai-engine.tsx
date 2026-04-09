@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { campaigns as mockCampaigns, products } from '@/data/mock';
+import { useState, useEffect, useCallback } from 'react';
 import { Bot, TrendingUp, TrendingDown, AlertTriangle, Tag, CheckCircle2, X, Zap, Play, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import type { BotResult } from '@/lib/campaignBot';
 import { useAuth, authFetch } from '@/lib/useAuth';
@@ -7,6 +6,23 @@ import { useI18n } from '@/lib/i18n';
 import ReactMarkdown from 'react-markdown';
 
 type BotAction = 'pause' | 'scale' | 'decrease_bid' | 'add_negative' | 'keep';
+
+interface DBCampaign {
+  id: number;
+  name: string;
+  spend: number;
+  sales: number;
+  clicks: number;
+  impressions: number;
+  orders: number;
+  acos: number;
+  roas: number;
+  ctr: number;
+  budget: number;
+  status: string;
+  type?: string;
+  target_acos?: number;
+}
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
@@ -17,20 +33,18 @@ const priorityStyle: Record<string, React.CSSProperties> = {
   low:      { background: 'rgba(100,116,139,0.12)',color: '#64748b', border: '1px solid rgba(100,116,139,0.25)'},
 };
 
-function toBotFormat(c: typeof mockCampaigns[0]) {
-  return { id: c.id, name: c.name, spend: c.spend, sales: c.sales, clicks: c.clicks, impressions: c.impressions, orders: c.orders, acos: c.acos, roas: c.roas, ctr: c.ctr, budget: c.budget, status: c.status, target_acos: 30 };
-}
-
 export default function AiEngine() {
   const { t } = useI18n();
   const { token } = useAuth();
   const apiFetch = authFetch(token);
+  const [campaigns, setCampaigns] = useState<DBCampaign[]>([]);
   const [results, setResults]     = useState<BotResult[]>([]);
   const [loading, setLoading]     = useState(false);
   const [loadingId, setLoadingId] = useState<number | null>(null);
   const [error, setError]         = useState('');
   const [expanded, setExpanded]   = useState<number | null>(null);
   const [applied, setApplied]     = useState<number[]>([]);
+  const [fetchingCampaigns, setFetchingCampaigns] = useState(true);
 
   const actionConfig: Record<BotAction, { label: string; color: string; borderColor: string; icon: any }> = {
     pause:        { label: t('aiEngine.pause'),       color: 'var(--error)', borderColor: 'rgba(239,68,68,0.25)',    icon: X          },
@@ -40,24 +54,36 @@ export default function AiEngine() {
     keep:         { label: t('aiEngine.keep'),        color: '#64748b', borderColor: 'rgba(100,116,139,0.25)',  icon: CheckCircle2},
   };
 
-  const strongProducts = products.filter(p => p.acos <= 22 && p.profit > 5000).slice(0, 3);
-  const weakProducts   = products.filter(p => p.status === 'poor' || p.status === 'weak').slice(0, 3);
+  const fetchCampaigns = useCallback(async () => {
+    try {
+      const res = await apiFetch('/api/campaigns');
+      const data = await res.json();
+      if (res.ok) {
+        setCampaigns(data.campaigns ?? data ?? []);
+      }
+    } catch {
+    } finally {
+      setFetchingCampaigns(false);
+    }
+  }, [token]);
+
+  useEffect(() => { if (token) fetchCampaigns(); else setFetchingCampaigns(false); }, [token]);
 
   const runFullBot = async () => {
     setLoading(true); setError(''); setResults([]);
     try {
-      const res  = await apiFetch('/api/bot-analyze', { method: 'POST', body: JSON.stringify({ campaigns: mockCampaigns.map(toBotFormat) }) });
+      const res  = await apiFetch('/api/bot-analyze', { method: 'POST', body: JSON.stringify({}) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Unknown error');
-      setResults(data.results);
+      setResults(data.results ?? []);
     } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Unknown error'); }
     finally { setLoading(false); }
   };
 
-  const analyzeOne = async (campaign: typeof mockCampaigns[0]) => {
+  const analyzeOne = async (campaign: DBCampaign) => {
     setLoadingId(campaign.id); setError('');
     try {
-      const res  = await apiFetch('/api/bot-analyze', { method: 'POST', body: JSON.stringify({ singleCampaign: toBotFormat(campaign) }) });
+      const res  = await apiFetch('/api/bot-analyze', { method: 'POST', body: JSON.stringify({ campaignId: campaign.id }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error');
       setResults(prev => [data.result, ...prev.filter(r => r.campaign.id !== campaign.id)]);
@@ -78,9 +104,9 @@ export default function AiEngine() {
           </h1>
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('aiEngine.subtitle')}</p>
         </div>
-        <button onClick={runFullBot} disabled={loading}
+        <button onClick={runFullBot} disabled={loading || campaigns.length === 0}
           className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-[#0a0612] transition-all"
-          style={{ background: 'var(--accent-gradient)', opacity: loading ? 0.7 : 1, boxShadow: 'var(--accent-glow)' }}>
+          style={{ background: 'var(--accent-gradient)', opacity: loading || campaigns.length === 0 ? 0.7 : 1, boxShadow: 'var(--accent-glow)' }}>
           {loading
             ? <><Loader2 className="w-4 h-4 animate-spin" /> {t('aiEngine.analyzing')}</>
             : <><Zap className="w-4 h-4" /> {t('aiEngine.analyzeAll')}</>}
@@ -113,67 +139,80 @@ export default function AiEngine() {
           <div className="px-4 py-3 flex items-center justify-between"
             style={{ borderBottom: '1px solid var(--border-primary)' }}>
             <h2 className="font-bold text-sm text-white">{t('campaigns.title')}</h2>
-            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{mockCampaigns.length} {t('campaigns.count')}</span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{campaigns.length} {t('campaigns.count')}</span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead style={{ background: 'var(--hover-bg)' }}>
-                <tr>
-                  {[t('campaigns.campaign'), 'ACOS', 'ROAS', t('products.action')].map(h => (
-                    <th key={h} className="text-left py-2 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {mockCampaigns.map(c => {
-                  const result = results.find(r => r.campaign.id === c.id);
-                  const action = result?.ruleDecision.action as BotAction | undefined;
-                  const cfg    = action ? actionConfig[action] : null;
-                  return (
-                    <tr key={c.id}
-                      className="transition-colors"
-                      style={{ borderBottom: '1px solid var(--border-subtle)', background: expanded === c.id ? 'var(--hover-bg)' : 'transparent' }}>
-                      <td className="py-2 px-3">
-                        <p className="font-medium text-white truncate max-w-[130px]" title={c.name}>{c.name}</p>
-                        <p style={{ color: 'var(--text-dim)' }}>{c.type.split(' ')[0]}</p>
-                      </td>
-                      <td className="py-2 px-3">
-                        <span className="font-medium" style={{ color: c.acos <= 25 ? '#10b981' : c.acos <= 40 ? '#f59e0b' : '#ef4444' }}>{c.acos}%</span>
-                      </td>
-                      <td className="py-2 px-3">
-                        <span style={{ color: c.roas >= 4 ? '#10b981' : c.roas >= 2 ? '#f59e0b' : '#ef4444' }}>{c.roas}</span>
-                      </td>
-                      <td className="py-2 px-3">
-                        <div className="flex items-center gap-1">
-                          {cfg && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded font-medium"
-                              style={priorityStyle[result!.ruleDecision.priority]}>
-                              {result!.ruleDecision.priority}
-                            </span>
-                          )}
-                          <button
-                            onClick={() => {
-                              if (expanded === c.id) setExpanded(null);
-                              else if (result) setExpanded(c.id);
-                              else analyzeOne(c);
-                            }}
-                            disabled={loadingId === c.id}
-                            className="p-1 rounded transition-colors"
-                            style={{ color: 'var(--text-muted)' }}>
-                            {loadingId === c.id
-                              ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                              : result
-                                ? (expanded === c.id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />)
-                                : <Play className="w-3.5 h-3.5" style={{ color: 'var(--success)' }} />}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+
+          {fetchingCampaigns ? (
+            <div className="p-8 text-center">
+              <Loader2 className="w-6 h-6 mx-auto animate-spin" style={{ color: 'var(--accent)' }} />
+              <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>{t('common.loading')}</p>
+            </div>
+          ) : campaigns.length === 0 ? (
+            <div className="p-8 text-center">
+              <Bot className="w-8 h-8 mx-auto mb-2" style={{ color: 'var(--text-dim)' }} />
+              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('campaigns.noCampaigns')}</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead style={{ background: 'var(--hover-bg)' }}>
+                  <tr>
+                    {[t('campaigns.campaign'), 'ACOS', 'ROAS', t('products.action')].map(h => (
+                      <th key={h} className="text-left py-2 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {campaigns.map(c => {
+                    const result = results.find(r => r.campaign.id === c.id);
+                    const action = result?.ruleDecision.action as BotAction | undefined;
+                    const cfg    = action ? actionConfig[action] : null;
+                    return (
+                      <tr key={c.id}
+                        className="transition-colors"
+                        style={{ borderBottom: '1px solid var(--border-subtle)', background: expanded === c.id ? 'var(--hover-bg)' : 'transparent' }}>
+                        <td className="py-2 px-3">
+                          <p className="font-medium text-white truncate max-w-[130px]" title={c.name}>{c.name}</p>
+                          <p style={{ color: 'var(--text-dim)' }}>{c.type?.split(' ')[0] ?? c.status}</p>
+                        </td>
+                        <td className="py-2 px-3">
+                          <span className="font-medium" style={{ color: c.acos <= 25 ? '#10b981' : c.acos <= 40 ? '#f59e0b' : '#ef4444' }}>{c.acos}%</span>
+                        </td>
+                        <td className="py-2 px-3">
+                          <span style={{ color: c.roas >= 4 ? '#10b981' : c.roas >= 2 ? '#f59e0b' : '#ef4444' }}>{c.roas}</span>
+                        </td>
+                        <td className="py-2 px-3">
+                          <div className="flex items-center gap-1">
+                            {cfg && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium"
+                                style={priorityStyle[result!.ruleDecision.priority]}>
+                                {result!.ruleDecision.priority}
+                              </span>
+                            )}
+                            <button
+                              onClick={() => {
+                                if (expanded === c.id) setExpanded(null);
+                                else if (result) setExpanded(c.id);
+                                else analyzeOne(c);
+                              }}
+                              disabled={loadingId === c.id}
+                              className="p-1 rounded transition-colors"
+                              style={{ color: 'var(--text-muted)' }}>
+                              {loadingId === c.id
+                                ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                : result
+                                  ? (expanded === c.id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />)
+                                  : <Play className="w-3.5 h-3.5" style={{ color: 'var(--success)' }} />}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <div className="space-y-3">
@@ -235,42 +274,6 @@ export default function AiEngine() {
               </div>
             );
           })()}
-
-          <div className="p-4" style={CARD}>
-            <h3 className="font-bold text-sm mb-3 flex items-center gap-1.5" style={{ color: 'var(--success)' }}>
-              <TrendingUp className="w-4 h-4" /> {t('aiEngine.topPerforming')}
-            </h3>
-            <div className="space-y-2">
-              {strongProducts.map(p => (
-                <div key={p.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-white truncate">{p.name.split('-')[0].trim()}</p>
-                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>ACOS {p.acos}% · {p.units} {t('dash.units')}</p>
-                  </div>
-                  <span className="text-sm font-bold ml-2" style={{ color: 'var(--success)' }}>{p.profit.toLocaleString()} SAR</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="p-4" style={CARD}>
-            <h3 className="font-bold text-sm mb-3 flex items-center gap-1.5" style={{ color: 'var(--error)' }}>
-              <AlertTriangle className="w-4 h-4" /> {t('aiEngine.needsAttention')}
-            </h3>
-            <div className="space-y-2">
-              {weakProducts.map(p => (
-                <div key={p.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-white truncate">{p.name.split('-')[0].trim()}</p>
-                    <p className="text-xs" style={{ color: 'var(--error)' }}>ACOS {p.acos}%</p>
-                  </div>
-                  <span className="text-sm font-bold ml-2" style={{ color: p.profit > 0 ? '#f59e0b' : '#ef4444' }}>
-                    {p.profit.toLocaleString()} SAR
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
 
           {results.length === 0 && expanded === null && (
             <div className="p-8 text-center" style={CARD}>

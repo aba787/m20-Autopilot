@@ -1,10 +1,24 @@
-import { useState } from 'react';
-import { campaigns } from '@/data/mock';
-import { Search, ChevronUp, ChevronDown, Pause, Play, Trash2, CheckSquare, Square } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Search, ChevronUp, ChevronDown, Pause, Play, Trash2, CheckSquare, Square, Loader2 } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { useAuth, authFetch } from '@/lib/useAuth';
 
 type SortKey = 'spend' | 'sales' | 'roas' | 'acos' | 'ctr';
+
+interface Campaign {
+  id: number;
+  name: string;
+  type: string;
+  status: string;
+  budget: number;
+  spend: number;
+  sales: number;
+  roas: number;
+  acos: number;
+  ctr: number;
+  clicks: number;
+  orders: number;
+}
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 const CUR = 'SAR';
@@ -13,6 +27,8 @@ export default function Campaigns() {
   const { t } = useI18n();
   const { token } = useAuth();
   const af = authFetch(token);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const [search, setSearch]           = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter]   = useState('all');
@@ -21,7 +37,22 @@ export default function Campaigns() {
   const [selected, setSelected]       = useState<Set<number>>(new Set());
   const [bulkLoading, setBulkLoading] = useState(false);
 
-  const types = ['all', ...Array.from(new Set(campaigns.map(c => c.type)))];
+  const fetchCampaigns = useCallback(async () => {
+    try {
+      const res = await af('/api/campaigns');
+      const data = await res.json();
+      if (res.ok) {
+        setCampaigns(data.campaigns ?? data ?? []);
+      }
+    } catch {
+    } finally {
+      setFetchLoading(false);
+    }
+  }, [token]);
+
+  useEffect(() => { if (token) fetchCampaigns(); else setFetchLoading(false); }, [token]);
+
+  const types = ['all', ...Array.from(new Set(campaigns.map(c => c.type).filter(Boolean)))];
 
   const filtered = campaigns
     .filter(c => {
@@ -59,6 +90,7 @@ export default function Campaigns() {
         body: JSON.stringify({ action, campaign_ids: Array.from(selected) }),
       });
       setSelected(new Set());
+      fetchCampaigns();
     } finally {
       setBulkLoading(false);
     }
@@ -76,6 +108,14 @@ export default function Campaigns() {
       </div>
     </th>
   );
+
+  if (fetchLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--accent)' }} />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -100,11 +140,13 @@ export default function Campaigns() {
           <option value="active">{t('common.active')}</option>
           <option value="paused">{t('common.paused')}</option>
         </select>
-        <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
-          className="rounded-lg px-3 py-1.5 text-sm outline-none text-white"
-          style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)' }}>
-          {types.map(tp => <option key={tp} value={tp}>{tp === 'all' ? t('campaigns.allTypes') : tp}</option>)}
-        </select>
+        {types.length > 1 && (
+          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
+            className="rounded-lg px-3 py-1.5 text-sm outline-none text-white"
+            style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)' }}>
+            {types.map(tp => <option key={tp} value={tp}>{tp === 'all' ? t('campaigns.allTypes') : tp}</option>)}
+          </select>
+        )}
       </div>
 
       {selected.size > 0 && (
@@ -132,79 +174,85 @@ export default function Campaigns() {
         </div>
       )}
 
-      <div style={{ ...CARD, overflow: 'hidden' }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border-primary)' }}>
-              <tr>
-                <th className="py-2.5 px-3 w-8">
-                  <button onClick={toggleAll} className="flex items-center justify-center">
-                    {selected.size === filtered.length && filtered.length > 0
-                      ? <CheckSquare className="w-4 h-4" style={{ color: 'var(--accent)' }} />
-                      : <Square className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />}
-                  </button>
-                </th>
-                <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('campaigns.campaign')}</th>
-                <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('common.status')}</th>
-                <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('campaigns.budget')}</th>
-                <Th label={t('dash.spend')}  k="spend" />
-                <Th label={t('dash.sales')}  k="sales" />
-                <Th label={t('campaigns.roas')}   k="roas"  />
-                <Th label={t('dash.acos')}   k="acos"  />
-                <Th label={t('campaigns.ctr')}    k="ctr"   />
-                <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('dash.clicks')}</th>
-                <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('dash.orders')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(c => (
-                <tr key={c.id}
-                  className="transition-colors"
-                  style={{ borderBottom: '1px solid var(--border-subtle)', background: selected.has(c.id) ? 'var(--accent-bg-strong)' : 'transparent' }}
-                  onMouseEnter={e => { if (!selected.has(c.id)) (e.currentTarget as HTMLTableRowElement).style.background = 'var(--hover-bg)'; }}
-                  onMouseLeave={e => { if (!selected.has(c.id)) (e.currentTarget as HTMLTableRowElement).style.background = 'transparent'; }}>
-                  <td className="py-3 px-3">
-                    <button onClick={() => toggleSelect(c.id)} className="flex items-center justify-center">
-                      {selected.has(c.id)
+      {campaigns.length === 0 ? (
+        <div className="p-12 text-center" style={CARD}>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('campaigns.noCampaigns')}</p>
+        </div>
+      ) : (
+        <div style={{ ...CARD, overflow: 'hidden' }}>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border-primary)' }}>
+                <tr>
+                  <th className="py-2.5 px-3 w-8">
+                    <button onClick={toggleAll} className="flex items-center justify-center">
+                      {selected.size === filtered.length && filtered.length > 0
                         ? <CheckSquare className="w-4 h-4" style={{ color: 'var(--accent)' }} />
                         : <Square className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />}
                     </button>
-                  </td>
-                  <td className="py-3 px-3">
-                    <p className="font-medium text-white">{c.name}</p>
-                    <p className="text-xs" style={{ color: 'var(--text-dim)' }}>{c.type}</p>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                      style={c.status === 'active'
-                        ? { background: 'rgba(16,185,129,0.12)', color: 'var(--success)', border: '1px solid rgba(16,185,129,0.25)' }
-                        : { background: 'rgba(100,116,139,0.12)', color: '#64748b', border: '1px solid rgba(100,116,139,0.25)' }}>
-                      {c.status === 'active' ? `● ${t('common.active')}` : `○ ${t('common.paused')}`}
-                    </span>
-                  </td>
-                  <td className="py-3 px-3" style={{ color: 'var(--text-muted)' }}>{c.budget.toLocaleString()} {CUR}</td>
-                  <td className="py-3 px-3 text-white">{c.spend.toLocaleString()} {CUR}</td>
-                  <td className="py-3 px-3 font-medium" style={{ color: 'var(--success)' }}>{c.sales.toLocaleString()} {CUR}</td>
-                  <td className="py-3 px-3">
-                    <span className="font-bold" style={{ color: c.roas >= 4 ? '#10b981' : c.roas >= 2 ? '#f59e0b' : '#ef4444' }}>{c.roas}</span>
-                  </td>
-                  <td className="py-3 px-3">
-                    <span style={{ color: c.acos <= 25 ? '#10b981' : c.acos <= 40 ? '#f59e0b' : '#ef4444' }}>{c.acos}%</span>
-                  </td>
-                  <td className="py-3 px-3 text-white">{c.ctr}%</td>
-                  <td className="py-3 px-3 text-white">{c.clicks.toLocaleString()}</td>
-                  <td className="py-3 px-3 text-white">{c.orders}</td>
+                  </th>
+                  <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('campaigns.campaign')}</th>
+                  <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('common.status')}</th>
+                  <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('campaigns.budget')}</th>
+                  <Th label={t('dash.spend')}  k="spend" />
+                  <Th label={t('dash.sales')}  k="sales" />
+                  <Th label={t('campaigns.roas')}   k="roas"  />
+                  <Th label={t('dash.acos')}   k="acos"  />
+                  <Th label={t('campaigns.ctr')}    k="ctr"   />
+                  <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('dash.clicks')}</th>
+                  <th className="text-left py-2.5 px-3 font-medium" style={{ color: 'var(--text-muted)' }}>{t('dash.orders')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {filtered.length === 0 && (
-          <div className="text-center py-12" style={{ color: 'var(--text-dim)' }}>
-            <p>{t('campaigns.noMatch')}</p>
+              </thead>
+              <tbody>
+                {filtered.map(c => (
+                  <tr key={c.id}
+                    className="transition-colors"
+                    style={{ borderBottom: '1px solid var(--border-subtle)', background: selected.has(c.id) ? 'var(--accent-bg-strong)' : 'transparent' }}
+                    onMouseEnter={e => { if (!selected.has(c.id)) (e.currentTarget as HTMLTableRowElement).style.background = 'var(--hover-bg)'; }}
+                    onMouseLeave={e => { if (!selected.has(c.id)) (e.currentTarget as HTMLTableRowElement).style.background = 'transparent'; }}>
+                    <td className="py-3 px-3">
+                      <button onClick={() => toggleSelect(c.id)} className="flex items-center justify-center">
+                        {selected.has(c.id)
+                          ? <CheckSquare className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+                          : <Square className="w-4 h-4" style={{ color: 'var(--text-dim)' }} />}
+                      </button>
+                    </td>
+                    <td className="py-3 px-3">
+                      <p className="font-medium text-white">{c.name}</p>
+                      <p className="text-xs" style={{ color: 'var(--text-dim)' }}>{c.type}</p>
+                    </td>
+                    <td className="py-3 px-3">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                        style={c.status === 'active'
+                          ? { background: 'rgba(16,185,129,0.12)', color: 'var(--success)', border: '1px solid rgba(16,185,129,0.25)' }
+                          : { background: 'rgba(100,116,139,0.12)', color: '#64748b', border: '1px solid rgba(100,116,139,0.25)' }}>
+                        {c.status === 'active' ? `● ${t('common.active')}` : `○ ${t('common.paused')}`}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3" style={{ color: 'var(--text-muted)' }}>{c.budget.toLocaleString()} {CUR}</td>
+                    <td className="py-3 px-3 text-white">{c.spend.toLocaleString()} {CUR}</td>
+                    <td className="py-3 px-3 font-medium" style={{ color: 'var(--success)' }}>{c.sales.toLocaleString()} {CUR}</td>
+                    <td className="py-3 px-3">
+                      <span className="font-bold" style={{ color: c.roas >= 4 ? '#10b981' : c.roas >= 2 ? '#f59e0b' : '#ef4444' }}>{c.roas}</span>
+                    </td>
+                    <td className="py-3 px-3">
+                      <span style={{ color: c.acos <= 25 ? '#10b981' : c.acos <= 40 ? '#f59e0b' : '#ef4444' }}>{c.acos}%</span>
+                    </td>
+                    <td className="py-3 px-3 text-white">{c.ctr}%</td>
+                    <td className="py-3 px-3 text-white">{c.clicks.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-white">{c.orders}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
-      </div>
+          {filtered.length === 0 && (
+            <div className="text-center py-12" style={{ color: 'var(--text-dim)' }}>
+              <p>{t('campaigns.noMatch')}</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

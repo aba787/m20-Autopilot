@@ -103,7 +103,7 @@ export async function syncCampaigns(userId: string, connection: AmazonConnection
       amazon_campaign_id: String(campaign.campaignId),
       name: campaign.name,
       type: 'Sponsored Products',
-      status: campaign.state === 'enabled' ? 'Active' : campaign.state === 'paused' ? 'Paused' : 'Archived',
+      status: campaign.state === 'enabled' ? 'active' : campaign.state === 'paused' ? 'paused' : 'archived',
       budget: campaign.dailyBudget || 0,
       date: new Date().toISOString().split('T')[0],
     }, { onConflict: 'user_id,amazon_campaign_id,date' });
@@ -162,6 +162,25 @@ export async function exchangeCodeForTokens(code: string): Promise<{ access_toke
   }
 
   return { access_token: data.access_token, refresh_token: data.refresh_token, expires_in: data.expires_in };
+}
+
+export async function fetchAdGroups(connection: AmazonConnection, campaignId: string) {
+  return amazonApiCall(connection, `/v2/sp/adGroups?campaignIdFilter=${campaignId}`);
+}
+
+export async function fetchKeywords(connection: AmazonConnection, adGroupId: string) {
+  return amazonApiCall(connection, `/v2/sp/keywords?adGroupIdFilter=${adGroupId}`);
+}
+
+export async function addNegativeKeyword(
+  connection: AmazonConnection,
+  campaignId: string,
+  keyword: string,
+  matchType: 'negativeExact' | 'negativePhrase' = 'negativeExact',
+) {
+  return amazonApiCall(connection, '/v2/sp/negativeKeywords', 'POST', [
+    { campaignId: parseInt(campaignId), keywordText: keyword, matchType, state: 'enabled' },
+  ]);
 }
 
 export function getOAuthUrl(state: string): string {

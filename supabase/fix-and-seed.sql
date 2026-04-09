@@ -573,6 +573,16 @@ DROP POLICY IF EXISTS "Service role full access password_reset_tokens" ON passwo
 CREATE POLICY "Service role full access password_reset_tokens" ON password_reset_tokens FOR ALL TO service_role USING (true) WITH CHECK (true);
 
 -- ============================================================
+-- RPC: Atomic AI query increment
+-- ============================================================
+CREATE OR REPLACE FUNCTION increment_ai_queries_used(p_user_id UUID)
+RETURNS void AS $$
+BEGIN
+  UPDATE subscriptions SET ai_queries_used = ai_queries_used + 1 WHERE user_id = p_user_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ============================================================
 -- After running this SQL, call POST /api/seed to create test users.
 -- The seed endpoint creates users in Supabase Auth + profiles automatically.
 -- ============================================================

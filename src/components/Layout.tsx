@@ -301,7 +301,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <span className="hidden sm:inline text-xs font-medium">{supportedLanguages.find(l => l.code === lang)?.nativeLabel}</span>
               </button>
               {langOpen && (
-                <div className="absolute right-0 top-12 w-44 rounded-xl shadow-2xl z-50 overflow-hidden"
+                <div className="absolute end-0 top-12 w-44 rounded-xl shadow-2xl z-50 overflow-hidden"
                   style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)' }}>
                   {supportedLanguages.map(l => (
                     <button key={l.code} onClick={() => { setLang(l.code); setLangOpen(false); }}
@@ -328,13 +328,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="p-2 rounded-lg relative" style={{ color: 'var(--text-muted)' }}>
                 <Bell className="w-5 h-5" />
                 {unread > 0 && (
-                  <span className="absolute top-1 right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+                  <span className="absolute top-1 end-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
                     style={{ background: 'var(--error)' }}>{unread > 9 ? '9+' : unread}</span>
                 )}
               </button>
 
               {notifOpen && (
-                <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto sm:right-0 top-16 sm:top-12 w-auto sm:w-80 rounded-xl shadow-2xl z-50 max-h-[70vh] sm:max-h-96 overflow-y-auto"
+                <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto sm:end-0 top-16 sm:top-12 w-auto sm:w-80 rounded-xl shadow-2xl z-50 max-h-[70vh] sm:max-h-96 overflow-y-auto"
                   style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)' }}>
                   <div className="p-3 flex items-center justify-between sticky top-0 z-10"
                     style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)' }}>
@@ -356,9 +356,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       }}>
                       <div className="flex items-center gap-2">
                         {!n.read && <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--accent)' }} />}
-                        <p className="text-sm font-medium flex-1 truncate" style={{ color: 'var(--text-primary)' }}>{n.title}</p>
+                        <p className="text-sm font-medium flex-1 truncate text-start" style={{ color: 'var(--text-primary)' }}>{n.title}</p>
                       </div>
-                      <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--text-muted)' }}>{n.body}</p>
+                      <p className="text-xs mt-0.5 line-clamp-2 text-start" style={{ color: 'var(--text-muted)' }}>{n.body}</p>
                       <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-dim)' }}>
                         {new Date(n.created_at).toLocaleString()}
                       </p>
@@ -380,7 +380,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 top-12 w-48 rounded-xl shadow-2xl z-50 overflow-hidden"
+                <div className="absolute end-0 top-12 w-48 rounded-xl shadow-2xl z-50 overflow-hidden"
                   style={{ background: 'var(--bg-secondary)', border: '1px solid var(--accent-border)' }}>
                   <div className="px-3 py-2.5" style={{ borderBottom: '1px solid var(--border-primary)' }}>
                     <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{displayName}</p>

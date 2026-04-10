@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     currency: 'SAR',
     budget_warning: budgetLow,
     budget_warning_message: budgetLow
-      ? `For better performance, it is recommended to set a daily budget of at least ${BUDGET_THRESHOLD_SAR} SAR per product.`
+      ? `We recommend setting a daily budget of at least ${BUDGET_THRESHOLD_SAR} SAR.`
       : null,
     automation_enabled: automationEnabled,
     automation_status: automationEnabled ? 'active' : 'stopped',

@@ -71,13 +71,13 @@ const translations: Record<string, Record<string, string>> = {
   'dash.barChart': { en: 'Bar Chart', ar: 'أعمدة بيانية', es: 'Gráfico de Barras', fr: 'Graphique en barres', de: 'Balkendiagramm', tr: 'Çubuk Grafik', zh: '柱状图' },
 
   'budget.lowWarning': {
-    en: 'For better performance, it is recommended to set a daily budget of at least 40 SAR per product.',
-    ar: 'للحصول على أداء أفضل، يُوصى بتعيين ميزانية يومية لا تقل عن 40 ريال لكل منتج.',
-    es: 'Para un mejor rendimiento, se recomienda establecer un presupuesto diario de al menos 40 SAR por producto.',
-    fr: 'Pour de meilleures performances, il est recommandé de définir un budget quotidien d\'au moins 40 SAR par produit.',
-    de: 'Für eine bessere Leistung wird empfohlen, ein Tagesbudget von mindestens 40 SAR pro Produkt festzulegen.',
-    tr: 'Daha iyi performans için ürün başına günlük en az 40 SAR bütçe belirlemeniz önerilir.',
-    zh: '为获得更好的表现，建议为每个产品设定至少40 SAR的每日预算。'
+    en: 'We recommend setting a daily budget of at least 40 SAR.',
+    ar: 'نوصي بتعيين ميزانية يومية لا تقل عن 40 ريال.',
+    es: 'Recomendamos establecer un presupuesto diario de al menos 40 SAR.',
+    fr: 'Nous recommandons de définir un budget quotidien d\'au moins 40 SAR.',
+    de: 'Wir empfehlen ein Tagesbudget von mindestens 40 SAR.',
+    tr: 'Günlük en az 40 SAR bütçe belirlemenizi öneririz.',
+    zh: '我们建议设定每日预算至少为40 SAR。'
   },
 
   'auto.on': { en: 'Automation ON', ar: 'الأتمتة مفعّلة', es: 'Automatización ACTIVADA', fr: 'Automatisation ACTIVÉE', de: 'Automatisierung AN', tr: 'Otomasyon AÇIK', zh: '自动化已开启' },

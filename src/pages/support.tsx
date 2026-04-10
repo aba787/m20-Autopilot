@@ -25,7 +25,7 @@ const quickQuestionsAr = [
 const faqEn: Record<string, string> = {
   "what's the difference between acos and roas": "ACOS and ROAS are inverses of each other:\n\n• ACOS = Spend ÷ Sales × 100 (lower is better)\n• ROAS = Sales ÷ Spend (higher is better)\n\nExample: You spent $100 and made $500 in sales:\n- ACOS = 20%\n- ROAS = 5.0",
   "how do i lower my acos": "Here are proven strategies to lower your ACOS:\n\n1. Add negative keywords to stop irrelevant clicks\n2. Focus on high-converting keywords\n3. Reduce bids on keywords with high ACOS\n4. Improve your product listing (title, images, A+ content)\n5. Use the AI Engine to get personalized recommendations",
-  "what's a good daily budget": "A good daily budget depends on your goals:\n\n• Starting out: $20-30/day per campaign\n• Growing: $40-60/day per campaign\n• Scaling: $100+/day per campaign\n\nTip: For best results, we recommend at least 40 SAR (≈$10.7) daily per product.",
+  "what's a good daily budget": "A good daily budget depends on your goals:\n\n• Starting out: $20-30/day per campaign\n• Growing: $40-60/day per campaign\n• Scaling: $100+/day per campaign\n\nTip: For best results, we recommend a daily budget of at least 40 SAR.",
   "how do i choose the best keywords": "To choose the best keywords:\n\n1. Start with your product's main features\n2. Use Amazon's auto-suggest and search term report\n3. Focus on keywords with high CTR and good ROAS\n4. Add irrelevant terms as negative keywords\n5. Check the AI Engine for keyword suggestions",
   "what does the ai engine do": "The AI Engine analyzes your campaigns using:\n\n1. Rule-based logic (fast, deterministic decisions)\n2. GPT-4o mini AI analysis (deeper insights)\n\nIt can recommend: pausing weak campaigns, scaling profitable ones, adjusting bids, and adding negative keywords.",
 };
@@ -33,7 +33,7 @@ const faqEn: Record<string, string> = {
 const faqAr: Record<string, string> = {
   "ما الفرق بين acos و roas": "ACOS و ROAS هما عكس بعضهما:\n\n• ACOS = الإنفاق ÷ المبيعات × 100 (الأقل أفضل)\n• ROAS = المبيعات ÷ الإنفاق (الأعلى أفضل)\n\nمثال: أنفقت 100$ وحققت 500$ مبيعات:\n- ACOS = 20%\n- ROAS = 5.0",
   "كيف أخفض الـ acos": "استراتيجيات مجربة لتخفيض ACOS:\n\n1. إضافة كلمات مفتاحية سلبية لمنع النقرات غير المناسبة\n2. التركيز على الكلمات المفتاحية عالية التحويل\n3. تقليل العطاءات للكلمات ذات ACOS عالي\n4. تحسين قائمة المنتج (العنوان، الصور، المحتوى)\n5. استخدم محرك الذكاء للحصول على توصيات مخصصة",
-  "كم الميزانية اليومية المناسبة": "الميزانية المناسبة تعتمد على أهدافك:\n\n• البداية: 75-110 ريال يوميًا لكل حملة\n• النمو: 150-225 ريال يوميًا لكل حملة\n• التوسع: 375+ ريال يوميًا لكل حملة\n\nنصيحة: للحصول على أفضل نتائج، ننصح بـ 40 ريال يوميًا على الأقل لكل منتج.",
+  "كم الميزانية اليومية المناسبة": "الميزانية المناسبة تعتمد على أهدافك:\n\n• البداية: 75-110 ريال يوميًا لكل حملة\n• النمو: 150-225 ريال يوميًا لكل حملة\n• التوسع: 375+ ريال يوميًا لكل حملة\n\nنصيحة: للحصول على أفضل نتائج، ننصح بميزانية يومية لا تقل عن 40 ريال.",
   "كيف أختار أفضل الكلمات المفتاحية": "لاختيار أفضل الكلمات المفتاحية:\n\n1. ابدأ بالميزات الرئيسية لمنتجك\n2. استخدم اقتراحات أمازون التلقائية وتقرير مصطلحات البحث\n3. ركّز على الكلمات ذات CTR عالي و ROAS جيد\n4. أضف المصطلحات غير المناسبة ككلمات سلبية\n5. تحقق من محرك الذكاء لاقتراحات الكلمات",
   "ماذا يفعل محرك الذكاء الاصطناعي": "محرك الذكاء الاصطناعي يحلل حملاتك باستخدام:\n\n1. منطق قائم على القواعد (قرارات سريعة وحاسمة)\n2. تحليل GPT-4o mini (رؤى أعمق)\n\nيمكنه التوصية بـ: إيقاف الحملات الضعيفة، توسيع الحملات المربحة، تعديل العطاءات، وإضافة كلمات سلبية.",
 };

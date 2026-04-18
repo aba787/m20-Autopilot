@@ -71,7 +71,7 @@ interface Product {
 
 export default function Dashboard() {
   const { t, lang } = useI18n();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const af = authFetch(token);
   const [dateFilter, setDateFilter] = useState<DateFilter>('30days');
   const [chartType, setChartType] = useState<ChartType>('line');
@@ -169,7 +169,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{t('dash.title')}</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t('dash.welcome')}</p>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t('dash.welcome').replace('{name}', user?.full_name || '')}</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center rounded-lg overflow-hidden text-sm"
@@ -335,7 +335,7 @@ export default function Dashboard() {
 
       {!dashData?.chart?.length && products.length === 0 && (
         <div className="p-12 text-center" style={CARD}>
-          <p className="text-lg font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t('dash.welcome')}</p>
+          <p className="text-lg font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t('dash.welcome').replace('{name}', user?.full_name || '')}</p>
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t('campaigns.noCampaigns')}</p>
         </div>
       )}

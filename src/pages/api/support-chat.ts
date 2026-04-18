@@ -2,13 +2,36 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
 import { requireAuth } from '@/lib/auth';
 
-function detectLanguage(text: string): 'ar' | 'en' {
-  const arabicPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
-  const arabicChars = (text.match(new RegExp(arabicPattern.source, 'g')) || []).length;
-  const latinChars = (text.match(/[a-zA-Z]/g) || []).length;
-  if (arabicChars === 0 && latinChars === 0) return 'en';
-  return arabicChars >= latinChars ? 'ar' : 'en';
+function detectLanguage(text: string): string {
+  const arabicChars = (text.match(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g) || []).length;
+  const chineseChars = (text.match(/[\u4E00-\u9FFF\u3400-\u4DBF]/g) || []).length;
+  const japaneseChars = (text.match(/[\u3040-\u30FF]/g) || []).length;
+  const koreanChars = (text.match(/[\uAC00-\uD7AF]/g) || []).length;
+
+  if (arabicChars > 0) return 'ar';
+  if (chineseChars > 0) return 'zh';
+  if (japaneseChars > 0) return 'ja';
+  if (koreanChars > 0) return 'ko';
+
+  if (/[üöäß]/.test(text)) return 'de';
+  if (/[şğı]/.test(text)) return 'tr';
+  if (/[ñ¿¡]/.test(text)) return 'es';
+  if (/[éàçèêûîôùâœæ]/.test(text)) return 'fr';
+
+  return 'en';
 }
+
+const languageNames: Record<string, string> = {
+  ar: 'Arabic (العربية)',
+  en: 'English',
+  es: 'Spanish (Español)',
+  fr: 'French (Français)',
+  de: 'German (Deutsch)',
+  tr: 'Turkish (Türkçe)',
+  zh: 'Chinese (中文)',
+  ja: 'Japanese (日本語)',
+  ko: 'Korean (한국어)',
+};
 
 function getSupportPrompt(detectedLang: string, preferredLang: string, tone: string) {
   const toneInstructions: Record<string, string> = {
@@ -23,18 +46,24 @@ function getSupportPrompt(detectedLang: string, preferredLang: string, tone: str
     brief: 'كن مختصرًا جدًا. استخدم نقاط. جملتين أو ثلاث كحد أقصى.',
   };
 
+  const detectedLangName = languageNames[detectedLang] || detectedLang;
+  const toneInstruction = detectedLang === 'ar'
+    ? (toneAr[tone] || toneAr.friendly)
+    : (toneInstructions[tone] || toneInstructions.friendly);
+
   return `${MASTER_SYSTEM_PROMPT}
 
 ═══ ROLE: CUSTOMER SUPPORT BOT ═══
 
 You are the AI Assistant for M20 Autopilot. You help sellers optimize their Amazon advertising.
 
-LANGUAGE DETECTION:
-- Detected language of current message: ${detectedLang === 'ar' ? 'Arabic (العربية)' : 'English'}
-- User's preferred UI language: ${preferredLang === 'ar' ? 'Arabic (العربية)' : 'English'}
-- Always use the detected message language, NOT the UI language
+LANGUAGE RULES (CRITICAL):
+- The user is writing in: ${detectedLangName}
+- You MUST respond ENTIRELY in ${detectedLangName}
+- Do NOT switch languages under any circumstances
+- This applies even if the question is simple or the language is not English or Arabic
 
-TONE: ${detectedLang === 'ar' ? (toneAr[tone] || toneAr.friendly) : (toneInstructions[tone] || toneInstructions.friendly)}
+TONE: ${toneInstruction}
 
 SCOPE — You ONLY answer questions about:
 - M20 Autopilot platform usage
@@ -52,7 +81,7 @@ RESPONSE RULES:
 - Be direct, no filler phrases
 
 OUT OF SCOPE:
-${detectedLang === 'ar' ? 'إذا كان السؤال خارج النطاق، أجب: "هذا السؤال خارج نطاق تخصصي. يرجى التواصل مع فريق الدعم عبر support@m20.ai"' : 'If out of scope, respond: "This question is outside my scope. Please contact our support team at support@m20.ai"'}`;
+If out of scope, respond in ${detectedLangName}: direct the user to contact support@m20.ai`;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

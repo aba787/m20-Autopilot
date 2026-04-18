@@ -40,7 +40,7 @@ const translations: Record<string, Record<string, string>> = {
   'nav.adminPanel': { en: 'Admin Panel', ar: 'لوحة الإدارة', es: 'Panel Admin', fr: "Panneau d'admin", de: 'Adminbereich', tr: 'Yönetim Paneli', zh: '管理面板' },
 
   'dash.title': { en: 'Dashboard', ar: 'لوحة التحكم', es: 'Panel', fr: 'Tableau de bord', de: 'Dashboard', tr: 'Gösterge Paneli', zh: '仪表盘' },
-  'dash.welcome': { en: 'Welcome, Ahmed — Last updated: Today 14:30', ar: 'أهلاً أحمد — آخر تحديث: اليوم 14:30', es: 'Bienvenido, Ahmed — Última actualización: Hoy 14:30', fr: 'Bienvenue, Ahmed — Dernière mise à jour : Aujourd\'hui 14:30', de: 'Willkommen, Ahmed — Letztes Update: Heute 14:30', tr: 'Hoş geldin, Ahmed — Son güncelleme: Bugün 14:30', zh: '欢迎，Ahmed — 最后更新：今天 14:30' },
+  'dash.welcome': { en: 'Welcome, {name}', ar: 'أهلاً {name}', es: 'Bienvenido, {name}', fr: 'Bienvenue, {name}', de: 'Willkommen, {name}', tr: 'Hoş geldin, {name}', zh: '欢迎，{name}' },
   'dash.monthly': { en: 'Monthly', ar: 'شهري', es: 'Mensual', fr: 'Mensuel', de: 'Monatlich', tr: 'Aylık', zh: '月度' },
   'dash.twoWeeks': { en: '2 Weeks', ar: 'أسبوعين', es: '2 Semanas', fr: '2 Semaines', de: '2 Wochen', tr: '2 Hafta', zh: '2周' },
   'dash.sales': { en: 'Sales', ar: 'المبيعات', es: 'Ventas', fr: 'Ventes', de: 'Umsatz', tr: 'Satışlar', zh: '销售额' },

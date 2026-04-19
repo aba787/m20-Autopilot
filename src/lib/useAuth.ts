@@ -2,6 +2,11 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { createContext as rc } from 'react';
 import { supabase } from './supabaseClient';
 
+async function getFreshToken(): Promise<string | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token ?? null;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -176,13 +181,16 @@ export function useAuthState(): AuthContext {
 }
 
 export function authFetch(token: string | null) {
-  return (url: string, opts: RequestInit = {}) =>
-    fetch(url, {
+  return async (url: string, opts: RequestInit = {}) => {
+    const freshToken = await getFreshToken();
+    const activeToken = freshToken ?? token;
+    return fetch(url, {
       ...opts,
       headers: {
         'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(activeToken ? { Authorization: `Bearer ${activeToken}` } : {}),
         ...(opts.headers ?? {}),
       },
     });
+  };
 }

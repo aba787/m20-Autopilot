@@ -67,6 +67,18 @@ export async function sendVerificationEmail(to: string, name: string, verifyLink
   });
 }
 
+export async function sendOtpEmail(to: string, name: string, otp: string, type: 'signup' | 'recovery') {
+  const subject = type === 'signup'
+    ? 'Verify Your Email — M20 Autopilot'
+    : 'Password Reset Code — M20 Autopilot';
+  return sendEmail({
+    to,
+    subject,
+    html: otpTemplate(name, otp, type),
+    tags: [{ name: 'type', value: type === 'signup' ? 'email_verification' : 'password_reset' }],
+  });
+}
+
 export async function sendBulkEmail(recipients: { email: string; name: string }[], subject: string, contentHtml: string) {
   const results = [];
   for (const r of recipients) {
@@ -202,6 +214,25 @@ function verificationTemplate(name: string, verifyLink: string) {
 
     <p style="font-size:13px; color:#64748b;">This link expires in 24 hours. If you didn't create an account, you can safely ignore this email.</p>
   `, `Verify your email for M20 Autopilot`);
+}
+
+function otpTemplate(name: string, otp: string, type: 'signup' | 'recovery') {
+  const firstName = name?.split(' ')[0] || 'there';
+  const title = type === 'signup' ? 'Verify Your Email' : 'Password Reset Code';
+  const desc = type === 'signup'
+    ? `Hi ${firstName}, use the code below to verify your email address and complete your registration:`
+    : `Hi ${firstName}, use the code below to reset your password. This code expires in 15 minutes.`;
+  const digits = otp.split('').map(d =>
+    `<span style="display:inline-block;width:44px;height:56px;line-height:56px;text-align:center;background:rgba(0,217,255,0.08);border:2px solid rgba(0,217,255,0.3);border-radius:12px;color:#00d9ff;font-size:28px;font-weight:800;margin:0 4px;">${d}</span>`
+  ).join('');
+  return baseLayout(`
+    <h2>${title}</h2>
+    <p>${desc}</p>
+    <div style="text-align:center;margin:32px 0;">
+      ${digits}
+    </div>
+    <p style="font-size:13px;color:#64748b;text-align:center;">If you didn't request this, you can safely ignore this email.</p>
+  `, `Your M20 Autopilot verification code: ${otp}`);
 }
 
 function announcementTemplate(name: string, subject: string, contentHtml: string) {

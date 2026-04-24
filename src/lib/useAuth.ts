@@ -24,7 +24,7 @@ interface AuthState {
 
 interface AuthActions {
   login: (email: string, password: string) => Promise<{ error?: string; user?: User }>;
-  register: (email: string, password: string, full_name?: string) => Promise<{ error?: string; user?: User }>;
+  register: (email: string, password: string, full_name?: string) => Promise<{ error?: string; user?: User; requiresOtp?: boolean; userId?: string; email?: string }>;
   logout: () => Promise<void>;
   updateUser: (updates: Partial<User>) => void;
 }
@@ -132,8 +132,6 @@ export function useAuthState(): AuthContext {
     if (error) return { error: error.message };
     if (!data.user) return { error: 'Registration failed' };
 
-    setToken(data.session?.access_token ?? null);
-
     const { error: profileError } = await supabase
       .from('profiles')
       .upsert({
@@ -149,6 +147,18 @@ export function useAuthState(): AuthContext {
     if (profileError) {
       console.error('Profile creation error:', profileError);
     }
+
+    const needsEmailConfirmation = !data.user.email_confirmed_at;
+    if (needsEmailConfirmation) {
+      await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.toLowerCase().trim(), userId: data.user.id }),
+      }).catch(() => {});
+      return { requiresOtp: true, userId: data.user.id, email: email.toLowerCase().trim() };
+    }
+
+    setToken(data.session?.access_token ?? null);
 
     if (data.session?.access_token) {
       fetch('/api/email/welcome', {

@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db as adminDb } from '@/lib/supabaseAdmin';
-import { sendPasswordResetEmail } from '@/lib/email';
-import crypto from 'crypto';
+import { sendOtpEmail } from '@/lib/email';
+
+function generateOtp(): string {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -9,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required' });
 
-  const safeResponse = { success: true, message: 'If this email exists, a reset link has been sent.' };
+  const safeResponse = { success: true, message: 'If this email exists, a reset code has been sent.' };
 
   try {
     await adminDb.from('login_attempts').insert({
@@ -30,23 +33,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(200).json(safeResponse);
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    await adminDb.from('password_reset_tokens')
+      .update({ used: true })
+      .eq('user_id', profile.id)
+      .eq('used', false);
+
+    const otp = generateOtp();
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
     await adminDb.from('password_reset_tokens').insert({
       user_id: profile.id,
-      token,
+      token: otp,
       expires_at: expiresAt,
     });
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || `https://${process.env.REPLIT_DEV_DOMAIN || 'm20autopilot.replit.app'}`;
-    const resetLink = `${appUrl}/login?reset=true&token=${token}`;
-
-    await sendPasswordResetEmail(
-      profile.email,
-      profile.full_name || 'User',
-      resetLink,
-    );
+    await sendOtpEmail(profile.email, profile.full_name || 'User', otp, 'recovery');
 
     return res.status(200).json(safeResponse);
   } catch {

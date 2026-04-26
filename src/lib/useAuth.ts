@@ -145,10 +145,7 @@ export function useAuthState(): AuthContext {
     if (!res.ok) return { error: data.error || 'Registration failed' };
 
     if (data.requiresOtp && data.userId) {
-      await supabase.auth.signInWithOtp({
-        email: emailNorm,
-        options: { shouldCreateUser: false },
-      });
+      await supabase.auth.resend({ type: 'signup', email: emailNorm });
       return { requiresOtp: true, userId: data.userId, email: emailNorm };
     }
 

@@ -82,14 +82,14 @@ export default function Login() {
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const otp = otpDigits.join('');
-    if (otp.length !== 8) { setError('Please enter the full 8-digit code'); return; }
+    if (otp.length < 6) { setError('Please enter the complete verification code'); return; }
     setLoading(true);
     setError('');
     try {
       const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
         email: otpEmail,
         token: otp,
-        type: 'email',
+        type: otpType === 'signup' ? 'signup' : 'recovery',
       });
 
       if (verifyError || !verifyData.session) {
@@ -119,10 +119,11 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      await supabase.auth.signInWithOtp({
-        email: otpEmail,
-        options: { shouldCreateUser: false },
-      });
+      if (otpType === 'signup') {
+        await supabase.auth.resend({ type: 'signup', email: otpEmail });
+      } else {
+        await supabase.auth.resetPasswordForEmail(otpEmail);
+      }
       setOtpResendAt(Date.now() + 60000);
       setSuccess('A new code has been sent');
       setOtpDigits(['', '', '', '', '', '', '', '']);
@@ -164,10 +165,7 @@ export default function Login() {
       if (!emailTrimmed || !emailRegex.test(emailTrimmed)) { setError('Please enter a valid email address'); return; }
       setLoading(true);
       try {
-        await supabase.auth.signInWithOtp({
-          email: emailTrimmed,
-          options: { shouldCreateUser: false },
-        });
+        await supabase.auth.resetPasswordForEmail(emailTrimmed);
         goToOtp('recovery', '', emailTrimmed);
       } catch {
         goToOtp('recovery', '', emailTrimmed);
@@ -188,10 +186,7 @@ export default function Login() {
       if (tab === 'login') {
         const result = await login(emailTrimmed, password);
         if (result.requiresOtp && result.userId) {
-          await supabase.auth.signInWithOtp({
-            email: result.email || emailTrimmed,
-            options: { shouldCreateUser: false },
-          });
+          await supabase.auth.resend({ type: 'signup', email: result.email || emailTrimmed });
           goToOtp('signup', result.userId, result.email || emailTrimmed);
         } else if (result.error) {
           setError(result.error);
@@ -358,13 +353,13 @@ export default function Login() {
                 ))}
               </div>
 
-              <button type="submit" disabled={loading || otpDigits.join('').length !== 8}
+              <button type="submit" disabled={loading || otpDigits.join('').length < 6}
                 className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all mb-4"
                 style={{
                   background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
                   color: 'var(--btn-text)',
                   boxShadow: 'var(--accent-glow)',
-                  opacity: (loading || otpDigits.join('').length !== 8) ? 0.7 : 1,
+                  opacity: (loading || otpDigits.join('').length < 6) ? 0.7 : 1,
                 }}>
                 {loading
                   ? <><span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" /> Verifying...</>

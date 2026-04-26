@@ -271,6 +271,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <p className="text-xs font-medium truncate" style={{ color: 'var(--text-primary)' }}>{displayName}</p>
               <p className="text-[10px] truncate font-medium" style={{ color: modeColor }}>{modeLabel}</p>
             </div>
+            <button
+              onClick={() => logout()}
+              title="Sign out"
+              className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-all"
+              style={{ color: 'var(--error)', background: 'rgba(239,68,68,0.08)' }}>
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
       </aside>

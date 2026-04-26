@@ -212,8 +212,13 @@ export default function Login() {
     try {
       if (tab === 'login') {
         const result = await login(emailTrimmed, password);
-        if (result.error) { setError(result.error); }
-        else { router.push(result.user?.role === 'admin' ? '/admin' : '/dashboard'); }
+        if (result.requiresOtp && result.userId) {
+          goToOtp('signup', result.userId, result.email || emailTrimmed);
+        } else if (result.error) {
+          setError(result.error);
+        } else {
+          router.push(result.user?.role === 'admin' ? '/admin' : '/dashboard');
+        }
       } else {
         const result = await register(emailTrimmed, password, name.trim());
         if (result.error) { setError(result.error); }

@@ -23,7 +23,7 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login: (email: string, password: string) => Promise<{ error?: string; user?: User }>;
+  login: (email: string, password: string) => Promise<{ error?: string; user?: User; requiresOtp?: boolean; userId?: string; email?: string }>;
   register: (email: string, password: string, full_name?: string) => Promise<{ error?: string; user?: User; requiresOtp?: boolean; userId?: string; email?: string }>;
   logout: () => Promise<void>;
   updateUser: (updates: Partial<User>) => void;
@@ -99,6 +99,19 @@ export function useAuthState(): AuthContext {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, success: false, failure_reason: error.message }),
       }).catch(() => {});
+
+      if (error.message.toLowerCase().includes('invalid') || error.message.toLowerCase().includes('credentials')) {
+        const checkRes = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.toLowerCase().trim(), password, _checkUnconfirmed: true }),
+        });
+        const checkData = await checkRes.json();
+        if (checkData.requiresOtp && checkData.userId) {
+          return { requiresOtp: true, userId: checkData.userId, email: email.toLowerCase().trim() };
+        }
+      }
+
       return { error: error.message };
     }
 

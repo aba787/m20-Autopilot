@@ -86,13 +86,27 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
-        email: otpEmail,
-        token: otp,
-        type: 'email',
-      });
+      // Try primary type first, then fallback — Supabase uses different types
+      // depending on whether the account is confirmed or not
+      const primaryType   = otpType === 'signup' ? 'signup' : 'email';
+      const fallbackType  = otpType === 'signup' ? 'email'  : 'signup';
 
-      if (verifyError || !verifyData.session) {
+      let verifyData: any = null;
+      let verifyError: any = null;
+
+      const r1 = await supabase.auth.verifyOtp({ email: otpEmail, token: otp, type: primaryType as any });
+      if (r1.data?.session) {
+        verifyData = r1.data;
+      } else {
+        const r2 = await supabase.auth.verifyOtp({ email: otpEmail, token: otp, type: fallbackType as any });
+        if (r2.data?.session) {
+          verifyData = r2.data;
+        } else {
+          verifyError = r1.error || r2.error;
+        }
+      }
+
+      if (!verifyData?.session) {
         setError(verifyError?.message || 'Invalid or expired code. Please try again.');
         return;
       }

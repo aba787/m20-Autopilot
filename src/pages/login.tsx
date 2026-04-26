@@ -98,7 +98,7 @@ export default function Login() {
       }
 
       if (otpType === 'signup') {
-        await fetch('/api/email/welcome', {
+        fetch('/api/email/welcome', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${verifyData.session.access_token}` },
         }).catch(() => {});

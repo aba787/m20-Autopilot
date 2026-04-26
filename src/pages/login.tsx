@@ -89,11 +89,11 @@ export default function Login() {
       const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
         email: otpEmail,
         token: otp,
-        type: otpType === 'signup' ? 'signup' : 'recovery',
+        type: 'email',
       });
 
       if (verifyError || !verifyData.session) {
-        setError('Invalid or expired code. Please try again.');
+        setError(verifyError?.message || 'Invalid or expired code. Please try again.');
         return;
       }
 
@@ -119,11 +119,8 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      if (otpType === 'signup') {
-        await supabase.auth.resend({ type: 'signup', email: otpEmail });
-      } else {
-        await supabase.auth.resetPasswordForEmail(otpEmail);
-      }
+      const { error: otpErr } = await supabase.auth.signInWithOtp({ email: otpEmail });
+      if (otpErr) { setError(otpErr.message); return; }
       setOtpResendAt(Date.now() + 60000);
       setSuccess('A new code has been sent');
       setOtpDigits(['', '', '', '', '', '', '', '']);
@@ -165,7 +162,8 @@ export default function Login() {
       if (!emailTrimmed || !emailRegex.test(emailTrimmed)) { setError('Please enter a valid email address'); return; }
       setLoading(true);
       try {
-        await supabase.auth.resetPasswordForEmail(emailTrimmed);
+        const { error: otpErr } = await supabase.auth.signInWithOtp({ email: emailTrimmed });
+        if (otpErr) { setError(otpErr.message); return; }
         goToOtp('recovery', '', emailTrimmed);
       } catch {
         goToOtp('recovery', '', emailTrimmed);
@@ -186,7 +184,7 @@ export default function Login() {
       if (tab === 'login') {
         const result = await login(emailTrimmed, password);
         if (result.requiresOtp && result.userId) {
-          await supabase.auth.resend({ type: 'signup', email: result.email || emailTrimmed });
+          await supabase.auth.signInWithOtp({ email: result.email || emailTrimmed });
           goToOtp('signup', result.userId, result.email || emailTrimmed);
         } else if (result.error) {
           setError(result.error);

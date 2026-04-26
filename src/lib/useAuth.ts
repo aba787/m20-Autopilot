@@ -145,7 +145,8 @@ export function useAuthState(): AuthContext {
     if (!res.ok) return { error: data.error || 'Registration failed' };
 
     if (data.requiresOtp && data.userId) {
-      await supabase.auth.resend({ type: 'signup', email: emailNorm });
+      const { error: otpErr } = await supabase.auth.signInWithOtp({ email: emailNorm });
+      if (otpErr) return { error: `Account created but failed to send verification code: ${otpErr.message}` };
       return { requiresOtp: true, userId: data.userId, email: emailNorm };
     }
 

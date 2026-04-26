@@ -26,7 +26,7 @@ export default function Login() {
   const [error,           setError]           = useState('');
   const [success,         setSuccess]         = useState('');
 
-  const [otpDigits,   setOtpDigits]   = useState(['', '', '', '', '', '']);
+  const [otpDigits,   setOtpDigits]   = useState(['', '', '', '', '', '', '', '']);
   const [otpType,     setOtpType]     = useState<'signup' | 'recovery'>('recovery');
   const [otpUserId,   setOtpUserId]   = useState('');
   const [otpEmail,    setOtpEmail]    = useState('');
@@ -49,7 +49,7 @@ export default function Login() {
     setOtpType(type);
     setOtpUserId(userId);
     setOtpEmail(emailVal);
-    setOtpDigits(['', '', '', '', '', '']);
+    setOtpDigits(['', '', '', '', '', '', '', '']);
     setOtpResendAt(Date.now() + 60000);
     setError('');
     setSuccess('');
@@ -61,7 +61,7 @@ export default function Login() {
     const next = [...otpDigits];
     next[i] = digit;
     setOtpDigits(next);
-    if (digit && i < 5) otpRefs.current[i + 1]?.focus();
+    if (digit && i < 7) otpRefs.current[i + 1]?.focus();
   };
 
   const handleOtpKeyDown = (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -71,17 +71,18 @@ export default function Login() {
   };
 
   const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    const text = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-    if (text.length === 6) {
-      setOtpDigits(text.split(''));
-      otpRefs.current[5]?.focus();
+    const text = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 8);
+    if (text.length >= 6) {
+      const arr = text.split('').concat(['', '', '', '', '', '', '', '']).slice(0, 8);
+      setOtpDigits(arr);
+      otpRefs.current[Math.min(text.length, 7)]?.focus();
     }
   };
 
   const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const otp = otpDigits.join('');
-    if (otp.length !== 6) { setError('Please enter the full 6-digit code'); return; }
+    if (otp.length !== 8) { setError('Please enter the full 8-digit code'); return; }
     setLoading(true);
     setError('');
     try {
@@ -124,7 +125,7 @@ export default function Login() {
       });
       setOtpResendAt(Date.now() + 60000);
       setSuccess('A new code has been sent');
-      setOtpDigits(['', '', '', '', '', '']);
+      setOtpDigits(['', '', '', '', '', '', '', '']);
       otpRefs.current[0]?.focus();
     } finally {
       setLoading(false);
@@ -315,7 +316,7 @@ export default function Login() {
               </div>
 
               <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-                We sent a 6-digit code to <span className="font-medium" style={{ color: 'var(--text-secondary)' }}>{otpEmail}</span>. Enter it below.
+                We sent a verification code to <span className="font-medium" style={{ color: 'var(--text-secondary)' }}>{otpEmail}</span>. Enter it below.
               </p>
 
               {error && (
@@ -357,13 +358,13 @@ export default function Login() {
                 ))}
               </div>
 
-              <button type="submit" disabled={loading || otpDigits.join('').length !== 6}
+              <button type="submit" disabled={loading || otpDigits.join('').length !== 8}
                 className="w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all mb-4"
                 style={{
                   background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
                   color: 'var(--btn-text)',
                   boxShadow: 'var(--accent-glow)',
-                  opacity: (loading || otpDigits.join('').length !== 6) ? 0.7 : 1,
+                  opacity: (loading || otpDigits.join('').length !== 8) ? 0.7 : 1,
                 }}>
                 {loading
                   ? <><span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" /> Verifying...</>
@@ -458,7 +459,7 @@ export default function Login() {
               </button>
               <h1 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Reset password</h1>
               <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
-                Enter your email and we&apos;ll send you a 6-digit reset code
+                Enter your email and we&apos;ll send you a verification code
               </p>
 
               {error && (

@@ -3,6 +3,7 @@ import { Link2, CheckCircle2, Clock, RefreshCw, Shield, Activity, Loader2, Alert
 import { useI18n } from '@/lib/i18n';
 import { useAuth, authFetch } from '@/lib/useAuth';
 import { useRouter } from 'next/router';
+import { supabase } from '@/lib/supabaseClient';
 
 const CARD = { background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' } as const;
 
@@ -60,10 +61,21 @@ export default function Integration() {
     finally { setLoading(false); }
   };
 
-  const connectAmazon = () => {
-    if (!token) return;
+  const connectAmazon = async () => {
     setConnecting(true);
-    window.location.href = `/api/amazon/connect?token=${encodeURIComponent(token)}`;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const fresh = session?.access_token ?? token;
+      if (!fresh) {
+        setStatusMsg({ type: 'error', text: 'انتهت الجلسة. الرجاء تسجيل الدخول مجدداً.' });
+        setConnecting(false);
+        return;
+      }
+      window.location.href = `/api/amazon/connect?token=${encodeURIComponent(fresh)}`;
+    } catch {
+      setConnecting(false);
+      setStatusMsg({ type: 'error', text: 'فشل بدء عملية الربط. حاول مرة أخرى.' });
+    }
   };
 
   const syncNow = async () => {

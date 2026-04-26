@@ -99,8 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!message?.trim()) return res.status(400).json({ error: 'message is required' });
 
-  const rawKey = process.env.OPENAI_API_KEY ?? '';
-  const apiKey = rawKey.replace(/No$/, '').trim();
+  const apiKey = (process.env.OPENAI_API_KEY ?? '').trim();
   if (!apiKey) return res.status(500).json({ error: 'OpenAI API key not configured' });
 
   const detectedLang = detectLanguage(message);

@@ -154,10 +154,15 @@ export function useAuthState(): AuthContext {
   }, []);
 
   const logout = useCallback(async () => {
-    await supabase.auth.signOut();
     setToken(null);
     setUser(null);
-    window.location.href = '/login';
+    try { await supabase.auth.signOut(); } catch {}
+    try {
+      Object.keys(localStorage).forEach((k) => {
+        if (k.startsWith('sb-') || k.includes('supabase')) localStorage.removeItem(k);
+      });
+    } catch {}
+    window.location.replace('/login');
   }, []);
 
   const updateUser = useCallback((updates: Partial<User>) => {

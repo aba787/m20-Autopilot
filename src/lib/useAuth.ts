@@ -150,7 +150,7 @@ export function useAuthState(): AuthContext {
 
     const needsEmailConfirmation = !data.user.email_confirmed_at;
     if (needsEmailConfirmation) {
-      await fetch('/api/auth/send-otp', {
+      fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.toLowerCase().trim(), userId: data.user.id }),

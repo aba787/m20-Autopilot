@@ -1,29 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db as adminDb } from '@/lib/supabaseAdmin';
-import { sendOtpEmail } from '@/lib/email';
-
-function generateOtp(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-async function sendNewOtp(userId: string, email: string, name: string) {
-  await adminDb.from('password_reset_tokens')
-    .update({ used: true })
-    .eq('user_id', userId)
-    .eq('used', false);
-
-  const otp = generateOtp();
-  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-
-  await adminDb.from('password_reset_tokens').insert({
-    user_id: userId,
-    token: `signup_${otp}`,
-    expires_at: expiresAt,
-  });
-
-  sendOtpEmail(email, name, otp, 'signup').catch(() => {});
-  return userId;
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -64,8 +40,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         email_notifications: true,
       });
 
-      await sendNewOtp(existingAuthUser.id, emailNorm, full_name || 'User');
-
       return res.status(200).json({ success: true, userId: existingAuthUser.id, requiresOtp: true });
     }
 
@@ -93,8 +67,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       role: 'user',
       email_notifications: true,
     });
-
-    await sendNewOtp(userId, emailNorm, full_name || 'User');
 
     return res.status(200).json({ success: true, userId, requiresOtp: true });
   } catch (err: any) {

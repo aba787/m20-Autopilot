@@ -85,36 +85,24 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/auth/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-          otpType === 'signup'
-            ? { otp, userId: otpUserId, type: otpType }
-            : { otp, email: otpEmail, type: otpType }
-        ),
+      const { data: verifyData, error: verifyError } = await supabase.auth.verifyOtp({
+        email: otpEmail,
+        token: otp,
+        type: 'email',
       });
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || 'Invalid code'); return; }
+
+      if (verifyError || !verifyData.session) {
+        setError('Invalid or expired code. Please try again.');
+        return;
+      }
 
       if (otpType === 'signup') {
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-          email: otpEmail,
-          password,
-        });
-        if (signInError || !signInData.session) {
-          setSuccess('Email verified! Please sign in.');
-          setTab('login');
-          setEmail(otpEmail);
-          return;
-        }
         await fetch('/api/email/welcome', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${signInData.session.access_token}` },
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${verifyData.session.access_token}` },
         }).catch(() => {});
         router.push('/dashboard');
       } else {
-        setResetToken(data.token);
         setPassword('');
         setConfirmPassword('');
         setSuccess('');
@@ -130,19 +118,10 @@ export default function Login() {
     setLoading(true);
     setError('');
     try {
-      if (otpType === 'signup') {
-        await fetch('/api/auth/send-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: otpEmail, userId: otpUserId }),
-        });
-      } else {
-        await fetch('/api/auth/forgot-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: otpEmail }),
-        });
-      }
+      await supabase.auth.signInWithOtp({
+        email: otpEmail,
+        options: { shouldCreateUser: false },
+      });
       setOtpResendAt(Date.now() + 60000);
       setSuccess('A new code has been sent');
       setOtpDigits(['', '', '', '', '', '']);
@@ -165,14 +144,10 @@ export default function Login() {
       if (password !== confirmPassword) { setError('Passwords do not match'); return; }
       setLoading(true);
       try {
-        const res = await fetch('/api/auth/reset-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: resetToken, password }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Something went wrong');
-        setSuccess('Password updated successfully! You can now sign in.');
+        const { error: updateError } = await supabase.auth.updateUser({ password });
+        if (updateError) throw new Error(updateError.message);
+        await supabase.auth.signOut();
+        setSuccess('Password updated successfully! Please sign in.');
         setPassword('');
         setConfirmPassword('');
         setTimeout(() => { setTab('login'); setSuccess(''); }, 3000);
@@ -188,10 +163,9 @@ export default function Login() {
       if (!emailTrimmed || !emailRegex.test(emailTrimmed)) { setError('Please enter a valid email address'); return; }
       setLoading(true);
       try {
-        await fetch('/api/auth/forgot-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: emailTrimmed }),
+        await supabase.auth.signInWithOtp({
+          email: emailTrimmed,
+          options: { shouldCreateUser: false },
         });
         goToOtp('recovery', '', emailTrimmed);
       } catch {
@@ -213,6 +187,10 @@ export default function Login() {
       if (tab === 'login') {
         const result = await login(emailTrimmed, password);
         if (result.requiresOtp && result.userId) {
+          await supabase.auth.signInWithOtp({
+            email: result.email || emailTrimmed,
+            options: { shouldCreateUser: false },
+          });
           goToOtp('signup', result.userId, result.email || emailTrimmed);
         } else if (result.error) {
           setError(result.error);

@@ -121,59 +121,21 @@ export function useAuthState(): AuthContext {
   }, []);
 
   const register = useCallback(async (email: string, password: string, full_name?: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: full_name ?? '' },
-      },
+    const emailNorm = email.toLowerCase().trim();
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: emailNorm, password, full_name: full_name?.trim() ?? '' }),
     });
+    const data = await res.json();
 
-    if (error) return { error: error.message };
-    if (!data.user) return { error: 'Registration failed' };
+    if (!res.ok) return { error: data.error || 'Registration failed' };
 
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .upsert({
-        id: data.user.id,
-        email: email.toLowerCase().trim(),
-        full_name: full_name?.trim() ?? null,
-        bot_mode: 'safe',
-        target_acos: 30,
-        role: 'user',
-        email_notifications: true,
-      });
-
-    if (profileError) {
-      console.error('Profile creation error:', profileError);
+    if (data.requiresOtp && data.userId) {
+      return { requiresOtp: true, userId: data.userId, email: emailNorm };
     }
 
-    const needsEmailConfirmation = !data.user.email_confirmed_at;
-    if (needsEmailConfirmation) {
-      fetch('/api/auth/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.toLowerCase().trim(), userId: data.user.id }),
-      }).catch(() => {});
-      return { requiresOtp: true, userId: data.user.id, email: email.toLowerCase().trim() };
-    }
-
-    setToken(data.session?.access_token ?? null);
-
-    if (data.session?.access_token) {
-      fetch('/api/email/welcome', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${data.session.access_token}` },
-      }).catch(() => {});
-    }
-
-    const profile = await fetchProfile(data.user.id);
-    if (profile) {
-      setUser(profile);
-      return { user: profile };
-    }
-
-    return { user: { id: data.user.id, email: email.toLowerCase().trim(), full_name: full_name?.trim() ?? null, bot_mode: 'safe' as const, target_acos: 30, role: 'user' as const } };
+    return { error: 'Registration failed' };
   }, []);
 
   const logout = useCallback(async () => {

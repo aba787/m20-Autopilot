@@ -81,7 +81,7 @@ RESPONSE RULES:
 - Be direct, no filler phrases
 
 OUT OF SCOPE:
-If out of scope, respond in ${detectedLangName}: direct the user to contact support@m20.ai`;
+If out of scope, respond in ${detectedLangName}: direct the user to contact m20.m.devlet@gmail.com`;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

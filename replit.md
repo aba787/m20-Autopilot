@@ -252,6 +252,14 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
    - `user@test.com` / `User1234!` (user role)
 5. Or register at /login — auto-creates profile via trigger
 
+## App Submission Assets (Amazon / Stores)
+- **Logo**: `public/m20-logo.png` (1024×1024 PNG, used as Apple touch icon, OG image, landing/footer logo)
+- **Favicon**: `public/favicon.png`
+- **Public legal pages** (no auth, no Layout — listed in `noLayoutPages` in `_app.tsx`):
+  - `/terms` — Terms of Service (bilingual EN/AR, `src/pages/terms.tsx`)
+  - `/privacy` — Privacy Policy (bilingual EN/AR, `src/pages/privacy.tsx`)
+- **Support / Contact email**: `m20.m.devlet@gmail.com` — shown on landing footer, settings page (Support & Legal card), support page, AI chatbot fallback, terms & privacy pages.
+
 ## Deployment
 - **Build**: `next build` (Turbopack)
 - **Start**: `next start -p 5000 -H 0.0.0.0`

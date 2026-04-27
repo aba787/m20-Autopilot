@@ -7,7 +7,7 @@ import Layout from '@/components/Layout';
 import { AuthCtx, useAuthState } from '@/lib/useAuth';
 import { I18nProvider } from '@/lib/i18n';
 
-const noLayoutPages = ['/', '/login'];
+const noLayoutPages = ['/', '/login', '/terms', '/privacy'];
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const auth = useAuthState();

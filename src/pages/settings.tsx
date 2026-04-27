@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Settings as SettingsIcon, Save, Link2, Globe, Bell, Shield, Bot, Languages, MessageSquare } from 'lucide-react';
+import { Settings as SettingsIcon, Save, Link2, Globe, Bell, Shield, Bot, Languages, MessageSquare, Mail, FileText, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
 import { useI18n } from '@/lib/i18n';
 import { useAuth, authFetch } from '@/lib/useAuth';
 
@@ -237,6 +238,48 @@ export default function Settings() {
               </p>
             </div>
             <Toggle value={automationEnabled} onChange={() => setAutomationEnabled(!automationEnabled)} />
+          </div>
+        </div>
+      </div>
+
+      <div className="p-5" style={CARD}>
+        <h2 className="font-bold text-base mb-4 text-white flex items-center gap-2">
+          <Mail className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+          {lang === 'ar' ? 'الدعم والقانوني' : 'Support & Legal'}
+        </h2>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-white">
+                {lang === 'ar' ? 'البريد الإلكتروني للدعم' : 'Support Email'}
+              </p>
+              <p className="text-xs" style={{ color: 'var(--text-dim)' }}>
+                {lang === 'ar' ? 'للمساعدة الفنية والفوترة وأي استفسار' : 'For technical help, billing, and any inquiries'}
+              </p>
+            </div>
+            <a href="mailto:m20.m.devlet@gmail.com"
+              className="text-sm px-3 py-1.5 rounded-lg font-medium inline-flex items-center gap-2"
+              style={{
+                color: 'var(--accent)',
+                background: 'var(--accent-bg-strong)',
+                border: '1px solid var(--accent-border)',
+              }}>
+              <Mail className="w-3.5 h-3.5" /> m20.m.devlet@gmail.com
+            </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2" style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <Link href="/terms" target="_blank"
+              className="text-sm px-3 py-2 rounded-lg flex items-center gap-2"
+              style={{ color: 'var(--text-secondary)', border: '1px solid var(--card-border)', background: 'var(--input-bg)' }}>
+              <FileText className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+              {lang === 'ar' ? 'شروط الاستخدام' : 'Terms of Service'}
+            </Link>
+            <Link href="/privacy" target="_blank"
+              className="text-sm px-3 py-2 rounded-lg flex items-center gap-2"
+              style={{ color: 'var(--text-secondary)', border: '1px solid var(--card-border)', background: 'var(--input-bg)' }}>
+              <ShieldCheck className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+              {lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
+            </Link>
           </div>
         </div>
       </div>

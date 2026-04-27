@@ -36,7 +36,10 @@ export default function Landing() {
         <header className="lp-header">
           <div className="nav-container">
             <div className="logo-area">
-              <div className="logo">m20 Autopilot</div>
+              <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}>
+                <Image src="/m20-logo.png" alt="M20 Autopilot" width={140} height={48}
+                  style={{ height: 44, width: 'auto', display: 'block' }} priority />
+              </Link>
               <AmazonPartnerBadge />
             </div>
             <nav className="lp-nav">
@@ -261,7 +264,8 @@ export default function Landing() {
         <footer className="lp-footer">
           <div className="footer-grid">
             <div className="footer-section">
-              <div className="footer-logo">m20 Autopilot</div>
+              <Image src="/m20-logo.png" alt="M20 Autopilot" width={160} height={56}
+                style={{ height: 50, width: 'auto', display: 'block', marginBottom: 12 }} />
               <p className="footer-desc">{tx.footer.desc}</p>
               <AmazonPartnerBadge />
             </div>
@@ -276,14 +280,17 @@ export default function Landing() {
               <h4>{tx.footer.col2}</h4>
               <ul>
                 <li><a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>{tx.footer.links2[0]}</a></li>
-                <li><a href="mailto:support@m20autopilot.com">{tx.footer.links2[1]}</a></li>
-                <li><a href="mailto:support@m20autopilot.com">{tx.footer.links2[2]}</a></li>
+                <li><a href="mailto:m20.m.devlet@gmail.com">{tx.footer.links2[1]}</a></li>
+                <li><a href="mailto:m20.m.devlet@gmail.com">{tx.footer.links2[2]}</a></li>
+                <li><Link href="/terms">{isAr ? 'شروط الاستخدام' : 'Terms of Service'}</Link></li>
+                <li><Link href="/privacy">{isAr ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link></li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>{tx.footer.col3}</h4>
               <ul>
-                {tx.footer.links3.map((l, i) => <li key={i}><span style={{ color: '#8a94a6', fontSize: '0.88rem', lineHeight: '2.2' }}>{l}</span></li>)}
+                <li><a href="mailto:m20.m.devlet@gmail.com" style={{ color: '#00d9ff', fontSize: '0.88rem', lineHeight: '2.2', fontWeight: 600 }}>m20.m.devlet@gmail.com</a></li>
+                {tx.footer.links3.slice(1).map((l, i) => <li key={i}><span style={{ color: '#8a94a6', fontSize: '0.88rem', lineHeight: '2.2' }}>{l}</span></li>)}
               </ul>
             </div>
           </div>

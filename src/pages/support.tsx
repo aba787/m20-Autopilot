@@ -245,7 +245,7 @@ export default function Support() {
       <p className="text-xs text-center flex-shrink-0" style={{ color: 'var(--text-dim)' }}>
         {t('bot.scope')}
         {' '}{lang === 'ar' ? 'لمشاكل الفواتير أو الحساب، تواصل عبر' : 'For billing or account issues, email'}{' '}
-        <span style={{ color: 'var(--accent)' }}>support@m20.ai</span>
+        <a href="mailto:m20.m.devlet@gmail.com" style={{ color: 'var(--accent)', textDecoration: 'none' }}>m20.m.devlet@gmail.com</a>
       </p>
     </div>
   );

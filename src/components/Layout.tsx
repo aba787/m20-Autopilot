@@ -207,14 +207,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className={`fixed lg:static inset-y-0 ${lang === 'ar' ? 'right-0' : 'left-0'} z-50 w-60 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : (lang === 'ar' ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0')} flex flex-col`}
         style={{ background: 'var(--bg-secondary)', borderRight: lang === 'ar' ? 'none' : '1px solid var(--border-primary)', borderLeft: lang === 'ar' ? '1px solid var(--border-primary)' : 'none' }}>
 
-        <div className="p-3 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
-          <Link href="/dashboard" className="flex flex-col items-center gap-1">
-            <div className="w-full rounded-xl overflow-hidden flex items-center justify-center bg-white p-2">
-              <Image src="/m20-logo.png" alt="M20 Autopilot" width={200} height={200} style={{ width: '100%', height: 'auto', objectFit: 'contain' }} priority />
+        <div className="p-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
+          <Link href="/dashboard" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))' }}>
+              <Zap className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />
             </div>
-            <p className="text-[10px] leading-tight text-center" style={{ color: 'var(--text-dim)' }}>
-              {t('layout.appSubtitle')}
-            </p>
+            <div>
+              <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>
+              <p className="text-[10px] leading-tight" style={{ color: 'var(--text-dim)' }}>
+                {t('layout.appSubtitle')}
+              </p>
+            </div>
           </Link>
         </div>
 

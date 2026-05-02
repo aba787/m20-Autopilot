@@ -35,7 +35,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         email: emailNorm,
         full_name: full_name?.trim() ?? null,
         bot_mode: 'safe',
-        target_acos: 30,
         role: 'user',
         email_notifications: true,
       });
@@ -63,7 +62,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       email: emailNorm,
       full_name: full_name?.trim() ?? null,
       bot_mode: 'safe',
-      target_acos: 30,
       role: 'user',
       email_notifications: true,
     });

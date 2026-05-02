@@ -1,265 +1,44 @@
 # M20 Autopilot
 
-Amazon Advertising Optimization SaaS Dashboard — Multi-language (7 languages), LTR/RTL layout, Cyber/Dark theme.
+## Overview
 
-## Tech Stack
-- **Framework**: Next.js 16 (Pages Router)
+M20 Autopilot is an Amazon Advertising Optimization SaaS Dashboard designed to help businesses manage and optimize their Amazon ad campaigns. It offers multi-language support (7 languages, LTR/RTL layouts), a cyber/dark theme, and leverages AI for advanced analytics and ad generation. The platform aims to provide comprehensive tools for campaign management, keyword analysis, budget optimization, and performance tracking, with robust data isolation for multi-user environments and a flexible subscription system.
+
+## User Preferences
+
+I want iterative development.
+I prefer detailed explanations.
+I want to be asked before any major changes are made to the codebase.
+I like getting a high-level overview of the changes before diving into the specifics.
+I prefer clear and concise communication.
+Do not make changes to the `supabase/fix-and-seed.sql` file.
+Do not make changes to the `public/` folder.
+
+## System Architecture
+
+The M20 Autopilot is built with Next.js 16 (Pages Router) and TypeScript, utilizing Tailwind CSS for styling with a custom CSS-in-JS design system supporting dark/light themes and LTR/RTL layouts. Data fetching is centralized through API endpoints, with no mock data in production.
+
+**Key Architectural Decisions:**
+- **UI/UX**: Features a consistent cyber design theme with a toggle for dark/light mode, and dynamic LTR/RTL layout switching based on selected language. Components like the embedded chatbot widget are available across all pages.
+- **Authentication**: Implemented via Supabase Auth for client-side and server-side JWT verification, including robust user management, role-based redirection, and logging of login attempts.
+- **Data Isolation**: Achieved through Row Level Security (RLS) policies on all 17 Supabase tables, ensuring users can only access their own data (`auth.uid() = user_id`).
+- **Subscription & Feature Gating**: A middleware-driven system (`src/lib/subscriptionGuard.ts`) manages feature access, AI query limits, and resource limits based on user subscription plans (Free, Pro, Enterprise).
+- **Internationalization (i18n)**: A scalable, context-based system supports dynamic language loading and persistence, offering instant client-side switching and layout direction changes.
+- **AI Integration**: Uses OpenAI GPT-4o mini for campaign analysis, ad generation, keyword intelligence, and customer support. AI responses adhere to a mandatory 4-section markdown structure (Summary, Analysis, Recommendations, Notes), with specific endpoints returning JSON.
+- **Chatbot Widget**: An embedded, bilingual chatbot with a 24-message rolling memory and local FAQ system, accessible on all pages. Messages are user-persistent via localStorage.
+- **Amazon API Integration**: Handles OAuth, token refresh, and synchronization of campaign data, bid management, and keyword operations.
+- **Database Schema**: Managed by Supabase PostgreSQL with `fix-and-seed.sql` defining tables, RLS policies, and triggers for profiles, campaigns, connections, subscriptions, and logs.
+- **Backend Logic**: Includes budget checks, automation gates, and supports multiple AI bot modes (safe, semi, auto) for varying levels of autonomous action. All monetary values are in SAR.
+
+## External Dependencies
+
+- **Framework**: Next.js 16
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 + inline styles (cyber design system)
-- **Charts**: Recharts (Line, Bar, Pie)
+- **Styling**: Tailwind CSS v4
+- **Charts**: Recharts
 - **Icons**: Lucide React
 - **AI**: OpenAI GPT-4o mini (via `OPENAI_API_KEY`)
 - **Database**: Supabase PostgreSQL (`SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SUPABASE_URL`)
-- **Auth**: Supabase Auth (client-side `signInWithPassword` / `signUp` / `signOut`)
-- **Port**: 5000
-
-## Auth System (Supabase Auth)
-- **Client-side**: `src/lib/supabaseClient.ts` — browser Supabase client using `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- **Login**: `supabase.auth.signInWithPassword({ email, password })` — handled in `useAuth` hook
-- **Register**: `supabase.auth.signUp({ email, password })` — creates auth.users entry + profiles row
-- **Logout**: `supabase.auth.signOut()`
-- **Session**: Supabase manages tokens automatically, stored via `useAuth` hook
-- **Server-side verification**: `requireAuth(req, res)` in `src/lib/auth.ts` uses `adminDb.auth.getUser(token)` to verify Supabase JWT
-- **Optional auth**: `optionalAuth(req)` — same as requireAuth but returns null silently without sending 401
-- **Profile fetch**: After auth, role fetched from `profiles` table: `supabase.from('profiles').select('role').eq('id', user.id).single()`
-- **Role redirect**: Admin → `/admin`, User → `/dashboard`
-- **Auto profile creation**: Trigger `on_auth_user_created` on `auth.users` auto-creates profiles row on signup
-- **Password reset**: POST `/api/auth/forgot-password` — generates token, stores in `password_reset_tokens` table
-- **Login logging**: Every login attempt (success/failure) is logged to `login_attempts` table via `/api/auth/login-log`
-
-## Data Isolation (Multi-User)
-- **All pages fetch real data** from API endpoints (no mock data in dashboard, campaigns, products, ai-engine)
-- **Auth pattern**: `const { token } = useAuth(); const af = authFetch(token);` then `af('/api/endpoint')`
-- **Server-side**: All API routes use `requireAuth(req, res)` → query Supabase with `user_id` filter
-- **RLS policies**: All 17 tables have Row Level Security enforcing `auth.uid() = user_id`
-
-## Subscription System & Feature Gating
-- **Middleware**: `src/lib/subscriptionGuard.ts` — `checkAIQueryLimit()`, `requireFeature()`, `checkResourceLimit()`, `incrementAIQueryCount()`
-- **Plans**: Free (5 campaigns, 100 kw, 20 AI queries), Pro ($49, 50 campaigns, 2000 kw, 500 AI), Enterprise ($199, unlimited)
-- **AI query tracking**: All AI endpoints (bot-analyze, ad-generator, keyword-analysis) check limits before execution and increment count after
-- **Feature gating**: `requireFeature(req, res, 'feature_name')` blocks non-subscribed users with upgrade prompt
-- **Resource limits**: `checkResourceLimit(userId, 'campaigns')` checks current count vs plan limit
-
-## Design System (CSS Custom Properties Theme)
-- **Theme Toggle**: Dark (default) / Light mode via `.light` class on `<html>`; persisted to localStorage
-- **All colors**: Defined as CSS custom properties in `src/styles/globals.css` (`:root` = dark, `.light` = overrides)
-- **Dark mode**: `--bg-primary: #0a0612`, `--accent: #00d9ff`, `--card-bg: rgba(0,217,255,0.04)`
-- **Light mode**: `--bg-primary: #f8fafc`, `--accent: #0891b2`, `--card-bg: #ffffff`
-- **Inline styles**: Use `var(--token)` (e.g. `background: 'var(--card-bg)'`); no hardcoded hex in pages
-- **CARD constant**: `{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: '0.875rem', boxShadow: 'var(--card-shadow)' }`
-- **Direction**: LTR/RTL — dynamically switches based on selected language (sidebar adjusts accordingly)
-- **Budget warning**: Recommendation style (cyan, Lightbulb icon) — not error style
-
-## i18n System
-- **File**: `src/lib/i18n.tsx` — React context-based, scalable translation system
-- **Dynamic languages**: `supportedLanguages` array with `LangConfig` (code, label, nativeLabel, dir). Use `addLanguage()` to add new languages without refactoring
-- **Currently supported**: English (LTR), Arabic (RTL), Spanish (LTR), French (LTR), German (LTR), Turkish (LTR), Chinese (LTR)
-- **270+ translation keys** covering all pages
-- **`addTranslations()`** API for adding new translation keys at runtime
-- **Language persistence**: localStorage (`m20_prefs` key) + database (`profiles.language`)
-- **Instant switching**: Client-side, no page reload. Layout direction flips automatically
-- **Language selector**: In the top bar header, next to dark/light mode toggle (Globe icon + dropdown)
-- **Bot language auto-detection**: via `detectLanguage()` in `campaignBot.ts`
-
-## Architecture
-- `src/pages/` — All page routes (Next.js Pages Router)
-- `src/components/Layout.tsx` — App shell: left sidebar + header (with language selector) + embedded chatbot widget (24-message memory)
-- `src/components/ThemeProvider.tsx` — Dark mode context
-- `src/lib/i18n.tsx` — i18n context (language, tone, automation state, translations, addLanguage)
-- `src/data/mock.ts` — Fallback mock data (legacy, pages now use API)
-- `src/lib/campaignBot.ts` — Rules engine + GPT-4o mini (CAMPAIGN_BOT_PROMPT, MASTER_SYSTEM_PROMPT with structured 4-section format)
-- `src/lib/amazonApi.ts` — Amazon Ads API client (OAuth, token refresh, campaign sync, bid management, keyword/ad-group fetch, negative keywords)
-- `src/lib/subscriptionGuard.ts` — Subscription feature gating middleware (AI query limits, resource limits, feature checks)
-- `src/lib/supabaseAdmin.ts` — Untyped Supabase admin client (exported as `db`, used in all API routes)
-- `src/lib/supabaseClient.ts` — Client-side Supabase client (used for auth in browser)
-- `src/lib/auth.ts` — requireAuth(req, res), optionalAuth(req), requireAdmin(), logAction(), createNotification()
-- `src/lib/useAuth.ts` — React auth context + useAuth() hook + authFetch() helper (uses Supabase Auth) + login attempt logging
-- `src/pages/api/` — All backend routes (see list below)
-- `supabase/fix-and-seed.sql` — Full DB schema + triggers + RLS policies to run in Supabase SQL Editor
-
-## Chatbot Widget
-- **Embedded widget**: Floating button (bottom corner) opens a full chat window overlay — NOT a separate page
-- **Available on all pages**: Chat stays accessible across the entire app
-- **FAQ system**: Local FAQ matching for instant answers (no API call needed)
-- **GPT fallback**: Calls `/api/support-chat` for non-FAQ questions
-- **Memory**: 24-message rolling history for context-rich conversations (API keeps 20-message context window)
-- **Persistence**: Messages saved to localStorage per user (key: `m20_chat_{userId}`), survives page refreshes
-- **Bilingual**: Auto-detects Arabic/English input, responds in the same language
-
-## AI Structured Response Format
-- **MASTER_SYSTEM_PROMPT** in `src/lib/campaignBot.ts` — shared base prompt for all AI endpoints
-- **Mandatory 4-section markdown structure**: 📌 Summary → 📊 Analysis → 🚀 Recommendations → ⚠️ Notes (omit sections if not needed)
-- **Arabic headings**: When language is Arabic, section titles use Arabic equivalents
-- **JSON endpoints override**: `keyword-analysis.ts` and `ad-generator.ts` explicitly override markdown format — return JSON only
-- **Ad generator targeting field**: Contains markdown within the JSON string (rendered via ReactMarkdown)
-- **Markdown rendering**: `react-markdown` renders bot responses in Layout chatbot (`.chat-markdown` CSS), support page (`.page-markdown` CSS), AI engine page, and ads generator targeting tab
-- **CSS classes**: `.chat-markdown` (compact for chatbot widget), `.page-markdown` (larger for full pages) in `globals.css`
-
-## Database Schema (Supabase)
-Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
-- **profiles** — users linked to auth.users(id), bot_mode, target_acos, role (admin/user)
-- **amazon_connections** — per-user Amazon API tokens (access/refresh)
-- **campaigns** — campaign metrics per day (user_id FK)
-- **keywords** — keyword bids/performance (user_id FK)
-- **ad_groups** — campaign ad groups with targeting type, bid, status
-- **ads** — individual ads within ad groups
-- **search_terms** — search term reports with spend/sales/acos
-- **negative_keywords** — negative keyword targeting (campaign/ad group level)
-- **rules** — automation rules (bid adjustments, budget changes, pause conditions)
-- **subscriptions** — user subscription plans (free/pro/enterprise) with AI query tracking
-- **login_attempts** — security logging for login attempts (IP, user agent, success/failure)
-- **password_reset_tokens** — secure password reset flow
-- **action_logs** — all AI + user actions with status (pending/approved/rejected/executed/failed)
-- **notifications** — per-user alerts (info/warning/error/success)
-- **ad_generations** — saved Ad Generator outputs
-- **products** — per-user product catalog with performance metrics
-- **accounting_snapshots** — daily revenue/spend/profit snapshots
-- **job_runs** — background job execution history
-- **RLS policies**: All tables have Row Level Security enabled
-
-## API Routes
-### Auth
-- `GET  /api/auth/me` — Validate Supabase token, return user profile
-- `POST /api/auth/forgot-password` — Password reset request (generates token)
-- `POST /api/auth/reset-password` — Reset password with token
-- `POST /api/auth/login-log` — Log login attempt (success/failure with IP and user agent)
-
-### Campaigns
-- `GET  /api/campaigns` — List campaigns (auth required, supports ?from=&to=&status=)
-- `POST /api/campaigns` — Create campaign
-- `GET/PATCH /api/campaigns/[id]` — Get or update single campaign (PATCH whitelisted: budget, status only)
-- `POST /api/campaigns/bulk` — Bulk actions (pause/enable/delete/update_budget)
-
-### Ad Groups, Search Terms, Keywords
-- `GET/POST /api/ad-groups` — List and create ad groups (filter by campaign_id, status)
-- `GET  /api/search-terms` — Search term reports (filter by campaign_id, ad_group_id, is_negated)
-- `GET/POST /api/negative-keywords` — Manage negative keywords
-- `GET/POST/PUT/DELETE /api/rules` — Automation rules CRUD
-
-### AI (all endpoints check subscription AI query limits)
-- `POST /api/ai/keyword-analysis` — AI keyword intelligence (analyzes performance, recommends actions)
-- `POST /api/support-chat` — AI customer support (strict platform-only scope, 20-message context)
-- `POST /api/bot-analyze` — Campaign analysis (rule engine + GPT)
-- `POST /api/ad-generator` — Generate ad content via GPT-4o mini (auth required)
-
-### Amazon Integration
-- `POST /api/amazon/callback` — OAuth code exchange for tokens
-- `POST /api/amazon/sync` — Sync campaigns from Amazon Ads API
-- `GET/POST /api/amazon-connection` — Amazon account connections
-
-### Subscriptions
-- `GET  /api/subscriptions` — List plans + current user plan (optional auth)
-- `POST /api/subscriptions` — Upgrade/change plan (auth required)
-
-### Dashboard & Data
-- `GET  /api/dashboard/stats` — KPIs with period comparison, chart data, pending actions, budget warning
-- `GET  /api/accounting` — Revenue/spend/profit snapshots with totals
-- `POST /api/accounting` — Upsert daily snapshot
-- `GET  /api/notifications` — List notifications + unread count
-- `POST /api/notifications/[id]/read` — Mark single or "all" as read
-- `GET  /api/action-logs` — Full audit log with campaign names
-- `POST /api/action-logs/[id]/approve` — Approve or reject pending AI action
-- `GET/PATCH /api/settings` — User profile settings
-- `GET  /api/budget-check` — Budget threshold check
-- `GET/POST /api/products` — Product catalog
-- `GET/PATCH/DELETE /api/products/[id]` — Single product operations
-- `POST /api/seed` — Create test accounts
-
-### Admin
-- `GET  /api/admin/stats` — Admin stats (total users, campaigns, actions)
-- `GET  /api/admin/users` — List users with search/filter/pagination (admin only)
-- `PATCH/DELETE /api/admin/users/[id]` — Toggle role or delete user (admin only)
-
-### Email
-- `POST /api/email/welcome` — Send welcome email to authenticated user (called after signup)
-- `POST /api/email/send` — Send bulk email to users (admin only, respects email_notifications preference)
-
-### Background Jobs
-- `POST /api/jobs/optimize-campaigns` — Background campaign optimization
-- `POST /api/jobs/optimize-keywords` — Background keyword optimization
-
-## Amazon API Integration
-- **Library**: `src/lib/amazonApi.ts`
-- **OAuth flow**: `getOAuthUrl(state)` → Amazon login → `exchangeCodeForTokens(code)` → store in `amazon_connections`
-- **Token management**: Auto-refresh via `refreshAccessToken()` when token nears expiry (5-min buffer)
-- **Campaign operations**: `fetchAmazonCampaigns()`, `syncCampaigns()`, `pauseCampaign()`, `enableCampaign()`, `updateCampaignBid()`
-- **Keyword operations**: `fetchKeywords()`, `fetchAdGroups()`, `addNegativeKeyword()`
-- **Sync**: `POST /api/amazon/sync` pulls campaigns from Amazon and upserts into local DB
-
-## Email System
-- **Service**: Resend (`RESEND_API_KEY`)
-- **Library**: `src/lib/email.ts` — sendEmail(), sendWelcomeEmail(), sendPasswordResetEmail(), sendVerificationEmail(), sendBulkEmail()
-- **Templates**: HTML emails with M20 Autopilot branding (dark theme, mobile-friendly, cyan accent)
-- **Transactional**: Welcome email (auto on signup), password reset, email verification
-- **Marketing**: Announcements/updates via admin bulk send (`POST /api/email/send`)
-- **User preferences**: `email_notifications` boolean in profiles table (opt-in/out from Settings page)
-- **From address**: Configured via `EMAIL_FROM` env var or defaults to `M20 Autopilot <onboarding@resend.dev>`
-- **Welcome email flow**: After client-side signup → fire-and-forget POST to `/api/email/welcome`
-
-## Backend Logic
-- **Budget check**: `daily_budget < 40 SAR` → recommendation-style warning (cyan, Lightbulb icon) from dashboard/settings
-- **Automation gate**: `automation_enabled = false` → optimization jobs skip processing for that user
-- **Currency**: All monetary values are in SAR (Saudi Riyal)
-- **Subscription plans**: Free (5 campaigns, 100 kw, 20 AI queries), Pro ($49, 50 campaigns, 2000 kw), Enterprise ($199, unlimited)
-
-## Bot Modes (per user in profiles.bot_mode)
-- **safe** — AI suggests only, no auto-execution (rule engine only, no GPT cost)
-- **semi** — AI generates suggestion, status=pending, user must approve in audit log
-- **auto** — AI executes immediately (status=executed)
-
-## Pages
-1. `/` — Landing page
-2. `/login` — Sign in + Create Account + Forgot Password flow (tab toggle, Supabase Auth)
-3. `/dashboard` — KPIs with colored metric cards, editable daily budget (pencil icon, min 10 SAR), charts with type switcher
-4. `/campaigns` — Sortable campaigns table with checkbox selection and bulk actions (pause/enable/delete)
-5. `/products` — Product cards layout with detail sidebar, search and filters (fetches from API)
-6. `/blacklist` — Excluded products
-7. `/ai-engine` — AI + rules analysis (GPT-4o mini)
-8. `/ads-generator` — Ad content generator
-9. `/accounting` — Revenue/cost/profit
-10. `/alerts` — Alert list
-11. `/reports` — Performance reports
-12. `/amazon-news` — Seller news
-13. `/integration` — Amazon account connection with OAuth flow and sync history
-14. `/audit` — Full change log
-15. `/support` — Full-page AI chat assistant (bilingual, FAQ system, GPT fallback, 20-msg memory)
-16. `/help` — FAQ
-17. `/settings` — Account settings (language, tone, automation, bot mode, ACOS target)
-18. `/subscriptions` — Plan cards (Free/Pro/Enterprise) with upgrade flow
-19. `/admin` — Admin dashboard (stats, user management) — admin role only
-20. `/stores` — Store management
-21. `/keywords` — Keyword management
-22. `/recommendations` — AI recommendations
-
-## Environment Variables Required
-- `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
-- `SUPABASE_ANON_KEY` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon key
-- `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key (server-side only)
-- `OPENAI_API_KEY` — OpenAI API key for AI features
-- `RESEND_API_KEY` — Resend API key for email sending
-- `EMAIL_FROM` — Email sender address (optional, defaults to `M20 Autopilot <onboarding@resend.dev>`)
-- `AMAZON_CLIENT_ID` — Amazon Ads API client ID (optional, for Amazon integration)
-- `AMAZON_CLIENT_SECRET` — Amazon Ads API client secret (optional)
-- `AMAZON_REDIRECT_URI` — Amazon OAuth redirect URI (optional)
-
-## Setup Required
-1. Run `supabase/fix-and-seed.sql` in Supabase SQL Editor (creates tables, RLS policies, triggers)
-2. Set secrets: SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
-3. Set env var: NEXT_PUBLIC_SUPABASE_URL
-4. Call `POST /api/seed` to create test accounts:
-   - `admin@test.com` / `Admin1234!` (admin role)
-   - `test@example.com` / `Test1234!` (user role)
-   - `user@test.com` / `User1234!` (user role)
-5. Or register at /login — auto-creates profile via trigger
-
-## App Submission Assets (Amazon / Stores)
-- **Logo**: `public/m20-logo.png` (1024×1024 PNG, used as Apple touch icon, OG image, landing/footer logo)
-- **Favicon**: `public/favicon.png`
-- **Public legal pages** (no auth, no Layout — listed in `noLayoutPages` in `_app.tsx`):
-  - `/terms` — Terms of Service (bilingual EN/AR, `src/pages/terms.tsx`)
-  - `/privacy` — Privacy Policy (bilingual EN/AR, `src/pages/privacy.tsx`)
-- **Support / Contact email**: `support@m20autopilot.com` — shown on landing footer, settings page (Support & Legal card), support page, AI chatbot fallback, terms & privacy pages.
-
-## Deployment
-- **Build**: `next build` (Turbopack)
-- **Start**: `next start -p 5000 -H 0.0.0.0`
+- **Authentication**: Supabase Auth
+- **Email Service**: Resend (`RESEND_API_KEY`)
+- **Amazon Ads API**: For campaign and advertising data integration (`AMAZON_CLIENT_ID`, `AMAZON_CLIENT_SECRET`, `AMAZON_REDIRECT_URI`)

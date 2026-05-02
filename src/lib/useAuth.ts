@@ -101,15 +101,18 @@ export function useAuthState(): AuthContext {
       }).catch(() => {});
 
       if (error.message.toLowerCase().includes('invalid') || error.message.toLowerCase().includes('credentials')) {
-        const checkRes = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email.toLowerCase().trim(), password, _checkUnconfirmed: true }),
-        });
-        const checkData = await checkRes.json();
-        if (checkData.requiresOtp && checkData.userId) {
-          return { requiresOtp: true, userId: checkData.userId, email: email.toLowerCase().trim() };
-        }
+        try {
+          const checkRes = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email.toLowerCase().trim(), password, _checkUnconfirmed: true }),
+          });
+          const txt = await checkRes.text();
+          const checkData = txt ? JSON.parse(txt) : {};
+          if (checkData.requiresOtp && checkData.userId) {
+            return { requiresOtp: true, userId: checkData.userId, email: email.toLowerCase().trim() };
+          }
+        } catch {}
       }
 
       return { error: error.message };
@@ -135,12 +138,19 @@ export function useAuthState(): AuthContext {
 
   const register = useCallback(async (email: string, password: string, full_name?: string) => {
     const emailNorm = email.toLowerCase().trim();
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: emailNorm, password, full_name: full_name?.trim() ?? '' }),
-    });
-    const data = await res.json();
+    let data: any = {};
+    let res: Response;
+    try {
+      res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailNorm, password, full_name: full_name?.trim() ?? '' }),
+      });
+      const txt = await res.text();
+      data = txt ? JSON.parse(txt) : {};
+    } catch (err: any) {
+      return { error: err?.message || 'Network error during registration. Please try again.' };
+    }
 
     if (!res.ok) return { error: data.error || 'Registration failed' };
 

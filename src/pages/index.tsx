@@ -280,8 +280,8 @@ export default function Landing() {
               <h4>{tx.footer.col2}</h4>
               <ul>
                 <li><a href="#faq" onClick={(e) => { e.preventDefault(); scrollTo('faq'); }}>{tx.footer.links2[0]}</a></li>
-                <li><a href="mailto:m20.m.devlet@gmail.com">{tx.footer.links2[1]}</a></li>
-                <li><a href="mailto:m20.m.devlet@gmail.com">{tx.footer.links2[2]}</a></li>
+                <li><a href="mailto:support@m20autopilot.com">{tx.footer.links2[1]}</a></li>
+                <li><a href="mailto:support@m20autopilot.com">{tx.footer.links2[2]}</a></li>
                 <li><Link href="/terms">{isAr ? 'شروط الاستخدام' : 'Terms of Service'}</Link></li>
                 <li><Link href="/privacy">{isAr ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link></li>
               </ul>
@@ -289,7 +289,7 @@ export default function Landing() {
             <div className="footer-section">
               <h4>{tx.footer.col3}</h4>
               <ul>
-                <li><a href="mailto:m20.m.devlet@gmail.com" style={{ color: '#00d9ff', fontSize: '0.88rem', lineHeight: '2.2', fontWeight: 600 }}>m20.m.devlet@gmail.com</a></li>
+                <li><a href="mailto:support@m20autopilot.com" style={{ color: '#00d9ff', fontSize: '0.88rem', lineHeight: '2.2', fontWeight: 600 }}>support@m20autopilot.com</a></li>
                 {tx.footer.links3.slice(1).map((l, i) => <li key={i}><span style={{ color: '#8a94a6', fontSize: '0.88rem', lineHeight: '2.2' }}>{l}</span></li>)}
               </ul>
             </div>

@@ -258,7 +258,7 @@ Run `supabase/fix-and-seed.sql` in Supabase SQL Editor to create all tables:
 - **Public legal pages** (no auth, no Layout — listed in `noLayoutPages` in `_app.tsx`):
   - `/terms` — Terms of Service (bilingual EN/AR, `src/pages/terms.tsx`)
   - `/privacy` — Privacy Policy (bilingual EN/AR, `src/pages/privacy.tsx`)
-- **Support / Contact email**: `m20.m.devlet@gmail.com` — shown on landing footer, settings page (Support & Legal card), support page, AI chatbot fallback, terms & privacy pages.
+- **Support / Contact email**: `support@m20autopilot.com` — shown on landing footer, settings page (Support & Legal card), support page, AI chatbot fallback, terms & privacy pages.
 
 ## Deployment
 - **Build**: `next build` (Turbopack)

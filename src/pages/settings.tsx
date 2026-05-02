@@ -257,14 +257,14 @@ export default function Settings() {
                 {lang === 'ar' ? 'للمساعدة الفنية والفوترة وأي استفسار' : 'For technical help, billing, and any inquiries'}
               </p>
             </div>
-            <a href="mailto:m20.m.devlet@gmail.com"
+            <a href="mailto:support@m20autopilot.com"
               className="text-sm px-3 py-1.5 rounded-lg font-medium inline-flex items-center gap-2"
               style={{
                 color: 'var(--accent)',
                 background: 'var(--accent-bg-strong)',
                 border: '1px solid var(--accent-border)',
               }}>
-              <Mail className="w-3.5 h-3.5" /> m20.m.devlet@gmail.com
+              <Mail className="w-3.5 h-3.5" /> support@m20autopilot.com
             </a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2" style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--border-subtle)' }}>

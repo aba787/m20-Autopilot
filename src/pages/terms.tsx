@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
-const SUPPORT_EMAIL = 'm20.m.devlet@gmail.com';
+const SUPPORT_EMAIL = 'support@m20autopilot.com';
 const EFFECTIVE_DATE = 'April 27, 2026';
 
 const en = {

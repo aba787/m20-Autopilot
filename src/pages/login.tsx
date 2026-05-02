@@ -240,14 +240,11 @@ export default function Login() {
           style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, var(--border-subtle) 0%, transparent 70%)' }} />
 
         <div className="relative z-10 max-w-sm w-full">
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center bg-white">
-              <img src="/m20-logo.png" alt="M20 Autopilot" width={48} height={48} style={{ objectFit: 'contain' }} />
+          <div className="mb-10 text-center">
+            <div className="w-56 h-56 mx-auto rounded-2xl overflow-hidden flex items-center justify-center bg-white p-3">
+              <img src="/m20-logo.png" alt="M20 Autopilot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
-            <div>
-              <h1 className="font-bold text-lg leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>
-              <p className="text-xs" style={{ color: 'var(--accent)' }}>Amazon Ad Automation</p>
-            </div>
+            <p className="text-xs mt-3" style={{ color: 'var(--accent)' }}>Amazon Ad Automation</p>
           </div>
 
           <h2 className="text-3xl font-bold mb-4 leading-snug" style={{ color: 'var(--text-primary)' }}>
@@ -290,12 +287,10 @@ export default function Login() {
         </button>
 
         <div className="w-full max-w-sm">
-          <div className="flex items-center gap-2.5 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))' }}>
-              <Zap className="w-4 h-4" style={{ color: 'var(--btn-text)' }} />
+          <div className="mb-8 lg:hidden text-center">
+            <div className="w-32 h-32 mx-auto rounded-xl overflow-hidden flex items-center justify-center bg-white p-2">
+              <img src="/m20-logo.png" alt="M20 Autopilot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
-            <span className="font-bold" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</span>
           </div>
 
           {tab === 'otp' ? (

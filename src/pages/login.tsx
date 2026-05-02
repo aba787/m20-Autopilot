@@ -241,9 +241,8 @@ export default function Login() {
 
         <div className="relative z-10 max-w-sm w-full">
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', boxShadow: 'var(--accent-glow)' }}>
-              <Zap className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />
+            <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center bg-white">
+              <img src="/m20-logo.png" alt="M20 Autopilot" width={48} height={48} style={{ objectFit: 'contain' }} />
             </div>
             <div>
               <h1 className="font-bold text-lg leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>

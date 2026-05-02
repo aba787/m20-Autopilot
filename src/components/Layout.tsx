@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTheme } from './ThemeProvider';
 import {
@@ -208,9 +209,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         <div className="p-4 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', boxShadow: 'var(--accent-glow)' }}>
-              <Zap className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />
+            <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 bg-white">
+              <Image src="/m20-logo.png" alt="M20 Autopilot" width={40} height={40} style={{ objectFit: 'contain' }} priority />
             </div>
             <div>
               <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>M20 Autopilot</h1>

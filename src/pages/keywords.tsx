@@ -56,13 +56,13 @@ export default function Keywords() {
             className="bg-transparent border-none outline-none text-sm w-full" />
         </div>
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-          className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded px-3 py-1.5 text-sm outline-none">
+          className="border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded px-3 py-1.5 text-sm outline-none">
           <option value="all">جميع الحالات</option>
           <option value="active">نشطة</option>
           <option value="paused">متوقفة</option>
         </select>
         <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
-          className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded px-3 py-1.5 text-sm outline-none">
+          className="border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded px-3 py-1.5 text-sm outline-none">
           <option value="all">جميع الأنواع</option>
           <option value="broad">واسع (Broad)</option>
           <option value="phrase">عبارة (Phrase)</option>

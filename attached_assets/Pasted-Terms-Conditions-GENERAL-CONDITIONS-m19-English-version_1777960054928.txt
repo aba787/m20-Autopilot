@@ -1,0 +1,874 @@
+Terms & Conditions
+GENERAL CONDITIONS m19
+(English version - Please see French version below)
+ - Introductory provisions
+Preamble
+The entire m19 team is delighted to have you on board. 
+
+
+You - Customer & Users
+The Terms and Conditions of Business ("T&Cs") govern the business relationship between the customer (the "Customer") and m19 and describe the rights and responsibilities of m19 and the Customer in connection with the use by the Customer of the services provided by m19, namely the automated service offering provided through the m19 web platform (the "Platform") and mobile applications (the "Applications", and together with the Platform, the "m19 Technology") and the assistance provided by m19 account executives and support services (together, the "Services").
+
+The Terms and Conditions of Use and Provision of Services ("TOU") govern access to and use of the Platform by its users, who are invited as a User into an account set up by a Customer (a "User").
+
+These preliminary provisions (the "Preliminary Provisions", and together with the GTC and the TOU, the "General Terms and Conditions") are deemed to be an integral part of both the GTC and the TOU.
+
+ 
+
+About us - m19 Technology & our team
+m19 enables its Clients to optimize the advertising offers of eCommerce platforms through machine learning. 
+
+The m19 Technology offers two main services: 
+
+(i) Automated optimization of your advertising campaigns: thanks to its machine learning algorithms, m19 Technology, based on a Target ACOS (ratio representing the average cost of acquisition of sales from advertising) chosen by the User of a Client account, automates the creation, updating and stopping of the Client's advertising campaigns on eCommerce Platforms.
+
+(ii) Performance Visualization: The core mission of m19 Technology is the automated optimization of your ad campaigns. We couple this optimization with the ability to visualize the results of your campaigns.
+
+We offer our clients access to our technology for their teams, via the creation of a user account (a "User Account") that allows them to set up media buying strategies, track actions taken by m19 Technology & view results. 
+
+If you have any questions about our Terms & Conditions, please feel free to send us an email at contact@m19.com
+
+ 
+
+Description of m19 - Purpose
+The m19 technology offers two main services: automated optimization of advertising campaigns & performance visualization.
+
+Automated optimization of your advertising campaigns
+Thanks to its machine learning algorithms, the m19 Technology, based on a Target ACOS chosen by the User of a Customer account, automates the creation, the updating and the stopping of the Customer's advertising campaigns on the eCommerce Platforms.
+
+Performance visualization
+The core of m19 Technology's mission is the automated optimization of your advertising campaigns on Amazon. We couple this optimization with the ability to visualize the results of your campaigns.
+
+Help Desk
+A user support service is available from Monday to Friday from 9am to 7pm, French time for users. This service can be reached by e-mail at support@m19.com
+
+Any User who has a complaint about the operation of the site or the publications appearing on it may submit it in writing, giving all relevant details, to the address contact@m19.com. Complaints will be dealt with as soon as possible and m19 will respond within a maximum of ten (10) calendar days. Upon receipt of a complaint or notification, m19 will have the sole discretion to determine whether or not a breach has occurred and, if so, to delete or modify, in whole or in part, any disputed elements.
+
+Language
+The General Conditions have been drafted in several languages, including French. In case of discrepancy between two versions, the French version will prevail for the application and interpretation of the General Conditions.
+
+Applicable law - Jurisdiction
+Without prejudice to any mandatory law and/or any international public order provision that may be applicable, the law applicable to the General Terms and Conditions is French law, without regard to its conflict of laws rules.
+
+In the event of a dispute, only the French courts located within the jurisdiction of the Court of Appeal of the registered office of m19 shall have jurisdiction.
+
+Legal notice
+This site is edited by :
+
+m19
+
+Simplified joint stock company with a capital of 1720 €.
+
+Head office : 55 rue La Boétie, 7508 Paris
+
+NAF code : 7112B - Engineering, technical studies
+
+RCS Paris : 844 282 780
+
+Intracommunity VAT: FR66844282780
+
+The Site is hosted by Webflow, Inc (a Delaware corporation, USA), located at 398 11th Street, Floor 2, San Francisco, CA 94103.
+
+The director of the publication of the Site is: François Costa de Beauregard.
+
+ 
+
+Intellectual Property Rights
+m19 grants to the Customer and to the User (for any User covered by the Customer's subscription), for the duration of the Customer's subscription to the m19 Services, a non-exclusive, non-transferable and non-assignable license to access and use the m19 Technology, within the limits of the Services subscribed to by the Customer, for the world, subject to the other provisions of the General Terms and Conditions
+
+The Customer and any User acknowledges that they do not acquire any rights whatsoever in the object codes and source codes of the m19 Technology and its Services, which are and shall remain the exclusive property of m19.
+
+The Customer and any User acknowledges that all content on m19, existing or future, is protected and is the exclusive property of m19. Consequently, unless expressly authorized by m19, all reproductions, representations and uses by the Customer and the User other than those mentioned above are prohibited. Any failure to comply with these obligations shall constitute an infringement within the meaning of the Intellectual Property Code.
+
+ 
+
+Force majeure
+Each of m19, the Customer and any User shall not be liable for any failure or delay in performance of its obligations under the Terms and Conditions in the event of Force Majeure. In particular, it is agreed that in the event of Force Majeure, m19 may immediately suspend access to the m19 site and Services, which suspension shall in no way constitute a cause of liability for m19.
+
+For the purposes of these Terms and Conditions, "Force Majeure" shall mean any case of force majeure or act of God, including, in addition to any other cases recognized by French law, any unforeseeable, irresistible event external to the parties.
+
+TERMS OF SERVICES
+‍‍
+
+1. Acceptance
+Acceptance by the Customer of the General Terms and Conditions of Business ("GTCB", of which the Preliminary Provisions are deemed to be an integral part) is an essential and mandatory prerequisite to the use of the m19 Technology and its Services. You expressly acknowledge that you have read, understood and accepted these T&Cs, which shall apply to all services performed by m19 for the Customer. The T&Cs shall prevail over any terms and conditions to the contrary that may appear in the general terms and conditions of purchase or any other document issued by the Customer. However, m19 reserves the right to deviate from certain clauses of the GTCs depending on the negotiations with the customer, by establishing special terms and conditions of sale (in particular by concluding a service contract or special terms and conditions) to be approved by the customer.
+
+‍
+
+2. Modifications
+The General Terms and Conditions applicable to the Customer are those available at the date of the Customer's subscription. It is therefore specified that any modification of the General Terms and Conditions made by m19 will not apply to any current subscription, unless expressly agreed by the Customer. We recommend that the Customer save and/or print these GTC for safe and durable storage, and thus be able to invoke them at any time during the performance of the contract if necessary.
+
+‍
+
+3. Cost of Technology and Service m19 - Pricing
+The use of m19 Technology is a paid service, charged by subscription.
+
+‍
+
+Pricing
+The m19 technology prices are available on our website at the following page: https://www.m19.com/pricing-automated-ppc-campaigns
+
+ 
+
+The prices of the Services sold are those in effect on the day of the decision to subscribe to the m19 Service. The prices are denominated in Euros and US dollars and are calculated exclusive of taxes. Consequently, they will be increased by the VAT rate applicable on the basis of the information provided by the Customer. m19 will not be liable in the event that the Customer provides, voluntarily or involuntarily, erroneous or misleading information leading to the application of an incorrect VAT rate.
+
+m19 reserves the right to change its rates at any time, provided that the rates contracted at the time of the Customer's subscription will continue to apply until the expiration of the subscription period. In the event of automatic renewal, the new price list, which will be notified to the Customer before the expiration of the current subscription period, will apply, unless the Customer wishes to interrupt the subscription.
+
+
+Terms of payment & Commercial discount
+The subscription to the m19 Service is monthly or annual. The fixed fee is billed on the first day of the subscription and the variable fee on the last day of the subscription and on each anniversary date. It can be paid by credit card or direct debit.
+
+ 
+
+Like its rates, m19 reserves the right to change its commercial discount policy at any time.
+
+ 
+
+Billing
+
+The Customer agrees to receive invoices in electronic format and in English.
+Customer agrees to: 
+
+Provide accurate billing information to enable m19 to charge applicable taxes, including but not limited to: 
+
+In Europe: billing address and country with VAT number.
+
+In the United States: billing address (including state and city) where the service will be used.
+
+ 
+
+Automatic renewal
+For a monthly subscription, the renewal is tacit from one month to another.  
+For a yearly subscription, the renewal is tacit from one year to the next.  
+‍
+
+If you wish to cancel your subscription, see the paragraph below Cancellation of m19 Services.
+
+‍
+
+Credit
+The credit that may accumulate on a Customer's account (as a result of a promotion, for example), expires at the end or termination of the current Contract, has no cash or exchange value and cannot be transferred or refunded.
+
+‍
+
+Default of payment
+Payments are made automatically by credit card or direct debit on the anniversary date of the subscription. In case of non-payment, we send a reminder by email to the Customer, asking him to pay his subscription, by the means of payment of his choice, as soon as possible.
+
+If the customer has not paid his subscription five (5) calendar days after the anniversary date of his subscription, we will cut off access to the m19 Technology, stop all optimization of advertising campaigns and suspend the campaigns managed by our Service. The payment corresponding to the duration of the customer's subscription will still be due (until the end of the month or the year depending on the type of subscription).
+
+In the event that the Customer encounters difficulties in honoring his payment, we invite him to contact us by email at billing@m19.com to regularize his situation
+
+ 
+
+ 
+
+4. Duration
+Subscriptions can be monthly or annual.
+
+Any subscription period started is invoiced in its entirety.
+
+Renewal of the contract is tacit and automatic, unless terminated by the Customer in accordance with the provisions herein. Upon renewal, the term of the contract is extended for a period equivalent to the billing period initially chosen by the Customer.
+
+ 
+
+The Customer may use the m19 Technology and Services as long as the Customer has a current subscription and is current with its payment obligations to m19.
+
+ 
+
+ 
+
+5. Termination of Services m19
+A subscription may be terminated either by the Customer or by m19.
+
+‍
+
+Termination by the Customer
+If you choose to terminate our services, please indicate this in the form available at the following link: https://www.m19.com/form/cancel-my-subscription
+
+ 
+
+For monthly subscriptions, the cancellation must be made at least seven (7) calendar days before the anniversary date. The subscription will automatically end on the last day of the monthly subscription.
+
+For annual subscriptions, cancellation must be made at least thirty (30) calendar days before the anniversary date. The subscription will automatically terminate on the last day of the annual subscription.
+
+In the absence of termination in accordance with this Agreement, the subscription will be extended by tacit renewal for a period equivalent to the duration of the initial subscription that is about to expire.
+
+ 
+
+Termination by m19
+m19 reserves the right to terminate a Customer at any time, automatically and without any formality, including, but not limited to, if m19 has reasonable grounds to believe that the Customer：
+
+Fails to comply with the T&Cs herein described, in particular by failing to meet its payment obligations,
+Has his or her access and/or business user account on the eCommerce platform suspended or terminated,
+Pretends to be any other person or entity or misrepresents its customer identity
+Engages in inappropriate or objectionable behavior on the m19 Platform or Applications or in the use of the Services, including, but not limited to, behavior that is contrary to public policy or morality, infringement of intellectual property rights (including distribution of counterfeit goods), or more generally behavior that may damage the image of the site or of m19 or its Customers and Users
+‍
+6. Specific Obligations and Responsibilities of the Customer
+The Customer agrees to :
+
+To conduct a lawful business in accordance with applicable laws and regulations and the terms and conditions of sale of the eCommerce platforms used by the Customer.
+Delegate to m19 the access rights to the eCommerce platform used by the Customer that are necessary for the operation of the Service (in particular on Amazon: Advertising API, MWS API, access to Vendor Central).
+Grant a right of use to the m19 Service to any User having an account on the eCommerce platform allowing to manage the advertising campaigns. Customer is responsible for the actions of its users and is responsible for removing the access rights of its users. In particular, the customer shall remove the access rights of users who are no longer required to use the m19 Service.
+‍
+
+7. Responsibilities of m19
+m19 will use its best efforts to provide its customers with a quality service.
+
+m19's liability to the Customer shall be limited to the direct responsibility of the Customer and to the damage caused to the Customer as a direct result of such acts. This liability is strictly limited to the compensation of direct damages proven by the Customer and is in any case limited to the amount paid by the Customer for the service provided during the six months preceding the occurrence of the Customer's claim for compensation.
+
+Therefore, m19 shall not be liable for any direct or indirect damages, such as, but not limited to, loss of revenue, loss of interest, negative impact on the customer's brand image or increased advertising expenses, which the customer may suffer in the event of Force Majeure, damage resulting from misuse of the Services by the Customer, from acts attributable to a third party, or from any action taken by any third party against the Customer or any User, as well as in the event of non-compliance by the Customer or any User with any regulation applicable to personal data (in particular the RGPD).
+
+Similarly, m19 shall not be liable for any direct or indirect damages that the Customer may suffer as a result of any malfunction, technical, contractual or regulatory change in any e-Commerce platform that may degrade or prevent the proper functioning of the m19 Technology.
+
+m19 does not review or select the content of sites that may be linked to m19.com and is not responsible for the content of sites to which links are made. The Customer acknowledges that m19 is bound only by an obligation of means and is not bound by a general obligation to monitor contributions.
+
+The Customer acknowledges that the proper functioning of m19 is subject to the conditions of access to the Internet network, at the Customer's expense, and to its possible limits and restrictions (coverage, saturation, availability).
+
+‍
+
+8. Service Level
+The m19 Technology is available on a controlled access basis 24 hours a day, 7 days a week, subject to maintenance periods. m19 uses its best efforts to ensure optimal availability of the Service.
+
+Access to the m19 Technology may be subject to certain restrictions on functionality due to operational and maintenance requirements. In the event of an emergency and as a last resort, such as Force Majeure, computer failures, or problems related to telecommunications networks, access to m19 Technology may be temporarily interrupted to perform urgent maintenance, backup or site improvement, and m19 will, where possible, provide advance notice to the Customer. Such interruptions of service will not entitle the Customer to any compensation.
+
+‍
+
+9. Privacy
+Customer and m19 agree to treat all documents and information supplementing or pursuant to this Agreement, including all information relating to the business of the parties, as strictly confidential and will not disclose or allow to be disclosed all or any part of its contents (and any other information relating to the parties) to any third party, except with the prior consent of the other party
+
+ 
+
+Each party agrees, among other things, to the following:
+
+- In the event that either party is required by law or regulation to disclose confidential information, it will, to the extent practicable, promptly provide the other party with prior written notice of such requirement so that the other party may, if necessary, take any protective measures or actions, and that in all circumstances prior consultation on the scope and timing of the proposed disclosure will be possible;
+
+- To limit, by all appropriate means, the total or partial dissemination or use of the confidential information to those of its employees whose intervention is necessary; each party undertakes to inform these persons in advance of the confidential nature of the confidential information, to impose on them the same obligations of confidentiality as those subscribed to herein, and to take all necessary steps to ensure that they respect the confidentiality undertaking;
+
+- Inform the other party of any breach or non-compliance with the obligations imposed by this confidentiality undertaking of which it becomes aware and provide all possible assistance to minimize the effects of any such breach or non-compliance.
+
+As an exception, these confidentiality undertakings shall not apply to Confidential Information that a party can demonstrate: (i) was already in the public domain or known to it or its servants on the day of its disclosure to such party/its servants or would have become so after that date other than by its or its servants' act; (ii) was communicated to such party or its servants on a non-confidential basis by a source other than the other party or its servants, which is not legally or contractually prohibited from disclosing such information to it.
+
+‍
+
+11. Advertising
+Client grants m19 the right to use Client's company name and logo as a reference for marketing or promotional purposes on Client's website and in other public or private communications with our existing or potential clients, subject to any standard guidelines for use of Client's brand that Client may have provided. If Customer does not wish to be used as a reference, Customer may email us at any time at contact@m19.com with a clear indication that it does not wish to be included in our references.
+
+‍
+
+GENERAL TERMS AND CONDITIONS OF USE AND PROVISION OF SERVICES
+1. Acceptance
+Any use of the m19 Technology and Services is subject to the prior acknowledgement and express acceptance of these Terms and Conditions of Use and Provision of Services (hereinafter referred to as "TOU", of which the Preliminary Provisions are deemed to be an integral part) by the Users. The TOS are intended to govern the conditions of use of m19, its Services and content, by the Users and to define their rights and obligations.
+
+Access to the site and/or use of the m19 Services implies full acceptance of the TOS with immediate effect. Each User is deemed to have read and accepted without reservation all the provisions of the TOS, which will apply to the relationship between the User and m19 as well as more generally to the User's browsing on the site and to any service provided by m19 to the User.
+
+Users are responsible for the manner and consequences of their access to the site, particularly via the Internet. This access may involve the payment of fees to technical service providers such as Internet access providers, which remain at the User's expense. In addition, the User must provide and be entirely responsible for the equipment necessary to connect to the site. The User acknowledges in particular that he/she has verified that the computer configuration he/she uses is secure and in working order.
+
+‍
+
+2. Modifications
+For the purpose of developing its Services, m19 reserves the right to modify, at any time and without notice, the terms, conditions and notices of these TOU, including but not limited to the design, layout and/or configuration of the site, the content of the site or the products and services available therein, and/or to temporarily or permanently cease operation of all or part of the site.
+
+In addition, m19 reserves the right to change the location of the site on the Internet at any time and without notice.
+
+The User acknowledges that m19 shall not be liable in any manner whatsoever to the User or any third party for any such modification, suspension or discontinuance.
+
+You are advised to regularly review the latest version of the TOS on the m19 website and you are advised to save and/or print the TOS for safekeeping so that you can refer to it at any time during the performance of the contract if necessary. Continued use of m19 after any changes to the TOS constitutes acceptance of the changes.
+
+‍
+
+3. User Account Management m19
+Conditions of access and use of the m19 User Account
+To access m19: User may use on the Web Platform:
+
+the email used to set up your business user account on Amazon or his business email used for the m19 User Account and the password provided to you by m19.
+
+On the Mobile Applications: the business email used for the m19 User Account and the password provided to you by m19.
+
+The User agrees to provide true, accurate, and current information as entered in the service's registration form, and in particular not to use false names or addresses, or unauthorized names or addresses.
+
+Each User undertakes to maintain strict confidentiality of the data allowing him/her to access his/her User space, the User acknowledging that he/she is the only one responsible for accessing the site through his/her login and password, unless fraud is proven.
+
+The User further agrees not to make available or distribute any illegal or objectionable information (such as defamatory or impersonatory information) or harmful information (such as viruses). If User does so, m19 may suspend or terminate User's access to the site at its sole discretion.
+
+‍
+
+Information or alert from m19
+The User may at any time request m19 at the following e-mail address: support@m19.com, to modify his/her authentication details. The User undertakes to inform m19 immediately if he/she suspects that his/her login and/or password have been used by an unauthorized third party, or if they have been lost or stolen.
+
+‍
+
+User Account Settings m19
+The User agrees that information related to the management of his/her m19 User Account settings (including the type of Activities you perform on the m19 User Account, "Activities" being narrowly defined as (i) any login made by the User to his/her m19 User Account, (ii) any actions taken by the User through the m19 Technology (iii) any actions taken by the m19 Technology to optimize the advertising offerings of the eCommerce Platforms on behalf of the Customer) will be sent back to m19 in connection with the Service
+
+‍
+
+Deleting your m19 User Account
+The User may at any time initiate the process of closing the m19 User Account. This will be done by sending an email request to support@m19.com or another m19 user support address provided to you by m19. m19 will complete the required steps within a period of no more than five (5) calendar days.
+
+‍
+
+Deletion of a User Account by a User
+A request for deletion by e-mail must be accompanied by a scanned copy of a valid identification document, otherwise m19 will not be able to comply with your request. An acknowledgement of receipt of the deletion request will be sent to the email address you have provided to m19.
+
+‍
+
+Deletion of a User Account by m19
+In addition, any m19 account that has been inactive for more than twelve (12) months may be terminated by m19 upon notice to you via email to the address associated with your account and which remains unanswered for thirty (30) calendar days following notification.
+
+m19 also reserves the right to terminate a User Account in the event of a breach by the User of the Terms and Conditions.
+
+‍
+
+4. Availability of the site and the m19 Services
+The site is accessible to Users on a permanent basis, except in cases of Force Majeure, computer breakdowns, or problems related to telecommunications networks. As an exception, m19 may, if necessary, interrupt access to the site in order to carry out maintenance, backup or improvement operations. Maintenance and/or service interruption operations will not entitle the User or the Customer to any compensation.
+
+The User may use the m19 Technology and its Services as long as the Customer has a contract with m19 and an active User Account.
+
+‍
+
+5. Obligations and Responsibilities of Users
+Access to the m19 Technology, its Services and the Platform and Applications is the sole responsibility of the person connecting to them, the User acknowledging that the characteristics and constraints of the Internet do not guarantee the security, availability and integrity of data transmissions over the Internet. 
+
+It is the responsibility of each User to (i) take all appropriate measures to protect his or her own data and/or software, in particular from contamination by any viruses circulating on the Internet or from the intrusion of a third party into his or her terminal system for any purpose whatsoever, and to verify that the files transmitted do not contain any computer virus (ii) to comply with all applicable laws, (iii) to make reasonable and good faith use of the Services or content, according to the possibilities and purposes for which they were designed, and (iv) to carefully select the elements necessary for the functioning of the m19 Technology algorithm and in particular the Target ACOS.
+
+M19 shall not be liable for any damage caused to Users, their computer equipment and data as a result of using the site, nor for any consequences to their activities.
+
+m19 assumes no liability, direct or indirect, for any direct or indirect damage or loss arising from the use of the services or content by Users or third parties. In particular, m19 shall not be liable for any misrepresentations made by a User and for his or her conduct towards third parties. In the event that m19 is held liable for any such conduct of a User, the User agrees to indemnify m19 against any judgment against it and to reimburse m19 for all costs, including attorneys' fees, incurred in its defense.
+
+In particular, m19 shall not be liable for: (i) use of the m19 site or Services not in accordance with the specifications or recommendations provided by m19, (ii) any act of a third party, (iii) any act of any User, (iv) any consequential loss such as, but not limited to, business interruption, commercial loss, loss of orders, loss of customers, (iv) any indirect damage such as, in particular, operating loss, commercial damage, loss of orders, loss of clientele, reputational damage or damage to brand image, loss of turnover, income or margin, commercial disturbance of any kind whatsoever, loss of opportunity, cessation of activity, (v) any action directed by any third party against any User, (vi) any case of Force Majeure.
+
+User certifies that it is Authorized by Customer to use the m19 Technology and Services and to manage advertising campaigns on the eCommerce platforms. If User has any technical access to manage the eCommerce user account that is not authorized by Customer, User must notify Customer of such technical access as soon as possible and refrain from using the m19 Technology and Services.
+
+‍
+
+6. Privacy Policy
+The User is hereby informed that certain personal data, which may identify him/her directly or indirectly, and which are indicated as mandatory on the forms and collected as part of the service described herein, are necessary for the use of the m19 site and services. The personal data that m19 collects from the User may include: last name, first name, email.
+
+m19 may record User Activities within the m19 Technology for security purposes, including to allow you to identify any access to your m19 account by a third party without your knowledge. The history of these Activities may be retained in an identifiable manner by m19 for a maximum period of one (1) year and will be permanently destroyed upon deletion of your m19 account.
+
+This data is derived in particular from the voluntary provision of information by Users, and/or from computer traces induced by navigation on the site.
+
+By providing this information, the User expressly agrees that it may be processed by m19, which may use it to provide the m19 Services requested by the User and to manage the operations performed on the site. The User's personal data may also be used for the creation and operation of User accounts and for the provision of services offered by the site.
+
+m19 is committed to ensuring the protection of the User's personal data and of all personal data obtained in the course of using the services of the site. Each User is solely responsible for maintaining the confidentiality of his or her user name and password and is solely responsible for all accesses to his or her User Account, whether or not authorized. m19 shall not be liable for any action or damage done through the User's personal space by a third party who has access to his or her user name and password. The User agrees to inform m19 immediately if he/she becomes aware of or suspects any unauthorized use of or access to his/her personal space.
+
+The User acknowledges that he/she is aware that the personal data provided may be transferred by m19 for the purpose of operating the site, and that m19 may also make commercial use of the User's personal data, both on its own behalf and on behalf of third-party partners. m19 may use the personal data for commercial prospecting purposes or for sending newsletters, it being specified that the User may withdraw or restrict his/her consent at any time
+
+The information collected from the User, except for the right of access and rectification by contacting m19, is processed to ensure the proper functioning of the site and the services provided to the User.
+
+In accordance with the RGPD (General Data Protection Regulation, adopted by the European Parliament on 14 April 2016), m19 informs the User of the following:
+
+- Identity of the data controller: company m19, whose full contact details appear herein.
+
+- Purpose of the processing: to enable the authentication of Users on the Site, to perform its contractual obligations (including, but not limited to, the management of customer relations and payment transactions), to send, in accordance with applicable legislation, information on m19 products, services and events that may be of interest to Customers or Users.
+
+- Recipient of personal data: m19 is the recipient of personal information. As an exception to the foregoing, m19 may be required to transmit personal data if compelled to do so by a legal or regulatory obligation, or a judicial or administrative order.
+
+- Data Retention Period: Upon termination of the account, m19 will provide access to Users of the account to access their past performance data, unless Users explicitly request otherwise. In which case, m19 will destroy such performance data within 3 months of account closure and will not retain Users' personal data (subject to legal and regulatory obligations applicable to m19, including document retention or archiving).
+
+ 
+
+Computer rights and freedoms of the User
+The User has the following rights concerning his personal information, which he may exercise by contacting m19 by email or mail.
+
+‍
+
+Right to have a treatment confirmed 
+The User has the right to obtain confirmation from the data controller as to whether or not personal data concerning him/her are being processed.
+
+‍
+
+Access right and data communication
+- The User has the right to access the personal information concerning him/her, the purposes of the processing, the categories of personal data concerned, the recipients or categories of recipients to whom the personal data have been or will be communicated, the envisaged duration of the storage of the personal data, or the criteria used to determine this duration.
+
+- However, due to m19's obligation of security and confidentiality in the processing of personal data, the User's request will be processed provided that he/she provides proof of his/her identity, in particular by producing a copy of his/her valid identity document.
+
+- m19 will be entitled, if necessary, to object to requests that are manifestly abusive (in particular because of their number and/or their repetitive or systematic nature).
+
+- The User may find a model letter on the website of the Commission Nationale de l'Informatique et des Libertés (CNIL) accessible at the following URL: https://www.cnil.fr/fr/modele/courrier/exercer-son-droit-dacces
+
+‍
+
+Right to rectify data
+- The User may request the rectification, updating, blocking or deletion of data concerning him/her (right to be forgotten) which may be inaccurate, erroneous, incomplete or obsolete. The User may also verify the existence of automated decision-making, including profiling, and in such cases, useful information regarding the underlying logic, as well as the significance and intended consequences of such processing.
+
+- The User may also define general and specific directives regarding the fate of personal data after his/her death.
+
+- The User may withdraw his or her consent to the use of his or her personal data at any time (it being specified that the withdrawal of consent does not call into question the lawfulness of the processing based on the consent given prior to such withdrawal). The User may also request the limitation of the processing of his/her personal data.
+
+- The User can find a model letter on the website of the Commission Nationale de l'Informatique et des Libertés (CNIL) accessible at the following URL: https://www.cnil.fr/fr/modele/courrier/rectifier-des-donnees-inexactes-obsoletes-ou-perimees
+
+‍
+
+Right to object
+- The User may exercise his right to object (i) for legitimate reasons, or (ii) to object to the use of the data collected for commercial prospecting purposes.
+
+- The User can find a model letter on the website of the Commission Nationale de l'Informatique et des Libertés (French National Commission for Information Technology and Civil Liberties) at the following URL: ttps://www.cnil.fr/fr/modele/courrier/supprimer-des-informations-vous-concernant-dun-site-internet
+
+‍
+
+Reply duration
+m19 undertakes to respond to any request for access, rectification or opposition or any other additional request for information within a reasonable period of time which shall not exceed seven (7) calendar days from the receipt of the User's request.
+
+‍
+
+Authorized service providers
+m19 may use its authorized service providers to facilitate the collection and processing of data. These service providers will have access to the data collected.
+
+m19 will first ensure that its service providers provide adequate safeguards and comply with strict conditions regarding confidentiality, use and protection of data. In this case, m19 will verify that the transfer is carried out in compliance with the applicable regulations and guarantees an adequate level of protection for the privacy and fundamental rights of the User concerned. m19 will provide more detailed information on these possible transfers upon request of any User.
+
+‍
+
+Complaint to the competent authority
+If the User considers that m19 is not complying with its obligations in relation to the protection of personal data, he/she may submit a complaint or a request to the Commission Nationale de l'Informatique et des Libertés, to which he/she may send an electronic request at the following URL: https://www.cnil.fr/fr/plaintes/internet.
+
+Each User declares, by validating the present general conditions, that he/she has been fully informed of the use that will be made of his/her data by m19 and gives his/her consent to the processing of his/her personal data.
+
+Any User may contact m19 in order to exercise his rights as described herein at the following e-mail address: contact@m19.com or at the following postal address: 55 rue La Boétie, 75008 Paris, enclosing a copy of his identity card. Requests for the deletion of personal data will be subject to the obligations imposed on m19 by law, in particular with regard to the conservation or archiving of documents. Users will be asked to specify in their request the reasons why they wish to exercise their rights, and where appropriate to define the scope of the data they wish to have copied and the format of the data they wish to obtain.
+
+In addition, each User has the right to the portability of his personal data, allowing him, upon simple request to m19 (according to the modalities indicated above), to recover the data he has provided in an easily reusable form, and, if necessary, to transfer them to a third party.
+
+More generally, for more information on their rights, Users may consult the CNIL website at https://www.cnil.fr.
+
+ 
+
+7. Cookies &  Hypertext links
+When the User navigates through the m19 technology or its websites, information may be recorded or read in your terminal through the use of cookies, depending on the choices made in your browser. A cookie is a text file that may be stored in a user's computer when he or she visits an online service using a browser. During its period of validity, a cookie file allows its issuer to recognize the terminal concerned each time this terminal accesses digital content containing cookies from the same issuer.
+
+We use web analytics services that use cookies. The information about your use of this site (including your IP address) generated by the cookie is transferred to a server and stored there. The User declares that he/she is aware that when visiting the site, cookies are deposited on his/her computer, mobile, tablet or any other equipment used by the User to visit the site. m19 wants to provide the best possible experience to the Users. This is one of the reasons why m19 uses cookies to identify the User and to allow access to the User's account.
+
+These solutions use this information to evaluate your use of the Technology and Services to compile reports on m19 Technology Activities. These solutions may also transfer this information to third parties, to the extent legally specified or to the extent that third parties process this data on their behalf. These services do not connect your IP address to any other data stored by them.
+
+These cookies have the following purposes: (i) technical cookies, necessary for the proper functioning of the site and the provision of services to the User (this type of cookie does not allow the identification of the User), (ii) statistical cookies, allowing m19, for the purpose of measuring and improving the functioning of the site, to have statistics relating, in particular, to the frequentation of the site and the use of the m19 Services (this type of cookie does not allow the identification of the User), ((iii) advertising cookies, allowing the User to have targeted advertisements submitted by m19's partners. It is specified that m19 has no control over this last category of cookies and cannot be held responsible for them.  
+
+The User may at any time configure his browser software so that cookies are stored in his terminal or, on the contrary, that they are rejected (either systematically or according to their sender). The User may also configure his browser software so that he is offered the option of accepting or rejecting cookies from time to time, before a cookie is recorded in his terminal.
+
+Please note that any such setting may affect the User's ability to browse the Internet and access certain services that require the use of cookies. m19 declines all responsibility for any consequences related to the degraded operation of the site resulting from the impossibility of saving or consulting the cookies required for their operation and which the User has refused or deleted. 
+
+m19 therefore undertakes to obtain, in compliance with legal provisions, the prior consent of the User for the installation of any tracer requiring your prior information and agreement.
+
+The hyperlinks available on the site may lead to third party sites not published by m19. They are provided solely for the convenience of the User, to facilitate the use of resources available on the Internet. If the User uses these links, the User will be leaving the site and agreeing to use the third-party sites at the User's own risk or, if applicable, in accordance with the terms and conditions governing such sites.
+
+The User acknowledges that m19 does not control or have any input into the terms of use and/or content applicable to or contained in such third party sites.
+
+Accordingly, m19 shall not be liable in any manner whatsoever for such hypertext links. Furthermore, the User acknowledges that m19 does not endorse, warrant or guarantee any or all of the terms of use and/or content of such third party sites. The site may also contain promotional hyperlinks and/or banners to third party sites not published by m19. m19 invites the User to notify m19 of any hyperlinks on the site that would lead to third party sites with content that is contrary to law and/or morality.
+
+‍
+
+‍
+CONDITIONS GENERALES m19 – Dispositions préliminaires
+Préambule
+Toute l'équipe m19 est ravie de vous compter parmi nous.
+
+
+Vous - Client & Utilisateurs
+Les Conditions Générales de Vente entre professionnels (“CGV”) encadrent la relation commerciale, entre le client (le « Client ») et m19 et décrivent les droits et responsabilités de m19 et du Client lors de l’utilisation par le Client des services fournis par m19, à savoir l’offre de service automatisée fournie par le biais de la plateforme web (la « Plateforme ») et des applications mobiles m19 (les « Applications », et avec la Plateforme, la « Technologie m19 ») et l’aide apportée par les chargés de clientèle et les services support m19 (ensemble, les « Services »).
+
+Les Conditions Générales d’Utilisation et de fourniture de Services (“CGU”) encadrent l’accès et l'utilisation du SaaS m19 par ses utilisateurs, qui sont invités comme Utilisateur dans un compte configuré par un Client (un « Utilisateur »).
+
+Les présentes dispositions préliminaires (les « Dispositions Préliminaires », et avec les CGV et les CGU, les « Conditions Générales ») sont réputées faire partie intégrante, tant des CGV que des CGU. 
+
+ 
+
+Nous - m19 Technologie & notre équipe
+m19 permet à ses Clients d’optimiser les offres publicitaires des plateformes eCommerce grâce à du machine learning. 
+
+La Technologie m19 propose deux principaux services : 
+
+(i) Optimisation automatisée de vos campagnes publicitaires : grâce à ses algorithmes de machine learning, la Technologie m19, à partir d’un ACOS Cible (ratio représentant le coût d’acquisition moyen des ventes issues de la publicité) que choisit l’Utilisateur d’un compte Client, automatise la création, la mise à jour et l’arrêt des campagnes publicitaires du Client sur les Plateformes eCommerce.
+
+(ii) Visualisation des performances : le coeur de la mission de la Technologie m19 est l’optimisation automatisée de vos campagnes publicitaires. Nous couplons cette optimisation à des fonctionnalités de visualisation de résultats de vos campagnes.
+
+Nous proposons à nos clients l’accès pour leurs équipes à notre technologie, via la création d’un compte utilisateur (un « Compte Utilisateur ») permettant de paramétrer les stratégies d’achat média, de suivre les actions prises par la Technologie m19 & d’en visualiser les résultats. 
+
+Si vous avez la moindre question sur nos CGV & CGU, n’hésitez pas à nous envoyer un email à contact@m19.com
+
+ 
+
+Description de m19 - Objet
+La technologie m19 propose deux principaux services : l’optimisation automatisée des campagnes publicitaires & la visualisation des performances.
+
+Optimisation automatisée de vos campagnes publicitaires
+Grâce à ses algorithmes de machine learning, la Technologie m19, à partir d’un ACOS Cible que choisit l’Utilisateur d’un compte Client, automatise la création, la mise à jour et l’arrêt des campagnes publicitaires du Client sur les Plateformes eCommerce.
+
+Visualisation des performances
+Le coeur de la mission de la Technologie m19 est l’optimisation automatisée de vos campagnes publicitaires sur Amazon. Nous couplons cette optimisation à des fonctionnalités de visualisation de résultats de vos campagnes.
+
+Service support
+Un service de support utilisateurs est assuré du lundi au vendredi de 9h à 19h, heures françaises pour les utilisateurs. Ce service est joignable par mail à l’adresse support@m19.com
+
+Tout Utilisateur ayant une réclamation quant au fonctionnement du site ou les publications y apparaissant, peut la formuler par écrit, en donnant tous détails pertinents, à l’adresse contact@m19.com. Les réclamations seront traitées dans les meilleurs délais, m19 s’engageant à y répondre dans un délai maximum de dix (10) jours calendaires. Après réception d’une réclamation ou notification, m19 disposera seule de la faculté d’apprécier l’existence ou non d’un manquement, et éventuellement de supprimer ou modifier, totalement ou partiellement, les éléments éventuellement litigieux.
+
+Langue
+Les Conditions Générales ont été rédigées en plusieurs langues, dont le français. En cas de discordance entre deux versions, la version en français prévaudra pour l’application et l’interprétation des Conditions Générales.
+
+Droit applicable - Juridiction compétente
+Sans préjudice de toute loi de police et/ou de toute disposition d’ordre public international qui serait éventuellement applicable, le droit applicable aux Conditions Générales est le droit français, et ce, sans tenir compte de ses règles de conflit de lois.
+
+En cas de litige, il est fait attribution de compétence aux seuls tribunaux français situés dans le ressort de la Cour d’Appel du siège social de m19.
+
+Mentions légales
+Le présent site est édité par :
+
+m19
+
+Société par Actions simplifiée au capital de 1720 €
+
+Siège social : 55 rue La Boétie, 75008 Paris
+
+Code NAF : 7112B - Ingénierie, études techniques
+
+RCS Paris : 844 282 780
+
+TVA Intracommunautaire : FR66844282780
+
+Le Site est hébergé par la société Webflow, Inc.(a Delaware corporation, Etats-Unis), située 398 11th Street, Floor 2, San Francisco, CA 94103.
+
+Le directeur de la publication du Site est : François Costa de Beauregard.
+
+ 
+
+Propriété intellectuelle
+m19 concède au Client et à l’Utilisateur (pour tout Utilisateur couvert par l’abonnement du Client), pour la durée de l’abonnement du Client aux Services m19, une licence d’accès et d’utilisation à la Technologie m19 , non exclusive, non transférable et incessible, dans la limite des Services souscrits par le Client, pour le monde, sous réserve des autres dispositions des Conditions Générales.
+
+Le Client et tout Utilisateur reconnaît ne pas acquérir de droit quel qu’il soit sur les codes objets et codes sources de la Technologie m19 et ses Services qui sont et resteront la propriété exclusive de m19.
+
+Le Client et tout Utilisateur reconnaît que l’ensemble des contenus figurant sur m19, existants ou à venir, sont protégés et sont la propriété exclusive de m19. En conséquence, sauf autorisation expresse et préalable de m19, toutes reproductions, représentations et utilisations par le Client et l’Utilisateur autres que celles visées ci-dessus sont interdites. Tout manquement à ces obligations constituerait une contrefaçon au sens du Code de la propriété intellectuelle.
+
+ 
+
+Force majeure
+Chacun de m19, du Client et de tout Utilisateur ne pourra être tenu pour responsable de toute inexécution ou tout retard dans l’exécution de ses obligations en vertu des Conditions Générales en cas de Force Majeure. Il est notamment convenu qu’en cas de Force Majeure, m19 pourra suspendre immédiatement l'accès au site et aux Services m19, suspension qui ne pourra en aucun cas constituer une cause de mise en jeu de la responsabilité de m19.
+Pour les besoins des Conditions Générales, « Force Majeure » désigne tout cas de force majeure ou de cas fortuit, s'entendant, outre tous cas retenus par la jurisprudence française, de tout évènement imprévisible, irrésistible et extérieur aux parties.
+
+CONDITIONS GENERALES DE VENTE 
+‍‍
+
+1. Acceptation
+L'acceptation par le Client des Conditions Générales de Vente entre professionnels (“CGV”, dont sont réputées faire partie intégrante les Dispositions Préliminaires) est un préalable indispensable et obligatoire à l’utilisation de la Technologie m19 et de ses Services. Vous reconnaissez expressément avoir pris connaissance et accepté sans réserve les présentes CGV qui s'appliqueront à toutes prestations accomplies par m19 pour le Client. Les CGV prévaudront sur toutes clauses et conditions contraires pouvant figurer sur les conditions générales d'achat ou tout autre document émanant du Client. Toutes conditions contraires posées par le Client seront donc, à défaut d'acceptation expresse par m19, inopposables à cette dernière. m19 se réserve cependant le droit de déroger à certaines clauses des CGV en fonction des négociations menées avec le Client, par l’établissement de conditions de vente particulières (notamment par la conclusion d’un contrat de prestation de services ou de conditions particulières) qui seront approuvées par le Client.
+
+‍
+
+2. Modifications
+Les Conditions Générales de Vente applicables au Client sont celles disponibles à la date de l’abonnement du Client, il est donc précisé que toute modification des CGV qui serait effectuée par m19 ne s’appliquera pas à tout abonnement en cours, sauf accord exprès du Client. Nous recommandons au Client de sauvegarder et/ou imprimer les présentes CGV pour une conservation sûre et durable, et pouvoir ainsi les invoquer à tout moment pendant l'exécution du contrat si besoin.
+
+‍
+
+3. Coût de la Technologie et du Service m19 - Tarification
+L’utilisation de la Technologie m19 est un service payant, facturé par abonnement. 
+
+‍
+
+‍
+
+Tarification
+Les tarifs de la technologie m19 sont disponible  sur notre site web à la page suivante : https://www.m19.com/pricing-automated-ppc-campaigns
+
+ 
+
+Les prix des Services vendus sont ceux en vigueur au jour de la décision de souscrire au Service m19. Les prix sont libellés en euros et en dollars américains et calculés hors taxes. Par voie de conséquence, ils seront majorés du taux de TVA applicables sur la base des informations fournies par le Client, m19 déclinant toute responsabilité dans l’hypothèse où le Client fournirait, volontairement ou involontairement, des informations erronées ou trompeuses conduisant à l’application d’un taux de TVA erroné.
+
+m19 s'accorde le droit de modifier ses tarifs à tout moment, étant précisé que la tarification contractualisée lors de l’abonnement du Client continuera de s’appliquer jusqu’à l’expiration de la période d’abonnement. En cas de renouvellement automatique, la nouvelle tarification, qui sera notifié au Client avant l’expiration de la période d’abonnement en cours, s’appliquera, sauf volonté du Client d’interrompre l’abonnement. 
+
+
+Modalités de paiement & Escompte Commercial
+L'abonnement au Service m19 est mensuel ou annuel. Il est facturé pour les frais fixes au premier jour de la souscription et pour les frais variables au dernier jour de la souscription, puis à chaque date anniversaire. Il peut être payé par carte bancaire ou prélèvement bancaire.
+
+Comme ses tarifs, m19 s'accorde le droit de modifier sa politique d’escompte commercial à tout moment.
+ 
+
+Facturation
+
+Le Client accepte de recevoir les factures sous format électronique et en langue anglaise.
+Le Client s’engage à : 
+Fournir des informations de facturation exactes permettant à m19 de facturer les taxes applicables, à savoir notamment : 
+En Europe: adresse et pays de facturation avec numéro de TVA intracommunautaire.
+Aux Etas-Unis : adresse de facturation (incluant l'état et la ville) dans lequel sera utilisé le service.
+ 
+
+Renouvellement automatique
+Pour un abonnement mensuel, le renouvellement est tacite d’un mois sur l’autre.  
+Pour un abonnement annuel, le renouvellement est tacite d’une année sur l’autre.  
+
+Si vous désirez résilier votre abonnement, voir le paragraphe ci-dessous résiliation des Services m19.
+
+‍
+
+Avoir
+L’avoir qui peut s’accumuler sur le compte d’un Client (suite à une promotion, par exemple), expire au terme ou à la résiliation du Contrat en cours, n’a aucune valeur numéraire ou d’échange et ne peut être ni transféré ni remboursé.
+
+‍
+
+Défaut de Paiement
+Les paiements sont effectués automatiquement par carte bancaire ou prélèvement bancaire à la date anniversaire de l'abonnement. En cas de défaut de paiement, nous adressons une relance par email au Client, l'enjoignant de régler son abonnement, par les moyens de paiements de son choix, dans les meilleurs délais.
+
+Dans l'hypothèse où le client n'a pas réglé son abonnement cinq (5) jours calendaires après la date anniversaire de sa souscription, nous couperons l'accès à la Technologie m19, arrêterons toute optimisation des campagnes publicitaires et suspendrons les campagnes gérées par notre Service. Le paiement correspondant à la durée prévue de l’abonnement du Client sera cependant toujours dû (jusqu’à la fin du mois ou de l’année selon le type d’abonnement souscrit).
+
+Dans l'hypothèse où le Client rencontrerait des difficultés pour honorer son paiement, nous l'invitons à nous contacter par mail à billing@m19.com pour régulariser sa situation
+
+ 
+
+ 
+
+4. Durée
+Les abonnements peuvent être mensuels ou annuels.
+
+Toute période d’abonnement commencée est facturée dans son intégralité.
+
+Le renouvellement du contrat est tacite et automatique, sauf résiliation par le Client dans le respect des dispositions indiquées aux présentes. Lors du renouvellement, la durée d'engagement est prolongée pour une durée équivalente à la période de facturation initialement choisie par le Client.
+
+ 
+
+Le Client peut utiliser la Technologie m19 et ses Services tant qu’il bénéficie d’un abonnement en cours, pour lequel il est à jour de ses obligations de paiement envers m19.
+
+ 
+
+ 
+
+5. Résiliation des Services m19
+Un abonnement peut être résilié, soit du fait du Client, soit du fait de m19.
+
+‍
+
+Résiliation du fait du Client
+Si vous choisissez de résilier nos services, merci de l’indiquer dans le formulaire accessible sour le lien suivant : https://www.m19.com/form/cancel-my-subscription
+
+ 
+
+Pour les abonnements mensuels, la résiliation doit être effectuée au moins sept (7) jours calendaires avant la date anniversaire. L’abonnement s’arrêtera automatiquement au dernier jour de l’abonnement mensuel.
+
+Pour les abonnements annuels, la résiliation doit être effectuée au moins trente (30) jours calendaires avant la date anniversaire. L’abonnement s’arrêtera automatiquement au dernier jour de l’abonnement annuel.
+
+En l’absence de résiliation conformément aux présentes, l’abonnement sera prolongé par tacite reconduction pour une durée équivalente à celle de la durée de l’abonnement initial arrivant à expiration.
+
+ 
+Résiliation du fait de m19
+m19 se réserve le droit de résilier à tout moment un Client, de plein droit et sans aucune formalité, notamment, mais de manière non exhaustive si m19 a des raisons raisonnables de croire que le Client：
+
+Ne respecte pas les CGV ici décrites, en particulier en ne satisfaisant pas à ses obligations de paiement,
+Voit son accès et/ou son compte utilisateur à caractère professionnel sur la plateforme eCommerce suspendu ou coupé,
+Prétend être toute autre personne ou entité ou présente son identité client de manière inexacte
+Adopte un comportement inopportun ou répréhensible sur la Plateforme ou les Applications m19 ou dans le cadre de l’utilisation des Services, notamment, sans que cette liste soit exhaustive, en cas de comportement contraire à l’ordre public ou aux bonnes mœurs, de violation de droits de propriété intellectuelle (notamment en cas de diffusion de contrefaçons), ou plus généralement de comportements susceptibles de nuire à l’image du site ou de m19 ou de ses Clients et Utilisateurs.
+‍
+
+6. Obligations et Responsabilités spécifiques du Client
+Le Client s’engage à :
+
+Avoir une activité commerciale légale respectant les réglementations et loi applicables ainsi que les conditions de vente des plateformes eCommerce utilisées par le Client.
+Déléguer à m19 les droits d'accès à la plateforme eCommerce utilisée par le Client qui sont nécessaire au fonctionnement du Service (en particulier sur Amazon : API Advertising, API MWS, accès à Vendor Central).
+Octroyer un droit d'utilisation au Service m19 à tout Utilisateur ayant un compte sur la plateforme eCommerce permettant de gérer les campagnes publicitaires. Le Client est responsable des actions de ses utilisateurs et il est de sa responsabilité de retirer les droits d’accès de ses utilisateurs. En particulier il devra retirer les droits d’accès aux utilisateurs n’ayant plus vocation à utiliser le Service m19.
+‍
+
+7. Responsabilités de m19
+m19 fait ses meilleurs efforts pour mettre à disposition de ses Clients un Service de qualité.
+
+La responsabilité de m19 envers le Client ne peut être engagée que pour des faits qui lui seraient directement imputables et qui lui causeraient un préjudice directement lié à ces faits. Cette responsabilité est strictement limitée à l’indemnisation des dommages directs prouvés par le Client et est en tout état de cause limités au montant payé par le Client au titre de la prestation fournie au cours des six mois précédent la survenance de la demande d’indemnisation du Client.
+
+Ainsi, m19 ne saurait être tenue pour responsable des éventuels préjudices directs ou indirects, tels que mais de manière non exhaustive, une perte de revenus, d'intérêts ou un impact négatif sur l’ image de marque du Client ou un accroissement des dépenses publicitaires que le Client subirait, en cas de Force Majeure, de préjudice résultant d’une mauvaise utilisation des Services par le Client, de faits imputables à un tiers, ou de toute action dirigée par tout tiers contre le Client ou tout Utilisateur, de même qu’en cas de non-respect par le Client ou tout Utilisateur de toute réglementation applicable aux données personnelles (notamment le RGPD).
+
+De la même façon, m19 ne saurait être tenue pour responsable des éventuels préjudices directs ou indirects que le Client subirait suite à un éventuel dysfonctionnement, évolution technique, contractuelle ou réglementaire de toute plateforme e-Commerce pouvant dégrader ou empêcher le bon fonctionnement de la Technologie m19 .
+
+m19 ne vérifie ni ne sélectionne les contenus et les sites qui peuvent être liés à m19.com et n’est en aucun cas responsable du contenu des sites vers lesquels des liens sont faits. Le Client reconnaît que m19 n’est tenu qu’à une obligation de moyens et n’est pas tenu à une obligation générale de surveillance des contributions.
+
+Le Client reconnait que le bon fonctionnement de m19 est soumis aux conditions d’accès au réseau Internet, à la charge du Client et à ses limites et restrictions éventuelles (couverture, saturation, disponibilité).
+
+‍
+
+8. Niveau de Service
+La Technologie m19 est accessible, dans le cadre d’un accès contrôlé, 24 heures sur 24 et 7 jours sur 7, sous réserve des périodes de maintenance. m19 met en œuvre ses meilleurs efforts pour assurer une disponibilité optimale du Service.
+
+L’accès à la Technologie m19 pourra, par ailleurs, être sujet à certaines restrictions de fonctionnalités en fonction des impératifs d’exploitation et de maintenance. En cas d’urgence et en dernier recours, tout comme en cas de Force Majeure, de pannes informatiques, ou de problèmes liés aux réseaux de télécommunication, l’accès à la Technologie m19 pourra être momentanément interrompu pour effectuer toute opération urgente de maintenance, de sauvegarde ou d’amélioration du site, m19 s’engageant, lorsque cela sera possible, à avertir à l’avance le Client. De telles interruptions du service n'ouvriront droit à aucune indemnisation du Client.
+
+‍
+
+9. Confidentialité
+Le Client et m19 s’engagent à considérer que tous documents et informations venant en complément ou en application des présentes, en ce notamment comprises toutes informations relatives à l'activité des Parties, comme strictement confidentiels et ne divulgueront pas ou ne laisseront pas divulguer tout ou partie de son contenu (et toute autre information relative aux parties) à des tiers, sauf accord préalable de l'autre partie.
+
+‍
+
+Chacune des parties prend notamment les engagements suivants :
+
+- Dans l’hypothèse où l’une des parties serait dans l’obligation légale ou réglementaire de divulguer des informations confidentielles, dans la mesure du possible, elle fournira sans délai à l’autre partie la notification préalable et écrite d’une telle obligation afin qu’elle puisse, le cas échéant, prendre toute mesure ou action de protection et qu’en toutes circonstances soit possible une consultation préalable sur l’étendue et le calendrier de la divulgation envisagée ;
+
+- Limiter, par tous moyens appropriés, la diffusion totale ou partielle ou l’utilisation des informations confidentielles à ceux de ses préposés dont l’intervention est nécessaire ; chaque partie s’engage à informer préalablement ces personnes de la nature confidentielle des informations confidentielles, à leur imposer les mêmes obligations de confidentialité que celles souscrites par la présente, et à prendre toute disposition nécessaire pour leur faire respecter l’engagement de confidentialité ;
+
+- Informer l’autre partie de toute violation ou non-respect des obligations imposées par cet engagement de confidentialité dont elle aurait connaissance et fournir toute l'assistance possible pour minimiser les effets d’une telle violation ou d’un tel non-respect.
+
+Par exception ces engagements de confidentialité ne s’appliqueront pas aux informations confidentielles dont une partie pourrait apporter la preuve que : (i) elles étaient déjà dans le domaine public ou connues d’elle ou de ses préposés au jour de leur divulgation à ladite partie/ses préposés ou elles le seraient devenues après cette date autrement que par son fait ou celui de ses préposés ; (ii) elles ont été communiquées à ladite partie ou ses préposés à titre non confidentiel par une source autre que l’autre partie ou ses préposés, qui ne fait pas l’objet d’une interdiction légale ou contractuelle de lui révéler cette information.
+
+‍
+
+‍
+
+11. Publicité
+Le Client accorde à m19 le droit d’utiliser le nom et le logo de son entreprise comme référence à des fins de marketing ou de promotion sur son site Web et dans d’autres communications publiques ou privées avec nos clients existants ou potentiels, sous réserve des directives types pour l’utilisation de sa marque que le Client aurait pu fournir. Si le Client ne souhaite pas servir de référence, le client peut à tout moment nous envoyer un e-mail à contact@m19.com en indiquant clairement son souhait de ne pas faire partie de nos références.
+
+‍
+
+‍
+
+‍
+
+CONDITIONS GÉNÉRALES D’UTILISATION ET DE FOURNITURE DE SERVICES 
+1. Acceptation
+Toute utilisation de la Technologie et des Services m19 est soumise au préalable à la prise de connaissance et à l’acceptation expresse et sans réserve des présentes Conditions Générales d’Utilisation et de fourniture des Services (ci-après «CGU », dont sont réputées faire partie intégrante les Dispositions Préliminaires) par les Utilisateurs. Les CGU sont destinées à encadrer les conditions d’utilisation de m19, de ses Services et contenus, par les Utilisateurs et de définir leurs droits et obligations.
+
+L'accès au site et/ou l'utilisation des Services m19 emporte l'acceptation pleine et entière avec effet immédiat des CGU. Tout Utilisateur est réputé avoir pris connaissance et accepté sans réserve l'intégralité des dispositions des CGU, qui s'appliqueront à la relation entre l’Utilisateur et m19 ainsi plus généralement qu’à la navigation de l’Utilisateur sur le site et à tout service rendu par m19 à l’Utilisateur.
+
+Tout Utilisateur demeure responsable des modalités et des conséquences de son accès au site notamment par l’Internet. Cet accès peut impliquer le paiement de frais à des prestataires techniques tels que notamment des fournisseurs d’accès à l’Internet, lesquels demeurent à sa charge. En outre, l’Utilisateur devra fournir et être entièrement responsable des équipements nécessaires afin de se connecter au site. L’Utilisateur reconnait en particulier avoir vérifié que la configuration informatique qu’il utilise est sécurisée et en état de fonctionnement.
+
+2. Modifications
+Pour l’évolution de ses Services, m19 se réserve le droit de modifier, à tout moment et sans préavis, les termes, conditions et mentions des présentes CGU, et notamment le graphisme, la présentation et/ou la configuration du site, le contenu du site ou des produits et services qui y sont disponibles, et/ou de cesser de manière temporaire ou définitive d’exploiter tout ou partie du site.
+
+En outre, m19 se réserve le droit de modifier à tout moment et sans préavis la localisation du site sur l’Internet.
+
+L’Utilisateur reconnait que m19 ne saurait être tenue responsable de quelque manière que ce soit envers lui ou tout tiers du fait de ces modifications, suspensions ou cessations.
+
+Nous vous conseillons de consulter régulièrement la dernière version des CGU sur le site m19 et recommandons à l’Utilisateur de sauvegarder et/ou imprimer les présentes CGU pour une conservation sûre et durable, et pouvoir ainsi les invoquer à tout moment pendant l'exécution du contrat si besoin. Le fait de continuer à utiliser m19 après toute modification des CGU entraîne l’acceptation des modifications.
+
+3. Gestion du Compte Utilisateur m19
+Conditions d’accès et d’utilisation du Compte Utilisateur m19
+Pour accéder à m19 : l’Utilisateur peut utiliser sur la Plateforme Web :
+
+l’email utilisé pour définir votre compte utilisateur à caractère professionnel sur Amazon ou son email professionnel utilisé pour le Compte Utilisateur m19 ainsi que le mot de passe que vous fourni m19.
+
+Sur les Applications mobiles : son email professionnel utilisé pour le Compte Utilisateur m19 ainsi que le mot de passe que vous fourni m19.
+
+L'Utilisateur s'engage à délivrer des informations réelles, exactes, à jour au moment de leur saisie dans le formulaire d'inscription du service, et notamment à ne pas utiliser de faux noms ou adresses, ou encore des noms ou adresses sans y être autorisé.
+
+Chaque Utilisateur s'engage à conserver une stricte confidentialité sur les données lui permettant d'accéder à son espace Utilisateur, l’Utilisateur reconnaissant être le seul responsable de l'accès au site par le biais de son identifiant et de son mot de passe, sauf fraude avérée.
+
+L'Utilisateur s'engage en outre à ne pas rendre disponible ou distribuer des informations illicites ou répréhensibles (telles que des informations diffamatoires ou constitutive d'usurpation d'identité) ou encore nuisibles (telles que les virus). Dans le cas contraire, m19 sera en mesure de suspendre ou de résilier l'accès de l'Utilisateur au site à ses torts exclusifs.
+
+Information ou alerte de m19
+L’Utilisateur peut à tout moment, demander à m19 à l’adresse e-mail suivante : support@m19.com, la modification de ses éléments d’authentification. L’Utilisateur s’engage à informer sans délai m19 s’il suspecte une utilisation par un tiers non autorisé de ses login et/ou mot de passe, en cas de perte ou de vol.
+
+Paramètres du Compte Utilisateur m19
+L’Utilisateur accepte que les informations liées à la gestion des paramètres de son Compte Utilisateur m19 (notamment le type d’Activités que vous réalisez sur le Compte Utilisateur m19, les « Activités » étant limitativement définies comme (i) toute connexion effectuée par l’Utilisateur à son Compte Utilisateur m19, (ii) toutes actions entreprises par l’Utilisateur grâce à la Technologie m19 (iii) toute action entreprise par la Technologie m19 pour optimiser les offres publicitaires des plateformes eCommerce pour le compte du Client) soient remontées à m19 dans le cadre du Service.
+
+Suppression de votre Compte Utilisateur m19
+L’Utilisateur peut à tout moment initier la procédure de fermeture de son Compte Utilisateur m19. Cette procédure sera effectuée via une demande adressée par courrier électronique à support@m19.com ou autre adresse du support utilisateur m19 qui vous aurait été indiquée par m19. m19 s’engage à procéder aux démarches requises dans un délai ne pouvant excéder cinq (5) jours calendaires.
+
+Suppression d’un Compte Utilisateur à l’initiative d’un Utilisateur
+La demande de suppression par courrier électronique devra être accompagnée d’une copie scannée d’une pièce d’identité en cours de validité, sans quoi m19 ne pourra donner suite à votre demande. Un accusé de réception de la demande de désinscription vous sera délivré sur l’adresse de messagerie électronique que vous aurez communiquée à m19.
+
+Suppression d’un Compte Utilisateur à l’initiative de m19
+Par ailleurs, tout compte m19 sans Activité depuis plus de douze (12) mois, pourra être fermé par m19 après une notification vous parvenant par voie électronique à l’adresse liée à votre compte et restée sans réponse dans les trente (30) jours calendaires suivants la notification.
+
+m19 se réserve également le droit de supprimer un Compte Utilisateur en cas de violation par l’Utilisateur concerné des Conditions Générales.
+
+4. Disponibilité du site et des Services m19
+Le site est accessible aux Utilisateurs de manière permanente, sauf en cas de Force Majeure, de pannes informatiques, ou de problèmes liés aux réseaux de télécommunications. Par exception, m19 pourra si nécessaire interrompre l'accès au site afin de procéder à des opérations de maintenance, de sauvegarde ou d'amélioration du site. Les opérations de maintenance et/ou d'interruption du service n'ouvriront droit à aucune indemnisation de l’Utilisateur ou du Client.
+
+L’Utilisateur peut utiliser la Technologie m19 et ses Services tant que le Client est lié par un contrat à m19 et qu’il dispose d’un Compte Utilisateur actif.
+
+5. Obligations et responsabilité des Utilisateurs
+L'accès à la Technologie m19, à ses Services ainsi qu’à la Plateforme et Applications sont de la responsabilité exclusive de la personne qui s’y connecte, l’Utilisateur reconnaissant que les caractéristiques et les contraintes d'Internet ne permettent pas de garantir la sécurité, la disponibilité et l'intégrité des transmissions de données sur Internet. 
+
+Il incombe à chaque Utilisateur de (i) prendre toutes mesures appropriées pour protéger ses propres données et/ou logiciels notamment de la contamination par d'éventuels virus circulant sur Internet ou de l'intrusion d'un tiers dans le système de son terminal à quelque fin que ce soit et de vérifier que les fichiers transmis ne contiennent aucun virus informatique, (ii) respecter toutes lois applicables, (iii) faire un usage raisonnable et de bonne foi des Services ou des contenus, en fonction des possibilités et des finalités pour lesquelles ils ont été conçus, et (iv) à choisir avec soin les éléments nécessaires au fonctionnement de l’algorithme de la Technologie m19 et en particulier l’ACOS Cible.
+
+M19 ne pourra être tenue pour responsable de tout dommage causé aux Utilisateurs, à leurs équipements informatiques et données du fait de l’utilisation du site, ainsi que des conséquences éventuelles sur leurs activités.
+
+m19 n'assume aucune responsabilité, directe ou indirecte, pour tout dommage ou perte directs ou indirects découlant de l'utilisation des services ou contenus réalisés par les Utilisateurs ou des tiers. En particulier, m19 ne peut être tenue pour responsable des fausses déclarations faites par un Utilisateur et de son comportement vis-à-vis des tiers. Dans le cas où la responsabilité de m19 serait recherchée à raison d'un tel comportement d’un de ses Utilisateurs, ce dernier s'engage à garantir m19 contre toute condamnation prononcée à son encontre ainsi qu’à rembourser m19 de l’ensemble des frais, notamment les honoraires d’avocats, engagés pour sa défense.
+
+m19 ne sera notamment pas responsable dans les hypothèses suivantes : (i) utilisation du site ou des Services m19 non conforme aux spécifications ou aux préconisations fournies par m19, (ii) tout fait de tiers, (iii) tout fait de tout Utilisateur, (iv) tout préjudice indirect tel que, notamment, perte d'exploitation, préjudice commercial, perte de commande, perte de clientèle, préjudice réputationnel ou atteinte à l'image de marque, perte de chiffre d'affaires, revenus ou marge, trouble commercial de quelque nature que ce soit, perte d'opportunité, cessation d'activité, (v) toute action dirigée par tout tiers contre tout Utilisateur, (vi) tout cas de Force Majeure.
+
+L’Utilisateur atteste qu'il est Autorisé par le Client à utiliser la Technologie et les Services m19 et à gérer les campagnes publicitaires des plateformes eCommerce. Si l'Utilisateur possède un accès technique de gestion du compte utilisateur eCommerce à caractère professionnel non autorisé par le Client, l’Utilisateur doit alerter le Client de son accès technique au plus vite et s'interdire d'utiliser la Technologie et les Services m19.
+
+6. Protection de la Vie Privée
+L'Utilisateur est informé par les présentes de ce que certaines données à caractère personnel, de nature à l’identifier directement ou indirectement, et signalées comme étant obligatoires sur les formulaires et recueillies dans le cadre du service décrit dans les présentes, sont nécessaires à l'utilisation du site et des services m19. Parmi les données à caractère personnel de l’Utilisateur que m19 collecte auprès de lui peuvent figurer : nom, prénom, email.
+
+m19 est susceptible d’enregistrer les Activités des Utilisateurs au sein de la Technologie m19 à des fins de sécurité, notamment pour vous permettre d'identifier un éventuel accès à votre compte m19 par un tiers effectué à votre insu. L’historique de ces Activités pourra être conservé de manière identifiable par m19 pour une période maximale d'un (1) an et sera détruit de manière définitive lors de la suppression de votre compte m19.
+
+Ces données proviennent notamment de la fourniture volontaire de leurs informations par les Utilisateurs, et/ou de traces informatiques induites par la navigation sur le site.
+
+En fournissant ces informations, l’Utilisateur accepte expressément qu’elles soient traitées par m19, qui pourra les utiliser aux fins de délivrer les Services m19 sollicités par l’Utilisateur, ainsi que pour la gestion des opérations effectuées sur le site. Les données personnelles de l’Utilisateur peuvent également être utilisées pour la création et le fonctionnement des comptes d’Utilisateurs, et pour la fourniture des services proposés par le site.
+
+m19 s’engage à assurer la protection des données personnelles de l’Utilisateur et de l’ensemble des données personnelles obtenues dans le cadre de l’utilisation des services du site. Il est rappelé que chaque Utilisateur est seul responsable de la préservation de la confidentialité de son identifiant et de son mot de passe, et est seul responsable de tous les accès à son Compte Utilisateur, qu’ils soient autorisés ou non. m19 ne saurait ainsi être tenue pour responsable de toute action ou fait dommageable réalisés via l’espace personnel de l’Utilisateur par un tiers qui aurait eu accès à ses identifiants et mot de passe. L’Utilisateur s’engage à informer m19 immédiatement dès lors qu’il a connaissance ou suspecte un usage non autorisé ou un accès non autorisé à son espace personnel.
+
+L’Utilisateur reconnait être informé que les données personnelles transmises peuvent être transférées par m19 aux fins de fonctionnement du site, et que m19 peut également être amenée à faire un usage commercial, tant pour son compte que pour le compte de partenaires tiers, des données personnelles de l’Utilisateur. m19 peut notamment utiliser les données personnelles à des fins de prospection commerciale ou d’envoi de newsletters, étant précisé que l’Utilisateur peut à tout moment retirer ou restreindre son consentement.
+
+Les informations recueillies auprès de l’Utilisateur, sauf droit d’accès et rectification en s’adressant à m19, font l’objet d’un traitement destiné à permettre le bon fonctionnement du site et des services fournis à l’Utilisateur.
+
+Conformément au RGPD (Règlement Général sur la Protection des Données, adopté par le Parlement européen le 14 avril 2016), m19 informe l’Utilisateur des éléments suivants :
+
+• Identité du responsable de traitement : société m19, dont les coordonnées complètes figurent sur les présentes.
+
+• Finalité du traitement : permettre d’authentifier les Utilisateurs sur le Site, exécuter ses obligations contractuelles (y compris, mais sans s’y limiter, la gestion de la relation clients et des opérations de paiement), envoyer, conformément à la législation applicable, des informations sur les produits, services et événements m19 pouvant intéresser les Clients ou les Utilisateurs.
+
+• Destinataire des données personnelles : m19 est destinataire des informations à caractère personnel. Par exception à ce qui précède, m19 pourra être amenée à transmettre des données personnelles si une obligation légale ou réglementaire, ou une injonction judiciaire ou administrative l’y contraignent.
+
+• Durée de conservation des données : à la clôture du compte, m19 laisse un accès aux Utilisateurs du compte pour leur permettre d’accéder à leurs données de performance passées, sauf demande explicite contraire des Utilisateurs concernés. Auquel cas, m19 détruira ces données de performance dans un délai de 3 mois à compter de la clôture du compte et ne conservera pas les données personnelles des Utilisateurs (sous réserve des obligations légales et réglementaires applicables à m19, notamment en matière de conservation ou d’archivage des documents).
+
+ 
+
+Droits informatique et libertés de l’Utilisateur
+l’Utilisateur dispose notamment des droits suivants concernant ses informations personnelles, qu’il peut exercer en contactant m19 par email ou courrier.
+
+Droit de se faire confirmer un traitement
+L’Utilisateur a le droit d’obtenir du responsable du traitement la confirmation que des données à caractère personnel le concernant sont ou ne sont pas traitées.
+
+Droit d’accès et de communication des données
+• L’Utilisateur dispose de la faculté d’accéder aux informations personnelles qui le concernent, aux finalités du traitement, aux catégories de données personnelles concernées, aux destinataires ou catégories de destinataires auxquels les données à caractère personnel ont été ou seront communiquées, à la durée de conservation des données à caractère personnel envisagée, ou les critères utilisés pour déterminer cette durée.
+
+• Cependant, en raison de l’obligation de sécurité et de confidentialité dans le traitement des données à caractère personnel qui incombe à m19, la demande de l’Utilisateur sera traitée sous réserve qu’il apporte la preuve de son identité, notamment par la production d’une copie de son titre d’identité valide.
+
+• m19 sera en droit, le cas échéant, de s’opposer aux demandes manifestement abusives (en raison, notamment, de leur nombre, et/ou de leur caractère répétitif ou systématique).
+
+• L’Utilisateur pourra trouver via le site de la Commission Nationale de l’Informatique et des Libertés un modèle de courrier accessible à l’URL suivante : https://www.cnil.fr/fr/modele/courrier/exercer-son-droit-dacces
+
+Droit de rectification des données
+• L’Utilisateur peut demander la rectification, la mise à jour, le verrouillage ou encore l’effacement des données le concernant (droit à l’oubli) qui peuvent s’avérer le cas échéant inexactes, erronées, incomplètes ou obsolètes. L’Utilisateur peut également vérifier l’existence d’une prise de décision automatisée, y compris un profilage, et en pareils cas, des informations utiles concernant la logique sous-jacente, ainsi que l’importance et les conséquences prévues de ce traitement.
+
+• L’Utilisateur peut également définir des directives générales et particulières relatives au sort des données à caractère personnel après son décès.
+
+• L’Utilisateur peut retirer à tout moment son consentement à l’utilisation de ses données personnelles (étant précisé que le retrait du consentement ne remet pas en cause la licéité du traitement fondé sur le consentement effectué avant ce retrait). L’Utilisateur peut en outre demander la limitation des traitements opérés sur ses données personnelles.
+
+• L’Utilisateur pourra trouver via le site de la Commission Nationale de l’Informatique et des Libertés un modèle de courrier accessible à l’URL suivante : https://www.cnil.fr/fr/modele/courrier/rectifier-des-donnees-inexactes-obsoletes-ou-perimees
+
+Droit d’opposition
+• L’Utilisateur peut exercer son droit d’opposition (i) pour motifs légitimes, ou (ii) pour s’opposer à ce que les données recueillies soient utilisées à des fins de prospection commerciale.
+
+• L’Utilisateur pourra trouver via le site de la Commission Nationale de l’Informatique et des Libertés un modèle de courrier accessible à l’URL suivante : ttps://www.cnil.fr/fr/modele/courrier/supprimer-des-informations-vous-concernant-dun-site-internet
+
+Délais de réponse
+m19 s’engage à répondre à tout demande d’accès, de rectification ou d’opposition ou toute autre demande complémentaire d’informations dans un délai raisonnable qui ne saurait dépasser sept (7) jours calendaires à compter de la réception de la demande de l’Utilisateur.
+
+Prestataires habilités
+m19 peut avoir recours à ses prestataires habilités pour faciliter le recueil et le traitement des données. Ces prestataires ont communication des données recueillies.
+
+m19 se sera préalablement assurée de la mise en œuvre par ses prestataires de garanties adéquates et du respect de conditions strictes en matière de confidentialité, d’usage et de protection des données. Dans ce cas, m19 vérifie que le transfert soit effectué en conformité avec la réglementation applicable et garantisse un niveau de protection suffisant pour la vie privée et les droits fondamentaux de l’Utilisateur concerné.  m19 fournira sur demande de tout Utilisateur une information plus détaillée relativement à ces éventuels transferts.
+
+Plainte auprès de l’autorité compétente
+Si l’Utilisateur considère que m19 ne respecte pas ses obligations en lien avec la protection des données à caractère personnel, il peut adresser une plainte ou une demande auprès de la Commission Nationale de l’Informatique et des Libertés, à laquelle il peut adresser une demande par voie électronique à l’URL suivante : https://www.cnil.fr/fr/plaintes/internet.
+
+Chaque Utilisateur déclare, en validant les présentes conditions générales avoir été pleinement informé de l’usage qui sera fait de ses données par m19 et donner son accord pour le traitement de ses données personnelles.
+
+Tout Utilisateur peut contacter m19 afin de mettre en œuvre ses droits visés aux présentes à l’adresse électronique suivante : contact@m19.com ou à l’adresse postale suivante : 55 rue La Boétie, 75008 Paris, en joignant à sa demande une copie d’un titre d’identité. Les demandes de suppression de données personnelles seront soumises aux obligations qui sont imposées à m19 par la loi, notamment en matière de conservation ou d’archivage des documents. Il sera demandé à l’Utilisateur de préciser dans sa requête les raisons pour lesquelles il souhaite exercer ses droits, et le cas échéant de définir le périmètre des données dont il souhaite la copie et le format de données qu’il souhaite obtenir.
+
+Chaque Utilisateur a en outre le droit à la portabilité de ses données personnelles, lui permettant sur simple demande auprès de m19 (selon les modalités indiquées ci-dessus) de récupérer les données qu’il a fournies sous une forme aisément réutilisable, et, le cas échéant, de les transférer ensuite à un tiers.
+
+Plus généralement, pour davantage d’informations quant à ses droits, chaque Utilisateur peut consulter le site de la CNIL à l’adresse : https://www.cnil.fr.
+
+7. Traceurs (cookies) - Liens hypertextes
+Lorsque l’Utilisateur navigue dans la technologie m19 ou ses sites web, des informations sont susceptibles d'être enregistrées ou lues dans votre terminal par l’intermédiaire des cookies selon les choix effectués dans votre navigateur. Un cookie est un fichier texte susceptible d’être enregistré dans un terminal lors de la consultation d’un service en ligne avec un logiciel de navigation. Un fichier cookie permet à son émetteur, pendant sa durée de validité, de reconnaître le terminal concerné à chaque fois que ce terminal accède à un contenu numérique comportant des cookies du même émetteur.
+
+Nous utilisons des services d'analyse Web qui utilisent des « cookies ». Les informations relatives à votre utilisation de ce site (y compris votre adresse IP) générées par le cookie sont transférées vers un serveur et enregistrées sur ce dernier. L’Utilisateur déclare être conscient que lors de la consultation du site, des cookies sont déposés sur son ordinateur, mobile, tablette ou tout autre matériel utilisé par l’Utilisateur pour se rendre sur le site. m19 désire fournir la meilleure expérience possible aux Utilisateurs. C'est entre autres pour cela que m19 fait usage de cookies afin par exemple d’identifier l’Utilisateur et de lui permettre d'accéder à son compte.
+
+Ces solutions utilisent ces informations pour évaluer votre utilisation de la Technologie et des Services afin de compiler des rapports sur les Activités de la Technologie m19. Ces solutions peuvent également transférer ces informations à des tiers, dans la mesure où cela est légalement spécifié ou dans la mesure où des tiers traitent ces données pour leur compte. Ces services ne connectent en aucun cas votre adresse IP à d'autres données enregistrées par eux.
+
+Ces cookies ont les finalités suivantes  : (i) cookies techniques, nécessaires au bon fonctionnement du site et à la fourniture des services à l’Utilisateur (ce type de cookies ne permet pas l’identification de l’Utilisateur), (ii) cookies statistiques, permettant à m19, aux fins de mesurer et d’améliorer le fonctionnement du site, de disposer de statistiques relativement, notamment, à la fréquentation du site et à l’utilisation des Services m19 (ce type de cookies ne permet pas l’identification de l’Utilisateur), ((iii) cookies publicitaires, permettant que l’Utilisateur dispose de publicités ciblées déposées par les partenaires de m19. Il est précisé concernant cette dernière catégorie de cookies que m19 n’a aucun contrôle dessus, et ne pourrait donc en être tenue pour responsable.  
+
+L’Utilisateur peut à tout moment configurer son logiciel de navigation de manière à ce que des cookies soient enregistrés dans son terminal ou, au contraire, qu'ils soient rejetés (soit systématiquement, soit selon leur émetteur). L’Utilisateur peut également configurer son logiciel de navigation de manière à ce que l'acceptation ou le refus des cookies lui soit proposé ponctuellement, avant qu'un cookie puisse être enregistré dans son terminal.
+
+Attention : tout paramétrage est susceptible de modifier la navigation sur Internet et les conditions d'accès à certains services nécessitant l'utilisation de cookies. m19 décline toute responsabilité s’agissant des conséquences liées au fonctionnement dégradé du site résultant de l'impossibilité d'enregistrer ou de consulter les cookies nécessaires à leur fonctionnement et que l’Utilisateur aurait refusés ou supprimés. 
+
+m19 s’engage en conséquence à obtenir, dans le respect des dispositions légales, le consentement préalable de l’Utilisateur pour la mise en place de tout traceur nécessitant votre information et accord préalables.
+
+Les liens hypertextes disponibles sur le site peuvent renvoyer vers des sites tiers non édités par m19. Ils sont fournis uniquement pour la convenance de l’Utilisateur, afin de faciliter l’utilisation des ressources disponibles sur l’Internet. Si l’Utilisateur utilise ces liens, il quittera le site et acceptera alors d’utiliser les sites tiers à ses risques et périls ou le cas échéant conformément aux conditions qui les régissent.
+
+L’Utilisateur reconnait que m19 ne contrôle ni ne contribue en aucune manière à l’élaboration des conditions d’utilisation et/ou du contenu s’appliquant à ou figurant sur ces sites tiers.
+
+En conséquence, m19 ne saurait être tenue responsable de quelque façon que ce soit du fait de ces liens hypertextes. En outre, l’Utilisateur reconnait que m19 ne saurait cautionner, garantir ou reprendre à son compte tout ou partie des conditions d’utilisation et/ou du contenu de ces sites tiers. Le site peut également contenir des liens hypertextes promotionnels et/ou bandeaux publicitaires renvoyant vers des sites tiers non édités par m19. m19 invite l’Utilisateur à lui signaler tout lien hypertexte présent sur le site qui permettrait d’accéder à un site tiers proposant du contenu contraire aux lois et/ou aux bonnes mœurs. 
+
+‍

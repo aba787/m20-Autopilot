@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { requireAuth } from '@/lib/auth';
 import { db as supabaseAdmin } from '@/lib/supabaseAdmin';
+import { encrypt, isEncrypted } from '@/lib/crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const user = await requireAuth(req, res);
@@ -24,12 +25,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'profile_id and marketplace are required' });
     }
 
+    const encAccess = access_token
+      ? (isEncrypted(access_token) ? access_token : encrypt(access_token))
+      : access_token;
+    const encRefresh = refresh_token
+      ? (isEncrypted(refresh_token) ? refresh_token : encrypt(refresh_token))
+      : refresh_token;
+
     const { data, error } = await supabaseAdmin
       .from('amazon_connections')
       .upsert({
         user_id: user.id,
         profile_id, marketplace, seller_name,
-        access_token, refresh_token, token_expires_at,
+        access_token: encAccess, refresh_token: encRefresh, token_expires_at,
         is_active: true, last_synced_at: new Date().toISOString(),
       }, { onConflict: 'user_id,profile_id' })
       .select('id, profile_id, marketplace, seller_name, is_active, last_synced_at, created_at')

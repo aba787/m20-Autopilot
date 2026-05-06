@@ -4,13 +4,32 @@ type Bucket = { count: number; resetAt: number };
 const buckets = new Map<string, Bucket>();
 
 const MAX_BUCKETS = 10000;
+const SWEEP_INTERVAL_MS = 60 * 1000;
 
-function pruneIfNeeded() {
-  if (buckets.size <= MAX_BUCKETS) return;
-  const now = Date.now();
+let lastSweep = Date.now();
+
+function sweep(now: number) {
+  const expiredKeys: string[] = [];
   buckets.forEach((b, key) => {
-    if (b.resetAt < now) buckets.delete(key);
+    if (b.resetAt < now) expiredKeys.push(key);
   });
+  for (const k of expiredKeys) buckets.delete(k);
+
+  if (buckets.size > MAX_BUCKETS) {
+    const sorted: Array<[string, Bucket]> = [];
+    buckets.forEach((b, k) => sorted.push([k, b]));
+    sorted.sort((a, b) => a[1].resetAt - b[1].resetAt);
+    const toDrop = buckets.size - Math.floor(MAX_BUCKETS * 0.8);
+    for (let i = 0; i < toDrop && i < sorted.length; i++) {
+      buckets.delete(sorted[i][0]);
+    }
+  }
+}
+
+function maybeSweep(now: number) {
+  if (now - lastSweep < SWEEP_INTERVAL_MS && buckets.size <= MAX_BUCKETS) return;
+  lastSweep = now;
+  sweep(now);
 }
 
 export interface RateLimitOptions {
@@ -33,15 +52,16 @@ export function rateLimit(
   res: NextApiResponse,
   opts: RateLimitOptions,
 ): boolean {
+  const now = Date.now();
+  maybeSweep(now);
+
   const ip = getClientIp(req);
   const key = `${opts.keyPrefix || 'global'}:${ip}`;
-  const now = Date.now();
 
   let bucket = buckets.get(key);
   if (!bucket || bucket.resetAt < now) {
     bucket = { count: 0, resetAt: now + opts.windowMs };
     buckets.set(key, bucket);
-    pruneIfNeeded();
   }
 
   bucket.count += 1;

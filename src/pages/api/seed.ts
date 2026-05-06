@@ -39,13 +39,16 @@ const TEST_USERS: TestUser[] = [
 ];
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (process.env.NODE_ENV === 'production' && process.env.ENABLE_SEED !== 'true') {
-    return res.status(404).json({ error: 'Not found' });
-  }
-
+  const isProd = process.env.NODE_ENV === 'production';
   const provided = req.headers['x-seed-secret'];
   const expected = process.env.SESSION_SECRET;
-  if (!expected || provided !== expected) {
+  const enabled = process.env.ENABLE_SEED === 'true';
+  const secretValid = !!expected && provided === expected;
+
+  if (isProd && (!enabled || !secretValid)) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  if (!isProd && !secretValid) {
     return res.status(403).json({ error: 'Forbidden — valid x-seed-secret header required' });
   }
 

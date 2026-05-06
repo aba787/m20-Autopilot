@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db as adminDb } from '@/lib/supabaseAdmin';
+import { encrypt } from '@/lib/crypto';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
@@ -54,8 +55,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       profile_id: 'pending',
       marketplace: 'amazon.sa',
       seller_name: 'Amazon Seller',
-      access_token: tokens.access_token,
-      refresh_token: tokens.refresh_token,
+      access_token: encrypt(tokens.access_token),
+      refresh_token: encrypt(tokens.refresh_token),
       token_expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
       is_active: true,
       last_synced_at: new Date().toISOString(),

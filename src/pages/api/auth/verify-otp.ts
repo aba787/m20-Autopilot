@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db as adminDb } from '@/lib/supabaseAdmin';
+import { rateLimit, RateLimits } from '@/lib/rateLimit';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!rateLimit(req, res, { ...RateLimits.authStrict, keyPrefix: 'verify-otp' })) return;
 
   const { otp, userId, email, type } = req.body;
 

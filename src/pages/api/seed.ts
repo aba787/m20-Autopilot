@@ -39,132 +39,50 @@ const TEST_USERS: TestUser[] = [
 ];
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
-
-  const seedSecret = process.env.SEED_SECRET;
-  if (seedSecret) {
-    const provided = req.headers['x-seed-secret'] as string | undefined;
-    if (provided !== seedSecret) {
-      return res.status(403).json({ error: 'Invalid or missing x-seed-secret header' });
-    }
+  if (process.env.NODE_ENV === 'production' && process.env.ENABLE_SEED !== 'true') {
+    return res.status(404).json({ error: 'Not found' });
   }
 
-  const results: string[] = [];
-  let failures = 0;
+  const provided = req.headers['x-seed-secret'];
+  const expected = process.env.SESSION_SECRET;
+  if (!expected || provided !== expected) {
+    return res.status(403).json({ error: 'Forbidden — valid x-seed-secret header required' });
+  }
 
-  const { data: existing } = await adminDb.auth.admin.listUsers({ perPage: 1000 });
-  const existingUsers: User[] = existing?.users ?? [];
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const results: any[] = [];
 
   for (const u of TEST_USERS) {
-    const found = existingUsers.find((x: User) => x.email === u.email);
+    try {
+      const { data: list } = await adminDb.auth.admin.listUsers();
+      const existing = list?.users?.find((x: User) => x.email?.toLowerCase() === u.email.toLowerCase());
 
-    let userId: string;
-
-    if (found) {
-      userId = found.id;
-      results.push(`${u.email}: auth user exists (${userId})`);
-
-      const { error: updateErr } = await adminDb.auth.admin.updateUserById(userId, {
-        password: u.password,
-        email_confirm: true,
-      });
-      if (updateErr) {
-        results.push(`  → password update failed: ${updateErr.message}`);
-        failures++;
-      } else {
-        results.push(`  → password reset OK`);
+      let userId = existing?.id;
+      if (!userId) {
+        const { data, error } = await adminDb.auth.admin.createUser({
+          email: u.email,
+          password: u.password,
+          email_confirm: true,
+          user_metadata: { full_name: u.full_name },
+        });
+        if (error) throw error;
+        userId = data.user!.id;
       }
-    } else {
-      const { data: created, error: createErr } = await adminDb.auth.admin.createUser({
+
+      await adminDb.from('profiles').upsert({
+        id: userId,
         email: u.email,
-        password: u.password,
-        email_confirm: true,
-        user_metadata: { full_name: u.full_name },
+        full_name: u.full_name,
+        bot_mode: u.bot_mode,
+        role: u.role,
       });
 
-      if (createErr) {
-        if (createErr.message?.includes('already') || createErr.message?.includes('duplicate')) {
-          results.push(`${u.email}: already exists (duplicate), resolving by email`);
-          const refreshed = await adminDb.auth.admin.listUsers({ perPage: 1000 });
-          const refreshedUsers: User[] = refreshed.data?.users ?? [];
-          const resolved = refreshedUsers.find((x: User) => x.email === u.email);
-          if (resolved) {
-            userId = resolved.id;
-            await adminDb.auth.admin.updateUserById(userId, {
-              password: u.password,
-              email_confirm: true,
-            });
-            results.push(`  → password reset for resolved user`);
-          } else {
-            results.push(`  → could not resolve user by email`);
-            failures++;
-            continue;
-          }
-        } else {
-          results.push(`${u.email}: create FAILED — ${createErr.message}`);
-          failures++;
-          continue;
-        }
-      } else {
-        userId = created.user.id;
-        results.push(`${u.email}: created auth user (${userId})`);
-      }
-    }
-
-    const { data: existingProfile } = await adminDb
-      .from('profiles')
-      .select('id')
-      .eq('id', userId)
-      .single();
-
-    if (!existingProfile) {
-      const { error: insErr } = await adminDb
-        .from('profiles')
-        .insert({ id: userId, email: u.email, full_name: u.full_name, role: u.role });
-
-      if (insErr) {
-        results.push(`  → profile insert failed: ${insErr.message}`);
-        failures++;
-        continue;
-      }
-      results.push(`  → profile created`);
-    } else {
-      const { error: updErr } = await adminDb
-        .from('profiles')
-        .update({ full_name: u.full_name, role: u.role })
-        .eq('id', userId);
-
-      if (updErr) {
-        results.push(`  → profile update failed: ${updErr.message}`);
-        failures++;
-        continue;
-      }
-      results.push(`  → profile updated`);
-    }
-
-    const optionalFields: Record<string, string | number> = {
-      bot_mode: u.bot_mode,
-      target_acos: u.target_acos,
-    };
-
-    const setOptional: string[] = [];
-    for (const [col, val] of Object.entries(optionalFields)) {
-      const { error } = await adminDb.from('profiles').update({ [col]: val }).eq('id', userId);
-      if (!error) setOptional.push(col);
-    }
-    if (setOptional.length > 0) {
-      results.push(`  → optional fields set: ${setOptional.join(', ')}`);
+      results.push({ email: u.email, status: 'ok', userId });
+    } catch (err: any) {
+      results.push({ email: u.email, status: 'error', error: err.message });
     }
   }
 
-  const status = failures > 0 ? 207 : 200;
-  return res.status(status).json({
-    success: failures === 0,
-    results,
-    accounts: [
-      { label: 'admin', email: 'admin@test.com', password: 'Admin1234!', role: 'admin' },
-      { label: 'user1', email: 'test@example.com', password: 'Test1234!', role: 'user' },
-      { label: 'user2', email: 'user@test.com', password: 'User1234!', role: 'user' },
-    ],
-  });
+  return res.status(200).json({ results });
 }

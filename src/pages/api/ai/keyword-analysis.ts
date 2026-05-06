@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { checkAIQueryLimit, incrementAIQueryCount } from '@/lib/subscriptionGuard';
 import { callOpenAI, MASTER_SYSTEM_PROMPT } from '@/lib/campaignBot';
+import { rateLimit, RateLimits } from '@/lib/rateLimit';
 
 const KEYWORD_ANALYSIS_PROMPT = `${MASTER_SYSTEM_PROMPT}
 
@@ -31,6 +32,7 @@ Every reason field must be concise (1 line), data-driven, and include the key me
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!rateLimit(req, res, { ...RateLimits.ai, keyPrefix: 'ai-keyword' })) return;
 
   const auth = await checkAIQueryLimit(req, res);
   if (!auth) return;

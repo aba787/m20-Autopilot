@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db as adminDb } from '@/lib/supabaseAdmin';
 import { sendOtpEmail } from '@/lib/email';
+import { rateLimit, RateLimits } from '@/lib/rateLimit';
 
 function generateOtp(): string {
   return String(Math.floor(100000 + Math.random() * 900000));
@@ -8,6 +9,7 @@ function generateOtp(): string {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!rateLimit(req, res, { ...RateLimits.authStrict, keyPrefix: 'send-otp' })) return;
 
   const { email, userId } = req.body;
   if (!email || !userId) return res.status(400).json({ error: 'Email and userId are required' });

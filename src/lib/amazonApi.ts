@@ -1,4 +1,5 @@
 import { db as adminDb } from './supabaseAdmin';
+import { encrypt, decrypt } from './crypto';
 
 const AMAZON_ADS_API_BASE = 'https://advertising-api.amazon.com';
 const AMAZON_AUTH_URL = 'https://api.amazon.com/auth/o2/token';
@@ -39,7 +40,7 @@ export async function refreshAccessToken(connection: AmazonConnection): Promise<
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       grant_type: 'refresh_token',
-      refresh_token: connection.refresh_token,
+      refresh_token: decrypt(connection.refresh_token),
       client_id: clientId,
       client_secret: clientSecret,
     }),
@@ -54,7 +55,7 @@ export async function refreshAccessToken(connection: AmazonConnection): Promise<
   await adminDb
     .from('amazon_connections')
     .update({
-      access_token: data.access_token,
+      access_token: encrypt(data.access_token),
       token_expires_at: new Date(Date.now() + data.expires_in * 1000).toISOString(),
     })
     .eq('id', connection.id);
@@ -68,7 +69,7 @@ export async function amazonApiCall(
   method: string = 'GET',
   body?: any
 ): Promise<any> {
-  let token = connection.access_token;
+  let token = decrypt(connection.access_token);
   const expiresAt = new Date(connection.token_expires_at);
 
   if (expiresAt < new Date(Date.now() + 5 * 60 * 1000)) {

@@ -88,19 +88,30 @@ export function useAuthState(): AuthContext {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      fetch('/api/auth/login-log', {
+    let loginRes: Response;
+    try {
+      loginRes = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, success: false, failure_reason: error.message }),
-      }).catch(() => {});
+        body: JSON.stringify({ email, password }),
+      });
+    } catch {
+      return { error: 'Network error. Please check your connection and try again.' };
+    }
 
-      if (error.message.toLowerCase().includes('invalid') || error.message.toLowerCase().includes('credentials')) {
+    if (loginRes.status === 423) {
+      const body = await loginRes.json().catch(() => ({}));
+      return {
+        error: body.message || 'Account temporarily locked due to repeated failed attempts.',
+        locked: true,
+        retryAfterSeconds: body.retryAfterSeconds,
+      };
+    }
+
+    if (!loginRes.ok) {
+      const body = await loginRes.json().catch(() => ({}));
+
+      if (loginRes.status === 401) {
         try {
           const checkRes = await fetch('/api/auth/register', {
             method: 'POST',
@@ -115,19 +126,19 @@ export function useAuthState(): AuthContext {
         } catch {}
       }
 
-      return { error: error.message };
+      return { error: body.error || 'Login failed' };
     }
 
-    const authUser = data.user;
-    setToken(data.session.access_token);
+    const sessionData = await loginRes.json();
+    const { error: setErr } = await supabase.auth.setSession({
+      access_token: sessionData.access_token,
+      refresh_token: sessionData.refresh_token,
+    });
+    if (setErr) return { error: setErr.message };
 
-    fetch('/api/auth/login-log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, success: true }),
-    }).catch(() => {});
+    setToken(sessionData.access_token);
 
-    const profile = await fetchProfile(authUser.id);
+    const profile = await fetchProfile(sessionData.user.id);
     if (profile) {
       setUser(profile);
       return { user: profile };

@@ -92,14 +92,8 @@ export const IconCross = () => (
 
 export const AmazonPartnerBadge = () => (
   <div className="amazon-partner-badge">
-    <svg viewBox="0 0 24 24" fill="none" className="amazon-icon" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="rgba(255,153,0,0.15)" stroke="#FF9900" strokeWidth="1.5"/>
-      <path d="M7 13.5C9.5 15.5 14.5 15.5 17 13.5" stroke="#FF9900" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M15.5 12L17 13.5L15.5 15" stroke="#FF9900" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
     <div className="amazon-badge-text">
       <span className="amazon-badge-title">Amazon Ads</span>
-      <span className="amazon-badge-sub">Amazon Ads</span>
     </div>
   </div>
 );

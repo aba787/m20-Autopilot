@@ -99,7 +99,7 @@ export const AmazonPartnerBadge = () => (
     </svg>
     <div className="amazon-badge-text">
       <span className="amazon-badge-title">Amazon Ads</span>
-      <span className="amazon-badge-sub">Automation Platform</span>
+      <span className="amazon-badge-sub">Amazon Ads</span>
     </div>
   </div>
 );

@@ -14,6 +14,38 @@ export interface AmazonConnection {
   refresh_token: string;
   token_expires_at: string;
   is_active: boolean;
+  consent_date?: string | null;
+  refresh_token_expires_at?: string | null;
+}
+
+// Amazon Ads API refresh-token expiration policy (effective 2026-06-30):
+// refresh tokens expire 365 days from the date of advertiser consent. The
+// expiry is FIXED at consent time and is NOT extended by usage/refresh.
+export const REFRESH_TOKEN_TTL_DAYS = 365;
+export const REFRESH_TOKEN_TTL_MS = REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000;
+// Start prompting the advertiser to re-authorize this many days before expiry.
+export const REFRESH_TOKEN_WARN_DAYS = 30;
+
+// Thrown when the refresh token is expired/revoked and the advertiser must grant
+// consent again (Amazon returns `invalid_grant` for these cases).
+export class AmazonReauthRequiredError extends Error {
+  readonly code = 'REAUTH_REQUIRED';
+  constructor(message = 'Amazon authorization expired or revoked. Re-authorization required.') {
+    super(message);
+    this.name = 'AmazonReauthRequiredError';
+  }
+}
+
+export type RefreshTokenStatus = 'active' | 'expiring' | 'expired';
+
+// Derives the consent status of a refresh token from its fixed expiry date.
+export function refreshTokenStatus(refreshTokenExpiresAt?: string | null): RefreshTokenStatus {
+  if (!refreshTokenExpiresAt) return 'active';
+  const expiry = new Date(refreshTokenExpiresAt).getTime();
+  const now = Date.now();
+  if (now >= expiry) return 'expired';
+  if (expiry - now <= REFRESH_TOKEN_WARN_DAYS * 24 * 60 * 60 * 1000) return 'expiring';
+  return 'active';
 }
 
 export async function getAmazonConnection(userId: string): Promise<AmazonConnection | null> {
@@ -35,6 +67,13 @@ export async function refreshAccessToken(connection: AmazonConnection): Promise<
     throw new Error('Amazon API credentials not configured');
   }
 
+  // Refresh token has a fixed 365-day lifetime from consent. If it is already
+  // past expiry, don't call Amazon — deactivate and require re-authorization.
+  if (refreshTokenStatus(connection.refresh_token_expires_at) === 'expired') {
+    await adminDb.from('amazon_connections').update({ is_active: false }).eq('id', connection.id);
+    throw new AmazonReauthRequiredError();
+  }
+
   const response = await fetch(AMAZON_AUTH_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -49,6 +88,13 @@ export async function refreshAccessToken(connection: AmazonConnection): Promise<
   const data = await response.json();
 
   if (!response.ok) {
+    // invalid_grant => refresh token expired/revoked: advertiser must re-consent.
+    if (data.error === 'invalid_grant') {
+      await adminDb.from('amazon_connections').update({ is_active: false }).eq('id', connection.id);
+      throw new AmazonReauthRequiredError(
+        `Amazon refresh token invalid: ${data.error_description || data.error}. Re-authorization required.`,
+      );
+    }
     throw new Error(`Token refresh failed: ${data.error_description || data.error}`);
   }
 

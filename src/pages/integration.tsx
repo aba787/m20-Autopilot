@@ -14,8 +14,26 @@ interface AmazonConnection {
   is_active: boolean;
   last_synced_at: string | null;
   token_expires_at: string | null;
+  consent_date: string | null;
+  refresh_token_expires_at: string | null;
   created_at: string;
 }
+
+const REFRESH_WARN_DAYS = 30;
+
+type RefreshStatus = 'active' | 'expiring' | 'expired';
+
+const refreshStatus = (exp: string | null): RefreshStatus => {
+  if (!exp) return 'active';
+  const e = new Date(exp).getTime();
+  const now = Date.now();
+  if (now >= e) return 'expired';
+  if (e - now <= REFRESH_WARN_DAYS * 86400000) return 'expiring';
+  return 'active';
+};
+
+const daysLeft = (exp: string | null): number =>
+  exp ? Math.max(0, Math.ceil((new Date(exp).getTime() - Date.now()) / 86400000)) : 0;
 
 interface SyncLog {
   date: string;
@@ -88,6 +106,10 @@ export default function Integration() {
         setStatusMsg({ type: 'success', text: `تمت المزامنة: ${data.synced ?? 0} حملة` });
         setSyncLogs(prev => [{ date: new Date().toLocaleString('ar-SA'), status: 'success', items: `تمت مزامنة ${data.synced ?? 0} حملة` }, ...prev.slice(0, 9)]);
         fetchConnections();
+      } else if (res.status === 401 && data.code === 'REAUTH_REQUIRED') {
+        setStatusMsg({ type: 'error', text: 'انتهت صلاحية تفويض أمازون أو تم إلغاؤه. الرجاء إعادة ربط الحساب لاستئناف المزامنة.' });
+        setSyncLogs(prev => [{ date: new Date().toLocaleString('ar-SA'), status: 'error', items: 'يلزم إعادة ربط حساب أمازون' }, ...prev.slice(0, 9)]);
+        fetchConnections();
       } else {
         setStatusMsg({ type: 'error', text: data.error || 'فشلت المزامنة' });
         setSyncLogs(prev => [{ date: new Date().toLocaleString('ar-SA'), status: 'error', items: data.error || 'فشلت المزامنة' }, ...prev.slice(0, 9)]);
@@ -97,11 +119,6 @@ export default function Integration() {
     } finally {
       setSyncing(false);
     }
-  };
-
-  const isExpired = (expiresAt: string | null) => {
-    if (!expiresAt) return false;
-    return new Date(expiresAt) < new Date();
   };
 
   return (
@@ -154,7 +171,12 @@ export default function Integration() {
           </div>
         ) : (
           <div className="space-y-3">
-            {connections.map(conn => (
+            {connections.map(conn => {
+              const rStatus = refreshStatus(conn.refresh_token_expires_at);
+              const needsReconnect = !conn.is_active || rStatus === 'expired';
+              const expiringSoon = rStatus === 'expiring';
+              const healthy = conn.is_active && rStatus !== 'expired';
+              return (
               <div key={conn.id} className="p-4" style={CARD}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -165,10 +187,10 @@ export default function Integration() {
                     <div className="flex items-center gap-2 mb-0.5">
                       <h3 className="font-bold text-sm text-white">{conn.seller_name}</h3>
                       <span className="text-xs px-1.5 py-0.5 rounded flex items-center gap-1"
-                        style={conn.is_active && !isExpired(conn.token_expires_at)
+                        style={healthy
                           ? { background: 'rgba(16,185,129,0.12)', color: 'var(--success)', border: '1px solid rgba(16,185,129,0.25)' }
                           : { background: 'rgba(239,68,68,0.12)', color: 'var(--error)', border: '1px solid rgba(239,68,68,0.25)' }}>
-                        {conn.is_active && !isExpired(conn.token_expires_at)
+                        {healthy
                           ? <><CheckCircle2 className="w-3 h-3" /> {t('connect.connected')}</>
                           : <><XCircle className="w-3 h-3" /> منتهي الصلاحية</>}
                       </span>
@@ -182,8 +204,32 @@ export default function Integration() {
                     </p>
                   </div>
                 </div>
+
+                {(needsReconnect || expiringSoon) && (
+                  <div className="mt-3 flex items-center justify-between gap-3 p-2.5 rounded-lg"
+                    style={{
+                      background: needsReconnect ? 'rgba(239,68,68,0.1)' : 'rgba(245,158,11,0.1)',
+                      border: `1px solid ${needsReconnect ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                    }}>
+                    <div className="flex items-start gap-2 min-w-0">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: needsReconnect ? '#ef4444' : '#f59e0b' }} />
+                      <p className="text-xs" style={{ color: needsReconnect ? '#ef4444' : '#f59e0b' }}>
+                        {needsReconnect
+                          ? 'انتهت صلاحية تفويض أمازون أو تم إلغاؤه. يلزم إعادة الربط لاستئناف المزامنة.'
+                          : `ينتهي تفويض أمازون خلال ${daysLeft(conn.refresh_token_expires_at)} يوم. يُنصح بإعادة الربط الآن لتجنّب انقطاع الخدمة.`}
+                      </p>
+                    </div>
+                    <button onClick={connectAmazon} disabled={connecting}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#0a0612] flex-shrink-0"
+                      style={{ background: 'var(--accent-gradient)', opacity: connecting ? 0.7 : 1 }}>
+                      {connecting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
+                      إعادة الربط
+                    </button>
+                  </div>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

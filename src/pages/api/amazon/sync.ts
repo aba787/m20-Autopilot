@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { requireAuth } from '@/lib/auth';
-import { getAmazonConnection, syncCampaigns } from '@/lib/amazonApi';
+import { getAmazonConnection, syncCampaigns, AmazonReauthRequiredError } from '@/lib/amazonApi';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -15,6 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await syncCampaigns(auth.id, connection);
     return res.status(200).json({ success: true, synced: result });
   } catch (err: any) {
+    // Refresh token expired/revoked — tell the client to prompt re-authorization.
+    if (err instanceof AmazonReauthRequiredError || err?.code === 'REAUTH_REQUIRED') {
+      return res.status(401).json({ error: err.message, code: 'REAUTH_REQUIRED' });
+    }
     return res.status(500).json({ error: err.message || 'Sync failed' });
   }
 }

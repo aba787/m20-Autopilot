@@ -1,0 +1,1 @@
+- [Amazon refresh-token 365-day policy](amazon-refresh-token-policy.md) — consent_date + refresh_token_expires_at on connect; invalid_grant → deactivate + REAUTH_REQUIRED; Supabase DDL is manual, separate migration.

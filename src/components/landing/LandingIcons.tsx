@@ -93,7 +93,7 @@ export const IconCross = () => (
 export const AmazonPartnerBadge = () => (
   <div className="amazon-partner-badge">
     <div className="amazon-badge-text">
-      <span className="amazon-badge-title">Amazon Ads</span>
+      <span className="amazon-badge-title">Works with Amazon Ads</span>
     </div>
   </div>
 );

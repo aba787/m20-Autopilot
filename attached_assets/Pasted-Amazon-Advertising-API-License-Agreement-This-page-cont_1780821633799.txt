@@ -1,0 +1,246 @@
+Amazon Advertising API License Agreement
+This page contains the most up-to-date Amazon Advertising API License Agreement. To view a list of changes that have been made to the License Agreement and announced upcoming changes, please see the Changes to the Amazon Advertising API License Agreement.
+
+The version of this License Agreement in English is the definitive legal version. Translations into Chinese, Japanese, Arabic and Portuguese are available for your ease of reference only.
+
+THIS AMAZON ADVERTISING API LICENSE AGREEMENT (THE "LICENSE AGREEMENT") CONTAINS THE TERMS AND CONDITIONS THAT GOVERN YOUR ACCESS TO AND USE OF THE PROGRAM MATERIALS AND IS AN AGREEMENT BETWEEN YOU OR THE BUSINESS YOU REPRESENT AND AMAZON. BY REGISTERING FOR OR USING THE PROGRAM MATERIALS, YOU (ON BEHALF OF YOURSELF OR THE BUSINESS YOU REPRESENT) AGREE TO BE BOUND BY THE TERMS OF THIS LICENSE AGREEMENT, INCLUDING ANY APPLICABLE PROGRAM POLICIES, THAT APPLY FOR EACH COUNTRY FOR WHICH YOU REGISTER OR USE THE PROGRAM MATERIALS (IN EACH CASE, THE "ELECTED COUNTRY").
+
+As used in this License Agreement, "we," "us," "our," and "Amazon" means the applicable Amazon Contracting Party and any of its applicable Affiliates, and "you" and "your" means the applicant (if registering for or using Program Materials as an individual) or the business employing the applicant (if registering for or using Program Materials as a business) and any of its Affiliates. Capitalized terms have the meanings given to them in this License Agreement. If there is a conflict between the terms in this License Agreement and the Program Policies, this License Agreement will prevail over any applicable Program Policies.
+
+Your use of, or participation in, any program, product, or service offered by Amazon Advertising (such as Sponsored Ads) may be subject to additional program-specific terms (“Program-Specific Terms”), including Program-Specific Terms that may be included or referenced in the Online Developer Portal, Program Materials, Program Policies, or other API-related documentation we make available. You are responsible for reviewing those locations and any Program-Specific Terms. In the event of a conflict between this License Agreement and any applicable Program-Specific Terms as it relates to the particular program, product, or service covered by the Program-Specific Terms, the Program-Specific Terms will prevail. Nothing in this License Agreement shall be construed as limiting your obligations under any applicable Program-Specific Terms.
+
+1.    License; Registration; Login with Amazon
+
+Amazon grants you a limited, revocable, non-exclusive, royalty-free, non-transferable, non-sub-licensable license to access, use and reproduce the Program Materials solely for the purpose of sending and receiving information in connection with Amazon Advertising by or on behalf of the particular Amazon Advertising Participant that has expressly authorized you to do so.
+
+In order to access or use the Program Materials, you must complete the registration process and provide certain registration information (including contact information) to us. When using the Program Materials, you will not make any redirects or third-party calls unless you first receive Amazon’s express, prior written approval.  Any non-compliance with the preceding sentence is grounds for immediate suspension or termination of your access to the Program Materials. We may reject or revoke your registration in our sole discretion. You will inform us of updates to any registration information as necessary to ensure that it at all times remains accurate and complete.
+
+If you access or use the Program Materials we make available to conduct transactions associated with one or more Amazon Advertising Participants, you accept and agree to be bound by the applicable, online Login with Amazon Services Agreement, which allows Amazon Advertising Participants to sign in to your website or application that accesses or uses the Program Materials with their Amazon Advertising account credentials.
+
+2.    Limitations
+
+You may access and use the Program Materials only as expressly authorized under this License Agreement as permitted by Section 1, and only through the interfaces and functionality we designate. You must comply with all instructions and requirements related to the Program Materials in the Program Policies, including the Data Protection Policy and Acceptable Use Policy.
+
+As between you and us, you are solely responsible for all data and information (including but not limited to start dates, end dates, targeting, rates, prices, bids, sizes, quantities and any other ad campaign characteristics) you provide through the Program Materials.
+
+You will not (a) incorporate or compile any portion of the Program Materials into your own programs or any other software, (b) distribute, sub-license or otherwise provide any portion of the Program Materials to any third party, (c) modify or create derivative works of the Program Materials, (d) reverse engineer, disassemble or decompile the Program Materials, (e) use the Program Materials with any software or other materials that are subject to licenses or restrictions (e.g., open source software licenses) that, when combined with the Program Materials, would require us to disclose, license, distribute or otherwise make all or any part of such Program Materials available to anyone, (f) remove, modify, or obscure any copyright, patent, trademark or other proprietary or attribution notices on or in any Program Materials, (g) use the Program Materials in any manner that interferes or attempts to interfere with the proper working of Amazon Advertising or any activities conducted on our servers, (h) engage in any fraudulent, impermissible, inappropriate or unlawful activities in connection with your use of the Program Materials, (i) send multiple listings of identical products in the same feed or sending multiple feeds under different accounts, (j) generate fraudulent, repetitive or otherwise invalid clicks, impressions, queries or other interactions, whether through the use of automated applications or otherwise, (k) target communications of any kind on the basis of the intended recipient being a user of any Amazon Sites, (l) interfere with the proper working of any Amazon Sites, Amazon Advertising or our systems, (m) attempt to bypass any mechanism we use to detect or prevent any of the activities described in this paragraph, (n) use information received in connection with the Program Materials to conduct any marketing efforts targeted at our existing advertisers or Amazon Advertising Participants, (o) use the Program Materials to contribute to, offer or promote external (non-Amazon) data services that vend data about Amazon (provided, for clarity, that this does not prevent you from undertaking actions permitted by this License Agreement in support of the Amazon Advertising ad campaigns of Amazon Advertising Participants), (p) facilitate or promote violation of the Amazon Advertising Agreement or any Program-Specific Terms, directly or indirectly, or (q) make any representation, warranty, promise or guarantee about the Program Materials, Amazon Advertising, us or your relationship with us.
+
+We may, in our sole discretion, set a quota on your usage of Program Materials, and you will not attempt to exceed any such use-quota restrictions of which we have informed you. All licenses granted to you in this License Agreement will immediately and automatically terminate if you do not comply with any term or condition of this License Agreement.
+
+3.    Reservation of Rights; Other Licenses
+
+The Program Materials are the intellectual property of Amazon or its licensors. Except for the rights explicitly granted to you in this License Agreement, all right, title and interest in and to the Program Materials are reserved and retained by us and our licensors. If you provide suggestions, ideas, or other feedback to us about the Program Materials, we will be free to exercise all rights in such feedback without restriction and without compensating you. The Program Materials may include or be distributed with software or other materials that are provided under a separate license agreement (such as an open source license), and that separate license will govern the use of such software or other materials in the event of a conflict with this License Agreement. Any such separate license agreement may be indicated in the license, notice, or readme files distributed with the applicable software or other materials or in related documentation.
+
+We may modify or discontinue (including by ceasing our distribution of or support for) any or all of the Program Materials at any time without notice, and you are solely responsible at all times for backing up your data and ensuring that you are prepared to manage your business after any such modification or discontinuation.
+
+4.    Representations
+
+You represent and warrant to us that: (a) if you are a business, you are duly organized, validly existing and in good standing under the laws of the country in which your business is registered, (b) you have all requisite right, power and authority to enter into this License Agreement and perform your obligations (and you and we both recognize your and our respective mutual authority to enter into this License Agreement) and (c) by accessing or using the Program Materials in connection with a particular Amazon Advertising Participant, you have the express authorization of the Amazon Advertising Participant. You represent and warrant to us that you are not subject to sanctions or otherwise designated on any list of prohibited or restricted parties or owned or controlled by such a party, including but not limited to the lists maintained by the United Nations Security Council, the US Government (e.g., the US Department of Treasury’s Specially Designated Nationals list and Foreign Sanctions Evaders list and the US Department of Commerce’s Entity List), the European Union or its member states, or other applicable government authority.
+
+5.    Confidentiality; Publicity
+
+A.   Confidentiality
+
+Through your use of or access to the Program Materials, you may receive data or information relating to us, the Program Materials or Amazon Advertising Participants that is not known to the general public (collectively, "Confidential Information"). You agree that: (a) all Confidential Information will remain Amazon's exclusive property; (b) you will not disclose any Confidential Information to any person or entity other than to the Amazon Advertising Participant to which such data or information relates; (c) you will take all reasonable measures to protect the Confidential Information against any use or disclosure that is not expressly permitted in this License Agreement; (d) you will not collect any user information from any Amazon Sites or retrieve, extract, index or cache any portion of any Amazon Sites, whether through the use of automated applications or otherwise; and (e) you will not use any Confidential Information for any purpose other than creating, managing, and reporting Amazon Advertising ad campaigns by or on behalf of the particular Amazon Advertising Participant that has expressly authorized you to do so. You will comply with the terms of any nondisclosure agreement between you and Amazon ("NDA"). To the extent of any conflict between the NDA and this Section, this Section will govern.
+
+B.    Publicity
+
+You may not issue any press release or make any public statement related to the Program Materials, or use our name, trademarks or logo, in any way (including in promotional material) without our advance written permission (email sufficient), or misrepresent or embellish the relationship between you and us in any way.
+
+6.    Disclaimers
+
+THE PROGRAM MATERIALS, INCLUDING ALL TECHNOLOGY, TOOLS, SERVICES, SOFTWARE, FUNCTIONALITY, MATERIALS, AND INFORMATION MADE AVAILABLE ON OR PROVIDED IN CONNECTION WITH THE PROGRAM MATERIALS, ARE PROVIDED "AS-IS." YOUR USE OF THE PROGRAM MATERIALS IS AT YOUR OWN OPTION AND RISK. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WE DISCLAIM: (A) ANY REPRESENTATIONS OR WARRANTIES REGARDING THIS LICENSE AGREEMENT OR THE PROGRAM MATERIALS, INCLUDING ANY EXPRESS OR IMPLIED WARRANTIES OF MERCHANTABILITY, WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, AND WARRANTIES OF NON-INFRINGEMENT; (B) ANY IMPLIED WARRANTIES ARISING OUT OF COURSE OF DEALING, COURSE OF PERFORMANCE OR USAGE OF TRADE; AND (C) ANY OBLIGATION, LIABILITY, RIGHT, CLAIM OR REMEDY IN TORT, WHETHER OR NOT ARISING FROM OUR NEGLIGENCE. WE DO NOT WARRANT THAT THE PROGRAM MATERIALS WILL MEET YOUR REQUIREMENTS, BE AVAILABLE, SECURE, UNINTERRUPTED OR ERROR-FREE, AND WE WILL NOT BE LIABLE FOR THE CONSEQUENCES OF ANY INTERRUPTIONS OR ERRORS. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WE DISCLAIM ANY GUARANTEES ABOUT TIMING, POSITIONING, ADJACENCY, PERFORMANCE, QUANTITY OR QUALITY (AS APPLICABLE): PLACEMENTS, TARGETING, IMPRESSIONS, CLICKS, CLICK RATES, CONVERSION RATES, AUDIENCE SIZE, DEMOGRAPHICS OR ADVERTISING COSTS.
+
+7.    Limitations of Liability
+
+A.   Amazon
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL AMAZON BE LIABLE TO YOU OR ANY OTHER PERSON OR ENTITY FOR ANY INDIRECT, CONSEQUENTIAL, SPECIAL, INCIDENTAL, EXEMPLARY, OR PUNITIVE DAMAGES OR ANY LOSS OF GOODWILL, BUSINESS INTERRUPTION, LOST PROFITS OR DATA, OR COMPUTER FAILURE OR MALFUNCTION ARISING FROM OR RELATING TO THIS LICENSE AGREEMENT OR THE PROGRAM MATERIALS, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, EVEN IF AMAZON HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. FURTHER, OUR AGGREGATE LIABILITY ARISING FROM OR RELATED TO THIS LICENSE AGREEMENT AND THE PROGRAM MATERIALS WILL NOT EXCEED ONE HUNDRED U.S. DOLLARS ($100), REGARDLESS OF THE ELECTED COUNTRY.
+
+B.   You
+
+YOUR AGGREGATE LIABILITY ARISING SOLELY UNDER THIS LICENSE AGREEMENT WILL NOT EXCEED THE LIABILITY CAP; PROVIDED THAT THE LIABILITY CAP DOES NOT APPLY TO DAMAGES ARISING FROM YOUR BREACH OF SECTION 1 OR SECTION 5.A. AND YOUR OBLIGATIONS ARISING UNDER SECTION 8.
+
+8.    Indemnification
+
+You release us and will indemnify, defend and hold harmless Amazon and its Affiliates, and their respective officers, directors, employees, and agents against any claim, loss, damage, settlement, cost, expense or other liability (including, without limitation, reasonable attorneys' fees) arising from or related to (a) your acts or omissions in connection with the Program Materials or this License Agreement or (b) your actual or alleged breach of your representations, warranties or obligations set forth in this License Agreement (each, a "Claim"). You will not consent to the entry of a judgment or settle a Claim without our prior written consent, which may not be unreasonably withheld. You will use counsel reasonably satisfactory to us to defend each Claim. If we reasonably determine that a Claim might adversely affect us, we may take control of the defense at our expense (and without limiting your indemnification obligations). Your obligations under this Section are independent of your other obligations under the License Agreement.
+
+9.    Compliance
+
+You will (and will require your end users to) comply with all applicable laws, rules, regulations, orders, and other requirements of governmental agencies and relevant data protection rules (together, "Laws") in any activity using or related to the Program Materials. Without limiting the foregoing, you will comply with all export, re-export, and import Laws of the United States and other countries that may apply to the Program Materials, and will not transfer, or encourage, assist, or authorize the transfer of, the Program Materials to a prohibited country or otherwise in violation of any applicable Laws. You will not engage in any activity using or related to the Program Materials that (a) infringes, violates, or misappropriates the rights of us or any third party, (b) interferes with, damages, or accesses or uses in any unauthorized manner the hardware, software, networks, technologies, or other properties or services of ours or of any end user, mobile operator, or other third party, or (c) enables any end user to knowingly violate applicable Laws or the terms of this License Agreement. Amazon may monitor or otherwise investigate your use of Program Materials to verify compliance with this License Agreement.
+
+Notwithstanding anything to the contrary herein, nothing in this License Agreement shall, or shall be interpreted or construed to, induce or require either party hereto to act in any manner (including taking or failing to take any actions in connection with a transaction) which is inconsistent with or penalized under any U.S. laws, regulations, rules or requirements that apply to any party to the License Agreement.
+
+Other than as expressly permitted in any applicable Program-Specific Terms (such as the Amazon Attribution Agreement, or the Advertiser Audiences Agreement), you may not provide us any data which, alone, or when combined with other personal or identifying information which is linked or linkable to a specific individual, can be used to identify, contact, or precisely locate a natural person, including the person's name, initials, date of birth, address, telephone number, e-mail address, financial account number, or government-issued identifier (collectively, "PII") in connection with this License Agreement. For the avoidance of doubt, Amazon does not provide PII in connection with the Program Materials.  
+
+10. Termination; Modification
+
+The term of this License Agreement will start on the date of your completed registration for or use of the Program Materials, whichever occurs first, and continue until terminated by us or you as provided in this License Agreement (the "Term"). We may terminate or suspend this License Agreement at any time, with or without cause, without advance notice to you. You may terminate this License Agreement at any time, with or without cause, by the means then specified by Amazon. In the case of termination, you must cease all use and destroy all copies of the Program Materials that are in your possession or control. The following provisions of this License Agreement will survive termination of this License Agreement: Sections 2 through 13. For avoidance of doubt, the license granted to you in Section 1 automatically terminates upon termination of this License Agreement.
+
+We may amend any of the terms and conditions contained in this License Agreement (including any Program Policies) at any time and in our sole discretion.  Any changes will be effective upon the posting of such changes on the Online Developer Portal, or on an Amazon site, and you are responsible for reviewing these locations and informing yourself of all applicable changes or notices. Changes to Program Policies may be made without notice to you.  IF ANY CHANGE IS UNACCEPTABLE TO YOU, YOUR ONLY RECOURSE IS TO TERMINATE THIS LICENSE AGREEMENT.  YOUR CONTINUED USE OF THE PROGRAM MATERIALS FOLLOWING OUR POSTING OF ANY CHANGES WILL CONSTITUTE YOUR ACCEPTANCE OF SUCH CHANGES.
+
+11. Relationship of the Parties
+
+You and we are independent contractors, and nothing in this License Agreement will create any partnership, joint venture, or agency between us. You will have no authority to make or accept any offers or representations on our behalf. This License Agreement will not create an exclusive relationship between you and us. You will not make any statement, whether on your site or otherwise, that would contradict anything in this section. For the avoidance of doubt, an Amazon Advertising Participant's use of Amazon Advertising is not governed by the terms of the License Agreement.
+
+12. General
+
+A.   Governing Law; Jurisdiction; Venue
+
+1. To the extent the Elected Country is the United States, Canada, or Mexico, the Federal Arbitration Act, applicable federal law, and the laws of the state of Washington will govern this License Agreement, without giving effect to any principles of conflicts of laws. To the extent the Elected Country is the United States, Canada, or Mexico, you and Amazon each consent that any dispute or claim relating in any way to this License Agreement will be resolved by binding arbitration as described in this paragraph, rather than in court, except that you may assert claims in a small claims court if such claims qualify and any party may bring suit in a state or federal court in King County, Washington to enjoin infringement or other misuse of Intellectual Property Rights. There is no judge or jury in arbitration, and court review of an arbitration award is limited. However, an arbitrator can award on an individual basis the same damages and relief as a court (including injunctive and declaratory relief or statutory damages), and must follow the terms of this License Agreement as a court would. To begin an arbitration proceeding, you must send a letter requesting arbitration and describing its claim to our registered agent, Corporation Service Company, 300 Deschutes Way SW, Suite 304, Tumwater, WA 98501. The arbitration will be conducted by the American Arbitration Association (AAA) under its rules, including the AAA’s Supplementary Procedures for Consumer-Related Disputes. Payment of all filing, administration and arbitrator fees will be governed by the AAA’s rules. We will reimburse those fees for claims totaling less than $10,000 unless the arbitrator determines the claims are frivolous. Likewise, Amazon will not seek attorneys' fees and costs from you in arbitration unless the arbitrator determines the claims are frivolous. You may choose to have the arbitration conducted by telephone, based on written submissions, or in person in the county where you reside or at another mutually agreed location. You and Amazon each agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated or representative action. If for any reason a claim proceeds in court rather than in arbitration, you and Amazon each waive any right to a jury trial.
+
+2. To the extent the Elected Country is Japan, the laws of Japan govern this License Agreement and any dispute or claim relating in any way to this License Agreement will only be adjudicated in the Tokyo District Court. The United Nations Convention on Contracts for the International Sale of Goods, and any local laws implementing the Convention on Contracts for the International Sale of Goods, do not apply to this License Agreement. TO THE EXTENT PERMITTED BY LAW, YOU HEREBY WAIVE ANY RIGHTS THAT YOU MAY HAVE TO BRING DISPUTES FOR RESOLUTION BEFORE ANY OTHER COURT, TRIBUNAL OR FORUM. You and Amazon each agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated or representative action.
+
+3.  To the extent the Elected Country is Australia, the laws of New South Wales, Australia govern this License Agreement and any dispute or claim relating in any way to this License Agreement will only be adjudicated in the courts of New South Wales. Each party consents to exclusive jurisdiction and venue in these Courts. Notwithstanding the foregoing, either party may seek injunctive relief in any state, federal, or national court of competent jurisdiction for any actual or alleged infringement of such party’s, its affiliates’ or any third party’s Intellectual Property Rights or other proprietary rights. The United Nations Convention on Contracts for the International Sale of Goods, and any local laws implementing the Convention on Contracts for the International Sale of Goods, do not apply to this License Agreement. TO THE EXTENT PERMITTED BY LAW, YOU HEREBY WAIVE ANY RIGHTS THAT YOU MAY HAVE TO BRING DISPUTES FOR RESOLUTION BEFORE ANY OTHER COURT, TRIBUNAL OR FORUM. You and Amazon each agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated or representative action. You and Amazon each waive any right to a jury trial.
+
+4. To the extent the Elected Country is India, (a) the laws of India will govern this License Agreement, without giving effect to any principles of conflicts of laws, and (b) all disputes, claims, differences or questions of any nature arising between you and Amazon relating in any way to this License Agreement or in connection with this License Agreement, including its construction, meaning or interpretation or effect, or as to rights, liabilities of the parties, will be referred to the sole arbitrator appointed by Amazon. The arbitration will be conducted in accordance with the provisions of the Arbitration and Conciliation Act, 1996, or such statutory amendment thereof. The parties agree to have their disputes resolved by the fast track procedure specified in the Section 29 of the Arbitration and Conciliation Act 1996. The arbitration proceedings will be conducted in English and the venue of such proceedings shall be at Delhi. The courts at Delhi shall have the sole and exclusive jurisdiction for all arbitral application.
+
+5. To the extent the Elected Country is a country in Europe (e.g., Germany, France, Spain, Italy, or the United Kingdom) or Turkey, the laws of the Grand Duchy of Luxembourg will govern this License Agreement, without giving effect to any principles of conflicts of laws. The United Nations Convention on Contracts for the International Sale of Goods, and any local laws implementing the Convention on Contracts for the International Sale of Goods, do not apply to this License Agreement. For any dispute or claim relating in any way to this License Agreement, you and Amazon each submit to the exclusive jurisdiction of the courts of the district of Luxembourg City, Luxembourg. Notwithstanding the foregoing, either party may seek injunctive relief in any court of competent jurisdiction for any actual or alleged infringement of such party’s, its Affiliates’, or any third party’s intellectual property or proprietary rights.
+
+6. To the extent the Elected Country is the United Arab Emirates, this License Agreement shall be governed by, and construed in accordance with, the laws of the Dubai International Financial Centre. The parties agree that any dispute or claim (including non-contractual claims) arising out of or in connection with this agreement, including any question regarding its existence, validity, breach or termination shall be referred to and finally resolved by arbitration under the rules of the London Court of International Arbitration ("LCIA Rules"), which are deemed to be incorporated by reference into this section 6. The number of arbitrators shall be one. The seat or legal place of arbitration shall be the Dubai International Financial Centre, Dubai. The language of the arbitration shall be English. Any dispute or claim arising in relation to the validity or enforcement of this arbitration clause shall be governed by the laws of the Dubai International Financial Centre. Notwithstanding the foregoing, any party may seek injunctive relief in any court of competent jurisdiction against any matters relating to protection of Intellectual Property Rights or breach of confidentiality obligations.
+
+7. To the extent the Elected Country is the Kingdom of Saudi Arabia, the laws of the Kingdom of Saudi Arabia will govern this License Agreement, without giving effect to any principles or conflicts of laws. You and Amazon each consent that any dispute or claim relating in any way to this License Agreement shall be referred to and finally resolved by arbitration under the London Court of International Arbitration (“LCIA”) Arbitration Rules as amended from time to time. The number of arbitrators shall be one, to be appointed in accordance with the LCIA Arbitration Rules. The seat or legal place of arbitration shall be Riyadh, Kingdom of Saudi Arabia. The language used in the arbitral proceedings shall be English. Notwithstanding the foregoing, any party may seek injunctive relief in any court of competent jurisdiction against any matters relating to protection of Intellectual Property Rights or breach of confidentiality obligations.
+
+8. To the extent the Elected Country is Brazil, this Agreement shall be governed by and construed in accordance with the Laws of Brazil. To the extent the Elected Country is Brazil, you and Amazon consent that any dispute or claim relating in any way to this Agreement will be resolved in accordance with the then-applicable Rules of Arbitration of the International Chamber of Commerce, and judgment on the arbitral award may be entered in any court having jurisdiction. The arbitration will take place in the City of São Paulo, State of São Paulo, Brazil, where the arbitral award shall be rendered.  The number of arbitrators shall be three and the president of the arbitral tribunal shall be nominated by common agreement by the co-arbitrators nominated by the parties. The co-arbitrators shall be nominated in accordance with the Rules of Arbitration of the International Chamber of Commerce. The fees and expenses of the arbitrators and the administering authority (International Court of Arbitration of the International Chamber of Commerce) will be paid in equal proportion by the parties during the arbitration proceedings. The arbitral award shall determine the reimbursement of fees and expenses (including contractual attorneys’ fees) in the proportion each party prevails regarding the claims in dispute. The arbitral tribunal shall not have jurisdiction to impose defeated party’s attorney fees (honorários advocatícios sucumbenciais). The parties agree that the existence of and information relating to any such arbitration proceedings will not be disclosed by either party and will constitute confidential information. The Courts of the City of São Paulo, State of São Paulo, Brazil shall have exclusive jurisdiction for the sole purposes of (i) ensuring the commencement of the arbitral proceedings; and (ii) granting conservatory and interim measures prior to the constitution of the arbitral tribunal.  The United Nations Convention for the International Sale of Goods does not apply to this Agreement. THE PARTIES HEREBY WAIVE ANY RIGHTS THEY MAY HAVE TO BRING DISPUTES FOR RESOLUTION BEFORE ANY OTHER COURT, TRIBUNAL OR FORUM.
+
+9. To the extent the Elected Country is Singapore, the laws of Singapore will govern this License Agreement, without giving effect to any principles of conflicts of laws. To begin an arbitration proceeding, you must send a letter requesting arbitration and describing your claim to 23 Church Street, #10-01, Singapore 049481. Any arbitration commenced under this Section 12.A.9 will be conducted by the Singapore International Arbitration Centre and in accordance with the Rules of the Singapore International Arbitration Centre (“Rules”), except to the extent that the Rules conflict with the provisions of this Section 12.A.9, in which event the provisions of this Section 12.A.9 will prevail and apply. Any arbitration commenced under this Section 12.A.9 will be conducted by one arbitrator nominated jointly by the Parties, or failing such joint nomination, by the President for the time being of the Singapore International Arbitration Centre. The language to be used and all written documents provided in any such arbitration will be English. The parties agree that the arbitral award may be enforced against the parties to the arbitration proceeding or their assets wherever they may be found, and that a court ruling upon enforcement of the arbitral award may be entered in any court having jurisdiction. The parties also hereby irrevocably waive and exclude any right to appeal to any court in any jurisdiction against any such decision or award, or to seek any review or revision of any such decision or award by any court in any jurisdiction. The foregoing will be without prejudice to the rights of either party to refer any dispute to the courts for resolution where necessary to preserve the subject matter of the action by way of injunctive or declaratory proceedings.
+
+10. To the extent the Elected Country is the Arab Republic of Egypt, this License Agreement shall be governed by, and construed in accordance with, the laws of the Arab Republic of Egypt. The Parties agree that any dispute or claim (including non-contractual claims) arising out of or in connection with this License Agreement, including any question regarding its existence, validity, breach or termination shall be referred to and finally resolved by arbitration under the Rules of Arbitration of the Cairo Regional Centre for International Commercial Arbitration (CRCICA) as amended from time to time (the “CRCICA Rules”), which are deemed to be incorporated by reference into this section. The number of arbitrators shall be one. The seat or legal place of arbitration shall be Cairo, Egypt. The language of the arbitration shall be English. Any dispute or claim arising in relation to the validity or enforcement of this arbitration clause shall be governed by the laws of the Arab Republic of Egypt. Notwithstanding the foregoing, any party may seek injunctive relief in any court of competent jurisdiction against any matters relating to protection of Intellectual Property Rights or breach of confidentiality obligations.
+
+11. To the extent the Elected Country is South Africa, this Agreement shall be governed by, and construed in accordance with, the laws of the Republic of South Africa. Any dispute relating in any way to this Agreement will only be resolved by arbitration administered by the Arbitration Foundation of Southern Africa (“AFSA”) in accordance with the then-applicable Arbitration Rules of AFSA, and the arbitral award may be made an order of the High Court of South Africa, Gauteng Division, Johannesburg. The arbitration will take place in Johannesburg. There will be one arbitrator. The fees and expenses of the arbitrators and AFSA, if any, will be paid in equal proportion by the parties. The arbitration proceedings will be conducted in English. Any party to the arbitration may appeal the final arbitration award of the arbitrator in accordance with the Arbitration Rules of AFSA to a panel of three arbitrators. The United Nations Convention for the International Sale of Goods does not apply to this Agreement. Nothing in this clause shall preclude any party from seeking urgent interim relief from any court of competent jurisdiction.
+
+B.    Assignment
+
+You may not assign this License Agreement or any part of this License Agreement without our prior written consent. Subject to that restriction, this License Agreement will be binding on, inure to the benefit of, and be enforceable against the parties and their respective successors and assigns. We may (a) perform any of our obligations or exercise any of our rights under this License Agreement through one or more of our Affiliates and (b) assign this License Agreement to any of our Affiliates or in connection with any merger, consolidation, reorganization, sale of all or substantially all of our assets or any similar transaction.
+
+C.    Notices
+
+We will send all notices and other communications regarding this License Agreement to you at the e-mail address you designated in your registration or within the Online Developer Portal, as applicable, or by any other means then specified by Amazon. We may also communicate with you electronically and in other media, and you consent to such communications regardless of any "E-mail Preferences" (or similar preferences or requests) you may have indicated on the applicable Amazon site, or by any other means. You may change your e-mail addresses and certain other information in the Online Developer Portal or by any other means then specified by Amazon. You will ensure that all of your information is up to date and accurate at all times. You must send all notices relating to this License Agreement to us by using the (if available) "Contact Us" form on the Online Developer Portal and with a copy to:
+
+Amazon.com, Inc.
+ Attn: General Counsel
+ P.O. Box 81226
+ Seattle, WA 98108-1226
+E-mail: contracts-legal@amazon.com
+
+and (if the Elected Country is the United Kingdom, France, Germany, Spain, Italy or any other country located in Europe) then to:
+
+Amazon Europe Core S.a.r.l
+ 38 Avenue John F. Kennedy
+ L-1855 Luxembourg
+ Attn: Legal Department
+
+or (if the Elected Country is India) then to:
+
+Amazon Seller Services Private Limited
+ 8th Floor, #26/1, Brigade World Trade Center,
+ Dr. Rajkumar Road, Bangalore 560055
+ India
+
+or (if the Elected Country is Australia) then to:
+
+Amazon Commercial Services Pty Ltd
+ Level 37, 2 Park Street
+ Sydney, New South Wales
+ Australia, 2000
+ Attn: Legal Department
+
+or (if the Elected Country is the United Arab Emirates) then to:
+ Souq.com FZ LLC
+ Zone C – Fl 3, Floor: 03,
+ DP Headquarters
+ Dubai, United Arab Emirates
+
+or (if the Elected Country is the Kingdom of Saudi Arabia) then to:
+ Afaq Q Tech General Trading Company
+ Riyadh Gallery Mall, 4th floor,
+ P.O. Box 250414, Riyadh, Saudi Arabia
+
+or (if the Elected Country is Brazil) then to:
+ Amazon Serviços de Varejo do Brasil Ltda.
+ Avenida Juscelino Kubitschek, 2.401
+ Torre E, 18º Andar
+ CEP 04543-000, São Paulo, Brasil
+ Attn: Legal
+
+or (if the Elected Country is Singapore) then to:
+
+Amazon Asia-Pacific Holdings Private Limited
+ 23 Church Street, #10-01
+ Singapore 049481
+ Attn: Legal Department
+
+or (if the Elected Country is Turkey) then to:
+
+Amazon Turkey Perakende Hizmetleri Limited Sirketi
+
+Esentepe Mahallesi Bahar Sk. 
+
+No: 13/52 Şişli/İstanbul
+
+Attn: Legal Department
+
+ or (if the Elected Country is the Arab Republic of Egypt) then to:
+
+Amazon Advertising Egypt LLC
+ 306 Corniche El Nile, Al Maadi, Cairo, Egypt
+
+Attn: Legal Department
+
+ or (if the Elected Country is South Africa) then to:
+
+Amazon Commercial Services (South Africa) (Pty) Ltd
+
+Attn: Legal Department
+
+134 Solan Road, Gardens, Cape Town, 8001, South Africa
+D.   Force Majeure
+
+We will not be liable for any delay or failure to perform any of our obligations under this License Agreement by reasons, events or other matters beyond our reasonable control.
+
+E.    Miscellaneous
+
+If any provision of this License Agreement is held invalid by a court with jurisdiction over the parties to this License Agreement, such provision will be deemed to be restated to reflect as nearly as possible the original intentions of the parties in accordance with applicable Law, and the remainder of this License Agreement will remain in full force and effect. Our failure to insist upon or enforce your strict compliance with this License Agreement will not constitute a waiver of any of our rights. In addition to Amazon, our licensors may enforce this License Agreement against you with respect to their software and other materials included in the Program Materials, and our licensors are third-party beneficiaries of this License Agreement solely for that purpose. The word "including" will be interpreted without limitation when used in this License Agreement. This License Agreement, together with any applicable Program Policies, represents the entire agreement among the parties with respect to the subject matter herein and supersedes any previous or contemporaneous oral or written agreements and understandings between the parties hereto.
+
+If the Elected Country is Canada, then it is the express wish of the parties that this License Agreement and the applicable Program Policies have been drafted in English. (The following is a French translation of the preceding sentence: Si le pays choisi est le Canada, les parties souhaitent expressément que la présente convention d'octroi de licence ainsi que les politiques relatives au programme et les modalités supplémentaires applicables soient rédigées en anglais.) The English-language version of this License Agreement, including the Program Policies, is the definitive legal version. Translations may be available for ease of reference only.
+
+You are solely responsible for maintaining the security of your Program Materials password. You may not disclose your password to any third party and are solely responsible for any use of or action taken under your password. If your password is compromised, you must immediately change your password.
+
+13. Definitions
+
+"Affiliate" means, with respect to any entity, any other entity that directly or indirectly controls, is controlled by, or is under common control with that entity. As used in the preceding sentence, “control” means the possession, direct or indirect, of the power to direct or cause the direction of the management and policies of an entity, whether through the ownership of voting securities or otherwise.
+
+"Amazon Advertising" means the tools and services (e.g., Amazon Sponsored Products) provided by us that allow an Amazon Advertising Participant to advertise and promote its brand, products and services, as applicable, on Amazon Sites.
+
+"Amazon Advertising Participant" means any person or entity enrolled in, or who provides services relating to, Amazon Advertising.
+
+"Amazon Contracting Party" means the party outlined below.
+
+If the Elected Country is the United States: Amazon.com Services LLC.
+If the Elected Country is Canada: Amazon Advertising Canada, Inc.
+If the Elected Country is Mexico: Servicios Comerciales Amazon Mexico, S. de R.L. de C.V.
+If the Elected Country is the United Kingdom, France, Germany, Spain, Italy or any other country located in Europe: Amazon Europe Core S.a.r.l.
+If the Elected Country is Japan: Amazon Japan G.K.
+If the Elected Country is India: Amazon Seller Services Private Limited.
+If the Elected Country is Australia: Amazon Commercial Services Pty Limited (ABN 30 616 935 623).
+If the Elected Country is the United Arab Emirates: Souq.com FZ LLC.
+If the Elected Country is the Kingdom of Saudi Arabia: Afaq Q Tech General Trading Company.
+If the Elected Country is Brazil: Amazon Serviços de Varejo do Brasil LTDA.
+If the Elected Country is Singapore: Amazon Asia-Pacific Holdings Private Limited.
+If the Elected Country is Turkey: Amazon Turkey Perakende Hizmetleri Limited Sirketi.
+If the Elected Country is the Arab Republic of Egypt: Amazon Advertising Egypt LLC
+If the Elected Country is South Africa: Amazon Commercial Services (South Africa) (Pty) Ltd.
+"Amazon Sites" means (i) any website or other online point of presence operated by Amazon or our Affiliates and (ii) any other website, device, service, application, feature or online point of presence through which any website of ours or of any of our Affiliates or our products or our services available thereon are syndicated, offered, merchandised, advertised or described.
+
+"Liability Cap" means the applicable on of the following:
+
+Five million U.S. Dollars ($5,000,000) (if the Elected Country is the United States, Canada, Mexico, Japan, Australia, Singapore, United Arab Emirates, the Kingdom of Saudi Arabia, South Africa, or the United Kingdom, France, Germany, Spain, Italy or any other country located in Europe),
+Three hundred million Indian Rupees (300,000,000) (if the Elected Country is India).
+R$ 20 million Brazilian Reais (if the Elected Country is Brazil).
+"Online Developer Portal" means the online developer portal or other website made available by Amazon in connection with the Program Materials.
+
+"Program Materials" means the application program interface, and related software, software development kits, libraries, data bases, documentation, sample code and related materials, Amazon makes available for use in connection with Amazon Advertising. The Program Materials allow Amazon Advertising Participants to access Amazon Advertising through a website or other online point of presence owned and operated by you.
+
+"Program Policies" means any policies, specifications, integration documents, guidelines (including marketing guidelines), or other documentation that we provide in connection with the Program Materials, including as made available through the Online Developer Portal, and as Amazon may update from time to time.
+Last Updated: June 1, 2024
+

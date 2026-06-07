@@ -1,0 +1,1293 @@
+Customer partner management for AMC on AWS Clean Rooms collaborations
+October 26, 2025
+
+We have added new API capabilities that allow you to add and remove customer partners from existing Amazon Marketing Cloud (AMC) on AWS Clean Rooms collaborations without recreating the collaboration instance. These new endpoints allow you to change who can bring in data and/or receive results. This enhancement provides greater flexibility for multi-party collaborations, enabling you to adapt your data partnerships as your business needs evolve while maintaining seamless access to combined analytics and measurement capabilities.
+
+API Endpoints:
+
+POST /amc/instances/{instanceId}/collaborations/{collaborationId}/acrCustomerPartners
+DELETE /amc/instances/{instanceId}/collaborations/{collaborationId}/acrCustomerPartners/{acrCustomerPartnerId}
+For more information, refer to Adding or removing customer partners from the collaboration.
+
+Amazon Live signals now available on Amazon Marketing Cloud (AMC)
+October 21, 2025
+
+Amazon Live signals can now be queried in AMC for customers with US-based managed-service. These signals allow advertisers to evaluate their Amazon Live campaign performance with more flexibility and in the context of other Amazon Ads media campaigns, giving them a full-funnel view of their performance. Amazon Live signals can also be used for audience creation; these audiences can be activated to Amazon DSP (incurring a CPM fee) and select sponsored ads channels.
+
+To connect your Amazon Live media to your AMC instance, please reach out to your Amazon Ads representative. For more information on the AMC Amazon Live signals available, refer to Amazon Live traffic.
+
+AMC Amazon Your Garage dataset international release
+October 21, 2025
+
+The Amazon Your Garage dataset, previously launched in USA (US) and Canada (CA), is now available for AMC Paid Features users in the United Kingdom (UK), Germany (DE), France (FR), Italy (IT), Spain (ES), Japan (JP), and Australia (AU). Amazon Your Garage is an Amazon Retail service that enables Amazon customers using Amazon websites in US, CA, UK, DE, FR, IT, ES, Netherlands (NL), Poland (PL), Sweden (SE), JP or AU to self-declare vehicle ownership and share that data within Amazon to expedite product discovery and configure service recommendations. AMC customers can utilize the Amazon Your Garage dataset for both measurement and audience queries within AMC.
+
+For more information, refer to Amazon Your Garage tables.
+
+Geographic optimization for DSP
+October 15, 2025
+
+For advertisers using Amazon DSP and Amazon Marketing Cloud (AMC), our Geographic Insights and Activation (GIA) feature empowers advertisers to uncover and act on regional growth opportunities using Amazon first-party retail insights and their own geographic signals. Through an intuitive map interface, advertisers can visualize their brand performance against category benchmarks across different regions. With one click, they can activate smart location groups that automatically adjust bids to reach customers in areas of opportunity, such as regions with low brand penetration. AMC users can combine their own geographic data with Amazon retail insights, creating custom strategies that align with their specific business goals.
+
+For advertisers, driving new-to-brand growth is vital for long-term success, but identifying and engaging new audiences effectively remains a significant challenge. Many brands lack the signal-driven insights needed to pinpoint untapped regions to reach these audiences at scale. GIA solves this challenge by combining robust retail insights from Amazon with geographic signals from advertisers. Whether breaking into new territories or strengthening presence in established markets, GIA provides the essential tools needed for advertisers to expand reach strategically and drive measurable business growth.
+
+API endpoints:
+
+Create a new smart location optimization: POST /adsApi/v1/create/smartLocations
+Update a existing smart location optimization: POST /adsApi/v1/update/smartLocations
+Create a location index to use as a container for location optimization signal: POST /adsApi/v1/create/locationIndexes
+Retrieves location index by ID: POST /adsApi/v1/retrieve/locationIndexes
+Creates a versioned dataset with location optimization signal at postal code level: POST /adsApi/v1/create/locationIndexVersions
+Retrieves a location index version by ID: POST /adsApi/v1/retrieve/locationIndexVersions
+Learn more about these APIs.
+
+DSP forecasting API goes GA
+October 15, 2025
+
+Our forecasting API for Amazon DSP has gone from open beta to GA. This API provides access to all real-time forecasts available from the ADSP Campaign Manager. For more information, see the technical specs.
+
+Drive top-of-search visibility and engagement by reserving branded share of voice through Sponsored Brands
+October 15, 2025
+
+Amazon is launching a new Sponsored Brands feature, reserve share of voice, which enables advertisers to secure top-of-search (TOS) Sponsored Brands placements for branded keywords at a fixed, upfront price. By reserving branded keywords, advertisers ensure that their ad will appear on Sponsored Brands top of search placement for those branded queries most of the time.
+
+With this feature, brands can count on predictable presence to boost brand visibility on top of search and shoppers can engage with branded content matching their queries. The solution is fully self-service to give advertisers flexibility, autonomy, and transparency. The solution enables advertisers to receive recommendations for high traffic branded keywords, validate keywords, receive real-time pricing, launch and manage campaigns directly through the Advertising Console or API, and receive automated invoices.
+
+To get started, see the Reserve share of voice developer guide.
+
+Sponsored Brands campaigns v3 to v4 migration
+October 14, 2025
+
+Amazon is updating its Sponsored Brands advertising campaign infrastructure, requiring advertisers to proactively migrate version 3 campaigns to version 4 by specific deadlines. Migrate campaigns with zero impressions and actively generating impressions. Advertisers must convert zero impressions campaigns created before October 2022 by October 30th, 2025, while campaigns with active impressions must complete migration by December 31st, 2025. To support this transition, advertisers can bulk migrate their campaigns through the Amazon Ad Console or Sponsored Brands migration API. For more information, see the legacy campaigns partner migration guide.
+
+Goodreads onboarding to ADSP
+October 1, 2025
+
+Goodreads is now available as a new supply source within Amazon DSP, expanding advertiser reach across Amazon Owned & Operated inventory in the U.S. All display creative formats are eligible to appear on Goodreads, encompassing Standard Display and Component-based creatives, including Responsive eCommerce, Asset-based, and Brand Store creatives. Self-service advertisers can access Goodreads inventory directly through the DSP ad console, where it is included as part of Amazon Owned & Operated Inventory.
+
+Advertising on Goodreads allows brands to reach millions of engaged U.S. readers, driving awareness and consideration. It offers a unique chance for brands to connect with an educated, discovery-oriented audience exploring diverse genres, from fiction to finance, technology, travel, wellness, and culinary arts, making it ideal for brands targeting high-intent audiences across multiple categories.
+
+Goodreads discovery and targeting are available through the following APIs:
+
+Discovery Inventory Source Exchanges API
+Targeting
+Branded searches metrics enhancements
+October 1, 2025
+
+We have improved how branded searches are identified in attribution. Enhanced brand matching helps Amazon better recognize when shoppers are searching for advertiser products, helping to capture more accurate brand associations across all regions. Advertisers may notice new trends in their branded search metrics after this update. These improvements will be reflected in Amazon Marketing Cloud (AMC) standard attribution reporting, and will extend to custom analysis once updates are completed.
+
+Streamline campaign organization with custom flight names in Amazon DSP
+September 30, 2025
+
+Amazon DSP now offers customizable flight names, enabling advertisers to better organize and track their campaign flights across the platform. This new feature allows you to assign custom names to flights, making it easier to manage complex, multi-flight campaigns and streamline reporting and budgeting workflows. This helps simplify campaign management by providing a clear way to identify and track specific flights. This enhancement is particularly valuable for agencies managing multiple clients and campaigns, enabling more efficient workflow organization and reporting processes. The feature is accessible through the following APIs:
+
+Campaigns and Flights
+Reporting
+Sponsored Display for authors
+September 30, 2025
+
+Authors can now create and manage Sponsored Display campaigns through the Amazon Ads API. This expansion gives authors access to the full suite of Amazon advertising products, complementing existing Sponsored Products and Sponsored Brands capabilities. Authors can leverage Sponsored Display contextual and audience targeting options to reach relevant readers across Amazon properties, Twitch, IMDb, and third-party sites. With this launch, we have also added more Kindle-related metrics to our reports.
+
+DSP brand suitability settings launch in open beta
+September 29, 2025
+
+For this open beta, DSP advertisers can adjust both advertiser-level and ad-group level brand suitability settings via the API. For more on advertiser-level brand suitability settings, see the new brandSafetyTierInheritedSettingDetails setting in the DSP inherited settings API specs. For more information on ad-group level targeting, see the new brandSafetyTierTarget setting in the campaign management API spec and the DSP targets API spec. For reporting details, see Brand suitability reports. This feature is currently only available for Twitch inventory. Currently, only Display and Video media types are supported. See the DSP brand safety and suitability roadmap.
+
+Build audiences, measure and optimize campaign performance with Amazon Ads Events API (open beta)
+September 26, 2025
+
+Amazon Ads announces the launch of Events API, enabling advertisers to send conversion events that occur outside of the Amazon ecosystem. Amazon Events API allows advertisers to send real-time or offline conversion event data via Server to Server integration. It can be used to send data directly from an advertiser server to Amazon Ads or from an advertiser-preferred Customer Data Platform (CDP).
+
+Events API enables advertisers to evaluate the effectiveness of their Amazon marketing campaigns regardless of the location of the conversion and utilize this information to drive campaign optimization. Events API can help strengthen performance and decrease cost per action (CPA) with more complete attribution, improved data reliability, and better optimized delivery. It also serves as a complementary method to Amazon Ad Tag (AAT) for sending website events as the browser-based tracking is susceptible to ad blockers, browser privacy settings, and cookie limitations. Events API, on the other hand, sends data directly from your server, bypassing these limitations and ensuring more reliable data collection. This leads to more accurate conversion tracking and better insights for campaign optimization. Additionally, the Events API allows you to send more user identifiers (like email and phone number) and information about the user journey.
+
+Events API will be available to self-serve Amazon DSP advertisers world-wide. Tracked conversions can be viewed and managed in the Amazon DSP console Events Manager page. To use the conversions for campaign measurement, conversions can be associated with orders using a new 'Off-Amazon conversions' widget when creating orders in the Amazon DSP console. Conversions signals will also be made available as seed information for audience building in the Amazon DSP console within Audiences.
+
+For full technical details, refer to the Events API specifications.
+
+DSP Bid Adjustments API update: Enhanced rule management
+September 26, 2025
+
+We have improved the DSP Bid Adjustments APIs, offering you more flexibility and control over your bidding strategies. Key updates:
+
+Rule updating: You can now update existing bid adjustment rules using the UpdateBidAdjustmentRule operation.
+Version tracking: Each rule update generates a new version ID, allowing you to track rule performance in BidAdjustments Reports.
+Automatic migration: When a rule is updated, all associated adGroups automatically migrate to the new version, while the previous version becomes inactive.
+Flexible retrieval:
+Use the GET API to view the latest ACTIVE version by default.
+Specify a versionId in the query header to access previous versions of ACTIVE rules.
+AdGroup association management: Easily add or remove adGroup associations with the most recent rule version using association endpoints.
+These improvements help streamline bidding strategies and improve campaign performance. For implementation details and best practices, see the bid adjustment docs.
+
+Amazon Marketing Stream campaign datasets in open beta
+September 25, 2025
+
+Today, we announce Amazon Marketing Stream campaign datasets in open beta, mimicking the API model of the new Campaign Management APIs. With this launch, customers will find it easier to consume both Sponsored Ads and ADSP campaign data instead of subscribing to two different ones. Customers will receive all their campaign data updates in a single stream mimicking the read operations of our Campaign Management APIs, reducing cognitive load and effort in mapping between API and Stream fields.
+
+To get started, please see our Campaign Management Overview section of Amazon Ads API v1 documentation.
+
+Amazon Marketing Stream campaign datasets in closed beta
+September 25, 2025
+
+Amazon Marketing Stream campaign datasets have been released in closed beta. This release mimics the API model of the new Campaign Management APIs. With this launch, customers will find it easier to consume both sponsored ads and ADSP campaign data instead of subscribing to two different datasets. Customers will receive all their campaign data updates in a single stream mimicking the read operations of our Campaign Management APIs, reducing cognitive load and effort in mapping between API and Stream fields. To get started, contact your Amazon representative.
+
+Manage your publisher commitments with the Commitments API
+September 24, 2025
+
+Amazon DSP Commitments Hub provides customers with a centralized place to manage their spending agreements with publishers (commitments). These new tools simplify tracking pacing, automatically optimize campaign spend, and accelerate spend analysis.
+
+Commitments are available via console and API for all self-service advertisers in all markets where Amazon DSP operates. The Commitments API provides five key endpoints:
+
+POST /adsApi/v1/create/commitments/dsp: Create new commitments
+GET /adsApi/v1/commitments/dsp: List all commitments
+POST /adsApi/v1/retrieve/commitments/dsp: Get specific commitments by ID
+POST /adsApi/v1/update/commitments/dsp: Update existing commitments
+POST /adsApi/v1/retrieve/commitmentSpends/dsp: Get specific commitment spends by ID
+The Commitments API allows you to create and manage commitments with various properties including commitment name, committed spend amount, currency code, start and end dates, fulfillment level, and spend calculation mode. You can link commitments to entities, advertisers, campaigns, and deals, and track spend accrual across these relationships.
+
+For full technical details, please see the technical specification for the Commitments API.
+
+IP address is now available for measurement in AMC
+September 23, 2025
+
+Amazon Marketing Cloud has added support for the IP address field across select datasets, enabling advertisers to improve measurement coverage in scenarios where primary identifiers are unavailable. This new field provides a privacy-safe way to extend reach, frequency, overlap, and attribution analysis by using IP address as a measurement-enhancing identifier subject to applicable regional availability, customer permissions, and policy safeguards.
+
+The IP address field is valuable as a measurement enhancer in scenarios where an additional identifier can expand analysis. By allowing advertisers to analyze impressions, clicks, and conversions that would otherwise lack a linking identifier, AMC helps deliver a more complete view of audience reach and campaign performance. When combined with existing identifiers, and time based constraints, IP address can enhance accuracy while maintaining compliance with privacy requirements.
+
+For more information, refer to Introduction to IP address in AMC (AMC UI access required).
+
+Create custom AMC audiences with NCS CPG Insights Stream
+September 23, 2025
+
+Amazon Marketing Cloud now offers access to NCS CPG Insights Stream dataset for creation of custom audience segments based on modeled transactions at the household level. This dataset represents over 127 million US households and provides valuable insights for CPG advertisers. Leverage this table to reach customers who purchase competitor products in your category, or engage with the top-spending customers of your brand, and much more.
+
+To get started, see the NCS CPG Insights Stream dataset and Introduction to NCS audiences (AMC UI access required).
+
+Amazon Marketing Cloud now available to all advertisers running sponsored ads campaigns
+September 16, 2025
+
+Amazon Marketing Cloud (AMC) is now available to all advertisers running sponsored ads campaigns. Advertisers using Sponsored Products, Sponsored Display, Sponsored Brands, or Sponsored TV will now be able to instantly access AMC within minutes.
+
+AMC is a powerful clean room tool that enables advertisers to measure campaigns, uncover actionable insights, and build audiences with advertiser signals, campaign learnings, and the trillions of shopping, browsing, and streaming signals available through Amazon. Advertisers can leverage AMC capabilities in numerous ways to maximize their advertising effectiveness. Through AMC unique signals, flexible analytics, and seamless signal collaboration, advertisers can uncover and assess insights such as identifying their most loyal customers, creating custom audiences for remarketing, and analyzing the path to conversion to adjust media investments that attract more customers — and much more.
+
+To get started, either log into the Amazon ads console and select Amazon Marketing Cloud in the left navigation, or access via API by following the steps in Instant self-service access to AMC.
+
+International expansion of OLV Ads on Alexa
+September 13, 2025
+
+We have expanded online video (OLV) ads on Alexa from US to JP, MX, CA, UK, BR, IN, DE, IT, FR, and ES marketplaces. This expansion will provide advertisers an opportunity to expand their reach with incremental customers on Echo Show devices, while driving awareness and consideration for their brand, with a voice-enabled OLV placement.
+
+Note: A click is recorded when the customer engages, via touch or voice, on the auto-playing online video ad on the Alexa Home Screen to launch the video ad in the full screen view.
+
+Share frequency capping across manager accounts with Amazon DSP
+August 27, 2025
+
+Amazon DSP now allows advertisers to share frequency groups between manager accounts, providing broader control over reach and frequency across their brand portfolio. This enhancement enables advertisers to manage frequency caps across different manager accounts while maintaining individual account control and visibility.
+
+Key endpoint updates in the API include:
+
+ListFrequencyGroupsV1: Added frequencyGroups list parameter and entityName field
+ListFrequencyGroupAdvertiserAssociationsV1: Added entityName and entityId attributes
+ListFrequencyGroupCampaignAssociationsV1: Added entityName and entityId attributes
+For full technical details, see the specifications for the frequency groups and frequency group associations APIs.
+
+Introducing new audiences for bid adjustment for Sponsored Brands
+August 22, 2025
+
+Sponsored Brands introduces two new Amazon-built audiences to help advertisers re-engage with valuable shopper segments: "Purchased brand product" and "Clicked or Added brand product to cart". These audiences complement the existing "New-to-brand shoppers" audience, giving advertisers more options to optimize their campaigns through audience bid adjustments.
+
+Advertisers can utilize audience bid boosting on both new and existing Sponsored Brands campaigns. To assess the performance of their bid boosted audiences, advertisers can access the Audience Report through the SB API Reporting.
+
+To retrieve Amazon-built audiences, use the Discovery API ListTargetableEntities with the following parameters: adProduct=SPONSORED_BRANDS, targetTypeFilter=AUDIENCE, and pathsFilter = [["Audience Category", "Custom-built", "Product"]]. The response will include the audienceId for these audiences, which can then be used with Sponsored Brands Campaign Management API to create or adjust the bids for the audience. Amazon-built audiences retrieved using these filters are usable only with AudienceSegmentType of BEHAVIOR_DYNAMIC when using the campaign management API. For full technical details, see our updated Sponsored Brands documentation.
+
+Reach Alexa customers with full screen ads through Responsive eCommerce creative on the Amazon DSP in more marketplaces
+August 21, 2025
+
+We have expanded Responsive eCommerce on Alexa ads to FR, ES, IN, and BR. Now ADSP-Self Service buyers can include Alexa supply in their campaigns and deliver engaging Responsive eCommerce ads to new customers.
+
+New Performance+ Insights on Amazon DSP now available in beta
+August 7, 2025
+
+Amazon DSP has launched Performance+ Insights, a new feature that provides advertisers with detailed transparency into their machine learning-generated audience targeting through two key components: (1) Shopper Insights that reveal the behavioral patterns and characteristics of customers reached by automated targeting (such as "premium sports shoes purchasers" or "enjoy sports content") and (2) Time-to-Convert metrics that display the median time between ad interaction and the attributed conversion.
+
+The Performance+ Insights feature is important for marketers because it addresses a critical trust deficit by providing transparency into ML-generated audience composition and performance. By revealing detailed audience behavioral traits and conversion metrics, marketers gain visibility into previously "black box" targeting mechanisms, allowing them to validate that their ads are reaching relevant audiences and converting effectively.
+
+For more information about the new campaign insights API endpoint, view the technical specification.
+
+Streamline your brand management with new APIs that enable automated access to global brand identifiers
+August 6, 2025
+
+Amazon has launched two new APIs that enable access to global brand identifiers through the Advertising API Gateway. Global Brand IDs streamline brand identification by reducing multiple marketplace-specific IDs into a single identifier, enabling consistent brand recognition across all marketplaces. This transforms the multi-marketplace IDs into a single identifier, such as Adidas going from 38 brand IDs to just a single global brand. The introduction of Brand status attributes allows customers to filter and interact with only valid, active brand information while eliminating duplicate or merged entries.
+
+Two new APIs are accessible through the Amazon Ads API:
+
+QueryBrandAdvertiserAssociation API (POST /adsApi/v1/query/brandAdvertiserAssociations) is a paginated API that authorizes on Global Advertiser IDs and returns Global Brand IDs associated with Global Advertiser Account.
+RetrieveBrands API (POST /adsApi/v1/retrieve/brands) returns Global Brand IDs metadata, such as brand name, brand status, the list of websites and logos. The API accepts 100 brands in the request at a time.
+For more information, see the technical specification for the brand associations APIs.
+
+Campaign management API now available for Sponsored Products, Sponsored Brands, and Amazon DSP
+August 1, 2025
+
+Amazon Ads has launched a single Campaign Management API to unify campaign management into one set of APIs. Built from a common Amazon Ads data model, this API standardizes field and enum values across ad products and features, improves error handling, and helps resource consistency across Campaign, Ad Group, Target, and Ad objects. This API includes feature parity with the existing APIs. Previously, there were nearly 200 separate variations of create, read, update, and delete endpoints that will be reduced to 16 with this launch.
+
+Today, we announce the completion of Sponsored Products, Sponsored Brands, and Amazon DSP for worldwide general availability. All of our ad products will be available through the Amazon Ads Campaign Management API, including Sponsored Display and Sponsored TV later in 2025.
+
+To get started, please see the campaign management overview and the technical specification.
+
+Supporting Global Stores on Global Campaign API-based advertisers
+July 29, 2025
+
+With the launch of Sponsored Product Ads on Amazon Global store, API advertisers can now drive more discoverability and improve sales internationally. In this launch phase, we enabled this capability for advertisers in US, UK, and Germany. Log into your seller account to learn more about Global Store.
+
+Product Localization /products/localize Sponsored Products Ads now extends its product localization capabilities to include GlobalStore products, allowing products to be mapped from a source marketplace to one or more target marketplaces. This enhancement enables advertisers to expand their reach across multiple marketplaces through both local and GlobalStore products. To support GlobalStore products, the API response includes additional fields:
+matchType: Indicates whether the product is LOCAL (sold locally in the marketplace) or GLOBAL_STORE (sold through the GlobalStore Program).
+catalogSourceCountryCode: For GlobalStore products, this field in the Product Metadata shows the country code of the source marketplace where the seller originally listed the product (possible values: US, UK, DE, JP, AE).
+Campaign Creation /global/productAds SP API or product ads now support the global store specific features for the Global campaign creation. Global Sponsored product ad creation API accepts the global store specific attribute globalStoreSetting where advertisers can provide the source catalog country of the offer being used for ads creation. Eligibility check of the products for campaign creation would be done using the catalogSourceCountryCode information provided using the globalStoreSetting under CountryAdSubjectSettings.
+Global Bid Recommendation /sp/targets/bid/recommendations The Global Bid recommendations API now support the features of the bid recommendation for the Global Store listings. The Global Bid recommendation API for new Ad group supports a new attribute called products that takes the ASIN details along with its source country code. Bidding system uses the globalStoreSetting attribute and the catalogSourceCountryCode information to check the eligibility of the ASINs that are required for the bid recommendation.
+Global Keyword Recommendation /sp/global/targets/keywords/recommendations The Global Keywords recommendation API now support the features of the keyword recommendation for the Global Store listings. The Global Keywords recommendation API for ASINs supports a new attribute called products that takes the ASIN details along with its source country code. Global Keywords recommendation system uses the globalStoreSetting attribute and the catalogSourceCountryCode information to get the bid suggestions for the keywords.
+DSP frequency groups are now available through the Amazon Ads API
+July 28, 2025
+
+In September 2023, we launched frequency groups for self-service entities in the Amazon advertising console, enabling advertisers to set a frequency cap across multiple orders. With this launch, we are expanding frequency groups to the Amazon DSP Public API, so advertisers can easily create and update frequency groups via the Amazon Ads API.
+
+Brands need broader frequency capping controls to limit the number of times a unique user is exposed to their brands across multiple orders in Amazon DSP, as users could be overexposed to ads when different orders target similar or overlapping audiences. With Hybrid Frequency Caps, advertisers can better manage frequency across their brand portfolio while optimizing campaign performance, such as setting streaming TV frequency caps across specific brands by selecting only streaming TV orders within their frequency groups, helping prevent ad overexposure and maximize budget efficiency, with advertisers seeing an average 6% lift in unique user reach when using Frequency groups to manage frequency across multiple orders in Amazon DSP.
+
+For full technical information, see the API specifications for frequency groups and the frequency group associations.
+
+Automatically share unspent campaign budget with budget exhausted campaigns in a portfolio - updated
+July 19, 2025
+
+We are introducing a smarter way to manage your campaign budgets within portfolios. Now, when some campaigns do not use their full daily budget, that unspent campaign budget will not go to waste. Instead, it can automatically flow to other campaigns in your portfolio that consistently reach their daily spending limits.
+
+This intelligent budget sharing system allows high-performing campaigns to spend up to twice their daily budget by tapping into unspent campaign budget from previous days in the month. This all happens while staying within your total monthly portfolio budget.
+
+This enhancement helps you capitalize on high-traffic days and maintain momentum when certain campaigns are performing well. Your successful campaigns can keep running longer, generating more clicks, impressions, and sales opportunities that might otherwise have been missed.
+
+Implementing this feature is straightforward. Simply access your budgetControls settings and set the campaignUnspentBudgetSharing feature to ENABLED or DISABLED, depending on your preference. Whether you are a vendor, registered seller, managed-service customer, self-service customer, or author, this feature is available to help optimize your advertising performance.
+
+For step-by-step guidance on setting up and managing this feature, please refer to the User Guide.
+
+The launch is available in the following geographical areas.
+
+• North America: United States, Canada, Mexico • South America: Brazil • Europe: Germany, Spain, France, Italy, United Kingdom, Belgium, Switzerland, Poland, Turkey, Austria, Netherlands, Sweden, Finland, Norway, Ireland, Denmark, Luxembourg • Middle East: Saudi Arabia, United Arab Emirates, Israel, Egypt, Morocco, Bahrain, Kuwait • Asia Pacific: Australia, India, Japan, New Zealand, China, Singapore
+
+Account registration API now available in closed beta
+July 15, 2025
+
+The Advertiser Account is the Amazon Ads enhanced workflow for onboarding advertisers and managing their full advertising activity across all ad products (ADSP and Sponsored Ads) and countries. With this launch, customers with an Amazon DSP Seat can use Ads Console to onboard advertisers with a new streamlined account and billing setup. In this account, customers can operate across both ADSP and Sponsored Ads globally across the full advertising lifecycle from campaign management and reporting, to user management and billing. API customers have the same experience on Amazon Ads API, enabling them to onboard advertisers at scale without relying on Ads Console to do so. If you have an ADSP seat and would like to use this feature, please speak with your Amazon ad-tech AE.
+
+Previously, registration and account management functionality for Amazon Ads advertiser accounts was only available through the Ads Console. With this launch, Amazon Ads API customers can execute all account management related actions (create, view, update advertiser accounts etc.) for all Amazon ad products and countries via API without the need to visit Ads Console to do so. Now, customers can register Advertiser Accounts at scale via public API, and they can use the resulting account identifiers to execute campaign management, reporting, billing and user management operations across all countries and ad products (ADSP, SA). Below is the list of new APIs launched:
+
+POST /adsApi/v1/create/advertiserAccounts: Register one or multiple advertiser accounts by providing business details or importing them from a selling account token
+POST /adsApi/v1/query/advertiserAccounts: Fetch account details/attributes (such as business/billing details, selling accounts, alternate identifiers for public APIs etc.) for a given advertiser account, a group of advertiser accounts, or all advertiser accounts that a given user has access to
+POST /adsApi/v1/update/advertiserAccounts: Programmatically update account details/attributes for advertiser account(s)
+POST /adsApi/v1/query/sellingAccounts: Fetch all Amazon retail selling account (for example, Seller, Vendor, Author, KDP etc.) that a given user has access to, so that the resulting encrypted selling account token can be used to register an associated advertiser account.
+Alexa+ tests product discovery through conversational AI
+July 15, 2025
+
+Sponsored products campaigns will now be automatically integrated into shopping conversations when customers chat with Alexa+ about products. Customers can discover relevant products when asking Alexa for product recommendations, receiving a mix of organic and sponsored options. Advertisers with active Sponsored Products campaigns may be eligible to appear on Alexa+ as part of Amazon expanded advertising surfaces, helping you connect with customers wherever they shop on Amazon with no additional requirements. Performance metrics will be consolidated within existing reporting dashboards. At this time, Sponsored Products on Alexa+ is only available on the Echo Show. Following the exciting announcement about Alexa+, our next-generation conversational AI assistant, Alexa+ brings a more natural, context-aware conversation experience to users, and this opens up new opportunities for advertisers to engage with customers during their shopping journey.
+
+Updated Deprecation Date: Amazon DSP Legacy APIs (Campaign, Creative and Reporting) will shut off on September 30, 2025
+July 13, 2025
+
+As part of our continued enhancements to the Amazon DSP APIs, we are deprecating several legacy endpoints across Campaign Management, Reporting, and Creatives Management. The deprecation date for the Campaign Management API has been extended to September 30, 2025 (previously June 30, 2025), while the legacy ADSP Reporting API and the legacy Creatives Management API will also be deprecated on September 30, 2025. You can find the full list of deprecated and replacement endpoints on our Deprecations page. For upgrade guidance, refer to the various migration guides for Campaign, Creative and Reporting. If you have questions or need support, submit a ticket via the Amazon Ads API Support page with the subject “ADSP APIs Migration” or contact your account team or use the standard support channels. We recommend migrating early to ensure uninterrupted access and to take advantage of the latest API capabilities.
+
+Set ad frequency in 10-minute increments for more granular campaign management
+July 11, 2025
+
+We have launched minute grain frequency caps in Amazon DSP, allowing advertisers to set frequency caps in 10-minute increments (for example, 10, 20, 30, 40, and 50 minutes). This enhancement provides significantly finer control than the previous hourly or daily options, addressing a critical request from customers seeking to prevent ad repetition with greater precision.
+
+Minute grain frequency caps help prevent ad fatigue by controlling how frequently users see ads within shorter time intervals. This granular control is especially valuable for high-impact streaming TV campaigns and time-sensitive promotions where multiple impressions in quick succession can diminish effectiveness. By distributing impressions more optimally, advertisers can improve budget efficiency and brand engagement.
+
+Minute grain frequency caps are accessible through existing campaign management API endpoints. The feature maintains backward compatibility with all existing frequency cap implementations. For full technical details, read our API documentation.
+
+Sponsored Brands: Now available for single-book authors
+July 9, 2025
+
+Sponsored Brands is now available to all authors, including those with a single title. Create engaging custom image and video ads to drive awareness and boost your book visibility. To learn more about Sponsored Brands, see the Sponsored Brands overview.
+
+DSP Bid Adjustments API supports supply dimensions
+July 7, 2025
+
+Customers using the DSP Bid Adjustments APIs can now target specific supply sources, source type, and deals to upscale or downscale their bids. This enables customers to more finely tune the parameters of their bidding to their specific use case and increase their campaign performance.
+
+For more details, see the three new dimensions -- dealId, supplySource, supplySourceType -- in the bid adjustment dimensions guide.
+
+Automatically share unspent campaign budget with budget exhausted campaigns in a portfolio
+July 7, 2025
+
+Your portfolios can now automatically share their unspent campaign budget, accumulated from previous days in the month, with other campaigns in the same portfolio that have already spent their full daily budget, to enable them to spend more (up to 100% over their daily budget). This system allows you to benefit from high traffic days by keeping campaigns in budget longer.
+
+This launch automatically uses unspent campaign budget on campaigns that consistently run out of their own daily budget, enabling them to keep delivering ads and earning you more clicks, impressions, and sales, all without increasing your overall total monthly campaign budget. Users can now set the unspent campaign budget sharing option to on or off by setting featureState for campaignUnspentBudgetSharing as DISABLED/ENABLED inside budgetControls. Reference the user guide for more details.
+
+This feature is available to customers who are vendors, registered sellers, customers from managed-service, self-service, and authors.
+
+The launch is available in the following geographical areas:
+
+North America: United States, Canada, Mexico
+South America: Brazil
+Europe: Germany, Spain, France, Italy, United Kingdom, Belgium, Switzerland, Poland, Turkey, Austria, Netherlands, Sweden, Finland, Norway, Ireland, Denmark, Luxembourg
+Middle East: Saudi Arabia, United Arab Emirates, Israel, Egypt, Morocco, Bahrain, Kuwait
+Asia Pacific: Australia, India, Japan, New Zealand, China, Singapore
+Manage Brand Stores programmatically through the Amazon Ads API
+June 28, 2025
+
+Brand Stores has launched a new set of APIs that offer brands and advertisers programmatic access to manage their Amazon Brand Stores more efficiently. These APIs, now available through the Amazon Ads API, provide two key functions: 1) retrieve Brand Store page content and update the product content and selection across Brand Stores pages and 2) submit store updates for moderation.
+
+Advertisers can use these APIs to programmatically manage their Brand Stores pages. These functionalities can be combined with Brand Home APIs to automate and maintain product information freshness, creating a more efficient and streamlined management process for Brand Stores on Amazon.
+
+The Brand Stores management APIs are generally available to all Brand Store owners through the Amazon Ads API. To learn more, see the Brand Stores management overview and the technical specifications.
+
+Sponsored ads and Stores launch in Ireland
+June 27, 2025
+
+Sponsored ads have now launched in Ireland. Eligible sellers and vendors can now leverage Sponsored Products, Sponsored Brands and Stores on Amazon.ie and via the Amazon Ads API.
+
+New API to query account links available in closed beta
+June 26, 2025
+
+We have introduced a new POST /adsApi/v1/query/accountLinks endpoint that returns information about linked accounts in a paginated manner. Manager Account users can retrieve details about all accounts (Sponsored Ads accounts, ADSP advertiser accounts, and Manager Accounts) linked to their Manager Accounts. Additionally, advertiser account users can find all Manager Accounts linked to their advertising account. This helps users better understand the structure and access relationships across their advertising setup.
+
+This enhancement helps customers with complex account structures better understand their organizational account structure. The new paginated API fixes two key limitations: it removes the previous 50-linked-account limit for Manager Accounts in the GET /managerAccounts API, and it gives advertiser account users the ability to query linked Manager Accounts via API, a feature not previously available. Customers can now retrieve complete information on their account linking structure, helping them make better decisions about their organizational advertising spend and performance.
+
+To learn more, see the linked accounts API user guide and the technical specification.
+
+Customize bids for top of search and rest of search placements with updated placement bid adjustment controls
+June 19, 2025
+
+Advertisers can now apply bid adjustments up to 900% for the top search placements in their Sponsored Brands campaigns. Bid adjustments for rest of search placements, which were previously limited to up to 99% can now also be adjusted up to 900%. These updates are available for all ad formats, including video, and all targeting types (keyword and product), and can be used with existing bidding controls (manual bidding, cost controls, audience-level bid adjustments).
+
+The updated placement-level bid adjustment controls will allow advertisers to optimize campaign performance and execute different strategies across search placements. Advertisers will be able view placement-level metrics in the advertising console or can leverage existing Sponsored Brands Placement reports to understand how their campaigns are performing in specific placements, then use the top of search and rest of search placement bid adjustment controls to fine-tune bids to meet their campaign goals.
+
+Top of search and rest of search placement bid adjustment controls will be available for Sponsored Brands campaigns via the Amazon Ads API. For full technical details, see the updated Sponsored Brands API specification.
+
+Exclusively reach business shoppers with Amazon Business exclusive campaigns for Sponsored Brands
+June 12, 2025
+
+Advertisers using the Amazon Ads API can now create Sponsored Brands campaigns that exclusively reach business shoppers on Amazon Business, available in Amazon Business Marketplaces - US, CA, MX, DE, IT, FR, ES, UK, IN, JP. To create Amazon Business exclusive campaigns, advertisers will need to set the site Restrictions field in the campaign setting to AMAZON_BUSINESS. Advertisers can drive brand awareness across business shoppers and customize their B2B advertising strategy by setting a B2B budget, using B2B keywords, B2B creatives, and B2B-specific store pages, and adjusting bids to increase sales on Amazon Business. All campaign settings apply exclusively to Amazon Business, and ads will only appear on the Amazon Business store. The Sponsored Brands reports will reflect performance solely on Amazon Business, enabling advertisers to evaluate results and optimize their B2B campaign strategies. See our reference documentation for more information.
+
+Amazon Ads Forecasting API (beta) is now available
+June 5, 2025
+
+Amazon Ads has launched a new forecasting API for Amazon DSP (ADSP) campaigns. Built on the Amazon Ads data model, this API provides access to all real-time forecasts currently available on ADSP Campaign Manager.
+
+In this launch, the API offers campaign-level performance, delivery, and spend forecasts currently available on forecasting widgets. This includes campaign flight level forecasts for spend, reach, CPC, CPA, and ROAS. The API provides forecasts both for new orders and existing orders that are spending budget.
+
+Throughout 2025, we will expand the capabilities of the API to include forecasts for other features on the campaign manager such as line-level forecasts, additional spend potential, and creative forecasts. These metrics will also be available using datasets through Amazon Marketing Cloud for easier integrations. For more information, please see the technical specification and the Forecast API overview.
+
+Long term sales metrics are now available in campaign reporting
+June 5, 2025
+
+Long term sales metrics are available in campaign reporting. Long term sales (LTS) and long term sales ROAS (LTS ROAS) are ad-attributed measures that estimate the incremental sales value your brand can expect to generate over the next 12 months, based on how effectively your advertising campaigns are able to move new-to-brand shoppers further down your purchase funnel. This is based on the historical 12-month return of a given customer engagement with your brand. Customer engagements include detail page views, branded searches, add-to-carts, and purchases. Shoppers are new to brand if they have not completed a conversion with a brand in the last 12 months.
+
+For more information, see our updated campaign reports overview.
+
+Posts are deprecated as of June 3, 2025
+June 2, 2025
+
+The Posts API will be discontinued as of June 3, 2025. New users will no longer be able to make requests to the Posts API; existing Posts users should expect new Posts creation to be discontinued after June 16, 2025, and a full shut-off date of July 31, 2025. We encourage customers to explore our suite of sponsored advertising solutions as we continue to build and experiment with new creative formats.
+
+Greater transparency for Twitch campaigns with Content Type, Rating, and Title reporting
+May 30, 2025
+
+We have expanded our content transparency reports on Streaming TV to report ad-impressions delivered on Twitch. Advertisers can now see which Content Type, Rating and Title their Twitch ad impressions were delivered on to now assess if their ads were contextually relevant and use the reporting data to plan their future media investments and adjust their campaign settings.
+
+Content Type, Rating and Title traffic reporting are now available in ADSP downloadable reports under the Audio and Video dimension. For full technical details, please see the audio and video reports guide.
+
+Amazon Ads Campaign Management API (beta) is now available
+May 29, 2025
+
+Amazon Ads has launched a single Campaign Management API for all ad products, starting with Sponsored Products, Sponsored Brands, and Amazon DSP. Built from a common Amazon Ads data model, this API will ensure field naming, enumerated values, and resource consistency across Campaign, Ad Group, Target, and Ad objects.
+
+Today, there are over 190 separate variations of create, read, update, and delete endpoints, which will be reduced to 16 with this launch. With the Amazon Ads Campaign Management API developers can expect to see complete feature parity, improved error handling, consistent request and response patterns, and higher pagination thresholds than previous versions.
+
+Throughout 2025, all of our ad products will become available through the Campaign Management API, including Sponsored Display and Sponsored TV. We will also be launching consistent campaign datasets through Amazon Marketing Stream, built from the same underlying Amazon Ads domain model, for further consistency across all products.
+
+Although we do not anticipate updates to the contract, the contract may be subject to change during the beta period.
+
+For more information, please see the technical specification and the campaign management overview.
+
+Amazon Marketing Cloud launches Audience creation using Amazon Retail Purchases dataset
+May 29, 2025
+
+The Amazon Retail Purchases (ARP) dataset gives AMC customers 5 years (60 months) of historical Amazon store purchase signals across the advertiser catalog of products, regardless of media investment against those products. AMC customers in US/CA/JP/AU regions can now use this AMC dataset for audience creation purposes. To get started, see the Instructional Query (AMC UI access required).
+
+New "Betas" section in the advanced tools center
+May 29, 2025
+
+We have added a new content section to the advanced tools center: Betas. The new section will host information about the forthcoming Amazon Ads API v1 as well as specifications and guides for new resource APIs in both open and closed beta stages. To learn more, visit Betas.
+
+Unlock greater flexibility in Partner Opportunities API with advertiser filtering
+May 28, 2025
+
+We have extended the Partner Opportunities API so you can filter for specific advertisers you manage. Partner Opportunities continues to provide you scaled access to insights and recommendations for your advertising clients like unlaunched ASINs and click credit promotions. With this launch, you can provide an advertiser ID or profile ID when listing opportunities (GET /partnerOpportunities) and quickly see which opportunities have results for the specified advertisers.
+
+Whether you want to determine which cohorts of your advertising clients have opportunities available or pinpoint results for a single target advertiser, can structure your call pattern to find the right balance for you. Now, you can use the optional advertiserId or profileId filters, see which partner opportunities align with the provided advertisers, then access the detailed recommendation and insights as you always have. For more information, see our API documentation.
+
+Partner Opportunities API is available worldwide to all registered partners. See the overview guide for more information.
+
+Negative targets can now be saved on campaigns and ad group regardless of targeting type in US marketplace
+May 22, 2025
+
+We have expanded negative targeting so every campaign and ad group has the same options, regardless of targeting type. Now you can negatively target a keyword, ASIN, or brand during campaign creation or on any existing campaign or ad group. Negatively targeting a keyword prevents your ad from showing on search results pages for that keyword, while ASIN and brand negative targeting prevents your ad from showing on the product detail page for that ASIN or ASINs with that brand.
+
+Advertisers might have certain business rules they want to implement but execution was inconsistent across different targeting types. Now, advertisers will have consistent and clear control of negative targets, helping reduce confusion and operational overhead.
+
+Bulksheets: Negative product targeting uses product targeting expressions to also negatively target brands. Learn more: Get started with bulksheets for Sponsored Products.
+
+API: Now you can succeed saving negative keywords, products, and brands on campaigns and ad groups regardless of targeting type. Learn more: Negative keyword targeting and Sponsored Products negative product and brand targeting overview.
+
+Request Amazon Marketing Mix Modeling (MMM) feed via API
+May 22, 2025
+
+We have launched a new API solution that enables programmatic access to Amazon Marketing Mix Modeling (MMM) data feed. This new API is available in 13 countries: US, CA, IT, ES, FR, DE, UK, MX, BR, JP, AU, UAE, and KSA. This launch allows advertisers and their partners to seamlessly access the advertising and retail signals needed to derive accurate insights from their MMM solutions.
+
+This API access streamlines data delivery for advertisers and their MMM partners, reducing manual data exchange efforts, and enabling more frequent, reliable and accurate MMM analysis.
+
+Three API operations are available for MMM management:
+
+Request the list of brands you can pull data for: POST /mmm/v1/brandGroups/list
+Request the MMM feed for a given brand: POST /mmm/v1/reports
+Check the status of a MMM feed request: GET /mmm/v1/reports/{reportId}
+For full technical details, see the MMM API user guide and the technical specifications.
+
+Amazon DSP SSP seat IDs now available in the Amazon Ads API
+May 18, 2025
+
+We have launched the ability to create and assign SSP Seat IDs to individual Amazon DSP advertisers worldwide. With this release, Amazon DSP users can request seats to be created for any advertiser they manage. The SSP Seat IDs are instantly usable to ingest advertiser-specific deals (wherever Amazon DSP automatically ingests them), and are applied within 24 hours to existing line items for the purpose of spend tracking.
+
+SSP Seat IDs by advertisers make it easier for Amazon DSP users to manage scenarios where deals created for specific advertisers must be kept separate from other advertisers (for example, to protect advertiser negotiated CPM rates). They in turn enable spend tracking IDs at the advertiser level, allowing SSPs more granular spend reporting and buyer validation.
+
+For more information, see the technical specifications for the seats API and the seat IDs API.
+
+Amazon Marketing Cloud launches Prime Video Channel Insights
+May 14, 2025
+
+The new Prime Video Insights (PVCI) dataset in AMC allows channel partners to join their own datasets with the Prime Video Channel viewership data associated with their channels. This new dataset can be used for measurement and activation use cases. To get started, see the dataset documentation and the IQ First-streamed titles for Prime Video Channel subscription starts (AMC UI access required).
+
+Exclusively reach business shoppers with Amazon Business exclusive campaigns for Sponsored Products
+April 24, 2025
+
+Advertisers using the Amazon Ads API can now create Sponsored Products campaigns that exclusively reach business shoppers on Amazon Business, available in Amazon Business Marketplaces - US, CA, MX, DE, IT, FR, ES, UK, IN, JP. To create Amazon Business exclusive campaigns, advertisers will need to set the siteRestrictions field in the campaign setting to AMAZON_BUSINESS. Advertisers can customize their business-to-business (B2B) advertising strategy by setting a B2B budget, promoting ASINs they want to showcase to B2B shoppers, using B2B keywords, and adjusting bids as well as bidding strategies to increase sales on Amazon Business. All campaign settings are uniquely applied to Amazon Business and these campaigns will only be shown on the Amazon Business store. All existing Sponsored Products reports will reflect performance only on Amazon Business. Advertisers can leverage these reports to review campaign performance on Amazon Business. See our reference documentation for more information.
+
+Amazon Marketing Stream expands ADSP Performance dataset with new conversion and video metrics
+April 20, 2025
+
+Amazon Marketing Stream has expanded the ADSP Performance dataset to provide advertisers and developers with richer, and more actionable insights:
+
+ADSP Conversions dataset now includes Brand Halo metrics, enabling measurement of downstream purchases attributed to brand exposure, even if the purchase occurred in a different product line.
+ADSP Clickstream dataset has been enhanced to include Off-Amazon conversions and Video metrics, offering a more comprehensive view of customer engagement beyond Amazon owned and operated properties.
+These updates help advertisers better understand the full impact of their campaigns and optimize spend based on more complete performance signals. To learn more, visit the ADSP Performance dataset section of the Amazon Marketing Stream Developer Guide.
+
+Amazon Ads Well-Architected Framework Now Available
+April 18, 2025
+
+Amazon Ads has introduced the Well-Architected Framework, enabling developers to build secure, high-performing, and scalable advertising solutions. This framework addresses common integration challenges and accelerates the development of reliable advertising solutions.
+
+The framework includes three key components:
+
+Design Principles: Core architectural guidelines for robust solutions
+Best Practices: Proven API integration patterns for optimal performance
+Implementation Guidance: Step-by-step technical solutions for seamless integration
+Getting Started: To get started with the Well-Architected Framework, visit our technical documentation.
+
+Note: The framework is available for all Amazon Ads API integrations and is recommended for both new and existing implementations.
+
+Optimize headlines with dynamic creative optimization on Sponsored Brands
+April 17, 2025
+
+Sponsored Brands has introduced new headline capabilities allowing advertisers to use dynamic creative optimization (DCO) to improve ad personalization. Advertisers can consent to leveraging DCO during a campaign to enhance or generate new headlines to help better match customer intent. Based on internal testing, headline text optimization can drive up to 1.6% CTR lift vs. non-optimized campaigns.
+
+Advertisers can access headline optimization via the Amazon Ads API by specifying the optional property creativePropertiesToOptimize with a value of [ "HEADLINE" ] on Product Collection or Store Spotlight creatives in Sponsored Brands.
+
+The feature is enabled for four operations in the Sponsored Brands API. For more information, see the technical specifications for the following:
+
+POST /sb/v4/ads/productCollectionExtended
+POST /sb/v4/ads/storeSpotlight
+POST /sb/ads/creatives/productCollectionExtended
+POST /sb/ads/creatives/storeSpotlight
+Introducing Sponsored Brands V3 (legacy) migration API to migrate campaigns to V4
+April 17, 2025
+
+Sponsored Brands has launched a migration API to help advertisers transition from V3 (legacy) campaigns to V4 (ad group-based)campaigns, which address the complexity of campaign management. The API provides strategic migration pathways for campaigns with no impressions over 180 days, mandating migration or archival by June 30, 2025, otherwise Amazon will archive these campaigns by July 31, 2025. The impression-generating campaigns are required to migrate by September 30, 2025, or face automatic migration by Amazon by December 31, 2025.
+
+The V4 campaigns enable advertisers to leverage advanced machine learning, the theme targeting feature automatically generates and categorizes keywords based on historical performance and brand interactions, offering two pre-configured targeting groups (keywords related to landing pages and brand) that simplify campaign optimization and improve campaign performance.
+
+The migration API is available in US, CA, MX, BR, JP, SG, AU, UK, DE, FR, IT, ES, NL, AE, IN, SA, SE, PL, TR, EG, SG, and ZA. For more information, see the updated Sponsored Brands API specification or refer to our developer guide for the migration API.
+
+Maximize impact with Amazon DSP bid adjustments
+April 14, 2025
+
+Amazon DSP Bid adjustments support both simple adjustments and complex bidding algorithms through single and multi-dimensional specifications. This means advertisers can now maintain nuanced and tailored bidding within a single line item, while still taking full advantage of Amazon DSP automated bid optimization.
+
+With this launch, we have also released bid adjustments reporting, now available through the reporting API. Availability in the ADSP Report Center will follow shortly. In the console, you can also bulk apply bid adjustments to up to 10 line items from the campaign table on Advertiser and Order page.
+
+You can also access bid adjustments through our API. For full technical details, see our [bid adjustments API], detailed developer guide, and new dspBidAdjustment report type available through the reporting API.
+
+Register once and manage ads worldwide with a global seat
+April 9, 2025
+
+With global seats, Amazon DSP users can now register once and buy ads in every country where Amazon DSP operates. Users can create country specific advertiser accounts, receive invoices from a single Amazon legal entity for their global spend, and can create consolidated reports for their spend regionally.
+
+Global Manager Accounts will be available in three regions: NA, EU, and FE. The Calling Profiles API returns only the Profile ID of the manager account for the regional endpoint you are calling. Choose the region you would like to make changes in and select the corresponding API endpoint:
+
+NA → https://advertising-api.amazon.com
+EU → https://advertising-api-eu.amazon.com
+FE → https://advertising-api-fe.amazon.com
+For more information, see Account management>Profiles.
+
+Sponsored Display updates all existing campaigns to optimize for Conversion opportunities
+April 4, 2025
+
+Sponsored Display is enhancing the machine learning algorithm to find improved conversion opportunities and help drive incremental sales for Reach and Page Visit campaigns, moving these campaigns to align with the optimization objective of Sponsored Display Conversion campaigns. With this change, advertisers who have active Reach and Page Visit campaigns are likely to observe increases in performance metrics associated with these campaigns. For more information, see Sponsored Display: Bid optimization.
+
+Amazon Marketing Cloud launches the Amazon Retail Purchases dataset
+April 2, 2025
+
+The new Amazon Retail Purchases (ARP) dataset in AMC gives AMC customers 5 years (60 months) of historical Amazon store purchase signals across the advertiser catalog of products, regardless of media investment against those products. This new dataset can only be used for measurement use cases. To get started, see the technical documentation and the Instructional Query.
+
+Deprecation announcement: Amazon Ad Server tables in Amazon Marketing Cloud
+March 31, 2025
+
+We will deprecate Amazon Ad Server tables in AMC on June 30, 2025. After these tables and fields are deprecated, any workflows using these tables/fields will fail. For more details, see the deprecation notice of Amazon Ad Server tables in AMC.
+
+Introducing Amazon-built “New-to-brand shoppers” audience for bid boosting through Sponsored Brands worldwide
+March 24, 2025
+
+Sponsored Brands is introducing a new Amazon-built audience segment - "New-to-brand shoppers" - that advertisers can leverage for bid boosting to acquire new customers. This audience includes shoppers who have not purchased from the brand in the last 12 months.
+
+Advertisers can utilize the NTB audience bid boosting on both new and existing Sponsored Brands campaigns. To assess the performance of their bid-boosted NTB audience, advertisers can access the Audience report through the reporting API.
+
+To retrieve Amazon-built audiences, you will use the Discovery API ListTargetableEntities with the following parameters: adProduct = SPONSORED_BRANDS, targetTypeFilter = [AUDIENCE], and pathsFilter = [["Audience Category", "Custom-built", "Product"]]. The response will have the audienceId for new-to-brand shoppers, which can then be used with Sponsored Brands campaign management API to create and adjust the bids for the audience. Note that Amazon-built audiences retrieved using these filters are only usable with AudienceSegmentType of BEHAVIOR_DYNAMIC when using the campaign management API. For more information, see our guide to shopper cohort bidding.
+
+Use Advertiser Data Upload (ADU) APIs to create first-party audience segments in Amazon Marketing Cloud
+March 20, 2025
+
+Advertiser Data Upload (ADU) APIs enable you to create first-party audience segments in AMC using advertiser audiences. For more information, see Advertiser audience using ADU.
+
+Amazon Marketing Cloud launches the Keyword clustering playbook
+March 20, 2025
+
+By blending SEO best practices with rich customer insights, this playbook helps advertisers identify high-impact keywords, optimize budget allocation, simplify management, and drive brand growth. To get started, see Keyword clustering playbook.
+
+Sponsored TV simplifies CPM updates for advertisers that do not sell in Amazon store
+March 18, 2025
+
+Sponsored TV has simplified cost per thousand impressions (CPM) updates for advertisers that do not sell in the Amazon store. Advertisers will now choose a maximum average CPM at the ad group level rather than for each targeting selection. For technical details, see the updated Sponsored TV API specification.
+
+Fire TV Inline Display Banner now available for Amazon DSP self-service advertisers in US
+March 15, 2025
+
+Amazon DSP self-service advertisers in US can now book Fire TV Inline Display Banner campaigns across eligible unguaranteed placements on Home, Live, and Games tabs. These banners expand to "Mini-Details" view when users scroll past, taking up half the screen. They support 10-30s video with sound and various click-through destinations helping increase reach, awareness, and consideration. For full technical details, please read our API documentation.
+
+A tutorial outlining how Advertiser Data Upload (ADU) APIs enable you to create first-party audience segments in Amazon Marketing Cloud is now available
+March 15, 2025
+
+By uploading hashed customer information through the ADU APIs, you can create rule-based audiences and activate them directly in Amazon DSP for highly targeted advertising campaigns. For more details, see Create advertiser audiences with Amazon ADU APIs.
+
+Also, see our updated Postman collection, to test AMC administration, reporting (workflow management), and AMC audiences endpoints.
+
+Preview: Introducing Amazon-built audiences for bid boosting in Sponsored Products
+March 12, 2025
+
+This capability is in preview only. We will update our release notes once this functionality is made available. Sponsored Products is introducing three new Amazon-built audience segments - "Purchased brand products", "Clicked or added brand product to cart," and "Affinity for similar products" - that advertisers can leverage for bid boosting to increase their engagement with these highly relevant cohorts of shoppers.
+
+Advertisers can utilize the audience bid boosting on both new and existing Sponsored Products campaigns. To assess the performance of their bid boosted audience, advertisers can access the Audience Report through the reporting API.
+
+To retrieve Amazon-built audiences, you will use the Discovery API ListTargetableEntities with the following parameters: adProduct = SPONSORED_PRODUCTS, targetTypeFilter = [AUDIENCE], and pathsFilter = [["Audience Category", "Custom-built", "Product"]]. The response will include an audienceId and audienceResolved (the name) for each of the three new audiences, which can then be used with the Sponsored Products campaign management API to create and adjust the bids for the audience. Note that Amazon-built audiences retrieved using these filters are only usable with audienceSegmentType of BEHAVIOR_DYNAMIC when using the campaign management API. Also note that audienceSegmentType has been made optional in campaign creation, and the API will add the correct audience segment type based on the audience ID.
+
+Preview: Introducing Amazon-built "New-To-Brand Shoppers" audience for bid boosting through Sponsored Brands
+February 28, 2025
+
+ Note
+This capability is no longer in preview.
+This capability is in preview only. We will update our release notes and API documentation once this functionality is made available. Sponsored Brands is introducing a new Amazon-built audience segment - "New-to-brand shoppers" - that advertisers can leverage for bid boosting to acquire new customers. This audience includes shoppers who have not purchased from the brand in the last 12 months.
+
+With this new feature, advertisers will have the ability to apply bid adjustments on the New-To-Brand Shoppers audience to increase reach in this valuable segment and drive orders from new customers. Advertisers can utilize the NTB audience bid boosting on both new and existing Sponsored Brands campaigns. To assess the performance of their bid boosted NTB audience, advertisers can access the Audience Report through the SB API Reporting.
+
+To retrieve Amazon-built audiences, you will use the Discovery API ListTargetableEntities with the following parameters: adProduct = SPONSORED_PRODUCTS, targetTypeFilter = [AUDIENCE], and pathsFilter = [["Audience Category", "Custom-built", "Product"]]. The response will have the audienceId for new-to-brand-shoppers which can then be used with Sponsored Brands Campaign Management API to create and adjust the bids for the audience. Note that Amazon-built audiences retrieved using these filters are only usable with AudienceSegmentType of BEHAVIOR_DYNAMIC when using the campaign management API. For full technical details, see our updated Sponsored Brands documentation.
+
+New implementation guide for integrating Amazon Marketing Stream data with Snowflake
+February 21, 2025
+
+We have published a step-by-step guide and IaC templates to help you stream Amazon Marketing Stream data to Snowflake. You can implement the solution across AWS, Azure, or Google Cloud with our ready-to-use code templates. To learn more, see the implementation guide.
+
+Ads data manager now supports Amazon Marketing Cloud and conversion events
+February 19, 2025
+
+Ads data manager expands support for advertiser first-party data uploads through Conversions API (C-API) and adds Amazon Marketing Cloud (AMC) as a destination for all supported datasets. The enhancement unifies data management across C-API and Advertiser Audience APIs, and includes partner-facilitated uploads, with all datasets accessible through the Ads data manager console and the Ads data manager APIs.
+
+Advertisers can leverage audience data via Amazon DSP, and C-API events will be available for conversion attribution through the Events Manager. All audience and events datasets managed through Ads data manager will be available for access in AMC when creating a destination linked to your AMC instance within Ads data manager.
+
+Audience bid adjustment now available in Amazon Marketing Stream datasets and exports APIs
+February 15, 2025
+
+Following the launch of audience bid adjustments for Sponsored Products and Sponsored Brands, integrators can now view audience bid adjustment details for campaigns in both exports APIs and Amazon Marketing Stream.
+
+For exports, the new fields are available using POST/campaigns/export as part of the optimizations.shopperSegmentBidAdjustment object. See Common models for more information.
+
+For Stream, the new fields are available in the campaigns dataset as part of the bidSetting.shopperCohortBidAdjustment object.
+
+AMC announces automated approvals for AMC instance requests
+February 10, 2025
+
+AMC is excited to announce the launch of automated approvals for instance creation and advertiser inclusion requests in their instances. This launch will allow any eligible advertiser or partner to self-provision AMC through the instance management APIs, reducing onboarding time from a 2-day SLA to instant approval.
+
+Read automated instance approval and advertiser inclusion process to learn more.
+
+Amazon Marketing Cloud - instance-level API migration to Amazon Ads is now complete
+January 24, 2025
+
+The migration from the AMC instance-level APIs to the new AMC APIs on the Amazon Ads API is now complete and the resources to help you migrate have been consolidated and moved to the Deprecated resources section of the Advanced tools center portal.
+
+Amazon Ad Server datasources documentation deprecated
+January 24, 2025
+
+Amazon Ad Server was sunset in Q4 2024, and all resources describing the relevant datasources have been moved to the Deprecated resources section of the Advanced tools center portal.
+
+Audience bid boosting reports now supported for Sponsored Products and Sponsored Brands
+January 24, 2025
+
+Advertisers who use audience bid boosting can now access audience bid boosting reports via the Amazon Ads API. Using bid boosting, advertisers can create custom audiences, such as shoppers who have not previously purchased their product and shoppers who were exposed to their streaming TV campaigns. Advertisers can adjust their bids for these audiences to help drive greater product discovery and sales. For more information on audience bid boosting reports, see the Audience report type documentation.
+
+Deprecation of Amazon DSP legacy inventoryTypes
+January 23, 2025
+
+The Amazon DSP campaign management APIs are deprecating several enum values for the inventoryType field on POST/dsp/v1/adGroups. After June 30, 2025, users will no longer be able to create ad groups where inventoryType equals STANDARD_DISPLAY, AAP_MOBILE_APP, AMAZON_MOBILE_DISPLAY, or VIDEO. Instead users should use the newer options below:
+
+Endpoint	Legacy inventoryType	New inventoryType	Legacy inventoryType deprecation date
+POST/dsp/v1/adGroups	STANDARD_DISPLAY	DISPLAY	6/30/2025
+POST/dsp/v1/adGroups	AMAZON_MOBILE_DISPLAY	DISPLAY	6/30/2025
+POST/dsp/v1/adGroups	AAP_MOBILE_APP	DISPLAY	6/30/2025
+POST/dsp/v1/adGroups	VIDEO	ONLINE_VIDEO or STREAMING_TV	6/30/2025
+Please contact our support team with any questions or feedback.
+
+Understand deduplicated reach and frequency across multiple orders in frequency groups
+January 16, 2025
+
+The launch of frequency group-level reach allows advertisers the ability to set a single frequency cap to control ad exposure across multiple orders in a campaign. Complementing this feature, new reporting provides combined deduplicated reach and frequency metrics at the frequency group-level.
+
+Cross-order reach and frequency reporting provides advertisers with a unified, deduplicated view of frequency metrics across all orders within a frequency group. This consolidated reporting eliminates double-counting of audiences exposed to ads from different orders, enabling advertisers to analyze the impact of the frequency group.
+
+You can now access the metric through the reach and frequency report through V3 reporting. For full technical details, please see our v3 reporting documentation.
+
+Measure ADSP reach and frequency at the advertiser level
+January 16, 2025
+
+Amazon DSP advertisers now gain a unified view of reach and frequency, deduplicating audiences exposed to ads across different publishers, channels, and devices.
+
+Advertiser-level reach and frequency metrics provide unified insights that help advertisers understand their total unique reach across all of their Amazon Ads investments. These metrics eliminate overlapping audience counts across multiple devices and ad formats, revealing the true size of the delivered audience.
+
+You can now access the metric through the reach and frequency report through V3 reporting. For full technical details, please see our v3 reporting documentation.
+
+Updated Deprecation Date: Amazon DSP legacy campaign management APIs will shut off on June 30, 2025
+January 14, 2025
+
+With the launch of our new Amazon DSP campaign management APIs, we are deprecating the previous version of the campaign management APIs. Previously we announced a deprecation date of March 31, 2025. We are extending this deprecation date to June 30, 2025. The full list of APIs being deprecated can be found on our deprecations page.
+
+Amazon DSP campaign and creative APIs are now generally available
+January 14, 2025
+
+In October, we announced the launch of Amazon DSP campaign and creative management APIs in beta. These endpoints are now generally available worldwide for Amazon DSP users and their technology partners.
+
+The campaign and creative management resources enable users to create, read and update their Amazon DSP campaigns and creatives via a programmatic interface. Technology providers and advertisers can use these resources to develop new trader experiences within their own applications and manage Amazon DSP campaigns within their existing workflows. To enable end-to-end campaign management, these new resources can be used together with the audience and deal endpoints.
+
+With this release, we are adding a targetId field to /dsp/v1/targets:
+
+When creating a new target via POST/dsp/v1/targets, every successfully created target will have a targetId.
+When listing targets via POST/dsp/v1/targets/list, all listed targets will contain a targetId.
+A new endpoint, POST/dsp/v1/targets/delete, enables users to remove targets from ad groups using targetId. This endpoint can be used instead of POST/dsp/v1/targets/deleteByObject for a more efficient delete operation.
+For more information, refer to these links:
+
+Campaign Management	Creative Management	Creative Associations
+Developer guide	Developer guide	Developer guide
+Migration guide	Migration guide	Migration guide
+Reference documentation	Reference documentation	Reference documentation
+v3 reporting now supports Amazon DSP managed service advertisers
+January 8, 2025
+
+The version 3 reporting API has a new workflow that enables pulling reports at the individual advertiser level. This new workflow supports these use cases:
+
+Advertisers who utilize Amazon managed service and wish to pull performance reporting for their managed service campaigns.
+Agencies who want to give reporting access for a subset of advertisers they manage instead of all their advertisers.
+For more information on this workflow, please review our guide to pulling Amazon DSP reports.
+
+New API that enables the retrieval of advertising billing promotion data and its corresponding consumption metrics across invoices
+January 1, 2025
+
+We have introduced a new API to facilitate the retrieval of advertising billing promotion data and its corresponding consumption metrics across invoices. This new functionality enhances our existing billing API, enabling customers to programmatically retrieve their promotions data and gain visibility on which invoices have consumed it.
+
+This enhancement is crucial for customers to enhance visibility and transparency into promotions. The new API eliminates the need for customers to manually review each individual invoice to determine if a specific promotion has been consumed. Instead, customers can now access this information programmatically, empowering them to make more informed decisions regarding their advertising expenditures and performance.
+
+For more information, see our API documentation.
+
+Amazon Marketing Cloud launches a playbook to derive enhanced scoring for overlapping AMC audiences
+December 16, 2024
+
+The playbook Enhanced scoring for overlapping AMC audiences will guide you through the process of integrating the powerful capabilities of Amazon Marketing Cloud (AMC) with the persona builder API to deliver comprehensive audience insights. It guides you through the process of identifying AMC audiences and leveraging the persona builder API to identify additional audience attributes across top retail categories, top overlapping audiences, estimated size, top demographics, and Prime Video insights. All the results are accompanied with an affinity score that refers to the likelihood and a percentage score that refers to the percentage of the customers on the above categories. The derived insights will help you build a holistic approach of audience performance.
+
+To get started, see Enhanced scoring for overlapping AMC audiences.
+
+AMC on AWS Clean Rooms can now create multi-party collaboration instances
+December 16, 2024
+
+AMC on AWS Clean Rooms self-serve instance creation APIs now allow you to create a multi-party collaboration instance. With this update, advertisers or partners with data stored across multiple AWS accounts can include up to two additional AWS account IDs in the collaboration instance. This enables AMC to query data or create audiences from these associated AWS accounts.
+
+For more details, see Create an AWS Clean Rooms backed AMC instance.
+
+Unlock Exclusive Reach Insights with STV Inventory Reporting
+December 15, 2024
+
+With the launch of Amazon Exclusive Reach Rate for STV Inventory reporting, advertisers can now isolate and analyze the unique, unduplicated reach delivered by individual Amazon 1P streaming TV inventory sources like Twitch and Prime Video within their total STV investment. This granular reporting provides insights into the exclusive reach generated by Amazon 1P video channels.
+
+Advertisers are seeking deeper insights into the performance of Amazon 1P STV inventory. This new Amazon Exclusive Reach Rate allows advertisers to validate how effective their Amazon STV investment is at extending total campaign reach to net-new users. Additionally, they can measure the total reach delivered by each individual STV inventory, and adjust their advertising strategies and engage this exclusive audience beyond linear tv.
+
+For full technical details, please read our full API documentation.
+
+Amazon Advertising Payment Public API Introduces Cross-Border and Multi Seller Payable Payment Method Registration
+December 15, 2024
+
+We have introduced a new feature that allows advertisers to select and set any of their owned seller accounts as the seller payable payment method globally. They can now also choose one or more seller payable payment methods during registration. This functionality is available for both registration and payment method updates.
+
+This launch enables public API clients to retrieve eligible seller accounts and seamlessly register or update advertiser payment methods, allowing the advertiser to set one or multiple preferred seller accounts.
+
+POST /billing/paymentMethods/list
+
+This API now provides a list of seller payable payment methods contains seller account and country code that an advertiser is eligible to register.
+POST /billing/paymentAgreements/
+
+This API now accepts seller account and country code that can be used to register or update the advertiser payment method.
+POST /billing/paymentAgreements/list
+
+This API now returns seller account and country code that registered by the advertiser.
+POST /billing/paymentProfiles/
+
+This API now allows advertiser to select specific seller account and country code to set as their default payment method.
+Deprecation Announcement: Amazon DSP legacy report endpoints will shut off on June 30, 2025
+December 12, 2024
+
+Following the release of Amazon DSP reports to the v3 offline report API, we are announcing the deprecation of the legacy Amazon DSP report endpoints with a shutoff date of June 30, 2025. You can find a full list of legacy and new endpoints on the Deprecations page.
+
+For general guidance, refer to the v3 reporting overview. For more details on how to upgrade, see our migration guide.
+
+For questions, use the Amazon Ads API Support page to submit a ticket with the subject title "ADSP Report API Migration".
+
+Media performance optimization playbook now available for Amazon Marketing Cloud users
+December 11, 2024
+
+This playbook guides you through optimizing ad spend distribution by maximizing a specified KPI. It uses historical performance data to create diminishing returns curves, which project expected outcomes at various budget levels allowing you to visualize performance expectations and identify the point where additional investment yields diminishing returns. To get started, see Media performance optimization playbook.
+
+Self-serve instance creation APIs now available for AMC on AWS Clean Rooms users
+December 11, 2024
+
+AMC on AWS Clean Rooms now offers self-serve instance creation and advertiser modification APIs. This new feature enables all AMC account holders, including advertising partners and direct advertisers, to create collaboration instances independently, without requiring assistance from an Amazon representative. For more details, see Create an AWS Clean Rooms backed AMC instance.
+
+AMC Advertiser data upload - S3 bucket object tagging now allows tagging multiple instances
+December 11, 2024
+
+When defining your bucket policy for Advertiser data uploads, you can now associate multiple instance IDs with a single tag. This allows all the specified instances to access the designated S3 bucket or object. For more details, see Define tags.
+
+Deprecation Announcement: Amazon DSP legacy creative and association management endpoints will shut off on May 31, 2025.
+December 6, 2024
+
+Following the release of the new ADSP Creatives and Association Management endpoints, we are announcing the deprecation of the legacy endpoints with a shutoff date of May 31, 2025. You can find a full list of legacy and new endpoints on the Deprecations page.
+
+Going forward, you can access all creative, moderation and association data via the new ADSP Creatives and Association endpoints. For more details on how to upgrade, see our Migration Guide.
+
+For questions, use the Amazon Ads API Support page to submit a ticket with the subject title "ADSP Creative API Migration".
+
+Amazon DSP launches contextual keyword targeting
+December 5, 2024
+
+Regions: US, UK, CA, AU
+
+Contextual keyword targeting enables advertisers to connect with audiences by targeting content based on relevant freeform keywords or phrases - without relying on identifiers. Powered by our latest AI models, Amazon DSP places ads on Amazon properties and third-party sites, ensuring ads appear on pages containing or closely related to targeted keywords.
+
+This product is now available in the US, UK, CA, AU to Amazon DSP self-service and managed-service advertisers and is supported on standard display and Amazon mobile display line items.
+
+Contextual keyword targeting overcomes the limitations of category or product retail-based approaches by offering advertisers the flexibility to target freeform keywords, enabling increased reach and performance. Up until now, the existing contextual targeting options available on Amazon DSP restricted advertisers to predefined Amazon retail Categories (Browse Nodes) or Products (ASINs), so advertisers could target ‘picnic baskets’ but not an event like ‘4th of July’ or ‘summer.’ The flexibility of contextual keyword targeting is a universal fit for all of our customers, enabling advertisers increased opportunities to achieve their goals on Amazon DSP.
+
+Relevant API endpoints:
+
+Create target: /dsp/v1/targets
+List targets: /dsp/v1/targets/list
+Delete target: /dsp/v1/targets/deleteByObject
+History and preferred language now available for Amazon Ads Status
+December 2, 2024
+
+Amazon Ads Status provides advertisers with the latest status information on Amazon Ads services. With the new 'History' page, advertisers can now review communications and status updates shared by Amazon Ads spanning the past 6 months. In addition, advertisers can now select a language of preference for status information.
+
+For information about programmatically accessing status information, visit the Amazon Ads Status page in the advanced tools center.
+
+ADSP campaign management APIs now support inventory groups
+December 2, 2024
+
+The Amazon DSP campaign management APIs now support creating, reading, and updating inventory groups. Inventory groups are reusable groupings of deals into one singular group that can be added to ad groups.
+
+New endpoints:
+
+POST /dsp/v1/inventory/inventoryGroups/list: List all inventory groups.
+POST /dsp/v1/inventory/inventoryGroups: Create an inventory group.
+PUT /dsp/v1/inventory/inventoryGroups: Edit an inventory group.
+POST /dsp/v1/inventory/eligibility/inventoryGroups/list: List inventory groups eligible to be added to an ad group.
+To add an inventory group to an ad group (line item), use POST /dsp/v1/targets to create an inventorySourceTarget with inventorySourceType = INVENTORY_GROUP.
+
+For more information, see the API specification for inventory groups.
+
+Amazon Brand Store insights datasets now available in Amazon Marketing Cloud
+November 29, 2024
+
+Amazon Marketing Cloud (AMC) adds Amazon Brand Store insights datasets to its Paid features suite, allowing users visibility into Brand Store performance through two comprehensive AMC datasets that include page renders and interactions. Available for both trial and subscription enrollments in the following marketplaces: US, Canada, Japan, Australia, France, Italy, Spain, UK, and Germany.
+
+To learn more, visit Amazon Brand Store insights.
+
+Amazon Your Garage datasets in Amazon Marketing Cloud
+November 20, 2024
+
+Amazon Your Garage is a virtual vehicle repository which allows customers to add their vehicle make and model and quickly locate parts and accessories that fit their saved vehicles. Amazon Your Garage signals are now available for Amazon Marketing Cloud (AMC) and allows advertisers to tap into those user-to-vehicle association signals. When you enroll in Amazon Your Garage, you will have access to the amazon_your_garage dataset containing signals such as vehicle type, make, or engine type, which are updated daily with the most recent user-to-vehicle associations.
+
+AMC Amazon Your Garage is a paid feature and available for enrollment within US and CA AMC account marketplaces. The AMC Amazon Your Garage dataset contains signals from US, CA, and MX.
+
+To learn more, visit the Amazon Your Garage Instructional Query (link only available for AMC UI users).
+
+Introducing the Lookalike audiences for promotional events playbook for AMC
+November 20, 2024
+
+This comprehensive playbook will help advertisers perform an in-depth analysis of previous tentpole events and guide creating targeted lookalike audiences. It addresses key questions about ASINs and campaign selection, audience targeting timing, and effective strategies for keywords, frequency, and ad formats. To learn more, visit Lookalike audiences for promotional events playbook.
+
+Manage creatives with Creative management APIs
+November 15, 2024
+
+Amazon DSP Creative team will launch the Creative Management APIs into open beta. This release includes the ability to create, update, read, preview creatives; create, delete and update creative ad group association; and get moderation details for Amazon DSP creatives.
+
+This launch allows us to grow our integration offering to more customers using the latest version of the creative APIs. This set of APIs offer the functionality available on the Amazon DSP UI, including the support of add, edit, review setting and moderation status, associate to line items and bulk tools. This set of APIs were redesigned and newly developed to better support integration customer needs.
+
+The new creative management APIs enable self-serve advertisers and their partners to programmatically manage their Amazon DSP AdCreatives, AdCreative-AdGroup associations and moderations. These new APIs replace the previous creative management APIs, with the following improvements:
+
+Unified API structure: The API model provides a single, unified structure (the adCreative) that can host multiple variations (the adExperiences). API clients will have access to the new offering automatically without additional API-onboarding overhead.
+Worldwide availability: The new APIs are available in all countries supported by Amazon DSP.
+Improved Scale: The list endpoint can support up to 100 objects read at a time, and the createCreativeAssociation, patchCreativeAssociation and deleteCreativeAssociation can support batch size of 20.
+Enhanced Features: The new API supports PATCH operations (partial updates) allowing individual field without sending all the fields. The new AdCreative association API can update association object state (ACTIVE, INACTIVE).
+Assets Based Creative on Alexa
+November 15, 2024
+
+Alexa is the first device ad placement to integrate with the standard Asset Based Creative (ABC) creative template used by desktop and mobile advertisers. Amazon DSP self-service advertisers using ABC creatives, directing to to any landing page, now have the opportunity to run their display ads on Alexa Home Screen (AHS). This will help drive brand awareness and consideration objectives and prove an opportunity to reach incremental customers on Echo Show devices.
+
+Buyers can use the standard Assets Based Creatives (ABC) and be served on the Alexa Home Screen (AHS). Alexa is an Amazon inventory type that will be enabled on Display Media Type Line items. This gives buyers a frictionless experience of serving an ABC ad to an additional Amazon supply.
+
+Amazon DSP launches Contextual keyword targeting GA in US, UK, CA, AU
+November 15, 2024
+
+Contextual keyword targeting enables advertisers to connect with audiences by targeting content based on relevant freeform keywords or phrases - without relying on identifiers. Powered by our latest AI models, Amazon DSP places ads on Amazon properties and third-party sites, ensuring ads appear on pages containing or closely related to targeted keywords.
+
+This product is now available in the US, UK, CA, AU to Amazon DSP self-service and managed-service advertisers and is supported on standard display and Amazon mobile display line items.
+
+Contextual keyword targeting overcomes the limitations of category or product retail-based approaches by offering advertisers the flexibility to target freeform keywords, enabling increased reach and performance. Up until now, the existing contextual targeting options available on Amazon DSP restricted advertisers to predefined Amazon retail Categories (Browse Nodes) or Products (ASINs), so advertisers could target ‘picnic baskets’ but not an event like ‘4th of July’ or ‘summer.’ The flexibility of contextual keyword targeting is a universal fit for all of our customers, enabling advertisers increased opportunities to achieve their goals on Amazon DSP.
+
+For more information, see our API documentation:
+
+Universal targeting:
+Create target: /dsp/v1/targets
+List targets: /dsp/v1/targets/list
+Delete target: /dsp/v1/targets/deleteByObject
+Optimize short-flight campaigns with Amazon DSP recommendations
+November 15, 2024
+
+We have expanded our Amazon DSP recommendations to support campaigns running seven days or less. This update enables our machine learning models to provide more timely and relevant optimization suggestions for campaigns during peak shopping events like Prime Day or Black Friday.
+
+Advertisers can now benefit from Amazon DSP recommendations to help their orders pace during peak shopping events, helping them to quickly identify and address issues. Our recommendations are actionable with a single click, helping advertisers focus their time on what matters.
+
+For more information, see our API documentation.
+
+Access DSP recommendations via new Guidance API
+November 15, 2024
+
+Amazon DSP has launched a new Guidance API and Quick Action API, enabling advertisers to programmatically access pre-flight and in-flight recommendations for their campaigns. The Guidance API provides the same intelligent suggestions for maximum average CPM, line-item frequency caps, viewability targeting and other optimization opportunities that are available through the DSP console. Advertisers can now retrieve recommendations for new campaigns pre-flight and in-flight optimizations for live campaigns, allowing for seamless integration with their own systems and workflows. The Quick Action API allows advertisers to seamlessly action Amazon DSP recommendations.
+
+The Guidance API empowers advertisers to automate their campaign optimization processes, reducing manual effort and improving efficiency. By providing programmatic access to Amazon machine learning-driven recommendations, advertisers can quickly identify and act on opportunities to enhance campaign performance and delivery. This API integration enables more frequent and consistent optimization, especially beneficial for advertisers managing large-scale campaigns or using custom tools for campaign management.
+
+DSP Guidance API: Advertisers can use this API to view recommendations for their campaigns. The four new endpoints will aggregate the guidance at various object levels (advertiser, order or line items). Recommendations can be fetched for many objects at once.
+
+Listed below are the new endpoints included in this API:
+
+POST /dsp/v1/guidance/lineitems/list
+POST /dsp/v1/guidance/orders/list
+POST /dsp/v1/guidance/advertisers/list
+For full technical details, please read our API documentation.
+
+DSP Quick Actions API: This API allows advertisers to adopt the recommended changes returned by the Guidance API. Sending a request to POST /dsp/v1/quickactions/{actionId}/executions using the actionId included in the guidance response will trigger the relevant change to be adopted.
+
+For full technical details, please read our API documentation.
+
+New APIs launched that allow billing documents download including invoices, credit memos, and more
+November 15, 2024
+
+We have introduced a new API to streamline the retrieval of individual billing documents, such as invoices, credit memos, debit memos, and prepayment receipts. This new functionality enhances our existing /billing API, allowing customers to programmatically download these documents in various media formats, improving the accessibility and management of billing records.
+
+This enhancement is essential for customers managing complex billing operations. Previously, invoices and related documents could only be accessed in a JSON format, limiting flexibility for users requiring these documents in a downloadable format. Now, with this update, customers can download essential billing documents in PDF and other formats, making it easier to manage and store important financial records.
+
+For more information, see our API documentation.
+
+Understand the scale Amazon inventory can provide by demographics and audiences using our Historic Reach Curve Advanced API
+November 15, 2024
+
+Amazon launched support for historic all-up ad supported reach curves in the US, UK, DE and CA. For the first time, Amazon has released the ability to understand Amazon reach by first party, third party, and advertiser audiences. Using the Historic Reach Curve API - Advanced, you can programmatically access ad-supported reach metrics across Amazon portfolio of ad products.
+
+Integrators now have visibility into the historic household and individual reach Amazon achieved. This data can be used as-is or as fuel to power your internal planning tools.
+
+For full technical details, please read our API documentation.
+
+Amazon Business Bid Adjustment available in the Sponsored Products v3 API
+October 21, 2024
+
+The Amazon Business Bid Adjustment and Reporting for Sponsored Products is available to all advertisers using the SPv3 API across US, CA, MX, DE, UK, FR, IT, ES, IN, and JP. The Amazon Business Bid Adjustment is a singular adjustment that allows advertisers to increase their bids by up to 900% across all placements on Amazon Business. This Amazon Business Bid Adjustment can be applied to existing or new Sponsored Products campaigns, and can be set independently or in addition to placement bid adjustments for Top-of-Search (first page), Rest-of-Search (remaining search results), and Product pages. All Sponsored Products advertisers in Amazon Business marketplaces, irrespective of their use of the Amazon Business Bid Adjustment, will now also have access to reporting that shows Sponsored Products campaign performance on Amazon Business from 9/5/2024 onwards. The Amazon Business performance data can be used by advertisers to guide their use of the Amazon Business Bid Adjustment.
+
+By increasing bids for Amazon Business placements, advertisers are more likely to have their ads surface on the Amazon Business store and correspondingly generate more impressions, clicks, and sales (better reach and engagement) from business customers. Relative to B2C customers, business customers are ~3x more likely to purchase an item after viewing its product page, have a ~50% lower return rate, and on average make orders containing ~80% more units. This results in advertisers, on average, seeing a 2-3x higher return on ad spend on Amazon Business relative to their overall campaign performance (based on Amazon internal data, 2024). The Amazon Business performance data can be used by all Sponsored Products advertisers in Amazon Business marketplaces, irrespective of their use of the Amazon Business Bid Adjustment, to understand the effectiveness of their Sponsored Products campaigns on Amazon Business.
+
+SP v3 API: Advertisers can use the new enum value SITE_AMAZON_BUSINESS by providing it when configuring the dynamic bidding specifications of a given campaign. All existing SP endpoints which accept or return this object now accept this new enum with a value from 0 to 900.
+
+Reporting v3 API: Advertisers can use the new filter named campaignSite with the value AmazonBusiness as modifier to the campaignPlacement groupBy parameter in the spCampaigns report. Other groupBy parameters apart from campaignPlacement are not supported in the request. The generated report will show AB-only performance for all of their campaigns irrespective of the use of the AB Bid Adjustment.
+
+For more information, see the technical specifications for the Sponsored Products API and the documentation for the reporting API.
+
+SP API endpoint examples:
+
+POST /sp/campaigns for creating a new campaign
+PUT /sp/campaigns when updating an existing campaign
+POST /sp/campaigns/list when querying upon existing campaigns which contain the enum value.
+Reporting API endpoint examples:
+
+GET /reporting/reports/{reportId} Gets a generation status of a report by id
+DELETE /reporting/reports/{reportId} Deletes a report by id
+POST /reporting/reports Creates a report request
+ Note
+1. Amazon Business performance data is available starting 9/5/2024 onwards only. 2. The Amazon Business Bid Adjustment and Reporting for Sponsored Products will be coming soon to Bulksheets.
+Awareness: Changes to third-party data provider consent policies across Amazon Ads
+October 18, 2024
+
+Amazon Ads has enhanced its existing mechanisms for publishers, advertisers and vendors (referred to as third parties) to share their customers’ consented data with Amazon Ads by introducing Amazon Consent Signal. While we will continue to accept the Interactive Advertising Bureau (IAB) Transparency & Consent Framework (TCF) signal, Amazon Consent Signal provides a way for third parties that do not use TCF to transmit their users’ consent choices along with a country code to Amazon Ads. For Sending Personal Information and Amazon Ads Consent Signal requirements, please click here.
+
+From 1st November 2024, third parties can to share the country code and consent with Amazon Ads. We will continue to honor existing mechanisms for consent and will publish an update by which all data that partners make available to Amazon Ads, must include the IAB European Transparency & Consent Framework (TCF) signal(s) or the Amazon Consent Signal.
+
+Country Code
+From 1st November 2024, you can share a country code when passing customers’ consented data to Amazon Ads. The country code is a 2-character string in the ISO 3166 format that indicates in which country the consent was given (for example, US or GB). If you upload data without specifying a country code, we will automatically reject the data load. The Country Code must indicate the country in which consent was granted by the customer.
+
+Consent String
+From 1st November 2024, you can share a consent string when passing EEA or UK customers’ consented data to Amazon Ads. If you already use TCF, this is sufficient and you do not need to make any changes. If you do not use TCF, you can use the Amazon Consent Signal, see below, to pass your customers’ consent. To be clear, please do not pass both TCF and Amazon Consent Signal. If you do pass both, we will take TCF as the consent signal and ignore Amazon Consent Signal. If you use a Consent Management Platforms (CMP) to manage your consent please ensure your CMP provides you with the necessary data to send a TCF consent string or the Amazon Consent Signal details. If you pass your data to Amazon Ads directly (i.e. not through a CMP) then we have several resources available to help you do this.
+
+Amazon DSP DP API
+Country code is a required field today as part the audience metadata sent via DP API. Additionally, from 1st November 2024, third parties can begin to share consent string with Amazon Ads. Consent string will be a new field (see attachment). Instructions to add consent string are published here.
+
+If you are not sending audiences for countries that are part of EEA and UK then please keep sending country codes; no further action is needed. If you are sending audiences for countries that are part of EEA and UK then please continue reading about Consent string requirements.
+
+Amazon will continue to honor existing mechanisms for consent and also advise customers to utilize the TCF or Amazon Consent Signal. For any questions related to the DP API updates you can contact us here.
+
+Data consent requirements for Events Manager (CAPI, AAT ) users (Advertisers and Partners)
+We will update the following Help Center articles:
+
+https://advertising.amazon.com/help/GLZ54GXQW773A6MG
+https://advertising.amazon.com/help/G9Y77VYQ3VJZU5YV
+https://advertising.amazon.com/API/docs/en-us/guides/overview
+What actions should events manager advertisers and partners take? Events Manager users (AAT, CAPI) can share any one of the consent formats that is most relevant for them.
+
+Our GTM Templates will have now have additional consent checkbox and fields. Please use the consent field that is most relevant for you. If you are an agency/ partner working on behalf of your advertiser, use the consent provided by your advertiser.
+For regular AAT there is a command called setAmazonConsent that takes all of the consent fields as a JSON object.
+For CAPI and partner integrations there will be an field on the events called AmazonConsent that takes the JSON of the consent fields.
+Amazon Marketing Cloud (AMC), and AWS-Clean Room (AWS-CR) collaborations
+Starting November 6, 2024, AMC will accept Transparency-and-Consent-Framework (TCF), Global Privacy Platform (GPP), and Amazon Consent Signal (ACS) consent signals. These consent signals will be optional in UK/EEA personal data uploads until they become mandatory. AMC will respect provided consent, rejecting records if denied. During the transitional period there will be no impact to data uploaded without consent signals.
+
+We recommend all advertisers and third-party (3P) data providers provide this information to indicate the jurisdiction whose laws apply to processing the user data.
+
+The above-mentioned data decoration standards for country codes and consent signals also applies to all advertisers and 3Ps using AMC — AWS Clean Room collaborations.
+
+Please refer to Sending Personal Information to Amazon Ads & Amazon Consent Signal requirements to know more about the policy. For detailed documentation, please visit the AMC documentation section within the Advanced Tool Center (ATC).
+
+Ads Data Manager APIs
+Advertisers uploading their data to Ads data manager can provide consent in one of three formats: TCF, GPP, or Amazon Consent Signal. We require all records containing user-level identifiers uploaded to Amazon Ads to contain at least one consent attribute, as well as country code.
+
+For specific technical instructions, the details are found here.
+
+Expand your reach with premium Amazon supply on Amazon DSP online video line items
+October 18, 2024
+
+Beginning November 1, advertisers running new and existing online video ad campaigns in Amazon DSP will benefit from additional Amazon first-party supply across Echo Show, Fire TV, IMDb, and Twitch. Advertisers who have selected any Amazon or third-party inventory source for their online video ad campaign will automatically have all eligible Amazon inventory sources included.
+
+This change comes following improvements to our machine learning models and the previous launch of video ad inventory across IMDb (WW) and Twitch (WW). We will add additional online video supply from Echo Show, IMDb and Twitch in the coming months. Additional expansions across Alexa video inventory is planned for the coming months.
+
+This auto-selection will happen in a phased manner and eligibility will be governed by ad policy and creative requirements specific to each inventory source. Advertisers have the option to proactively opt-out of this automatic inventory expansion if they choose by reaching out to a Programmatic Solution Consultant or Ad Support via Contact us in Support center.
+
+Prior to this update, advertisers had to manually select Amazon inventory sources for their online video ad campaigns. Enabling automatic inventory optimization removes the guesswork, simplifies campaign management, and frees up valuable time and resources, all while giving advertisers the opportunity to connect with a wider audience. This change also provides the ability to maintain control over ad placements and benefit from intelligent optimization strategies that can help achieve campaign goals more effectively.
+
+For full technical details, please read our API documentation.
+
+Expand your reach with premium Amazon supply on Amazon DSP display line items
+October 18, 2024
+
+Beginning November 1, advertisers running new and existing display ad campaigns in Amazon DSP will benefit from additional Amazon first-party supply across Echo Show, Fresh stores, Fire Tablet, Fire TV, IMDb, Twitch, and Whole Foods Market and Fresh digital displays. Advertisers who have selected any Amazon inventory source for their display campaign will automatically have all eligible Amazon inventory sources included.
+
+This change comes following improvements to our machine learning models and the previous launch of display ad inventory across Echo Show (US, UK, DE, CA, MX, IT, JP), Fire Tablet (US, UK, DE, JP), IMDb (WW), and Twitch (WW). We will add additional supply from Fire TV, IMDb, Twitch, Whole Foods Market, and Fresh stores in the coming months.Additional expansions across Fire TV display component-based creatives and Twitch custom format ads are planned for the coming months.
+
+This auto-selection will happen in a phased manner and eligibility will be governed by ad policy and creative requirements specific to each inventory source. Advertisers have the option to opt-out of this automatic inventory expansion if they choose by reaching out to Programmatic Solution Consultant or Ad Support via Contact us in Support center.
+
+Prior to this update, advertisers had to manually select Amazon inventory sources for their display ad campaigns. Enabling automatic inventory expansion removes the guesswork, simplifies campaign management, and frees up valuable time and resources, all while giving advertisers the opportunity to connect with a wider audience. This change also provides the ability to maintain control over ad placements and benefit from intelligent optimization strategies that can help achieve campaign goals more effectively.
+
+For full technical details, please read our API documentation.
+
+Amazon DSP campaign management APIs will enable read-only support for Amazon guaranteed deals
+October 18, 2024
+
+Starting Nov 6, 2024, the Amazon DSP campaign management APIs will enable read-only support for campaigns targeting Amazon guaranteed deals.
+
+Summary of changes:
+
+POST/dsp/v1/campaigns/list:
+
+New boolean field: targetsAmazonDeal
+If true, this campaign has ad groups targeting Amazon guaranteed deals, and the campaign, ad group, and targets are all read-only.
+New fields: startDateTime, endDateTime
+startDateTime: This will be the first date of the first flight for flighted campaigns. It will be the start date for unflighted campaigns targeting Amazon deals.
+endDateTime: This will be the last date of the last flight for flighted campaigns. It will be the end date for unflighted campaigns targeting Amazon deals.
+POST/dsp/v1/adGroups/list:
+
+New inventoryType enum values: AUDIO_AMAZON_DEAL, STREAMING_TV_AMAZON_DEAL
+AUDIO_AMAZON_DEAL: Targets Amazon audio inventory.
+STREAMING_TV_AMAZON_DEAL: Targets Amazon streaming TV inventory.
+POST/dsp/v1/targets/list:
+
+The inventorySourceTarget will list the specific Amazon guaranteed deal being targeted.
+After pulling the dealId from the targets endpoint, you can use /dsp/inventory/deals/list to pull deal metadata.
+We will post an announcement on our release notes page once this feature is released.
+
+Improve optimization rule effectiveness using brand based cost control metric recommendations
+October 18, 2024
+
+Sponsored Brands launched the Optimization Rules Recommendation API to provide suggested Cost-Per-Click (CPC) when using Optimization Rules for Drive Page Visits campaigns. The bid suggestions are personalized based on brands owned by the advertiser, allowing advertisers to input competitive bids to drive campaign objectives.
+
+An effective optimization metric threshold should balance auction performance with cost-effectiveness, and can vary greatly depending on your brand content and targeting strategies. The Optimization Recommendations API was designed with this principle, empowering advertisers to achieve results while still converging to cost efficient bids.
+
+Advertisers can retrieve these recommendations through the new /sb/recommendation/optimization API call, for both existing campaigns and during the campaign creation process. This endpoint takes your cost control metric type, along with up to ten landing page ASINs or URLs, and returns both the recommended value and minimum value for your campaign. For full technical details, please read our API documentation.
+
+Amazon DSP new campaign management endpoints are now available in open beta
+October 15, 2024
+
+The updated campaign management resources for Amazon DSP are now available worldwide in open beta. With this release, we are making the endpoints available to all customers with access to an Amazon DSP account. You no longer need to request permission to access the new endpoints via the Amazon Ads API.
+
+The new campaign management resources enable you to create, read and update Amazon DSP campaigns, ad groups, targets, flights and product conversion tracking details. They replace the legacy campaign management APIs, which are scheduled for deprecation on March 31, 2025 per our previous announcement. In addition to being available worldwide and supporting programmatic guaranteed deals, the new APIs improve the experience developing at scale, for example, through support of PATCH operations and larger batch sizes.
+
+If you are integrated with the legacy resources, we have put together a migration guide to help you transition to the new resources. If you are new to managing Amazon DSP campaigns via API, refer to our reference documentation and developer guide.
+
+For questions, visit the Support page to submit a ticket with the subject title “ADSP CM API Migration.”
+
+Help increase engagement with advertiser-defined audiences through sponsored ads bidding controls
+October 14, 2024
+
+Sponsored Products and Sponsored Brands are launching a new bidding control to enable advertisers to reach and engage audiences segments defined and created by them. With the latest offering, advertisers can compose lists of audiences, such as those who have not bought their product before or exposed to their video awareness campaigns and set custom bids for them in their campaigns to drive more discovery and sales.
+
+The new bidding control enables advertisers to engage with audiences created in Amazon Marketing Cloud (AMC), a privacy-safe, cloud-based, clean room solution. The audiences are then available to their sponsored ads account so they can selectively modify the bids for them when launching their campaigns.
+
+The new control helps advertisers more efficiently engage with selected audiences segments. Using bid controls, they can modify their bids to capture increased engagement and conversions from selected audiences segments, such as re-engaging shoppers in their journey along the marketing funnel, while also reaching the relevant Amazon shoppers that are searching for their targeted keywords. Advertisers can monitor performance through a new field in the AMC sponsored_ads_traffic table to understand when Amazon applied the bid increase by inspecting the column matched_behavior_segment_ids.
+
+Advertisers will use the Targetable Entities API to retrieve Audiences (Discovery) after they are created in AMC. In Sponsored Products, they will then use the Audience ID (Canonical) with the Sponsored Products V3 Campaigns API to create, bid adjust the audience and manage their campaigns. In Sponsored Brands, similarly, advertisers will use Sponsored Brands Campaign Management API to create and manage their campaigns, as well as adjust their audience bids.
+
+Build a holistic first-party data strategy with Ads data manager
+October 14, 2024
+
+Announced at unBoxed 2024, Ads data manager (ADM) is a new standalone offering that simplifies and streamlines the process of first-party data management across Amazon Ads ad tech. ADM is a privacy-safe, easy-to-use interface that lets advertisers and their partners onboard their data once and securely reuse it across our ad products (for example, ADSP or AMC) for measuring conversions, engaging relevant audiences, and optimizing campaigns for sustainable business growth- all while retaining visibility and control of their data.
+
+Advertiser first party data is crucial for measuring campaign success and driving better marketing outcomes. As customers adapt to reduced dependence on third party cookies and mobile advertising IDs, they are increasingly reliant on their first party data as critical inputs into audiences, measurement, optimization strategies. To enable advertisers to unlock and scale the value of their first party data, we are launching Ads data manager. Through ADM, advertisers can access a single solution within Amazon Ads to build a holistic first party data strategy. Some of the key product differentiators include:
+
+Simplified and intuitive CX for data management: We are making data onboarding frictionless, Amazon Ads advertisers (and their partners) will access a unified interface which natively receives data through Amazon Ads Console UI, connected APIs and CDP integrations.
+Interoperable experience across all Amazon Ad Tech products: You can upload your data once and reuse it across all 1p data features of ad products (ADSP, AMC) to activate it for various use cases, all through one simple interface.
+Fast track onboarding via integrated partners: You will be able to easily stream data wherever you traditionally house it, this will be made possible through a connector library that offers integrations with partners like CDPs, MMPs.
+Secured data environments: ADM is a secure data environment with user-level access controls, giving you the ability to create isolated data environments for different use cases — all with end-to-end encryption
+Seamless hand-off between brands and agency partners: ADM will allow for streamlined data connections across advertisers and agency partners.
+The Ads data manager consolidates all of Amazon Advertiser Data APIs into a single API collection for ease of integration. The main API functions are:
+
+DataSet APIs - Manages Datasets. Datasets are tables with a specific schema. You may use this API to delete a dataset.
+Audience APIs - Creates an dataset with the audience dataset type. This API serves as a shortcut to create an audience dataset directly. Audiences are treated the same as general datasets, but have a pre-defined schema template used for audiences.
+Sharing Rules APIs - Sharing rules allow you to list current dataset shares with linked advertiser accounts. You may also create new sharing rules to make datasets available for use in advertiser accounts for a specific application.
+Status APIs - Provides reporting on the status of uploads, size of your datasets, and volume of data that has been made available for a given sharing rule.
+For more information, read our API documentation.
+
+Advertisers that use AMC can now create AMC audiences for their sponsored ads campaigns
+October 14, 2024
+
+Advertisers can leverage rule-based or lookalike audiences in Sponsored Display targeting, Sponsored Products bid boost and Sponsored Brands bid boost. This functionality allows advertisers to act on the insights they derive from AMC and reach shoppers at the right time and place in their shopping journey.
+
+Start creating custom audiences in AMC using Rule-based audiences and Rule-based lookalike audiences to activate in your sponsored ads accounts.
+
+Launching Ads data manager on Amazon Ads console and Amazon Ads API
+October 14, 2024
+
+Ads data manager is a new standalone offering that simplifies and streamlines the process of first-party data management across Amazon Ads, enabling marketers to make more effective, data-driven decisions. Designed with ‘data stewards’ in mind, ADM is a privacy-safe, easy-to-use interface that lets advertisers and their partners onboard their data once and securely reuse it across our ad products for measuring conversions, engaging relevant audiences, and optimizing campaigns for sustainable business growth- all while retaining visibility and control of their data. For more details, see Ads data manager console and Ads data manager API.
+
+Show your display ads to audiences who are most likely to consider and buy from your business
+October 11, 2024
+
+Dynamic segments are collections of audiences that change based on performance and relevance criteria to reach consumers who are most likely to engage with your ads. You can select the dynamic segments to launch your campaigns easily and effectively and drive performance at scale. The new “Audiences likely to be interested in your ad“ setting leverages Amazon machine learning algorithms to show your ads to audiences who are most likely to consider and buy from your business — using a variety of signals such as Amazon first-party shopping signals, your own conversion signals, and insights from your business website.
+
+Once you have identified the audiences you want to use, you can add targeting clauses at the ad group level using POST /sd/targets. For more information on setting up audience targeting, see audience targeting campaigns. For more details, refer to the full technical API documentation.
+
+Deprecation announcement: Version 1 and 2 snapshots APIs will shut off on December 15, 2024
+October 9, 2024
+
+All snapshots endpoints are now deprecated, with a target shutoff date of December 15, 2024. Please migrate to the exports API as indicated on our Deprecations page.
+
+The following endpoints and all associated HTTP operations are included in this deprecation:
+
+/{recordType}/snapshot
+/snapshots/{snapshotId}
+/v2/sp/{recordType}/snapshot
+/v2/sp/snapshots/{snapshotId}
+/v2/sp/snapshots/{snapshotId}/download
+/v2/hsa/{recordType}/snapshot
+/v2/hsa/snapshots/{snapshotId}
+/v2/hsa/snapshots/{snapshotId}/download
+/sd/{recordType}/snapshot
+/sd/snapshots/{snapshotId}
+/sd/snapshots/{snapshotId}/download
+For more details on integrating with exports, see the Exports overview.
+
+Sponsored Ads advertisers can now unlock the power of Amazon Marketing Cloud capabilities through partners
+October 9, 2024
+
+All Amazon DSP direct advertisers, as well as partners registered with the Amazon Ads Partner Network who serve clients with or without Amazon DSP, are now eligible to register for AMC. For advertisers who use only Sponsored Ads today and work with Amazon Ads partners, AMC is now an accessible clean room where their partners can leverage the rich, granular, and event-level signals to generate bespoke insights, advise optimization tactics, and take insights-based actions on their behalf.
+
+AMC launches self-service instance management APIs
+October 9, 2024
+
+We are excited to launch self-service instance management APIs on the Amazon Ads API as Open Beta. AMC launched the ability to create, modify, and manage AMC instances using self-serve APIs, eliminating the need to contact an Amazon Ads representative. This feature is available to all AMC account holders, including advertising partners and direct advertisers.
+
+The new APIs offer swift instance creation with automated approvals, using which partners can start generating value within minutes of creating an instance with 1 advertiser ID. In case of instances created with multiple advertisers, the instances are activated after a manual validation within 2 days. Authorized AMC admin users can initiate an instance creation by sending a POST /amc/instances request with instance details. Advertisers can be added to an instance by calling POST /amc/instances/{instanceid}/advertisers/updates with advertiser IDs (DSP CFIDs and/or Sponsored Ads Entity IDs).
+
+Listed below are the new endpoints that will help help you with instance creation and management:
+
+POST /amc/instances | Creates a new AMC instance.
+POST /amc/instances/{instanceId}/advertisers/updates | Creates a new advertiser update for the requested AMC instance.
+GET /amc/instances/{instanceId}/advertisers/updates/{updateId} | Gets the requested advertiser update for the requested AMC instance.
+GET /amc/instances/{instanceId}/advertisers/updates | Lists advertiser updates for the requested AMC instance.
+PUT /amc/instances/{instanceId}| Updates the requested AMC instance.
+DELETE /amc/instances/{instanceId} | Deletes the requested AMC instance.
+For more information, see the AMC administration guide.
+
+Fire TV Inline Display Banner now available for Amazon DSP self-service advertisers internationally
+October 9, 2024
+
+Amazon has launched the ability for all Amazon DSP self-service advertisers to book Fire TV Inline Display Banner campaigns in UK, DE, FR, IT, ES, JP and IN. The Inline Display Banner sits above the fold within the Sponsored Row of the Fire TV UI on the home tab. As the user scrolls down their screen, they will pass-over this ad placement to get to content rows below the fold. When they do so, the ad unit will reveal a “Mini-Details” view, taking up about half of the users screen.
+
+This ad unit also accepts an optional video asset (:10-:30s) with sound. Advertisers have the opportunity to set up Entertainment or digital ASIN, Prime Video Channel benefit ID, video and physical ASIN click-through destinations (only available in UK and DE). This provides an opportunity for advertisers to drive incremental reach, brand awareness and consideration.
+
+Offering Fire TV ad placements to be booked self service via Amazon DSP opens up opportunity for advertisers looking to utilize self service buying models and removes minimum spend requirements that come with managed service campaigns. This allows advertisers flexibility to launch campaigns quickly with lower SLAs compared to managed service, as well as the opportunity to optimize campaigns in real-time. Fire TV ad placements provide advertisers an opportunity to drive incremental reach, brand awareness and consideration. On average, Fire TV ad campaigns observed 2x+ incremental reach with only a 3% overlap in audience when added to Prime Video ad campaigns (Source: Amazon Internal, Jan-Mar 2024, US).
+
+For full technical details, please read our API documentation.
+
+Access valuable Brand Stores details from the Amazon Ads API
+October 9, 2024
+
+We are introducing a new Brand Stores API, which advertisers can use to programmatically to access details of Brand Stores on Amazon. These details include a list of stores and their pages, URL and its status. This information can be combined with other Amazon Ads data and Stores Insights to get holistic views and performance for Brand Stores on Amazon and its pages.
+
+Historically, to get Brand Store details, Store owners could only access this information through the advertising console one store and page at a time. With introduction of the Brand Store APIs, Store owners can access the same information programmatically, through the Amazon Ads API. This is especially helpful for getting Brand Store details across different countries (or locales), or when a Brand is managing multiple Brand Stores.
+
+Advertisers can get details of their Brand Stores and its pages such as name, id, status and url for a given brandEntityId. API response is paginated with max number of documents returned as 30. For full technical details, please read our API documentation.
+
+Deprecation announcement - Reminder: Sponsored Display version 2 reporting endpoints will shut off on October 31, 2024
+October 3, 2024
+
+Regions: All
+
+Following the release of the new version 3 reporting endpoints, we are announcing the deprecation of version 2 Sponsored Display reporting with a planned shutoff date of October 31, 2024. This includes the POST /sd/{recordType}/report endpoint. Until then, expect additional throttling levels on the current Sponsored Display version 2 endpoint as we begin the deprecation process.
+
+Going forward, you can access all version 2 Sponsored Display report types using the version 3 reporting endpoints. For more details on how to upgrade to version 3, see our Migration guide and Frequently asked questions.
+
+If you have feedback, use the Amazon Ads API Support page to submit a ticket with the subject title “SD reports v2 deprecation” by October 15, 2024.
+
+AMC bespoke solutions is now available for all users of AMC on AWS Clean Rooms
+October 1, 2024
+
+Users of AMC on AWS Clean Rooms can now leverage bespoke solutions from the Solutions tab of the AMC console. Log in to the AMC console to access your first solution - High-value audiences.
+
+Amazon Marketing Cloud users now have access to a new table to analyze video metrics
+October 1, 2024
+
+A new table, dsp_video_events_feed, is now available for AMC users. The table provides video metrics for each of the video creative events triggered by the video player and associated with the impression event. For more details, see Amazon DSP video events table.
+
+Display frequency cap benefits to advertisers with actionable insights for Amazon DSP
+September 27, 2024
+
+Frequency cap insights show advertisers the impressions and the budget reinvested to reach more shoppers due to frequency caps used at line, order, and frequency group levels. Advertisers can now see these numbers in a new insight card and can download the data. Advertisers can also use a new Amazon Ads API to query frequency cap insights data.
+
+Frequency caps allow advertisers and agencies to save impressions by preventing ads from showing to the same customers repetitively. However, prior to this launch, Amazon DSP did not provide any way to quantify the benefits. To bridge this gap, we built Frequency Cap Insights to quantify impressions reinvested, budget reinvested, and incremental reach.
+
+For more information, see our reference documentation.
+
+Create new deals instantly with Amazon Media on Amazon DSP
+September 27, 2024
+
+Amazon DSP has launched the ability to create new preferred deals with Amazon Media directly in inventory hub for self-service customers worldwide. With this feature, customers can create new deals with Amazon Twitch, Amazon Freevee and Amazon Prime Video based on their applicable rate cards. Customers can configure supply-side audience segmentation and submit their deal proposals for approval, and activate new deals instantly on existing line items. This feature is launching to all Amazon DSP self-service customers.
+
+With this release, Amazon DSP customers gain the ability to propose new deals without the need to work with their Amazon Ads representatives. They can discover available deals sold by Amazon Media, understand the applicable rates, choose the deals they are interested in, and precisely configure the supply-side audience segmentation they want. The deals supported at launch are approved programmatically, resulting in customers being able to activate newly created deals within minutes.
+
+For more information, please read our reference documentation.
+
+Target programmatic guaranteed display deals via Google AdX on Amazon DSP campaigns
+September 27, 2024
+
+Advertisers globally now have the ability to target programmatic guaranteed display deals in their Amazon DSP campaigns. Similar to programmatic guaranteed video deals that are already supported with Google AdX, customers need to negotiate and finalize programmatic guaranteed display deals within the Google Authorized Buyers UI. Once the deal is finalized, the deal will now be available for targeting within display line items.
+
+Supporting programmatic guaranteed display deals via AdX expands on the programmatic guaranteed offering within Amazon DSP. Before this release, we only supported video for programmatic guaranteed. But this release provides another method of guaranteed buying to meet advertisers’ needs. For more information on the deals API, see our getting started guide.
+
+Two new reporting metrics - Add to List for Authors and Book Publishers and Qualified Borrows for Book Publishers
+September 24, 2024
+
+Two new metrics have been added to V3 reporting:
+
+Add to List (For Book Vendors and Authors) : Number of users who add advertised book to list during ad exposure and within attribution window
+Qualified Borrow (For Book Vendors) : Number of Kindle Unlimited users who have downloaded the book due to ad exposure, during the attribution window, and have read a certain percent of the book within the window.
+For more information, refer to our reporting documentation.
+
+Advertisers who use the Amazon Ads API can now run ads on their Global Store listings
+September 24, 2024
+
+Availability: US, UK, DE
+
+With the launch of Sponsored Products on the Amazon Global store, advertisers can now drive more discoverability and improve sales internationally using the Amazon Ads API. Learn more about the Global Store
+
+API details
+
+Product selector [/product/metadata]
+
+The product selector API fetches the listings required for campaign creation. With this launch, we made changes in this API to fetch the global store offers for Sponsored Products ads creation. We introduced an attribute called isGlobalStoreSelection which advertisers will set to true to fetch their global store listings.
+
+In the response, we will show a globalStoreSetting attribute that holds the details of the source country from where Amazon Global Store sourced the offer. Advertisers can further use these listings and their corresponding source country information for the campaign creation.
+
+Campaign creation [/sp/productAds]
+
+The campaign creation API accepts the global store specific attribute globalStoreSetting where advertisers can provide the source catalog country of the offer being used for ads creation. You can check eligibility of the products for campaign creation using the catalogSourceCountryCode information provided using the globalStoreSetting.
+
+Product eligibility [/eligibility/product/list]
+
+We have introduced a new globalStoreSetting attribute that takes the source country code of the Global Store ASIN which is required for the eligibility check. Eligibility check of the offer would be done in the source marketplace for the advertiser.
+
+Bid recommendations [/sp/targets/bid/recommendations]
+
+The bid recommendation API for new Ad groups takes a new attribute called productDetailsList, which takes the ASIN details along with its source country code. The bidding system uses the globalStoreSetting attribute and the catalogSourceCountryCode information for eligibility check of the ASINs, which is required for the bid recommendation.
+
+Keyword recommendations [/sp/targets/keywords/recommendations]
+
+The keywords recommendation API for ASINs takes a new attribute called productDetailsList, which takes the ASIN details along with its source country code. Keywords recommendation system uses the globalStoreSetting attribute and the catalogSourceCountryCode information to get the bid suggestions for the keywords.
+
+3P API Access for existing ABVP users
+September 24, 2024
+
+The ABVP team is excited to announce the launch 3P API access for ABVP. Advertisers with ABVP access can can now use the API feature to access a URL to directly download ABVP reports instead of clicking through the ABVP User Interface.
+
+With 3P API access for our advertisers, users can now access a URL to directly download ABVP reports instead of clicking through the ABVP User Interface. Users are able to configure their API to access either the latest ABVP ASIN grain report and standard report for their advertiser.
+
+Using the two 3P endpoints below
+
+/insights/brandBenchmarks/advertisers/{advertiserId}/allReportMetadata
+/insights/brandBenchmarks/advertisers/{advertiserId}/reports/{reportType}/indexDates/{indexDate}
+ABVP users will be able to obtain the latest report metadata information from the first endpoint and then use that report metadata information to get a presigned S3 URL to download the report using the second endpoint. For full technical details, please review our API documentation.
+
+Amazon DSP Traffic events enhancements in Amazon Marketing Cloud (AMC)
+September 18, 2024
+
+AMC has updated the Amazon DSP traffic events across impression, interaction, and Amazon Attributed event pairs. 20 new dimensional columns were added to the following AMC data views: dsp_impressions, dsp_views, dsp_clicks, dsp_impressions_by_*_segment, and amazon_attributed_events_by_*_time.

@@ -431,25 +431,41 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             style={{
               background: 'var(--bg-secondary)',
               border: '1px solid var(--accent-border)',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.4)',
-              height: '480px',
+              boxShadow: '0 8px 40px rgba(0,217,255,0.15), 0 4px 20px rgba(0,0,0,0.5)',
+              height: '520px',
             }}>
-            <div className="flex items-center gap-2 px-4 py-3 flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-light))' }}>
-              <Bot className="w-5 h-5" style={{ color: 'var(--btn-text)' }} />
-              <h4 className="font-bold text-sm flex-1" style={{ color: 'var(--btn-text)' }}>
-                {t('layout.aiAssistantTitle')}
-              </h4>
-              <button onClick={() => setChatOpen(false)} style={{ color: 'var(--btn-text)' }}>
-                <X className="w-5 h-5" />
+
+            {/* ── Header ── */}
+            <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #0d0620 0%, #160828 100%)', borderBottom: '1px solid var(--accent-border)' }}>
+              <div className="relative flex-shrink-0">
+                <div className="w-9 h-9 rounded-full overflow-hidden" style={{ border: '2px solid var(--accent)', boxShadow: '0 0 10px rgba(0,217,255,0.4)' }}>
+                  <Image src="/robot-skull.jpeg" alt="M20 AI" width={36} height={36} className="w-full h-full object-cover" />
+                </div>
+                <div className="absolute -bottom-0.5 -end-0.5 w-3 h-3 rounded-full border-2"
+                  style={{ background: '#22c55e', borderColor: '#0d0620' }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-bold text-sm leading-tight" style={{ color: 'var(--accent)' }}>
+                  M20 AI Assistant
+                </h4>
+                <p className="text-[10px] leading-tight" style={{ color: 'var(--text-dim)' }}>
+                  {lang === 'ar' ? 'مساعد الإعلانات الذكي • متصل الآن' : 'Ad Intelligence Bot • Online'}
+                </p>
+              </div>
+              <button onClick={() => setChatOpen(false)}
+                className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                style={{ color: 'var(--text-dim)', background: 'rgba(255,255,255,0.05)' }}>
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-3 space-y-3">
+
+              {/* ── Welcome message ── */}
               <div className="flex gap-2">
-                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }}>
-                  <Bot className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+                <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0" style={{ border: '1px solid var(--accent-border)' }}>
+                  <Image src="/robot-skull.jpeg" alt="bot" width={28} height={28} className="w-full h-full object-cover" />
                 </div>
                 <div className="rounded-xl rounded-tl-sm px-3 py-2 text-sm max-w-[240px]"
                   style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)', color: 'var(--text-secondary)' }}>
@@ -457,26 +473,48 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
 
+              {/* ── Empty state: features + quick questions ── */}
               {chatMessages.length === 0 && (
-                <div className="space-y-1.5 pt-1">
-                  {quickSuggestions.map(q => (
-                    <button key={q} onClick={() => sendChat(q)} disabled={chatLoading}
-                      className="block w-full text-start text-xs px-3 py-2 rounded-lg transition-colors"
-                      style={{ border: '1px solid var(--input-border)', color: 'var(--text-muted)', background: 'var(--card-bg)' }}>
-                      {q}
-                    </button>
-                  ))}
+                <div className="space-y-2">
+                  <div className="rounded-xl p-3 space-y-2"
+                    style={{ background: 'var(--card-bg)', border: '1px solid var(--border-primary)' }}>
+                    <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-dim)' }}>
+                      {lang === 'ar' ? '✦ أقدر أساعدك في' : '✦ I can help you with'}
+                    </p>
+                    {[
+                      { icon: '📊', en: 'Campaign performance analysis', ar: 'تحليل أداء الحملات' },
+                      { icon: '🔑', en: 'Keyword research & strategy',   ar: 'بحث الكلمات المفتاحية' },
+                      { icon: '💰', en: 'ACOS & ROAS optimization',      ar: 'تحسين ACOS و ROAS' },
+                      { icon: '🚀', en: 'Scaling & growth strategies',   ar: 'استراتيجيات التوسع' },
+                      { icon: '🛡️', en: 'Negative keywords & pruning',   ar: 'الكلمات السلبية والتنقية' },
+                    ].map(f => (
+                      <div key={f.en} className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
+                        <span className="text-sm">{f.icon}</span>
+                        <span>{lang === 'ar' ? f.ar : f.en}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="space-y-1.5">
+                    {quickSuggestions.map(q => (
+                      <button key={q} onClick={() => sendChat(q)} disabled={chatLoading}
+                        className="block w-full text-start text-xs px-3 py-2 rounded-lg transition-colors"
+                        style={{ border: '1px solid var(--input-border)', color: 'var(--text-muted)', background: 'var(--card-bg)' }}>
+                        {q}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
 
+              {/* ── Messages ── */}
               {chatMessages.map(m => (
                 <div key={m.id} className={`flex gap-2 ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                  <div className="w-7 h-7 rounded-full flex-shrink-0 overflow-hidden"
                     style={m.sender === 'bot'
-                      ? { background: 'var(--accent-bg-strong)', border: '1px solid var(--accent-border)' }
-                      : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      ? { border: '1px solid var(--accent-border)' }
+                      : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {m.sender === 'bot'
-                      ? <Bot className="w-3.5 h-3.5" style={{ color: 'var(--accent)' }} />
+                      ? <Image src="/robot-skull.jpeg" alt="bot" width={28} height={28} className="w-full h-full object-cover" />
                       : <User className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />}
                   </div>
                   <div>
@@ -504,6 +542,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div ref={chatBottomRef} />
             </div>
 
+            {/* ── Input ── */}
             <div className="px-3 py-2.5 flex-shrink-0" style={{ borderTop: '1px solid var(--border-primary)' }}>
               <form onSubmit={e => { e.preventDefault(); sendChat(); }} className="flex gap-2">
                 <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)}
@@ -524,13 +563,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         )}
+
+        {/* ── Floating toggle button ── */}
         <button onClick={() => setChatOpen(!chatOpen)}
-          className="w-14 h-14 rounded-full flex items-center justify-center transition-all"
+          className="w-14 h-14 rounded-full overflow-hidden transition-all flex items-center justify-center"
           style={{
-            background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
             boxShadow: chatOpen ? '0 0 30px rgba(0,217,255,0.5)' : '0 0 18px rgba(0,217,255,0.35)',
+            border: '2px solid var(--accent)',
+            background: 'var(--bg-secondary)',
           }}>
-          {chatOpen ? <X className="w-6 h-6" style={{ color: 'var(--btn-text)' }} /> : <Bot className="w-6 h-6" style={{ color: 'var(--btn-text)' }} />}
+          {chatOpen
+            ? <X className="w-6 h-6" style={{ color: 'var(--accent)' }} />
+            : <Image src="/robot-skull.jpeg" alt="M20 AI" width={56} height={56} className="w-full h-full object-cover" />}
         </button>
       </div>
     </div>

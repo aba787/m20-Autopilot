@@ -52,3 +52,4 @@ externalPort = 80
 [userenv]
 
 [userenv.shared]
+supabase = "https://tjywekfkpzmqysmjxnww.supabase.co"

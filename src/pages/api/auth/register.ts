@@ -11,8 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' });
   }
-  if (password.length < 10) {
-    return res.status(400).json({ error: 'Password must be at least 10 characters' });
+  if (password.length < 12) {
+    return res.status(400).json({ error: 'Password must be at least 12 characters' });
   }
   const hasUpper = /[A-Z]/.test(password);
   const hasLower = /[a-z]/.test(password);

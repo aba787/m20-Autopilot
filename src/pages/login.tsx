@@ -153,7 +153,7 @@ export default function Login() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (tab === 'reset') {
-      if (!password || password.length < 8) { setError('Password must be at least 8 characters'); return; }
+      if (!password || password.length < 12) { setError('Password must be at least 12 characters'); return; }
       if (password !== confirmPassword) { setError('Passwords do not match'); return; }
       setLoading(true);
       try {
@@ -191,7 +191,7 @@ export default function Login() {
     if (!emailTrimmed) { setError('Email is required'); return; }
     if (!emailRegex.test(emailTrimmed)) { setError('Invalid email format'); return; }
     if (!password) { setError('Password is required'); return; }
-    if (tab === 'register' && password.length < 8) { setError('Password must be at least 8 characters'); return; }
+    if (tab === 'register' && password.length < 12) { setError('Password must be at least 12 characters'); return; }
 
     setLoading(true);
     try {
@@ -429,7 +429,7 @@ export default function Login() {
                       {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
-                  <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 8 characters</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 12 characters</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Confirm Password</label>
@@ -574,7 +574,7 @@ export default function Login() {
                     </button>
                   </div>
                   {tab === 'register' && (
-                    <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 8 characters</p>
+                    <p className="text-xs mt-1" style={{ color: 'var(--text-dim)' }}>Minimum 12 characters</p>
                   )}
                 </div>
 

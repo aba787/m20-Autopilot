@@ -36,6 +36,7 @@ const translations: Record<string, Record<string, string>> = {
   'nav.aiAssistant': { en: 'AI Assistant', ar: 'المساعد الذكي', es: 'Asistente IA', fr: 'Assistant IA', de: 'KI-Assistent', tr: 'Yapay Zeka Asistanı', zh: 'AI助手' },
   'nav.helpCenter': { en: 'Help Center', ar: 'مركز المساعدة', es: 'Centro de Ayuda', fr: "Centre d'aide", de: 'Hilfecenter', tr: 'Yardım Merkezi', zh: '帮助中心' },
   'nav.subscriptions': { en: 'Subscriptions', ar: 'الاشتراكات', es: 'Suscripciones', fr: 'Abonnements', de: 'Abonnements', tr: 'Abonelikler', zh: '订阅' },
+  'nav.securityPolicy': { en: 'Security Policy', ar: 'سياسة الأمن', es: 'Política de Seguridad', fr: 'Politique de Sécurité', de: 'Sicherheitsrichtlinie', tr: 'Güvenlik Politikası', zh: '安全政策' },
   'nav.settings': { en: 'Settings', ar: 'الإعدادات', es: 'Configuración', fr: 'Paramètres', de: 'Einstellungen', tr: 'Ayarlar', zh: '设置' },
   'nav.adminPanel': { en: 'Admin Panel', ar: 'لوحة الإدارة', es: 'Panel Admin', fr: "Panneau d'admin", de: 'Adminbereich', tr: 'Yönetim Paneli', zh: '管理面板' },
 

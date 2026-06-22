@@ -27,8 +27,9 @@ const menuKeys = [
   { href: '/amazon-news',   key: 'nav.amazonNews',     icon: Newspaper       },
   { href: '/integration',   key: 'nav.amazonConnect',  icon: Link2           },
   { href: '/audit',         key: 'nav.changeLog',      icon: History         },
-  { href: '/help',          key: 'nav.helpCenter',     icon: HelpCircle      },
-  { href: '/settings',      key: 'nav.settings',       icon: Settings        },
+  { href: '/help',             key: 'nav.helpCenter',     icon: HelpCircle  },
+  { href: '/security-policy', key: 'nav.securityPolicy', icon: ShieldCheck },
+  { href: '/settings',        key: 'nav.settings',       icon: Settings    },
 ];
 
 interface DBNotif { id: string; title: string; body: string; type: string; read: boolean; created_at: string; }

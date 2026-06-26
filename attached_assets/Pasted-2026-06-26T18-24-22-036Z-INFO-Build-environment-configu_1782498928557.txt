@@ -1,0 +1,157 @@
+2026-06-26T18:24:22.036Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+
+1
+
+2026-06-26T18:24:22.555Z [INFO]: # Cloning repository: git@github.com:aba787/m20-Autopilot.git
+
+2
+
+2026-06-26T18:24:23.386Z [INFO]: 
+
+3
+
+2026-06-26T18:24:23.386Z [INFO]: Cloning into 'm20-Autopilot'...
+
+4
+
+2026-06-26T18:24:23.387Z [INFO]: # Switching to commit: 25550683b76b23e0ba4f8e0ebbdbad98db904b4a
+
+5
+
+2026-06-26T18:24:23.428Z [INFO]: Note: switching to '25550683b76b23e0ba4f8e0ebbdbad98db904b4a'.
+
+6
+
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+
+7
+
+                                 changes and commit them, and you can discard any commits you make in this
+
+8
+
+                                 state without impacting any branches by switching back to a branch.
+
+9
+
+                                 If you want to create a new branch to retain commits you create, you may
+
+10
+
+                                 do so (now or later) by using -c with the switch command. Example:
+
+11
+
+                                 git switch -c <new-branch-name>
+
+12
+
+                                 Or undo this operation with:
+
+13
+
+                                 git switch -
+
+14
+
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+
+15
+
+                                 HEAD is now at 2555068 Update website pages with new designs and functionality
+
+16
+
+2026-06-26T18:24:23.503Z [INFO]: Successfully cleaned up Git credentials
+
+17
+
+2026-06-26T18:24:23.504Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2814009556/src/m20-Autopilot/.gitmodules
+
+18
+
+2026-06-26T18:24:23.511Z [INFO]: # Retrieving environment cache...
+
+19
+
+2026-06-26T18:24:23.559Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+
+20
+
+2026-06-26T18:24:23.559Z [INFO]: ---- Setting Up SSM Secrets ----
+
+21
+
+2026-06-26T18:24:23.559Z [INFO]: SSM params {"Path":"/amplify/d1adtcj3uo8g4c/main/","WithDecryption":true}
+
+22
+
+2026-06-26T18:24:23.603Z [WARNING]: !Failed to set up process.env.secrets
+
+23
+
+2026-06-26T18:24:24.317Z [INFO]: # No package override configuration found.
+
+24
+
+2026-06-26T18:24:24.320Z [INFO]: # Retrieving cache...
+
+25
+
+2026-06-26T18:24:38.531Z [INFO]: # Extracting cache...
+
+26
+
+2026-06-26T18:24:44.345Z [INFO]: # Extraction completed
+
+27
+
+2026-06-26T18:24:44.587Z [INFO]: # Retrieved cache
+
+28
+
+2026-06-26T18:24:48.393Z [INFO]: ## Starting Backend Build
+
+29
+
+                                 ## Checking for associated backend environment...
+
+30
+
+                                 ## No backend environment association found, continuing...
+
+31
+
+                                 ## Completed Backend Build
+
+32
+
+2026-06-26T18:24:48.399Z [INFO]: {"backendDuration": 0}
+
+33
+
+                                 ## Starting Frontend Build
+
+34
+
+                                 # Starting phase: preBuild
+
+35
+
+                                 # Executing command: npm ci
+
+36
+
+2026-06-26T18:26:17.690Z [WARNING]: npm error code ENOTFOUND
+
+37
+
+                                    npm error syscall getaddrinfo
+
+38
+
+                                    npm error errno ENOTFOUND
+
+39
+
+                                    npm error network request to http://package-firewall.replit.local/npm/stripe/-/stripe-22.3.0.tgz failed, reason: getaddrinfo ENOTFOUND package-firewall.replit.local

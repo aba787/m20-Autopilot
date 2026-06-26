@@ -1,0 +1,1054 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>مركز المساعدة — M20 Autopilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=Inter:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+:root{--sky:#38BDF8;--cyan:#22D3EE;--glow:#5eeaff;--bg:#030712;--glass:rgba(14,24,48,.55);--line:rgba(56,189,248,.18);--txt:#dbeafe;--muted:#7b93b8;--green:#34d399}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans Arabic','Segoe UI',system-ui,sans-serif;line-height:1.9;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+/* animated background glow */
+.bg-orbs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.30}
+.orb1{width:520px;height:520px;background:radial-gradient(circle,#22D3EE,transparent 70%);top:-160px;right:-120px;animation:float1 16s ease-in-out infinite}
+.orb2{width:460px;height:460px;background:radial-gradient(circle,#38BDF8,transparent 70%);bottom:-140px;left:-120px;animation:float2 20s ease-in-out infinite}
+@keyframes float1{50%{transform:translate(-40px,60px)}}
+@keyframes float2{50%{transform:translate(50px,-50px)}}
+.grid-bg{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(56,189,248,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.04) 1px,transparent 1px);background-size:46px 46px;mask:radial-gradient(circle at 50% 0%,#000 30%,transparent 80%)}
+.wrap{position:relative;z-index:2}
+/* top nav */
+header{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:rgba(3,7,18,.72);border-bottom:1px solid var(--line)}
+.nav{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 26px}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Inter';font-weight:800;font-size:19px;letter-spacing:-.5px}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px var(--glow)}
+.brand b{background:linear-gradient(90deg,#fff,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nlinks{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}
+.nlinks a:hover{color:var(--cyan)}
+.nbtn{padding:9px 20px;border-radius:30px;background:linear-gradient(90deg,var(--sky),var(--cyan));color:#04121f;font-weight:700;font-size:14px}
+/* hero */
+.hero{padding:90px 26px 60px;text-align:center;position:relative}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:3px;color:var(--cyan);border:1px solid var(--line);padding:7px 20px;border-radius:30px;background:rgba(34,211,238,.06);margin-bottom:22px;font-family:'Inter';font-weight:700}
+.hero h1{font-size:clamp(32px,6vw,58px);font-weight:700;line-height:1.25;background:linear-gradient(120deg,#fff 30%,#7dd3fc);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px}
+.hero p{color:var(--muted);max-width:680px;margin:0 auto;font-size:clamp(15px,2vw,18px)}
+.search{max-width:600px;margin:34px auto 0;position:relative}
+.search input{width:100%;padding:17px 56px 17px 22px;border-radius:16px;border:1px solid var(--line);background:var(--glass);color:var(--txt);font-size:16px;font-family:inherit;outline:none;transition:.25s}
+.search input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(34,211,238,.12)}
+.search .ico{position:absolute;top:50%;right:20px;transform:translateY(-50%);color:var(--cyan);font-size:18px}
+/* layout */
+.layout{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:40px;padding:30px 26px 110px;align-items:start}
+/* sidebar */
+.side{position:sticky;top:96px;background:var(--glass);border:1px solid var(--line);border-radius:20px;padding:22px;backdrop-filter:blur(14px)}
+.side h4{font-size:12px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;font-family:'Inter';margin:14px 8px 8px}
+.side h4:first-child{margin-top:0}
+.side a{display:block;padding:9px 14px;border-radius:10px;font-size:14.5px;color:var(--muted);transition:.2s;border-right:2px solid transparent}
+.side a:hover{background:rgba(34,211,238,.08);color:#e0f2fe;border-right-color:var(--cyan)}
+/* content cards */
+.content{display:flex;flex-direction:column;gap:26px;min-width:0}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:34px 36px;backdrop-filter:blur(12px);position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;right:0;width:140px;height:140px;background:radial-gradient(circle at top right,rgba(34,211,238,.14),transparent 70%);pointer-events:none}
+.card h2{font-size:clamp(22px,3vw,30px);font-weight:700;color:#f0f9ff;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.card h2 .em{font-size:.85em}
+.card h3{font-size:19px;font-weight:600;color:var(--cyan);margin:26px 0 8px}
+.card p{color:#b8cce8;margin-bottom:12px;font-size:15.5px}
+.card .sub{color:var(--muted);font-size:14.5px;margin-bottom:6px}
+.steps{display:grid;gap:18px;margin-top:18px}
+.step{display:flex;gap:16px;align-items:flex-start;padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(56,189,248,.04)}
+.step .num{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:'Inter';font-weight:800;background:linear-gradient(135deg,var(--sky),var(--cyan));color:#04121f}
+.step h3{margin:0 0 4px;color:#e0f2fe}
+.feat-list{list-style:none;display:grid;gap:9px;margin-top:8px}
+.feat-list li{position:relative;padding-right:26px;color:#bcd4ee;font-size:15px}
+.feat-list li::before{content:"◆";position:absolute;right:0;top:1px;color:var(--cyan);font-size:11px}
+.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.pill{padding:7px 16px;border-radius:30px;border:1px solid var(--line);background:rgba(34,211,238,.06);font-size:13.5px;font-family:'Inter';font-weight:600;color:#cdeafe}
+.status-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.st{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:12px;font-size:14px;border:1px solid var(--line)}
+.st .d{width:9px;height:9px;border-radius:50%}
+.st.on .d{background:var(--green);box-shadow:0 0 10px var(--green)} .st.on{color:#bbf7d0}
+.st.off .d{background:#f87171} .st.off{color:#fecaca}
+.st.re .d{background:#fbbf24} .st.re{color:#fde68a}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:18px}
+.kpi{padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(56,189,248,.04);text-align:center}
+.kpi .ic{font-size:24px;margin-bottom:6px}
+.kpi span{display:block;font-size:14px;color:#cfe6ff}
+.soon{display:inline-block;font-size:11px;letter-spacing:2px;font-family:'Inter';font-weight:800;color:#04121f;background:linear-gradient(90deg,#fbbf24,#f59e0b);padding:5px 14px;border-radius:30px;margin-right:10px}
+.support-box{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(120deg,rgba(34,211,238,.10),rgba(56,189,248,.04))}
+.support-box .mail{font-family:'Inter';font-weight:700;font-size:18px;color:var(--cyan)}
+.tag-card{text-align:center;background:linear-gradient(135deg,rgba(34,211,238,.10),rgba(56,189,248,.03));border-style:dashed}
+/* footer */
+footer{border-top:1px solid var(--line);background:rgba(3,7,18,.7);padding:40px 26px;text-align:center;color:var(--muted);font-size:14px}
+footer .fb{font-family:'Inter';font-weight:800;color:#e0f2fe;margin-bottom:8px}
+/* responsive */
+@media(max-width:880px){.layout{grid-template-columns:1fr}.side{position:relative;top:0}.nlinks{display:none}}
+</style>
+
+  <style id="pin-side">
+    /* turn the layout into a single flow; sidebar becomes fixed to far right */
+    .layout{display:block !important;max-width:none !important;padding:30px 0 110px !important;margin:0 !important}
+    .content{max-width:1000px;margin:0 auto;padding:0 26px;width:100%}
+    .side{
+      position:fixed !important;
+      top:0; right:0; bottom:0;
+      width:270px;
+      border-radius:0 !important;
+      border:none !important;
+      border-left:1px solid var(--line) !important;
+      background:rgba(7,12,26,.92) !important;
+      backdrop-filter:blur(16px);
+      overflow-y:auto;
+      padding:90px 20px 30px !important;
+      z-index:40;
+    }
+    /* push hero + content clear of the fixed right sidebar */
+    .hero, .layout{margin-right:270px !important}
+    header .nav{padding-right:290px}
+    footer{margin-right:270px}
+    @media(max-width:880px){
+      .side{position:static !important;width:auto;border-left:none !important;padding:22px !important;border-radius:20px !important}
+      .hero,.layout,footer{margin-right:0 !important}
+      header .nav{padding-right:26px}
+    }
+  </style>
+  <style id="polish">
+    /* sleek themed scrollbars (sidebar + page) */
+    .side{scrollbar-width:thin;scrollbar-color:rgba(34,211,238,.45) transparent}
+    .side::-webkit-scrollbar{width:7px}
+    .side::-webkit-scrollbar-track{background:transparent}
+    .side::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--cyan),var(--sky));border-radius:8px;border:2px solid rgba(7,12,26,.9)}
+    .side::-webkit-scrollbar-thumb:hover{background:var(--glow)}
+    html{scrollbar-width:thin;scrollbar-color:rgba(34,211,238,.35) #060c18}
+    body::-webkit-scrollbar{width:10px}
+    body::-webkit-scrollbar-track{background:#060c18}
+    body::-webkit-scrollbar-thumb{background:rgba(34,211,238,.35);border-radius:8px}
+
+    /* extra breathing room so the pinned sidebar header sits nicely */
+    .side{padding-top:24px !important}
+
+    /* language toggle */
+    .lang-toggle{display:flex;gap:6px;background:rgba(56,189,248,.06);border:1px solid var(--line);border-radius:30px;padding:5px;margin:0 4px 20px}
+    .lang-toggle button{flex:1;border:none;cursor:pointer;font-family:'Inter','IBM Plex Sans Arabic',sans-serif;font-weight:700;font-size:13px;padding:8px 0;border-radius:24px;background:transparent;color:var(--muted);transition:.2s}
+    .lang-toggle button.active{background:linear-gradient(90deg,var(--sky),var(--cyan));color:#04121f}
+    .lang-toggle button:not(.active):hover{color:#e0f2fe}
+  </style><style>#view-ar .side, #view-en .side{top:76px !important; bottom:0; padding-top:18px !important; height:auto !important}</style><style id="claude-agent-animation-styles">
+      @keyframes claude-pulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+      #claude-agent-glow-border-inner {
+        animation: claude-pulse 2s ease-in-out infinite;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #claude-agent-glow-border-inner {
+          animation: none;
+        }
+      }
+    </style><style id="responsive-final">
+  /* ===== RESPONSIVE: works for desktop, tablet (iPad) and mobile ===== */
+
+  /* keep desktop pinned-right sidebar behaviour as default (>1024px) */
+  @media (min-width:1025px){
+    #view-ar .side, #view-en .side{
+      position:fixed !important; top:76px !important; bottom:0 !important; right:0 !important;
+      width:270px !important; height:auto !important; overflow-y:auto;
+      border-left:1px solid var(--line) !important; border-radius:0 !important;
+      background:rgba(7,12,26,.92) !important; padding:18px 20px 30px !important; z-index:40;
+    }
+    #view-ar .hero, #view-ar .layout, #view-ar footer,
+    #view-en .hero, #view-en .layout, #view-en footer{ margin-right:270px !important; }
+    #view-en .hero, #view-en .layout, #view-en footer{ margin-right:270px !important; margin-left:0 !important; }
+  }
+
+  /* TABLET + MOBILE (<=1024px): sidebar becomes a normal stacked panel, full width content */
+  @media (max-width:1024px){
+    /* neutralise the fixed pin */
+    #view-ar .side, #view-en .side{
+      position:static !important; top:auto !important; bottom:auto !important; right:auto !important; left:auto !important;
+      width:auto !important; height:auto !important; max-height:none !important;
+      border:1px solid var(--line) !important; border-radius:18px !important;
+      padding:20px !important; margin:0 0 8px 0 !important; z-index:auto;
+      background:var(--glass) !important;
+    }
+    #view-ar .hero, #view-ar .layout, #view-ar footer,
+    #view-en .hero, #view-en .layout, #view-en footer{ margin-right:0 !important; margin-left:0 !important; }
+
+    /* layout becomes single column, sidebar first */
+    .layout{ display:flex !important; flex-direction:column !important; max-width:760px !important; margin:0 auto !important; padding:24px 18px 80px !important; gap:22px !important; }
+    .content{ max-width:100% !important; width:100% !important; padding:0 !important; margin:0 !important; }
+
+    /* top nav: allow wrapping, smaller, centered */
+    header .nav{ flex-wrap:wrap !important; justify-content:center !important; gap:10px 16px !important; padding:12px 16px !important; }
+    .nlinks{ display:flex !important; flex-wrap:wrap !important; justify-content:center !important; gap:10px 16px !important; order:3; width:100%; font-size:13.5px !important; }
+    .brand{ order:1; font-size:18px !important; }
+    .nbtn{ order:2; padding:8px 16px !important; font-size:13px !important; }
+  }
+
+  /* MOBILE fine-tuning (<=640px) */
+  @media (max-width:640px){
+    body{ font-size:15.5px !important; }
+    .hero{ padding:46px 16px 30px !important; }
+    .hero h1{ font-size:30px !important; line-height:1.3 !important; }
+    .hero p{ font-size:15px !important; }
+    .search input{ font-size:15px !important; padding:14px 46px 14px 16px !important; }
+    .card{ padding:24px 18px !important; border-radius:16px !important; }
+    .card h2{ font-size:21px !important; }
+    .card h3{ font-size:17px !important; }
+    .kpis{ grid-template-columns:repeat(2,1fr) !important; }
+    .pills{ gap:7px !important; }
+    .pill{ font-size:12.5px !important; padding:6px 12px !important; }
+    .status-row{ flex-direction:column !important; align-items:flex-start !important; }
+    .support-box{ flex-direction:column !important; text-align:center !important; }
+    .support-box .mail{ font-size:16px !important; word-break:break-all; }
+    .step{ flex-direction:column !important; }
+    .layout{ padding:18px 14px 70px !important; }
+    .side{ padding:16px !important; }
+  }
+
+  /* prevent any horizontal overflow on every device */
+  html,body{ max-width:100% !important; overflow-x:hidden !important; }
+  img,table{ max-width:100% !important; }
+  
+  @media (max-width:1024px){
+    .layout{ align-items:stretch !important; }
+    #view-ar .side, #view-en .side,
+    #view-ar .content, #view-en .content{ width:100% !important; align-self:stretch !important; box-sizing:border-box !important; }
+    /* sidebar links can flow in a tidy 2-column grid on tablet to save vertical space */
+    #view-ar .side a, #view-en .side a{ display:block; }
+  }
+  @media (min-width:641px) and (max-width:1024px){
+    /* tablet: show nav links inline again (there's room) */
+    .nlinks{ font-size:14px !important; }
+    /* sidebar nav items in 2 columns on tablet */
+    .side{ }
+  }
+  </style><style id="search-style">
+    .search{position:relative}
+    .search .clear-x{position:absolute;top:50%;left:16px;transform:translateY(-50%);cursor:pointer;color:var(--muted);font-size:20px;line-height:1;display:none;background:none;border:none;padding:4px}
+    [dir="ltr"] .search .clear-x{left:auto;right:16px}
+    .search .clear-x:hover{color:var(--cyan)}
+    mark.hl{background:rgba(34,211,238,.30);color:#eaf9ff;border-radius:3px;padding:0 2px}
+    .no-results{display:none;margin:10px auto;max-width:1000px;padding:26px;border:1px dashed var(--line);border-radius:16px;background:var(--glass);color:var(--muted);text-align:center;font-size:16px}
+    .no-results.show{display:block}
+    .search-count{display:none;max-width:1000px;margin:6px auto 0;padding:0 26px;color:var(--cyan);font-size:13.5px;text-align:center}
+    .search-count.show{display:block}
+  </style></head><body><div id="view-ar" style="display: block;">
+<div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div></div>
+<div class="grid-bg"></div>
+<div class="wrap">
+
+<header>
+  <div class="nav">
+    <a class="brand"><span class="dot"></span>M20 <b>Autopilot</b></a>
+    <nav class="nlinks">
+      <a href="#start">البدء</a>
+      <a href="#dashboard">لوحة التحكم</a>
+      <a href="#agents">الوكلاء الأذكياء</a>
+      <a href="#reports">التقارير</a>
+      <a href="#support">الدعم</a>
+    </nav>
+    <a class="nbtn">العودة للمنصة</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">HELP CENTER · مركز المساعدة</span>
+  <h1>مرحباً بك في M20 Autopilot</h1>
+  <p>دليلك الشامل لإدارة أعمالك على أمازون بذكاء أكبر — من ربط الحساب إلى التحليلات المتقدمة والوكلاء الأذكياء.</p>
+  <div class="search">
+    <input type="text" placeholder="ابحث في مركز المساعدة..." aria-label="بحث" data-wired="1">
+    <span class="ico"></span>
+  <button type="button" class="clear-x" aria-label="clear" style="display: none;">×</button></div>
+</section>
+
+<div class="search-count">عدد النتائج: 3</div><div class="layout">
+  <aside class="side"><div class="lang-toggle"><button class="active" data-lang="ar">العربية</button><button data-lang="en">English</button></div>
+    <h4>الأساسيات</h4>
+    <a href="#welcome">مرحباً بك</a>
+    <a href="#start">كيف تبدأ؟</a>
+    <a href="#connection">حالة الاتصال</a>
+    <h4>لوحة التحكم</h4>
+    <a href="#dashboard">اللوحة الرئيسية</a>
+    <a href="#chart">الرسم البياني التفاعلي</a>
+    <a href="#dates">خيارات التاريخ</a>
+    <a href="#export">تصدير التقارير</a>
+    <h4>الوكلاء الأذكياء</h4>
+    <a href="#ads-agent">وكيل الإعلانات</a>
+    <a href="#acc-agent">وكيل المحاسبة</a>
+    <a href="#prod-agent">وكيل فحص المنتجات</a>
+    <h4>الإدارة</h4>
+    <a href="#markets">الأسواق المتصلة</a>
+    <a href="#alerts">التنبيهات الذكية</a>
+    <a href="#reports">مركز التقارير</a>
+    <a href="#soon">قريباً</a>
+    <h4>أخرى</h4>
+    <a href="#security">الأمان والخصوصية</a>
+    <a href="#support">الدعم الفني</a>
+  </aside>
+
+  <main class="content">
+
+    <article id="welcome" class="card" data-text="
+      مرحباً بك في m20 autopilot
+      نرحب بك في m20 autopilot. تم تصميم المنصة لمساعدة بائعي أمازون على إدارة أعمالهم بذكاء أكبر من خلال مجموعة من وكلاء الذكاء الاصطناعي المتخصصين في تحليل البيانات، مراقبة الأداء، وإبراز فرص النمو.
+      هدفنا هو تحويل البيانات المعقدة إلى معلومات واضحة تساعدك على اتخاذ قرارات أسرع وأكثر دقة.
+    " style="">
+      <h2>مرحباً بك في M20 Autopilot</h2>
+      <p>نرحب بك في <b>M20 Autopilot</b>. تم تصميم المنصة لمساعدة بائعي أمازون على إدارة أعمالهم بذكاء أكبر من خلال مجموعة من وكلاء الذكاء الاصطناعي المتخصصين في تحليل البيانات، مراقبة الأداء، وإبراز فرص النمو.</p>
+      <p>هدفنا هو تحويل البيانات المعقدة إلى معلومات واضحة تساعدك على اتخاذ قرارات أسرع وأكثر دقة.</p>
+    </article>
+
+    <article id="start" class="card" data-text="
+      كيف تبدأ؟
+      
+        
+          1
+          
+            ربط حساب أمازون
+            ابدأ بربط حساب amazon ads الخاص بك. بمجرد اكتمال عملية الربط ستتمكن المنصة من قراءة البيانات المصرح بها وعرضها داخل لوحة التحكم.
+            بعد الربط ستظهر الأسواق المرتبطة بحسابك بشكل تلقائي.
+          
+        
+        
+          2
+          
+            التحقق من حالة الاتصال
+            يمكنك مراجعة حالة الاتصال من خلال قسم الأسواق المتصلة. الأسواق المدعومة تشمل:
+            
+              amazon.saamazon.aeamazon.com
+              amazon.co.ukamazon.deamazon.fr
+              + أسواق أخرى
+            
+          
+        
+      
+      
+      حالة كل سوق
+      
+        متصل
+        غير متصل
+        يتطلب إعادة التحقق
+      
+    " style="">
+      <h2>كيف تبدأ؟</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>ربط حساب أمازون</h3>
+            <p class="sub">ابدأ بربط حساب <b>Amazon Ads</b> الخاص بك. بمجرد اكتمال عملية الربط ستتمكن المنصة من قراءة البيانات المصرح بها وعرضها داخل لوحة التحكم.</p>
+            <p class="sub">بعد الربط ستظهر الأسواق المرتبطة بحسابك بشكل تلقائي.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>التحقق من حالة الاتصال</h3>
+            <p class="sub">يمكنك مراجعة حالة الاتصال من خلال قسم الأسواق المتصلة. الأسواق المدعومة تشمل:</p>
+            <div class="pills">
+              <span class="pill">Amazon.sa</span><span class="pill">Amazon.ae</span><span class="pill">Amazon.com</span>
+              <span class="pill">Amazon.co.uk</span><span class="pill">Amazon.de</span><span class="pill">Amazon.fr</span>
+              <span class="pill">+ أسواق أخرى</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="connection"></div>
+      <h3>حالة كل سوق</h3>
+      <div class="status-row">
+        <span class="st on"><span class="d"></span>متصل</span>
+        <span class="st off"><span class="d"></span>غير متصل</span>
+        <span class="st re"><span class="d"></span>يتطلب إعادة التحقق</span>
+      </div>
+    </article>
+
+    <article id="dashboard" class="card" data-text="
+      لوحة التحكم الرئيسية
+      لوحة التحكم هي مركز العمليات الرئيسي داخل m20 autopilot، صُممت لتمنحك رؤية شاملة لأداء نشاطك التجاري في مكان واحد. ستجد فيها:
+      
+        إجمالي المبيعات
+        صافي الأرباح
+        الإنفاق الإعلاني
+        مؤشرات الأداء
+        أداء الأسواق
+        حالة الوكلاء
+        التنبيهات والتوصيات
+      
+    " style="">
+      <h2>لوحة التحكم الرئيسية</h2>
+      <p>لوحة التحكم هي مركز العمليات الرئيسي داخل M20 Autopilot، صُممت لتمنحك رؤية شاملة لأداء نشاطك التجاري في مكان واحد. ستجد فيها:</p>
+      <div class="kpis">
+        <div class="kpi"><span>إجمالي المبيعات</span></div>
+        <div class="kpi"><span>صافي الأرباح</span></div>
+        <div class="kpi"><span>الإنفاق الإعلاني</span></div>
+        <div class="kpi"><span>مؤشرات الأداء</span></div>
+        <div class="kpi"><span>أداء الأسواق</span></div>
+        <div class="kpi"><span>حالة الوكلاء</span></div>
+        <div class="kpi"><span>التنبيهات والتوصيات</span></div>
+      </div>
+    </article>
+
+    <article id="chart" class="card" data-text="
+      الرسم البياني التفاعلي
+      يعتبر الرسم البياني من أهم الأدوات داخل المنصة. يمكنك من خلاله تتبع الأداء المالي والتشغيلي خلال أي فترة زمنية.
+      المؤشرات المتاحة
+      
+        إجمالي الإيراداتتكلفة المنتجاتالإنفاق الإعلاني
+        رسوم أمازونصافي الربحهوامش الربحية
+        نمو المبيعاتالعائد على الإنفاق الإعلاني (roas)
+      
+    " style="">
+      <h2>الرسم البياني التفاعلي</h2>
+      <p>يعتبر الرسم البياني من أهم الأدوات داخل المنصة. يمكنك من خلاله تتبع الأداء المالي والتشغيلي خلال أي فترة زمنية.</p>
+      <h3>المؤشرات المتاحة</h3>
+      <ul class="feat-list">
+        <li>إجمالي الإيرادات</li><li>تكلفة المنتجات</li><li>الإنفاق الإعلاني</li>
+        <li>رسوم أمازون</li><li>صافي الربح</li><li>هوامش الربحية</li>
+        <li>نمو المبيعات</li><li>العائد على الإنفاق الإعلاني (ROAS)</li>
+      </ul>
+    </article>
+
+    <article id="dates" class="card" data-text="
+      خيارات التاريخ
+      يمكنك تخصيص الفترة الزمنية بسهولة، وسيتم تحديث جميع البيانات والتقارير تلقائياً بناءً على الفترة التي تختارها.
+      
+        اليومآخر 7 أيامآخر 30 يوماً
+        آخر 90 يوماًهذا العامفترة مخصصة (من — إلى)
+      
+    " style="">
+      <h2>خيارات التاريخ</h2>
+      <p>يمكنك تخصيص الفترة الزمنية بسهولة، وسيتم تحديث جميع البيانات والتقارير تلقائياً بناءً على الفترة التي تختارها.</p>
+      <div class="pills">
+        <span class="pill">اليوم</span><span class="pill">آخر 7 أيام</span><span class="pill">آخر 30 يوماً</span>
+        <span class="pill">آخر 90 يوماً</span><span class="pill">هذا العام</span><span class="pill">فترة مخصصة (من — إلى)</span>
+      </div>
+    </article>
+
+    <article id="export" class="card" data-text="
+      تصدير التقارير
+      يمكنك تنزيل التقارير للاستخدام الداخلي أو مشاركتها مع فريق العمل. يمكن إنشاء التقارير في أي وقت بناءً على الفلاتر المحددة.
+      الصيغ المدعومة
+      pdfexcelcsv
+    " style="">
+      <h2>تصدير التقارير</h2>
+      <p>يمكنك تنزيل التقارير للاستخدام الداخلي أو مشاركتها مع فريق العمل. يمكن إنشاء التقارير في أي وقت بناءً على الفلاتر المحددة.</p>
+      <h3>الصيغ المدعومة</h3>
+      <div class="pills"><span class="pill">PDF</span><span class="pill">Excel</span><span class="pill">CSV</span></div>
+    </article>
+
+    <article id="ads-agent" class="card" data-text="
+      وكيل الإعلانات الذكي
+      يقوم وكيل الإعلانات الذكي بتحليل بيانات الإعلانات بشكل مستمر، ويعرض الملاحظات المهمة والتوصيات مباشرة داخل لوحة التحكم. يساعدك على:
+      
+        مراقبة أداء الحملاتاكتشاف الحملات ذات الأداء الضعيف
+        اكتشاف الحملات الأعلى ربحيةتحليل اتجاهات الإنفاق
+        مراقبة العائد على الإنفاق الإعلانياكتشاف فرص النمو
+      
+    " style="">
+      <h2>وكيل الإعلانات الذكي</h2>
+      <p>يقوم وكيل الإعلانات الذكي بتحليل بيانات الإعلانات بشكل مستمر، ويعرض الملاحظات المهمة والتوصيات مباشرة داخل لوحة التحكم. يساعدك على:</p>
+      <ul class="feat-list">
+        <li>مراقبة أداء الحملات</li><li>اكتشاف الحملات ذات الأداء الضعيف</li>
+        <li>اكتشاف الحملات الأعلى ربحية</li><li>تحليل اتجاهات الإنفاق</li>
+        <li>مراقبة العائد على الإنفاق الإعلاني</li><li>اكتشاف فرص النمو</li>
+      </ul>
+    </article>
+
+    <article id="acc-agent" class="card" data-text="
+      وكيل المحاسبة الذكي
+      يوفر رؤية مالية متقدمة لنشاطك التجاري. الهدف هو مساعدتك على فهم الأرقام بشكل أسرع واتخاذ قرارات مالية أفضل. يقوم بتحليل:
+      
+        المبيعاتتكلفة البضائعرسوم أمازونالإنفاق الإعلاني
+        صافي الربحهوامش الربحيةالأداء المالي التاريخياتجاهات النمو
+      
+    " style="">
+      <h2>وكيل المحاسبة الذكي</h2>
+      <p>يوفر رؤية مالية متقدمة لنشاطك التجاري. الهدف هو مساعدتك على فهم الأرقام بشكل أسرع واتخاذ قرارات مالية أفضل. يقوم بتحليل:</p>
+      <ul class="feat-list">
+        <li>المبيعات</li><li>تكلفة البضائع</li><li>رسوم أمازون</li><li>الإنفاق الإعلاني</li>
+        <li>صافي الربح</li><li>هوامش الربحية</li><li>الأداء المالي التاريخي</li><li>اتجاهات النمو</li>
+      </ul>
+    </article>
+
+    <article id="prod-agent" class="card" data-text="
+      وكيل فحص المنتجات
+      يقوم بمراقبة المنتجات المدرجة داخل أمازون ويساعدك على:
+      
+        مراجعة حالة المنتجاتاكتشاف فرص التحسينمتابعة جودة المحتوى
+        اكتشاف المشكلات المحتملةمراقبة جاهزية المنتجات للبيع
+      
+    " style="">
+      <h2>وكيل فحص المنتجات</h2>
+      <p>يقوم بمراقبة المنتجات المدرجة داخل أمازون ويساعدك على:</p>
+      <ul class="feat-list">
+        <li>مراجعة حالة المنتجات</li><li>اكتشاف فرص التحسين</li><li>متابعة جودة المحتوى</li>
+        <li>اكتشاف المشكلات المحتملة</li><li>مراقبة جاهزية المنتجات للبيع</li>
+      </ul>
+    </article>
+
+    <article id="markets" class="card" data-text="
+      الأسواق المتصلة
+      تتيح لك المنصة مراقبة عدة أسواق من مكان واحد. يمكنك:
+      
+        التبديل بين الأسواقمقارنة الأداء بين الأسواقمراجعة الأرباح لكل سوق
+        مراجعة الإنفاق لكل سوقتحليل النمو حسب الدولة
+      
+    " style="">
+      <h2>الأسواق المتصلة</h2>
+      <p>تتيح لك المنصة مراقبة عدة أسواق من مكان واحد. يمكنك:</p>
+      <ul class="feat-list">
+        <li>التبديل بين الأسواق</li><li>مقارنة الأداء بين الأسواق</li><li>مراجعة الأرباح لكل سوق</li>
+        <li>مراجعة الإنفاق لكل سوق</li><li>تحليل النمو حسب الدولة</li>
+      </ul>
+    </article>
+
+    <article id="alerts" class="card" data-text="
+      التنبيهات الذكية
+      يقوم النظام بإرسال تنبيهات فورية عند اكتشاف أحداث مهمة. أمثلة:
+      
+        ارتفاع غير طبيعي في الإنفاقانخفاض الأرباحتغيرات كبيرة في الأداء
+        فرص نمو جديدةمؤشرات تستحق المراجعة
+      
+    " style="">
+      <h2>التنبيهات الذكية</h2>
+      <p>يقوم النظام بإرسال تنبيهات فورية عند اكتشاف أحداث مهمة. أمثلة:</p>
+      <ul class="feat-list">
+        <li>ارتفاع غير طبيعي في الإنفاق</li><li>انخفاض الأرباح</li><li>تغيرات كبيرة في الأداء</li>
+        <li>فرص نمو جديدة</li><li>مؤشرات تستحق المراجعة</li>
+      </ul>
+    </article>
+
+    <article id="reports" class="card" data-text="
+      مركز التقارير
+      يمكنك الوصول إلى جميع التقارير السابقة من مكان واحد. أمثلة:
+      
+        تقرير الأرباحتقرير الإنفاقتقرير الأداء
+        تقرير الأسواقتقرير الملخص التنفيذيتقارير الذكاء الاصطناعي الأسبوعية
+      
+    " style="">
+      <h2>مركز التقارير</h2>
+      <p>يمكنك الوصول إلى جميع التقارير السابقة من مكان واحد. أمثلة:</p>
+      <ul class="feat-list">
+        <li>تقرير الأرباح</li><li>تقرير الإنفاق</li><li>تقرير الأداء</li>
+        <li>تقرير الأسواق</li><li>تقرير الملخص التنفيذي</li><li>تقارير الذكاء الاصطناعي الأسبوعية</li>
+      </ul>
+    </article>
+
+    <article id="soon" class="card" data-text="
+      قريباً وكيل إنشاء المنتجات بالذكاء الاصطناعي
+      نعمل حالياً على تطوير وكيل جديد يساعد البائعين على إنشاء المنتجات بشكل أسرع. سيتم الإعلان عن هذه الميزة فور إطلاقها. الميزات المخطط لها:
+      
+        تحليل المنتجإنشاء المحتوىتجهيز بيانات الإدراج
+        تحسين المعلوماتتسريع عملية إضافة المنتجات
+      
+    " style="">
+      <h2><span class="soon">قريباً</span> وكيل إنشاء المنتجات بالذكاء الاصطناعي</h2>
+      <p>نعمل حالياً على تطوير وكيل جديد يساعد البائعين على إنشاء المنتجات بشكل أسرع. سيتم الإعلان عن هذه الميزة فور إطلاقها. الميزات المخطط لها:</p>
+      <ul class="feat-list">
+        <li>تحليل المنتج</li><li>إنشاء المحتوى</li><li>تجهيز بيانات الإدراج</li>
+        <li>تحسين المعلومات</li><li>تسريع عملية إضافة المنتجات</li>
+      </ul>
+    </article>
+
+    <article id="security" class="card" data-text="
+      الأمان والخصوصية
+      نحن نأخذ أمن البيانات على محمل الجد. يتم استخدام الاتصالات المصرح بها فقط للوصول إلى البيانات المسموح بها.
+      لا يتم إجراء أي عمليات خارج نطاق الصلاحيات الممنوحة من المستخدم.
+    " style="">
+      <h2>الأمان والخصوصية</h2>
+      <p>نحن نأخذ أمن البيانات على محمل الجد. يتم استخدام الاتصالات المصرح بها فقط للوصول إلى البيانات المسموح بها.</p>
+      <p>لا يتم إجراء أي عمليات خارج نطاق الصلاحيات الممنوحة من المستخدم.</p>
+    </article>
+
+    <article id="support" class="card" data-text="
+      الدعم الفني
+      إذا احتجت إلى أي مساعدة أو واجهت أي مشكلة أثناء استخدام المنصة، يمكنك التواصل مع فريق الدعم الفني. يسعدنا مساعدتك والإجابة على استفساراتك في أسرع وقت ممكن.
+      
+        
+        
+          البريد الإلكتروني للدعم:
+          support@m20autopilot.com
+        
+      
+    " style="">
+      <h2>الدعم الفني</h2>
+      <p>إذا احتجت إلى أي مساعدة أو واجهت أي مشكلة أثناء استخدام المنصة، يمكنك التواصل مع فريق الدعم الفني. يسعدنا مساعدتك والإجابة على استفساراتك في أسرع وقت ممكن.</p>
+      <div class="support-box">
+        
+        <div>
+          <div class="sub" style="margin:0">البريد الإلكتروني للدعم:</div>
+          <a class="mail" href="mailto:support@m20autopilot.com">support@m20autopilot.com</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card tag-card" data-text="
+      شكراً لاستخدام m20 autopilot
+      نسعى لبناء منصة تساعد بائعي أمازون على فهم أعمالهم بشكل أفضل واتخاذ قرارات أكثر ذكاءً اعتماداً على البيانات والتحليلات المتقدمة. نتطلع إلى أن نكون جزءاً من رحلة نمو أعمالك.
+    " style="">
+      <h2 style="justify-content:center">شكراً لاستخدام M20 Autopilot</h2>
+      <p style="margin:0 auto;max-width:640px">نسعى لبناء منصة تساعد بائعي أمازون على فهم أعمالهم بشكل أفضل واتخاذ قرارات أكثر ذكاءً اعتماداً على البيانات والتحليلات المتقدمة. نتطلع إلى أن نكون جزءاً من رحلة نمو أعمالك.</p>
+    </article>
+
+  </main>
+</div><div class="no-results">لا توجد نتائج مطابقة لبحثك. جرّب كلمة مختلفة.</div>
+
+<footer>
+  <div class="fb">M20 Autopilot</div>
+  <div>© 2026 M20 Autopilot — مركز المساعدة. جميع الحقوق محفوظة.</div>
+</footer>
+
+</div>
+</div><div id="view-en" style="display: none;">
+<div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div></div>
+<div class="grid-bg"></div>
+<div class="wrap">
+
+<header>
+  <div class="nav">
+    <a class="brand"><span class="dot"></span>M20 <b>Autopilot</b></a>
+    <nav class="nlinks">
+      <a href="#start">Getting Started</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#agents">AI Agents</a>
+      <a href="#reports">Reports</a>
+      <a href="#support">Support</a>
+    </nav>
+    <a class="nbtn">Back to Platform</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">HELP CENTER</span>
+  <h1>Welcome to M20 Autopilot</h1>
+  <p>Your complete guide to managing your Amazon business smarter — from connecting your account to advanced analytics and AI Agents.</p>
+  <div class="search">
+    <input type="text" placeholder="Search the help center..." aria-label="بحث" data-wired="1">
+    <span class="ico"></span>
+  <button type="button" class="clear-x" aria-label="clear" style="display: none;">×</button></div>
+</section>
+
+<div class="search-count">6 results found</div><div class="layout">
+  <aside class="side"><div class="lang-toggle"><button data-lang="ar">العربية</button><button class="active" data-lang="en">English</button></div>
+    <h4>Basics</h4>
+    <a href="#welcome">Welcome</a>
+    <a href="#start">Getting Started</a>
+    <a href="#connection">Connection Status</a>
+    <h4>Dashboard</h4>
+    <a href="#dashboard">Main Dashboard</a>
+    <a href="#chart">Interactive Chart</a>
+    <a href="#dates">Date Options</a>
+    <a href="#export">Export Reports</a>
+    <h4>AI Agents</h4>
+    <a href="#ads-agent">Ads Agent</a>
+    <a href="#acc-agent">Accounting Agent</a>
+    <a href="#prod-agent">Product Audit Agent</a>
+    <h4>Management</h4>
+    <a href="#markets">Connected Markets</a>
+    <a href="#alerts">Smart Alerts</a>
+    <a href="#reports">Reports Center</a>
+    <a href="#soon">Coming Soon</a>
+    <h4>Other</h4>
+    <a href="#security">Security &amp; Privacy</a>
+    <a href="#support">Technical Support</a>
+  </aside>
+
+  <main class="content">
+
+    <article id="welcome" class="card" data-text="
+      welcome to m20 autopilot
+      welcome to m20 autopilot. the platform is designed to help amazon sellers manage their business smarter through a suite of specialized ai agents for data analysis, performance monitoring, and growth opportunity discovery.
+      our goal is to turn complex data into clear insights that help you make faster, more accurate decisions.
+    ">
+      <h2>Welcome to M20 Autopilot</h2>
+      <p>Welcome to <b>M20 Autopilot</b>. The platform is designed to help Amazon sellers manage their business smarter through a suite of specialized AI agents for data analysis, performance monitoring, and growth opportunity discovery.</p>
+      <p>Our goal is to turn complex data into clear insights that help you make faster, more accurate decisions.</p>
+    </article>
+
+    <article id="start" class="card" data-text="
+      getting started
+      
+        
+          1
+          
+            connect amazon account
+            start by connecting your amazon ads account. once linked, the platform can read your authorized data and display it inside the dashboard.
+            after linking, the markets associated with your account appear automatically.
+          
+        
+        
+          2
+          
+            verify connection status
+            you can review the connection status in the connected markets section. supported markets include:
+            
+              amazon.saamazon.aeamazon.com
+              amazon.co.ukamazon.deamazon.fr
+              + more markets
+            
+          
+        
+      
+      
+      status of each market
+      
+        connected
+        not connected
+        needs re-verification
+      
+    " style="">
+      <h2>Getting Started</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>Connect Amazon Account</h3>
+            <p class="sub">Start by connecting your <b>Amazon Ads</b> account. Once linked, the platform can read your authorized data and display it inside the dashboard.</p>
+            <p class="sub">After linking, the markets associated with your account appear automatically.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>Verify Connection Status</h3>
+            <p class="sub">You can review the connection status in the Connected Markets section. Supported markets include:</p>
+            <div class="pills">
+              <span class="pill">Amazon.sa</span><span class="pill">Amazon.ae</span><span class="pill">Amazon.com</span>
+              <span class="pill">Amazon.co.uk</span><span class="pill">Amazon.de</span><span class="pill">Amazon.fr</span>
+              <span class="pill">+ more markets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="connection"></div>
+      <h3>Status of Each Market</h3>
+      <div class="status-row">
+        <span class="st on"><span class="d"></span>Connected</span>
+        <span class="st off"><span class="d"></span>Not Connected</span>
+        <span class="st re"><span class="d"></span>Needs Re-verification</span>
+      </div>
+    </article>
+
+    <article id="dashboard" class="card" data-text="
+      main dashboard
+      the dashboard is the main operations hub inside m20 autopilot, designed to give you a complete view of your business performance in one place. it includes:
+      
+        total sales
+        net profit
+        ad spend
+        performance kpis
+        market performance
+        agent status
+        alerts &amp; recommendations
+      
+    ">
+      <h2>Main Dashboard</h2>
+      <p>The dashboard is the main operations hub inside M20 Autopilot, designed to give you a complete view of your business performance in one place. It includes:</p>
+      <div class="kpis">
+        <div class="kpi"><span>Total Sales</span></div>
+        <div class="kpi"><span>Net Profit</span></div>
+        <div class="kpi"><span>Ad Spend</span></div>
+        <div class="kpi"><span>Performance KPIs</span></div>
+        <div class="kpi"><span>Market Performance</span></div>
+        <div class="kpi"><span>Agent Status</span></div>
+        <div class="kpi"><span>Alerts &amp; Recommendations</span></div>
+      </div>
+    </article>
+
+    <article id="chart" class="card" data-text="
+      interactive chart
+      the chart is one of the most important tools on the platform, letting you track financial and operational performance over any time period.
+      available metrics
+      
+        total revenueproduct costsad spend
+        amazon feesnet profitprofit margins
+        sales growthreturn on ad spend (roas)
+      
+    " style="">
+      <h2>Interactive Chart</h2>
+      <p>The chart is one of the most important tools on the platform, letting you track financial and operational performance over any time period.</p>
+      <h3>Available Metrics</h3>
+      <ul class="feat-list">
+        <li>Total Revenue</li><li>Product Costs</li><li>Ad Spend</li>
+        <li>Amazon Fees</li><li>Net Profit</li><li>Profit Margins</li>
+        <li>Sales Growth</li><li>Return on Ad Spend (ROAS)</li>
+      </ul>
+    </article>
+
+    <article id="dates" class="card" data-text="
+      date options
+      you can easily customize the time period, and all data and reports update automatically based on your selection.
+      
+        todaylast 7 dayslast 30 days
+        last 90 daysthis yearcustom range (from — to)
+      
+    " style="">
+      <h2>Date Options</h2>
+      <p>You can easily customize the time period, and all data and reports update automatically based on your selection.</p>
+      <div class="pills">
+        <span class="pill">Today</span><span class="pill">Last 7 days</span><span class="pill">Last 30 days</span>
+        <span class="pill">Last 90 days</span><span class="pill">This year</span><span class="pill">Custom range (from — to)</span>
+      </div>
+    </article>
+
+    <article id="export" class="card" data-text="
+      export reports
+      you can download reports for internal use or to share with your team. reports can be generated anytime based on the selected filters.
+      supported formats
+      pdfexcelcsv
+    " style="">
+      <h2>Export Reports</h2>
+      <p>You can download reports for internal use or to share with your team. Reports can be generated anytime based on the selected filters.</p>
+      <h3>Supported Formats</h3>
+      <div class="pills"><span class="pill">PDF</span><span class="pill">Excel</span><span class="pill">CSV</span></div>
+    </article>
+
+    <article id="ads-agent" class="card" data-text="
+      smart ads agent
+      the smart ads agent continuously analyzes your advertising data and surfaces key insights and recommendations directly in the dashboard. it helps you:
+      
+        monitor campaign performancedetect underperforming campaigns
+        identify the most profitable campaignsanalyze spending trends
+        track return on ad spenddiscover growth opportunities
+      
+    ">
+      <h2>Smart Ads Agent</h2>
+      <p>The Smart Ads Agent continuously analyzes your advertising data and surfaces key insights and recommendations directly in the dashboard. It helps you:</p>
+      <ul class="feat-list">
+        <li>Monitor campaign performance</li><li>Detect underperforming campaigns</li>
+        <li>Identify the most profitable campaigns</li><li>Analyze spending trends</li>
+        <li>Track return on ad spend</li><li>Discover growth opportunities</li>
+      </ul>
+    </article>
+
+    <article id="acc-agent" class="card" data-text="
+      smart accounting agent
+      provides advanced financial visibility for your business. the goal is to help you understand the numbers faster and make better financial decisions. it analyzes:
+      
+        salescost of goodsamazon feesad spend
+        net profitprofit marginshistorical financial performancegrowth trends
+      
+    ">
+      <h2>Smart Accounting Agent</h2>
+      <p>Provides advanced financial visibility for your business. The goal is to help you understand the numbers faster and make better financial decisions. It analyzes:</p>
+      <ul class="feat-list">
+        <li>Sales</li><li>Cost of Goods</li><li>Amazon Fees</li><li>Ad Spend</li>
+        <li>Net Profit</li><li>Profit Margins</li><li>Historical Financial Performance</li><li>Growth Trends</li>
+      </ul>
+    </article>
+
+    <article id="prod-agent" class="card" data-text="
+      product audit agent
+      it monitors your listed products on amazon and helps you:
+      
+        review product statusfind optimization opportunitiestrack content quality
+        detect potential issuesmonitor product readiness for sale
+      
+    ">
+      <h2>Product Audit Agent</h2>
+      <p>It monitors your listed products on Amazon and helps you:</p>
+      <ul class="feat-list">
+        <li>Review product status</li><li>Find optimization opportunities</li><li>Track content quality</li>
+        <li>Detect potential issues</li><li>Monitor product readiness for sale</li>
+      </ul>
+    </article>
+
+    <article id="markets" class="card" data-text="
+      connected markets
+      the platform lets you monitor multiple markets from one place. you can:
+      
+        switch between marketscompare performance across marketsreview profit per market
+        review spend per marketanalyze growth by country
+      
+    " style="">
+      <h2>Connected Markets</h2>
+      <p>The platform lets you monitor multiple markets from one place. You can:</p>
+      <ul class="feat-list">
+        <li>Switch between markets</li><li>Compare performance across markets</li><li>Review profit per market</li>
+        <li>Review spend per market</li><li>Analyze growth by country</li>
+      </ul>
+    </article>
+
+    <article id="alerts" class="card" data-text="
+      smart alerts
+      the system sends instant alerts when important events are detected. examples:
+      
+        abnormal spike in spenddrop in profitmajor performance changes
+        new growth opportunitiesmetrics worth reviewing
+      
+    " style="">
+      <h2>Smart Alerts</h2>
+      <p>The system sends instant alerts when important events are detected. Examples:</p>
+      <ul class="feat-list">
+        <li>Abnormal spike in spend</li><li>Drop in profit</li><li>Major performance changes</li>
+        <li>New growth opportunities</li><li>Metrics worth reviewing</li>
+      </ul>
+    </article>
+
+    <article id="reports" class="card" data-text="
+      reports center
+      you can access all previous reports from one place. examples:
+      
+        profit reportspend reportperformance report
+        markets reportexecutive summary reportweekly ai reports
+      
+    " style="">
+      <h2>Reports Center</h2>
+      <p>You can access all previous reports from one place. Examples:</p>
+      <ul class="feat-list">
+        <li>Profit report</li><li>Spend report</li><li>Performance report</li>
+        <li>Markets report</li><li>Executive summary report</li><li>Weekly AI reports</li>
+      </ul>
+    </article>
+
+    <article id="soon" class="card" data-text="
+      coming soon ai product creation agent
+      we are currently developing a new agent that helps sellers create products faster. this feature will be announced as soon as it launches. planned features:
+      
+        product analysiscontent generationlisting data preparation
+        information optimizationfaster product onboarding
+      
+    ">
+      <h2><span class="soon">Coming Soon</span> AI Product Creation Agent</h2>
+      <p>We are currently developing a new agent that helps sellers create products faster. This feature will be announced as soon as it launches. Planned features:</p>
+      <ul class="feat-list">
+        <li>Product analysis</li><li>Content generation</li><li>Listing data preparation</li>
+        <li>Information optimization</li><li>Faster product onboarding</li>
+      </ul>
+    </article>
+
+    <article id="security" class="card" data-text="
+      security &amp; privacy
+      we take data security seriously. only authorized connections are used to access permitted data.
+      no operations are performed beyond the permissions granted by the user.
+    " style="">
+      <h2>Security &amp; Privacy</h2>
+      <p>We take data security seriously. Only authorized connections are used to access permitted data.</p>
+      <p>No operations are performed beyond the permissions granted by the user.</p>
+    </article>
+
+    <article id="support" class="card" data-text="
+      technical support
+      if you need help or face any issue while using the platform, you can contact our technical support team. we are happy to assist you and answer your questions as quickly as possible.
+      
+        
+        
+          support email:
+          support@m20autopilot.com
+        
+      
+    " style="">
+      <h2>Technical Support</h2>
+      <p>If you need help or face any issue while using the platform, you can contact our technical support team. We are happy to assist you and answer your questions as quickly as possible.</p>
+      <div class="support-box">
+        
+        <div>
+          <div class="sub" style="margin:0">Support email:</div>
+          <a class="mail" href="mailto:support@m20autopilot.com">support@m20autopilot.com</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card tag-card" data-text="
+      thank you for using m20 autopilot
+      we strive to build a platform that helps amazon sellers better understand their business and make smarter decisions based on data and advanced analytics. we look forward to being part of your growth journey.
+    " style="">
+      <h2 style="justify-content:center">Thank you for using M20 Autopilot</h2>
+      <p style="margin:0 auto;max-width:640px">We strive to build a platform that helps Amazon sellers better understand their business and make smarter decisions based on data and advanced analytics. We look forward to being part of your growth journey.</p>
+    </article>
+
+  </main>
+</div><div class="no-results">No results match your search. Try a different keyword.</div>
+
+<footer>
+  <div class="fb">M20 Autopilot</div>
+  <div>© 2026 M20 Autopilot — Help Center. All rights reserved.</div>
+</footer>
+
+</div>
+</div><script>(function(){function setLang(l){var a=document.getElementById("view-ar"),e=document.getElementById("view-en");if(l==="en"){document.documentElement.lang="en";document.documentElement.dir="ltr";a.style.display="none";e.style.display="block";}else{document.documentElement.lang="ar";document.documentElement.dir="rtl";e.style.display="none";a.style.display="block";}window.scrollTo(0,0);}document.addEventListener("click",function(ev){var t=ev.target.closest("[data-lang]");if(!t)return;setLang(t.getAttribute("data-lang"));});setLang("ar");})();</script><script id="search-script">
+  (function(){
+    function strip(el){
+      // remove existing highlights inside an element
+      el.querySelectorAll('mark.hl').forEach(function(m){
+        var p=m.parentNode; p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+      });
+    }
+    function highlight(root, term){
+      if(!term) return;
+      var walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode:function(n){
+          if(!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          var p=n.parentNode;
+          if(!p || ['SCRIPT','STYLE','MARK'].indexOf(p.tagName)>-1) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      var nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+      var lt=term.toLowerCase();
+      nodes.forEach(function(n){
+        var txt=n.nodeValue, low=txt.toLowerCase(), idx=low.indexOf(lt);
+        if(idx<0) return;
+        var frag=document.createDocumentFragment(), last=0, i=idx;
+        while(i>-1){
+          if(i>last) frag.appendChild(document.createTextNode(txt.slice(last,i)));
+          var m=document.createElement('mark'); m.className='hl'; m.textContent=txt.slice(i,i+term.length);
+          frag.appendChild(m);
+          last=i+term.length; i=low.indexOf(lt,last);
+        }
+        if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+        n.parentNode.replaceChild(frag, n);
+      });
+    }
+    function wire(view){
+      if(!view) return;
+      var input=view.querySelector('.search input');
+      if(!input || input.dataset.wired) return;
+      input.dataset.wired='1';
+
+      // add clear button
+      var x=document.createElement('button'); x.type='button'; x.className='clear-x'; x.innerHTML='&times;'; x.setAttribute('aria-label','clear');
+      input.parentNode.appendChild(x);
+
+      // count + no-results elements (placed right after the layout)
+      var layout=view.querySelector('.layout');
+      var count=document.createElement('div'); count.className='search-count';
+      var nores=document.createElement('div'); nores.className='no-results';
+      var isAr = view.id==='view-ar';
+      nores.textContent = isAr ? 'لا توجد نتائج مطابقة لبحثك. جرّب كلمة مختلفة.' : 'No results match your search. Try a different keyword.';
+      if(layout){ layout.parentNode.insertBefore(count, layout); layout.parentNode.insertBefore(nores, layout.nextSibling); }
+
+      var cards=Array.prototype.slice.call(view.querySelectorAll('.content > .card, .content > article'));
+      // cache original text for matching
+      cards.forEach(function(c){ c.dataset.text=(c.textContent||'').toLowerCase(); });
+
+      function run(){
+        var term=input.value.trim();
+        x.style.display = term ? 'block':'none';
+        cards.forEach(function(c){ strip(c); });
+        if(!term){
+          cards.forEach(function(c){ c.style.display=''; });
+          count.classList.remove('show'); nores.classList.remove('show');
+          return;
+        }
+        var lt=term.toLowerCase(), hits=0;
+        cards.forEach(function(c){
+          if(c.dataset.text.indexOf(lt)>-1){ c.style.display=''; highlight(c, term); hits++; }
+          else { c.style.display='none'; }
+        });
+        if(hits>0){
+          count.textContent = isAr ? ('عدد النتائج: '+hits) : (hits+' result'+(hits>1?'s':'')+' found');
+          count.classList.add('show'); nores.classList.remove('show');
+        } else {
+          count.classList.remove('show'); nores.classList.add('show');
+        }
+      }
+      input.addEventListener('input', run);
+      input.addEventListener('keydown', function(e){ if(e.key==='Escape'){ input.value=''; run(); } });
+      x.addEventListener('click', function(){ input.value=''; run(); input.focus(); });
+    }
+    function wireAll(){ wire(document.getElementById('view-ar')); wire(document.getElementById('view-en')); }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', wireAll);
+    else wireAll();
+  })();
+  </script></body></html>

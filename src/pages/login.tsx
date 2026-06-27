@@ -211,7 +211,7 @@ export default function Login() {
       <Head><title>Sign In — M20 Autopilot</title></Head>
       <style>{`
         .__signin{font-family:'Inter','Segoe UI',system-ui,sans-serif;min-height:100vh;color:#eef4fb;background:#05080f;overflow-x:hidden;}
-        .__bg-fallback{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 60% 30%,#0a2a44 0%,#05080f 70%);}
+        .__bg-fallback{position:fixed;inset:0;z-index:0;background:url('https://i.ibb.co/p6Qhh95X/Whats-App-Image-2026-06-26-at-10-53-02-PM.jpg') center/cover no-repeat;background-color:#05080f;}
         #__comets{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
         .__comet{position:absolute;width:160px;height:2px;background:linear-gradient(90deg,rgba(180,235,255,0) 0%,rgba(180,235,255,.22) 55%,rgba(220,245,255,.85) 92%,#fff 100%);border-radius:50%;filter:drop-shadow(0 0 6px rgba(150,225,255,.65));opacity:0;}
         .__comet::after{content:"";position:absolute;right:-3px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#fff 0%,#bdecff 45%,rgba(150,220,255,0) 75%);box-shadow:0 0 12px 3px rgba(160,225,255,.8);}
@@ -220,7 +220,7 @@ export default function Login() {
         .__comet.__c2{top:2%;left:46%;width:150px;animation:__shoot 30s linear infinite;animation-delay:12s;}
         .__comet.__c3{top:6%;left:30%;width:200px;animation:__shoot 30s linear infinite;animation-delay:22s;}
         @media(prefers-reduced-motion:reduce){.__comet{animation:none!important;opacity:0!important;}}
-        .__tint{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(5,8,15,.08),rgba(5,8,15,.18));}
+        .__tint{position:fixed;inset:0;z-index:1;background:linear-gradient(160deg,rgba(3,10,25,.62) 0%,rgba(5,14,35,.70) 50%,rgba(2,8,20,.58) 100%);}
         .__center{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
         .__glass{width:100%;max-width:440px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:44px 40px;backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);box-shadow:0 40px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.05);}
         .__brand{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:26px;}

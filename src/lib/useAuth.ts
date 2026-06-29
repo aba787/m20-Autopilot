@@ -165,6 +165,18 @@ export function useAuthState(): AuthContext {
 
     if (!res.ok) return { error: data.error || 'Registration failed' };
 
+    if (data.directLogin && data.access_token) {
+      const { error: setErr } = await supabase.auth.setSession({
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+      });
+      if (setErr) return { error: setErr.message };
+      setToken(data.access_token);
+      const profile = await fetchProfile(data.user.id);
+      if (profile) { setUser(profile); return { user: profile }; }
+      return { error: 'Profile not found after registration' };
+    }
+
     if (data.requiresOtp && data.userId) {
       const { error: otpErr } = await supabase.auth.signInWithOtp({ email: emailNorm });
       if (otpErr) return { error: `Account created but failed to send verification code: ${otpErr.message}` };

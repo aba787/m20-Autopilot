@@ -110,23 +110,7 @@ export function useAuthState(): AuthContext {
 
     if (!loginRes.ok) {
       const body = await loginRes.json().catch(() => ({}));
-
-      if (loginRes.status === 401) {
-        try {
-          const checkRes = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email.toLowerCase().trim(), password, _checkUnconfirmed: true }),
-          });
-          const txt = await checkRes.text();
-          const checkData = txt ? JSON.parse(txt) : {};
-          if (checkData.requiresOtp && checkData.userId) {
-            return { requiresOtp: true, userId: checkData.userId, email: email.toLowerCase().trim() };
-          }
-        } catch {}
-      }
-
-      return { error: body.error || 'Login failed' };
+      return { error: body.error || 'Invalid email or password' };
     }
 
     const sessionData = await loginRes.json();

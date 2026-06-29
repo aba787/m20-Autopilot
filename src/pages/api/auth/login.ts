@@ -1,9 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase, db as adminDb } from '@/lib/supabaseClient';
 import { rateLimit, RateLimits, getClientIp } from '@/lib/rateLimit';
 import { checkLockout, LOCKOUT_DURATION_MIN } from '@/lib/lockout';
-import { db as adminDb } from '@/lib/supabaseAdmin';
-
 
 async function logAttempt(
   email: string,
@@ -59,11 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await logAttempt(email, ip, userAgent, false, error?.message || 'invalid_credentials');
 
     let postCheck;
-    try {
-      postCheck = await checkLockout(email);
-    } catch {
-      postCheck = null;
-    }
+    try { postCheck = await checkLockout(email); } catch { postCheck = null; }
     if (postCheck?.locked) {
       res.setHeader('Retry-After', String(postCheck.retryAfterSeconds));
       return res.status(423).json({
@@ -75,12 +69,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
-  await logAttempt(email, ip, userAgent, true);
+  logAttempt(email, ip, userAgent, true).catch(() => {});
+
+  // Fetch profile server-side so the browser never needs to call Supabase directly
+  const { data: profile } = await adminDb
+    .from('profiles')
+    .select('id, email, full_name, bot_mode, target_acos, role')
+    .eq('id', data.user.id)
+    .single();
 
   return res.status(200).json({
     access_token: data.session.access_token,
     refresh_token: data.session.refresh_token,
     expires_at: data.session.expires_at,
-    user: { id: data.user.id, email: data.user.email },
+    user: profile
+      ? {
+          id: profile.id,
+          email: profile.email,
+          full_name: profile.full_name ?? null,
+          bot_mode: profile.bot_mode || 'safe',
+          target_acos: profile.target_acos ?? 30,
+          role: profile.role ?? 'user',
+        }
+      : { id: data.user.id, email: data.user.email, full_name: null, bot_mode: 'safe', target_acos: 30, role: 'user' },
   });
 }

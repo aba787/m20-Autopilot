@@ -77,7 +77,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 directLogin: true,
                 access_token: signInData.session.access_token,
                 refresh_token: signInData.session.refresh_token,
-                user: { id: userId, email: emailNorm },
+                expires_at: signInData.session.expires_at,
+                user: {
+                    id: userId,
+                    email: emailNorm,
+                    full_name: full_name?.trim() ?? null,
+                    bot_mode: 'safe',
+                    target_acos: 30,
+                    role: 'user',
+                },
             });
         }
 

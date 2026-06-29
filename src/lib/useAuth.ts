@@ -23,8 +23,8 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login: (email: string, password: string) => Promise<{ error?: string; user?: User; requiresOtp?: boolean; userId?: string; email?: string }>;
-  register: (email: string, password: string, full_name?: string) => Promise<{ error?: string; user?: User; requiresOtp?: boolean; userId?: string; email?: string }>;
+  login: (email: string, password: string) => Promise<{ error?: string; user?: User }>;
+  register: (email: string, password: string, full_name?: string) => Promise<{ error?: string; user?: User }>;
   logout: () => Promise<void>;
   updateUser: (updates: Partial<User>) => void;
 }
@@ -39,21 +39,15 @@ export function useAuth(): AuthContext {
   return ctx;
 }
 
-async function fetchProfile(userId: string): Promise<User | null> {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .single();
-  if (error || !data) return null;
+function buildUser(raw: any): User {
   return {
-    id: data.id,
-    email: data.email,
-    full_name: data.full_name ?? null,
-    bot_mode: data.bot_mode || 'safe',
-    target_acos: data.target_acos ?? 30,
-    role: data.role ?? 'user',
-  } as User;
+    id: raw.id,
+    email: raw.email,
+    full_name: raw.full_name ?? null,
+    bot_mode: raw.bot_mode || 'safe',
+    target_acos: raw.target_acos ?? 30,
+    role: raw.role ?? 'user',
+  };
 }
 
 export function useAuthState(): AuthContext {
@@ -62,27 +56,21 @@ export function useAuthState(): AuthContext {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
+    // Check for an existing session on mount (non-blocking for the UI)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.access_token) {
         setToken(session.access_token);
-        const profile = await fetchProfile(session.user.id);
-        if (profile) setUser(profile);
       }
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        if (session?.user) {
-          setToken(session.access_token);
-          const profile = await fetchProfile(session.user.id);
-          if (profile) setUser(profile);
-        } else {
-          setToken(null);
-          setUser(null);
-        }
+    // Listen for external auth changes (e.g. token refresh, sign out from another tab)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        setToken(null);
+        setUser(null);
       }
-    );
+    });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -101,11 +89,7 @@ export function useAuthState(): AuthContext {
 
     if (loginRes.status === 423) {
       const body = await loginRes.json().catch(() => ({}));
-      return {
-        error: body.message || 'Account temporarily locked due to repeated failed attempts.',
-        locked: true,
-        retryAfterSeconds: body.retryAfterSeconds,
-      };
+      return { error: body.message || 'Account temporarily locked due to repeated failed attempts.' };
     }
 
     if (!loginRes.ok) {
@@ -114,27 +98,25 @@ export function useAuthState(): AuthContext {
     }
 
     const sessionData = await loginRes.json();
-    const { error: setErr } = await supabase.auth.setSession({
+
+    // Set state immediately from API response - no client-side Supabase calls needed
+    setToken(sessionData.access_token);
+    const profile = buildUser(sessionData.user);
+    setUser(profile);
+
+    // Store session in Supabase client fire-and-forget (for token refresh later)
+    supabase.auth.setSession({
       access_token: sessionData.access_token,
       refresh_token: sessionData.refresh_token,
-    });
-    if (setErr) return { error: setErr.message };
+    }).catch(() => {});
 
-    setToken(sessionData.access_token);
-
-    const profile = await fetchProfile(sessionData.user.id);
-    if (profile) {
-      setUser(profile);
-      return { user: profile };
-    }
-
-    return { error: 'Profile not found' };
+    return { user: profile };
   }, []);
 
   const register = useCallback(async (email: string, password: string, full_name?: string) => {
     const emailNorm = email.toLowerCase().trim();
-    let data: any = {};
     let res: Response;
+    let data: any = {};
     try {
       res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -150,21 +132,18 @@ export function useAuthState(): AuthContext {
     if (!res.ok) return { error: data.error || 'Registration failed' };
 
     if (data.directLogin && data.access_token) {
-      const { error: setErr } = await supabase.auth.setSession({
+      // Set state immediately from API response - no client-side Supabase calls needed
+      setToken(data.access_token);
+      const profile = buildUser(data.user);
+      setUser(profile);
+
+      // Store session in Supabase client fire-and-forget (for token refresh later)
+      supabase.auth.setSession({
         access_token: data.access_token,
         refresh_token: data.refresh_token,
-      });
-      if (setErr) return { error: setErr.message };
-      setToken(data.access_token);
-      const profile = await fetchProfile(data.user.id);
-      if (profile) { setUser(profile); return { user: profile }; }
-      return { error: 'Profile not found after registration' };
-    }
+      }).catch(() => {});
 
-    if (data.requiresOtp && data.userId) {
-      const { error: otpErr } = await supabase.auth.signInWithOtp({ email: emailNorm });
-      if (otpErr) return { error: `Account created but failed to send verification code: ${otpErr.message}` };
-      return { requiresOtp: true, userId: data.userId, email: emailNorm };
+      return { user: profile };
     }
 
     return { error: 'Registration failed' };

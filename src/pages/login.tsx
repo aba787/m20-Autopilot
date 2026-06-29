@@ -195,7 +195,6 @@ export default function Login() {
       } else {
         const result = await register(emailTrimmed, password, name.trim());
         if (result.error) { setError(result.error); }
-        else if (result.requiresOtp && result.userId) { goToOtp('signup', result.userId, result.email || emailTrimmed); }
         else if (result.user) { router.push(result.user.role === 'admin' ? '/admin' : '/dashboard'); }
       }
     } finally { setLoading(false); }

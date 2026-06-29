@@ -1,0 +1,161 @@
+
+1 minute 50 seconds
+0
+
+2026-06-26T18:54:02.434Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+
+1
+
+2026-06-26T18:54:03.072Z [INFO]: # Cloning repository: git@github.com:aba787/m20-Autopilot.git
+
+2
+
+2026-06-26T18:54:03.818Z [INFO]: 
+
+3
+
+2026-06-26T18:54:03.818Z [INFO]: Cloning into 'm20-Autopilot'...
+
+4
+
+2026-06-26T18:54:03.819Z [INFO]: # Switching to commit: 19a9aec0e913e6787e3484f333eac90333e16392
+
+5
+
+2026-06-26T18:54:03.859Z [INFO]: Note: switching to '19a9aec0e913e6787e3484f333eac90333e16392'.
+
+6
+
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+
+7
+
+                                 changes and commit them, and you can discard any commits you make in this
+
+8
+
+                                 state without impacting any branches by switching back to a branch.
+
+9
+
+                                 If you want to create a new branch to retain commits you create, you may
+
+10
+
+                                 do so (now or later) by using -c with the switch command. Example:
+
+11
+
+                                 git switch -c <new-branch-name>
+
+12
+
+                                 Or undo this operation with:
+
+13
+
+                                 git switch -
+
+14
+
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+
+15
+
+                                 HEAD is now at 19a9aec Fix external deployment build failures by correcting npm registry URLs
+
+16
+
+2026-06-26T18:54:03.904Z [INFO]: Successfully cleaned up Git credentials
+
+17
+
+2026-06-26T18:54:03.904Z [INFO]: # Checking for Git submodules at: /codebuild/output/src1894754393/src/m20-Autopilot/.gitmodules
+
+18
+
+2026-06-26T18:54:03.911Z [INFO]: # Retrieving environment cache...
+
+19
+
+2026-06-26T18:54:03.956Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+
+20
+
+2026-06-26T18:54:03.956Z [INFO]: ---- Setting Up SSM Secrets ----
+
+21
+
+2026-06-26T18:54:03.956Z [INFO]: SSM params {"Path":"/amplify/d1adtcj3uo8g4c/main/","WithDecryption":true}
+
+22
+
+2026-06-26T18:54:04.002Z [WARNING]: !Failed to set up process.env.secrets
+
+23
+
+2026-06-26T18:54:04.702Z [INFO]: # No package override configuration found.
+
+24
+
+2026-06-26T18:54:04.705Z [INFO]: # Retrieving cache...
+
+25
+
+2026-06-26T18:54:28.209Z [INFO]: # Extracting cache...
+
+26
+
+2026-06-26T18:54:34.432Z [INFO]: # Extraction completed
+
+27
+
+2026-06-26T18:54:34.600Z [INFO]: # Retrieved cache
+
+28
+
+2026-06-26T18:54:38.775Z [INFO]: ## Starting Backend Build
+
+29
+
+                                 ## Checking for associated backend environment...
+
+30
+
+                                 ## No backend environment association found, continuing...
+
+31
+
+                                 ## Completed Backend Build
+
+32
+
+2026-06-26T18:54:38.779Z [INFO]: {"backendDuration": 0}
+
+33
+
+                                 ## Starting Frontend Build
+
+34
+
+                                 # Starting phase: preBuild
+
+35
+
+                                 # Executing command: npm ci
+
+36
+
+2026-06-26T18:55:07.206Z [INFO]: added 203 packages, and audited 204 packages in 24s
+
+37
+
+2026-06-26T18:55:07.210Z [INFO]: 87 packages are looking for funding
+
+38
+
+                                 run `npm fund` for details
+
+39
+
+2026-06-26T18:55:07.352Z [INFO]: 6 vulnerabilities (4 moderate, 2 high)

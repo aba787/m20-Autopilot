@@ -1,0 +1,157 @@
+34
+
+                                 # Starting phase: preBuild
+
+35
+
+                                 # Executing command: npm ci
+
+36
+
+2026-06-26T18:55:07.206Z [INFO]: added 203 packages, and audited 204 packages in 24s
+
+37
+
+2026-06-26T18:55:07.210Z [INFO]: 87 packages are looking for funding
+
+38
+
+                                 run `npm fund` for details
+
+39
+
+2026-06-26T18:55:07.352Z [INFO]: 6 vulnerabilities (4 moderate, 2 high)
+
+40
+
+                                 To address all issues, run:
+
+41
+
+                                 npm audit fix
+
+42
+
+                                 Run `npm audit` for details.
+
+43
+
+2026-06-26T18:55:07.372Z [INFO]: # Completed phase: preBuild
+
+44
+
+                                 # Starting phase: build
+
+45
+
+                                 # Executing command: npm run build
+
+46
+
+2026-06-26T18:55:07.471Z [INFO]: > adflow-arabia@1.0.0 build
+
+47
+
+                                 > next build
+
+48
+
+2026-06-26T18:55:08.081Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+
+49
+
+2026-06-26T18:55:08.086Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+
+50
+
+2026-06-26T18:55:08.086Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
+
+51
+
+                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+
+52
+
+                                 https://nextjs.org/telemetry
+
+53
+
+2026-06-26T18:55:08.097Z [INFO]: ▲ Next.js 16.1.6 (Turbopack)
+
+54
+
+2026-06-26T18:55:08.097Z [INFO]: 
+
+55
+
+2026-06-26T18:55:08.172Z [INFO]: Running TypeScript ...
+
+56
+
+2026-06-26T18:55:15.657Z [WARNING]: Failed to compile.
+
+57
+
+2026-06-26T18:55:15.661Z [WARNING]: ./src/lib/stripe.ts:8:3
+
+58
+
+                                    Type error: Type '"2025-05-28.basil"' is not assignable to type '"2026-06-24.dahlia"'.
+
+59
+
+                                    [0m [90m  6 |[39m
+
+60
+
+                                    [90m  7 |[39m [36mexport[39m [36mconst[39m stripe [33m=[39m [36mnew[39m [33mStripe[39m(process[33m.[39menv[33m.[39m[33mSTRIPE_SECRET_KEY[39m[33m,[39m {
+
+61
+
+                                    [31m[1m>[22m[39m[90m  8 |[39m   apiVersion[33m:[39m [32m'2025-05-28.basil'[39m[33m,[39m
+
+62
+
+                                    [90m    |[39m   [31m[1m^[22m[39m
+
+63
+
+                                    [90m  9 |[39m })[33m;[39m
+
+64
+
+                                    [90m 10 |[39m
+
+65
+
+                                    [90m 11 |[39m [36mexport[39m [36mconst[39m [33mSTRIPE_PLANS[39m [33m=[39m {[0m
+
+66
+
+2026-06-26T18:55:15.684Z [WARNING]: Next.js build worker exited with code: 1 and signal: null
+
+67
+
+2026-06-26T18:55:15.758Z [ERROR]: !!! Build failed
+
+68
+
+2026-06-26T18:55:15.758Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+
+69
+
+2026-06-26T18:55:15.758Z [ERROR]: !!! Error: Command failed with exit code 1
+
+70
+
+2026-06-26T18:55:15.758Z [INFO]: # Starting environment caching...
+
+71
+
+2026-06-26T18:55:15.758Z [INFO]: # Environment caching completed
+
+72
+
+73
+
+Deploy

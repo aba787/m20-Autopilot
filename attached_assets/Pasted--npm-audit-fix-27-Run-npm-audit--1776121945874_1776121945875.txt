@@ -1,0 +1,108 @@
+                            npm audit fix
+
+27
+
+                                 Run `npm audit` for details.
+
+28
+
+2026-04-13T23:11:49.043Z [INFO]: # Completed phase: preBuild
+
+29
+
+                                 # Starting phase: build
+
+30
+
+                                 # Executing command: npm run build
+
+31
+
+2026-04-13T23:11:49.159Z [INFO]: > adflow-arabia@1.0.0 build
+
+32
+
+                                 > next build
+
+33
+
+2026-04-13T23:11:49.822Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+
+34
+
+2026-04-13T23:11:49.833Z [INFO]: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+
+35
+
+2026-04-13T23:11:49.833Z [INFO]: This information is used to shape Next.js' roadmap and prioritize features.
+
+36
+
+                                 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+
+37
+
+                                 https://nextjs.org/telemetry
+
+38
+
+2026-04-13T23:11:49.849Z [INFO]: ▲ Next.js 16.1.6 (Turbopack)
+
+39
+
+2026-04-13T23:11:49.849Z [INFO]: 
+
+40
+
+2026-04-13T23:11:49.945Z [INFO]: Running TypeScript ...
+
+41
+
+2026-04-13T23:11:56.419Z [INFO]: Creating an optimized production build ...
+
+42
+
+2026-04-13T23:12:06.727Z [INFO]: ✓ Compiled successfully in 10.0s
+
+43
+
+2026-04-13T23:12:06.747Z [INFO]: Collecting page data using 3 workers ...
+
+44
+
+2026-04-13T23:12:07.396Z [WARNING]: unhandledRejection Error: supabaseUrl is required.
+
+45
+
+                                    at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__9129068d._.js:5:17110) {
+
+46
+
+                                    type: 'Error'
+
+47
+
+                                    }
+
+48
+
+2026-04-13T23:12:07.475Z [ERROR]: !!! Build failed
+
+49
+
+2026-04-13T23:12:07.476Z [INFO]: Please read more about Amplify Hosting's support for SSR frameworks to find if your build failure is related to an unsupported feature: https://docs.aws.amazon.com/amplify/latest/userguide/amplify-ssr-framework-support.html. You may also find this troubleshooting guide useful: https://docs.aws.amazon.com/amplify/latest/userguide/troubleshooting-ssr-deployment.html
+
+50
+
+2026-04-13T23:12:07.476Z [ERROR]: !!! Error: Command failed with exit code 1
+
+51
+
+2026-04-13T23:12:07.476Z [INFO]: # Starting environment caching...
+
+52
+
+2026-04-13T23:12:07.476Z [INFO]: # Environment caching completed
+
+53
+

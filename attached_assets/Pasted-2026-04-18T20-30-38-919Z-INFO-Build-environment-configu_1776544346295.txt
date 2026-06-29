@@ -1,0 +1,128 @@
+2026-04-18T20:30:38.919Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+
+1
+
+2026-04-18T20:30:39.352Z [INFO]: # Cloning repository: git@github.com:aba787/m20-Autopilot.git
+
+2
+
+2026-04-18T20:30:39.933Z [INFO]: 
+
+3
+
+2026-04-18T20:30:39.934Z [INFO]: Cloning into 'm20-Autopilot'...
+
+4
+
+2026-04-18T20:30:39.934Z [INFO]: # Switching to commit: 74823876657124810898751d8e30c0d6c179278e
+
+5
+
+2026-04-18T20:30:39.956Z [INFO]: Note: switching to '74823876657124810898751d8e30c0d6c179278e'.
+
+6
+
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+
+7
+
+                                 changes and commit them, and you can discard any commits you make in this
+
+8
+
+                                 state without impacting any branches by switching back to a branch.
+
+9
+
+                                 If you want to create a new branch to retain commits you create, you may
+
+10
+
+                                 do so (now or later) by using -c with the switch command. Example:
+
+11
+
+                                 git switch -c <new-branch-name>
+
+12
+
+                                 Or undo this operation with:
+
+13
+
+                                 git switch -
+
+14
+
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+
+15
+
+                                 HEAD is now at 7482387 Improve Amazon account connection flow and user experience
+
+16
+
+2026-04-18T20:30:40.001Z [INFO]: Successfully cleaned up Git credentials
+
+17
+
+2026-04-18T20:30:40.002Z [INFO]: # Checking for Git submodules at: /codebuild/output/src1768585980/src/m20-Autopilot/.gitmodules
+
+18
+
+2026-04-18T20:30:40.009Z [INFO]: # Retrieving environment cache...
+
+19
+
+2026-04-18T20:30:40.051Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+
+20
+
+2026-04-18T20:30:40.051Z [INFO]: ---- Setting Up SSM Secrets ----
+
+21
+
+2026-04-18T20:30:40.051Z [INFO]: SSM params {"Path":"/amplify/d1adtcj3uo8g4c/main/","WithDecryption":true}
+
+22
+
+2026-04-18T20:30:40.100Z [WARNING]: !Failed to set up process.env.secrets
+
+23
+
+2026-04-18T20:30:40.942Z [INFO]: # No package override configuration found.
+
+24
+
+2026-04-18T20:30:40.945Z [INFO]: # Retrieving cache...
+
+25
+
+2026-04-18T20:30:43.001Z [INFO]: # Extracting cache...
+
+26
+
+2026-04-18T20:30:43.492Z [INFO]: # Extraction completed
+
+27
+
+2026-04-18T20:30:43.512Z [INFO]: # Retrieved cache
+
+28
+
+2026-04-18T20:30:47.545Z [INFO]: ## Starting Backend Build
+
+29
+
+                                 ## Checking for associated backend environment...
+
+30
+
+                                 ## No backend environment association found, continuing...
+
+31
+
+                                 ## Completed Backend Build
+
+32
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security &amp; Privacy — M20 Autopilot</title>
+<style>
+:root{--sky:#0284C7;--cyan:#0891B2;--bg:#F8FAFC;--navbg:rgba(255,255,255,.8);--logo:#0F172A;--head:#0F172A;--txt:#334155;--muted:#64748B;--line:rgba(2,132,199,.18);--footbg:#fff}
+html[data-theme="dark"]{--sky:#38BDF8;--cyan:#22D3EE;--bg:#030712;--navbg:rgba(3,7,18,.7);--logo:#fff;--head:#fff;--txt:#dbeafe;--muted:#9fb4d4;--line:rgba(56,189,248,.18);--footbg:#030712}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'Inter','Segoe UI',system-ui,sans-serif;line-height:1.85;font-size:17px;transition:background .3s,color .3s}
+nav{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 36px;backdrop-filter:blur(12px);background:var(--navbg);border-bottom:1px solid var(--line)}
+nav .logo{font-weight:900;font-size:20px;color:var(--logo);text-decoration:none}
+nav .logo b{color:var(--cyan)}
+nav .links{display:flex;gap:22px;align-items:center}
+nav .links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}
+.lang-btn{cursor:pointer;background:rgba(8,145,178,.08);border:1px solid var(--line);color:var(--sky);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:700;font-family:inherit}
+.icon-btn{cursor:pointer;background:rgba(8,145,178,.08);border:1px solid var(--line);width:38px;height:38px;border-radius:9px;font-size:17px;display:inline-flex;align-items:center;justify-content:center;line-height:1;padding:0}
+.doc{max-width:820px;margin:0 auto;padding:70px 24px 100px}
+.doc .eyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);font-weight:700}
+.doc h1{font-size:clamp(30px,5vw,46px);font-weight:800;color:var(--head);margin:14px 0 10px;line-height:1.2}
+.doc .updated{color:var(--muted);font-size:14px;margin-bottom:40px}
+.doc h2{font-size:24px;font-weight:800;color:var(--head);margin:44px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.doc p{color:var(--txt);margin-bottom:16px}
+footer{text-align:center;padding:40px 24px;color:var(--muted);border-top:1px solid var(--line);font-size:14px;background:var(--footbg)}
+footer a{color:var(--muted);text-decoration:none;margin:0 10px}
+html[dir=rtl] .doc{text-align:right}
+html[dir=rtl] body{font-family:'Segoe UI','Inter',system-ui,sans-serif}
+@media(max-width:760px){nav .links a{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="logo">M20 <b>Autopilot</b></a>
+  <div class="links">
+    <a href="#" data-i="nav1">PPC Agent</a>
+    <a href="#" data-i="nav2">Products</a>
+    <a href="#" data-i="nav3">Pricing</a>
+    <a href="#" data-i="nav4">Security</a>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">العربية</button>
+  </div>
+</nav>
+<main class="doc">
+  <div class="eyebrow" data-i="eyebrow">Security &amp; Privacy</div>
+  <h1 data-i="h1">Security &amp; Privacy at M20 Autopilot</h1>
+  <p class="updated" data-i="updated">Last updated: June 2026</p>
+
+  <p data-i="intro">M20 Autopilot is built on a security-first foundation. We protect your Amazon advertising data, account access, and business metrics with strong encryption, strict access controls, and continuous monitoring. This page explains how we keep your data safe and how we respect your privacy.</p>
+
+  <h2 data-i="t1">Data Encryption</h2>
+  <p data-i="p1">All your data is encrypted in transit using TLS 1.3 and encrypted at rest using AES-256. Your campaign metrics and advertising data are never stored in plain text, whether moving between systems or sitting in our databases.</p>
+
+  <h2 data-i="t2">Amazon Account Access</h2>
+  <p data-i="p2">We connect to your Amazon account through the official Amazon SP-API using secure OAuth. We never see or store your Amazon password, and you can revoke our access at any time directly from your Amazon account.</p>
+
+  <h2 data-i="t3">Access Controls</h2>
+  <p data-i="p3">We apply strict role-based access and least-privilege permissions. Multi-factor authentication is mandatory for every internal system that touches your data, so only authorized people can access what they truly need.</p>
+
+  <h2 data-i="t4">Secure Infrastructure</h2>
+  <p data-i="p4">Our platform runs on hardened cloud infrastructure with isolated environments, automated security patching, and continuous intrusion monitoring across every region we operate in.</p>
+
+  <h2 data-i="t5">Continuous Monitoring</h2>
+  <p data-i="p5">We use real-time logging, anomaly detection, and automated alerts to identify and respond to suspicious activity quickly, often before it can become a problem.</p>
+
+  <h2 data-i="t6">Data Isolation &amp; AI Privacy</h2>
+  <p data-i="p6">Every seller's data is logically isolated. Your advertising data is never mixed with another customer's data, and it is never used to train AI models that benefit other sellers.</p>
+
+  <h2 data-i="t7">Your Control Over Your Data</h2>
+  <p data-i="p7">You stay in charge at all times. You can connect securely through Amazon's official flow, grant only the permissions the AI agent needs, disconnect M20 from your account at any time, and request a full export or permanent deletion of your data whenever you wish.</p>
+
+  <h2 data-i="t8">Compliance &amp; Standards</h2>
+  <p data-i="p8">Our controls are aligned with SOC 2 Type II practices, and we honor data protection rights under GDPR and CCPA. Our Amazon integration is a certified SP-API integration, and all traffic is encrypted with TLS 1.3.</p>
+
+  <h2 data-i="t9">Reporting a Security Issue</h2>
+  <p data-i="p9">If you discover a potential security issue, please email our security team at security@m20autopilot.com. We review every report and respond promptly to verified disclosures.</p>
+</main>
+<footer>
+  <div>
+    <a href="#" data-i="f1">Privacy Policy</a>
+    <a href="#" data-i="f2">Terms of Service</a>
+    <a href="#" data-i="f3">Security</a>
+  </div>
+  <p style="margin-top:14px" data-i="copy">© 2026 M20 Autopilot. All rights reserved.</p>
+</footer>
+<script>
+var T={ar:{
+nav1:"وكيل PPC",nav2:"المنتجات",nav3:"الأسعار",nav4:"الأمان",
+eyebrow:"الأمان والخصوصية",
+h1:"الأمان والخصوصية في M20 Autopilot",
+updated:"آخر تحديث: يونيو 2026",
+intro:"تم بناء M20 Autopilot على أساس يضع الأمان أولاً. نحمي بيانات إعلاناتك على أمازون والوصول إلى حسابك ومؤشرات أعمالك بتشفير قوي وضوابط وصول صارمة ومراقبة مستمرة. توضّح هذه الصفحة كيف نحافظ على أمان بياناتك وكيف نحترم خصوصيتك.",
+t1:"تشفير البيانات",
+p1:"تُشفَّر جميع بياناتك أثناء النقل باستخدام TLS 1.3 وتُشفَّر أثناء التخزين باستخدام AES-256. لا تُخزَّن مؤشرات حملاتك وبيانات إعلاناتك كنص واضح أبداً، سواء أثناء انتقالها بين الأنظمة أو أثناء وجودها في قواعد بياناتنا.",
+t2:"الوصول إلى حساب أمازون",
+p2:"نتصل بحساب أمازون الخاص بك عبر واجهة SP-API الرسمية من أمازون باستخدام OAuth الآمن. لا نرى أو نخزّن كلمة مرور أمازون الخاصة بك، ويمكنك إلغاء وصولنا في أي وقت مباشرةً من حساب أمازون.",
+t3:"ضوابط الوصول",
+p3:"نطبّق وصولاً صارماً قائماً على الأدوار وصلاحيات بأقل امتياز. المصادقة متعددة العوامل إلزامية لكل نظام داخلي يتعامل مع بياناتك، بحيث لا يصل إليها إلا الأشخاص المصرّح لهم فعلاً.",
+t4:"بنية تحتية آمنة",
+p4:"تعمل منصتنا على بنية سحابية محصّنة مع بيئات معزولة وتحديثات أمنية تلقائية ومراقبة مستمرة للاختراق في كل منطقة نعمل فيها.",
+t5:"مراقبة مستمرة",
+p5:"نستخدم تسجيلاً لحظياً واكتشافاً للشذوذ وتنبيهات تلقائية لرصد النشاط المشبوه والاستجابة له بسرعة، غالباً قبل أن يتحوّل إلى مشكلة.",
+t6:"عزل البيانات وخصوصية الذكاء الاصطناعي",
+p6:"بيانات كل بائع معزولة منطقياً. لا تُخلط بياناتك الإعلانية مع بيانات عميل آخر أبداً، ولا تُستخدم لتدريب نماذج ذكاء اصطناعي تفيد بائعين آخرين.",
+t7:"تحكّمك في بياناتك",
+p7:"تبقى أنت المتحكم في كل الأوقات. يمكنك الاتصال بأمان عبر التدفق الرسمي من أمازون، ومنح الصلاحيات التي يحتاجها وكيل الذكاء الاصطناعي فقط، وفصل M20 عن حسابك في أي وقت، وطلب تصدير بياناتك بالكامل أو حذفها نهائياً متى شئت.",
+t8:"الامتثال والمعايير",
+p8:"تتوافق ضوابطنا مع ممارسات SOC 2 Type II، ونحترم حقوق حماية البيانات بموجب GDPR وCCPA. تكاملنا مع أمازون هو تكامل معتمد عبر SP-API، وجميع البيانات مشفّرة باستخدام TLS 1.3.",
+t9:"الإبلاغ عن مشكلة أمنية",
+p9:"إذا اكتشفت مشكلة أمنية محتملة، يُرجى مراسلة فريق الأمان لدينا على security@m20autopilot.com. نراجع كل بلاغ ونستجيب بسرعة للإفصاحات المُتحقَّق منها.",
+f1:"سياسة الخصوصية",f2:"شروط الخدمة",f3:"الأمان",
+copy:"© 2026 M20 Autopilot. جميع الحقوق محفوظة."
+}};
+var EN={};
+document.querySelectorAll('[data-i]').forEach(function(el){EN[el.getAttribute('data-i')]=el.innerHTML;});
+var cur="en", theme="light";
+function toggleTheme(){
+  theme = theme==="light" ? "dark" : "light";
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme==="light" ? "🌙" : "☀️";
+}
+function toggleLang(){
+  cur = cur==="en" ? "ar" : "en";
+  var dict = cur==="ar" ? T.ar : EN;
+  document.querySelectorAll('[data-i]').forEach(function(el){
+    var k=el.getAttribute('data-i');
+    if(dict[k]!==undefined) el.innerHTML=dict[k];
+  });
+  document.documentElement.lang=cur;
+  document.documentElement.dir = cur==="ar" ? "rtl" : "ltr";
+  document.getElementById('langBtn').textContent = cur==="ar" ? "English" : "العربية";
+}
+</script>
+
+</body></html>

@@ -1,0 +1,121 @@
+I have a set of UI, Dashboard, Localization, and Chatbot improvements. Please implement all of the following:
+
+🔹 1. UI Improvements (General)
+
+Increase icon sizes across the system for better visibility
+Increase page headers (titles) size to improve readability
+Remove the description text under "Smart Assistant" (keep it clean, no extra text)
+
+🔹 2. Top Bar (Header)
+
+Add a Language Selector in the top bar
+Place it next to the Dark/Light mode toggle
+It should be easily accessible (Dropdown or Selector UI)
+
+🔹 3. Localization System (VERY IMPORTANT)
+
+We need a scalable and dynamic i18n system.
+
+Requirements:
+
+Support unlimited languages (dynamic, not hardcoded)
+Main supported languages:
+Arabic (RTL)
+English (LTR)
+When switching language:
+The entire layout must switch direction automatically (RTL / LTR)
+All texts must be translated using an i18n system (NO hardcoded text)
+Language persistence:
+Save selected language in localStorage
+Also save it in database: profiles.language
+User Experience:
+Language switching must be instant (client-side, no page reload)
+The system must remember the user’s choice on every login
+Note:
+We need a fully integrated i18n system that allows adding new languages easily in the future without major refactoring.
+If there are better practices for performance or structure, feel free to apply them.
+
+🔹 4. Dashboard Improvements
+
+A) Metrics / Cards:
+
+Each metric (Sales, Cost, ACOS, TACOS, etc.) must have a unique color (Tag/Badge)
+The goal is quick visual differentiation without reading text
+
+B) Charts:
+
+Increase chart size (make it more prominent and readable)
+Chart must be full-width (span from left to right of the page)
+Remove current small boxed layout next to charts
+Add a control (icon/button) to switch chart type:
+Line Chart
+Bar Chart
+(Future: Pie Chart)
+
+C) Editable Inputs:
+
+Add an Edit (pencil) icon for each value
+User can click and edit values directly (inline editing)
+No page navigation required
+
+D) User-Specific Data:
+
+All charts and data must be user-specific
+Each user sees only their own data
+No shared or mixed data between users
+
+🔹 5. Products / Profit Page
+
+Instead of plain numeric tables:
+
+Display products as Cards
+Each product card must include:
+Product Image
+Product Name
+Profit / Metrics
+The layout should feel like a modern store UI, not a basic table
+
+🔹 6. Layout & UX Enhancements
+
+Improve spacing and layout hierarchy (clean structure)
+Make the design closer to a professional dashboard (as per provided references)
+Any additional UX/UI improvements that increase clarity and usability are welcome
+
+🔹 7. Chatbot (Embedded Widget)
+
+We need a built-in chatbot inside the platform (NOT a separate page).
+
+A) Behavior:
+
+Add a floating button (fixed at bottom corner of the screen)
+On click → open a small chat window (popup/widget)
+Must NOT redirect to another page
+
+B) Chat Window:
+
+Small, clean UI (similar to Messenger / support chat)
+Can be minimized and closed
+Stays accessible across all pages
+
+C) Functionality:
+
+User can chat instantly with the bot
+Responses should appear in real-time inside the widget
+Each user has their own separate conversation
+
+D) Chat Storage (Optional but preferred):
+
+Save conversations in database
+Allow users to access previous chats later
+
+E) UX Requirements:
+
+Fast loading (no lag)
+Clean and simple design
+Fully responsive (mobile + desktop)
+
+🔹 Final Notes:
+
+Do NOT create a separate chatbot page — it must be an overlay داخل الموقع
+Focus on performance, scalability, and clean architecture
+Code should be structured to allow future expansion (more languages, more chart types, etc.)

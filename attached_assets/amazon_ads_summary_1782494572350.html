@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Amazon Ads Smart Manager — ملخص الأتمتة</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    padding: 32px 24px;
+    direction: rtl;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #1a1a2e;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 24px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .card {
+    background: #f4f6fb;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-right: 4px solid #ccc;
+  }
+  .card.blue   { border-right-color: #4a90d9; }
+  .card.green  { border-right-color: #27ae60; }
+  .card.orange { border-right-color: #e67e22; }
+  .card.purple { border-right-color: #8e44ad; }
+  .card.red    { border-right-color: #e74c3c; }
+  .card.teal   { border-right-color: #16a085; }
+  .card.pink   { border-right-color: #e91e8c; }
+  .card.gray   { border-right-color: #7f8c8d; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .icon { font-size: 20px; line-height: 1; }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .card-sub {
+    font-size: 10px;
+    color: #888;
+    margin-top: 2px;
+  }
+  ul { list-style: none; padding: 0; }
+  ul li {
+    font-size: 12px;
+    color: #444;
+    padding: 3px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  ul li::before {
+    content: '•';
+    font-size: 14px;
+    color: #bbb;
+    flex-shrink: 0;
+  }
+  .badge {
+    display: inline-block;
+    background: #e8f0fe;
+    color: #4a90d9;
+    border-radius: 4px;
+    font-size: 10px;
+    padding: 1px 6px;
+    margin-right: 4px;
+    font-weight: 600;
+  }
+  .footer {
+    margin-top: 16px;
+    background: #f0f4ff;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #555;
+    text-align: center;
+    border: 1px dashed #c0c8e0;
+  }
+  .footer strong { color: #1a1a2e; }
+
+  .files-section {
+    margin-top: 20px;
+    background: #1a1a2e;
+    border-radius: 10px;
+    padding: 16px 20px;
+    color: #eee;
+  }
+  .files-section h2 {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #2e2e45;
+    font-size: 12px;
+  }
+  .file-row:last-child { border-bottom: none; }
+  .file-name { color: #7dd3fc; font-weight: 600; direction: ltr; }
+  .file-desc { color: #aaa; }
+
+  .rules-section {
+    margin-top: 16px;
+  }
+  .rules-section h2 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+  }
+  .rule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .rule-table th {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 8px 12px;
+    text-align: right;
+    font-weight: 600;
+  }
+  .rule-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #e8e8f0;
+    color: #444;
+  }
+  .rule-table tr:nth-child(even) td { background: #f9f9fc; }
+  .val { font-weight: 700; color: #4a90d9; direction: ltr; display: inline-block; }
+</style>
+</head>
+<body>
+
+<h1>🤖 Amazon Ads Smart Manager — ملخص الأتمتة</h1>
+<p class="subtitle">main.py — v3 + Adaptive Learning Module</p>
+
+<div class="grid">
+
+  <div class="card blue">
+    <div class="card-header">
+      <span class="icon">📊</span>
+      <div>
+        <div class="card-title">تحليل الحملات</div>
+        <div class="card-sub">Campaign Analysis</div>
+      </div>
+    </div>
+    <ul>
+      <li>تحسب CTR، CPC، ACOS، ROAS لكل حملة</li>
+      <li>تحدد عمر الحملة بالأيام</li>
+      <li>توصية لكل حملة: Scale / Tune / Stop</li>
+      <li>ملخص شامل للإنفاق والمبيعات</li>
+    </ul>
+  </div>
+
+  <div class="card red">
+    <div class="card-header">
+      <span class="icon">⏸️</span>
+      <div>
+        <div class="card-title">إيقاف الحملات الفاشلة</div>
+        <div class="card-sub">Auto-Pause</div>
+      </div>
+    </div>
+    <ul>
+      <li>تراقب الحملات التي مضى عليها +7 أيام</li>
+      <li>توقف: 15 نقرة بلا مبيعات</li>
+      <li>أو ACOS تجاوز 60%</li>
+      <li>تسجّل السبب في كل حالة</li>
+    </ul>
+  </div>
+
+  <div class="card orange">
+    <div class="card-header">
+      <span class="icon">🔑</span>
+      <div>
+        <div class="card-title">تحليل الكلمات المفتاحية</div>
+        <div class="card-sub">Deep Keyword Analysis</div>
+      </div>
+    </div>
+    <ul>
+      <li>NEGATIVE — 12 نقرة بلا طلبات → أضفها سلبية</li>
+      <li>SCALE — ACOS &lt; 15% → ارفع المزايدة 20%</li>
+      <li>REDUCE — ACOS مرتفع → خفّض للهدف</li>
+      <li>PAUSE — ACOS &gt; 60% → أوقف الكلمة</li>
+    </ul>
+  </div>
+
+  <div class="card green">
+    <div class="card-header">
+      <span class="icon">🌾</span>
+      <div>
+        <div class="card-title">حصاد عبارات البحث</div>
+        <div class="card-sub">Search Term Harvesting</div>
+      </div>
+    </div>
+    <ul>
+      <li>تراقب نتائج حملات Auto</li>
+      <li>3+ طلبات + ACOS ≤ 25% → تُحصد</li>
+      <li>تنقلها كـ EXACT keyword لحملة Manual</li>
+      <li>تقترح مزايدة مبنية على CPC الفعلي</li>
+    </ul>
+  </div>
+
+  <div class="card teal">
+    <div class="card-header">
+      <span class="icon">🕐</span>
+      <div>
+        <div class="card-title">Dayparting — الميزانية بالساعة</div>
+        <div class="card-sub">Hourly Budget Adjustment</div>
+      </div>
+    </div>
+    <ul>
+      <li>تحلل أداء كل ساعة من اليوم</li>
+      <li>BOOST +30% في ساعات ACOS أقل من المتوسط</li>
+      <li>CUT -40% في الساعات الخاسرة</li>
+      <li>تطبّق الميزانية الصحيحة على الحملة</li>
+    </ul>
+  </div>
+
+  <div class="card purple">
+    <div class="card-header">
+      <span class="icon">🧠</span>
+      <div>
+        <div class="card-title">التعلّم التكيّفي</div>
+        <div class="card-sub">Adaptive Learning <span class="badge">جديد</span></div>
+      </div>
+    </div>
+    <ul>
+      <li>يسجّل كل قرار مع بياناته وقت اتخاذه</li>
+      <li>بعد 7 أيام يقيس هل القرار كان صحيحاً</li>
+      <li>يضبط العتبات تلقائياً (acos_reduce / acos_scale)</li>
+      <li>يحفظ السجل في ads_learning_state.json</li>
+    </ul>
+  </div>
+
+  <div class="card pink">
+    <div class="card-header">
+      <span class="icon">🚨</span>
+      <div>
+        <div class="card-title">تنبيهات ذكية</div>
+        <div class="card-sub">Smart Alerts</div>
+      </div>
+    </div>
+    <ul>
+      <li>تنبّه إذا ACOS الحساب تجاوز 50%</li>
+      <li>تنبّه إذا حملة أنفقت 1.5× المتوسط</li>
+      <li>تنبّه إذا حملة لها نقرات ولا مبيعات</li>
+    </ul>
+  </div>
+
+  <div class="card gray">
+    <div class="card-header">
+      <span class="icon">💾</span>
+      <div>
+        <div class="card-title">تقرير يومي مُحفوظ</div>
+        <div class="card-sub">Daily Report</div>
+      </div>
+    </div>
+    <ul>
+      <li>يحفظ كل شيء في ملف JSON</li>
+      <li>يراكم السجل يوماً بعد يوم</li>
+      <li>يشمل: حملات، كلمات، حصاد، dayparting، تنبيهات</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>كيف يعمل؟</strong> — تشغّل الملف مرة واحدة يومياً، يحلّل كل شيء، يتخذ القرارات، يحفظ التقرير، ويتعلّم مع الوقت
+</div>
+
+<!-- الإعدادات والقواعد -->
+<div class="rules-section" style="margin-top: 20px;">
+  <h2>⚙️ القواعد والعتبات المستخدمة</h2>
+  <table class="rule-table">
+    <tr>
+      <th>الإعداد</th>
+      <th>القيمة الافتراضية</th>
+      <th>الوصف</th>
+    </tr>
+    <tr><td>auto_pause_after_days</td><td><span class="val">7</span></td><td>أيام قبل تقييم الحملة للإيقاف</td></tr>
+    <tr><td>fail_acos_limit</td><td><span class="val">60%</span></td><td>ACOS حد الفشل</td></tr>
+    <tr><td>fail_min_clicks</td><td><span class="val">15</span></td><td>نقرات بلا مبيعات = فشل</td></tr>
+    <tr><td>target_acos</td><td><span class="val">25%</span></td><td>الهدف المطلوب</td></tr>
+    <tr><td>kw_harvest_acos</td><td><span class="val">15%</span></td><td>ACOS الحصاد (كلمة رابحة)</td></tr>
+    <tr><td>kw_harvest_min_orders</td><td><span class="val">3</span></td><td>أقل طلبات للحصاد</td></tr>
+    <tr><td>daypart_boost</td><td><span class="val">+30%</span></td><td>رفع الميزانية في أفضل الساعات</td></tr>
+    <tr><td>daypart_cut</td><td><span class="val">-40%</span></td><td>تخفيض الميزانية في أسوأ الساعات</td></tr>
+    <tr><td>alert_acos</td><td><span class="val">50%</span></td><td>تنبيه إذا تجاوز ACOS الحساب</td></tr>
+    <tr><td>learning_maturity</td><td><span class="val">7 أيام</span></td><td>فترة النضوج قبل تقييم القرار</td></tr>
+    <tr><td>learning_rate</td><td><span class="val">5%</span></td><td>معدل تعديل العتبات</td></tr>
+  </table>
+</div>
+
+<!-- الملفات المُنتجة -->
+<div class="files-section">
+  <h2>📁 الملفات التي ينتجها البرنامج</h2>
+  <div class="file-row">
+    <span class="file-name">amazon_ads_daily_report.json</span>
+    <span class="file-desc">التقرير اليومي المتراكم — حملات، كلمات، تنبيهات</span>
+  </div>
+  <div class="file-row">
+    <span class="file-name">ads_learning_state.json</span>
+    <span class="file-desc">حالة التعلّم التكيّفي — العتبات المتعلَّمة والقرارات المعلّقة</span>
+  </div>
+</div>
+
+</body>
+</html>

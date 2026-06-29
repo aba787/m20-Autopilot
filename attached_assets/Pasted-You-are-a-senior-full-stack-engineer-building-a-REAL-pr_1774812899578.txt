@@ -1,0 +1,117 @@
+You are a senior full-stack engineer building a REAL, production-ready SaaS platform for Amazon Ads automation.
+
+The system must be COMPLETE and FUNCTIONAL.
+
+You are NOT allowed to give examples, mockups, or partial code.
+You MUST build real working logic.
+
+---
+
+PROJECT REQUIREMENTS:
+
+Build a complete platform with working features, including:
+
+1) Campaign Management System (Core Bot)
+- Fetch campaigns from database
+- Calculate metrics (ACOS, ROAS, CTR)
+- Make decisions (pause, scale, optimize)
+- Execute actions (simulate or real API-ready)
+- Run automatically (scheduler)
+
+---
+
+2) Customer Support Chatbot
+- Fully functional chat system
+- Connected to OpenAI API
+- Strict rules:
+  - Only answer platform-related questions
+  - No fake data
+  - No promises
+- Must be integrated into UI
+
+---
+
+3) Ad Generator Tool
+- Input: product name (+ optional category/brand)
+- Output:
+  - Keywords
+  - Headlines
+  - Description
+  - Targeting
+- Must save results in database
+- Must display results cleanly in UI
+
+---
+
+4) Accounting System
+- Real calculations (NOT AI)
+- Metrics:
+  - Revenue
+  - Cost
+  - Ad spend
+  - Profit
+- API + dashboard
+- AI only explains results
+
+---
+
+FRONTEND (REQUIRED):
+- Full dashboard UI
+- Pages:
+  - Dashboard
+  - Campaigns
+  - Products
+  - Ads Generator
+  - Accounting
+- All buttons MUST work
+- Clean layout (cards, tables, charts)
+
+---
+
+BACKEND (REQUIRED):
+- API routes for all features
+- Database integration (Supabase)
+- Real CRUD operations
+- Error handling
+
+---
+
+DATABASE:
+- campaigns
+- keywords
+- products
+- accounting
+- decision_logs
+- ad_generations
+
+---
+
+RULES:
+
+- Everything must be in ENGLISH (UI + responses)
+- No fake or placeholder logic
+- No "you can implement this later"
+- No missing connections
+
+---
+
+OUTPUT FORMAT:
+
+You must respond with:
+
+1) Project structure (folders/files)
+2) Backend code (API routes)
+3) Database schema (SQL)
+4) Frontend components (React)
+5) How everything connects
+
+---
+
+FINAL GOAL:
+
+A working SaaS system where:
+- User can manage campaigns
+- Generate ads
+- See profits
+- Chat with support bot
+- All features connected and functional

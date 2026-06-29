@@ -1,0 +1,99 @@
+الخطوة 2: زر Connect Amazon
+
+في الفرونت:
+
+<button onclick="connectAmazon()">Connect Amazon</button>
+
+<script>
+function connectAmazon() {
+  window.location.href = "/api/amazon/connect"
+}
+</script>
+🔥 الخطوة 3: API (connect)
+
+ملف:
+
+/pages/api/amazon/connect.js
+export default function handler(req, res) {
+  const clientId = process.env.AMAZON_CLIENT_ID
+  const redirectUri = process.env.AMAZON_REDIRECT_URI
+
+  const url = `https://www.amazon.com/ap/oa?client_id=${clientId}&response_type=code&scope=advertising::campaign_management&redirect_uri=${redirectUri}`
+
+  res.redirect(url)
+}
+🔥 الخطوة 4: Amazon يرجع لك
+
+بعد تسجيل الدخول
+بيرجع للرابط:
+
+/api/amazon/callback?code=XXXX
+🔥 الخطوة 5: API (callback)
+
+ملف:
+
+/pages/api/amazon/callback.js
+export default async function handler(req, res) {
+  const { code } = req.query
+
+  const response = await fetch("https://api.amazon.com/auth/o2/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      code,
+      client_id: process.env.AMAZON_CLIENT_ID,
+      client_secret: process.env.AMAZON_CLIENT_SECRET,
+      redirect_uri: process.env.AMAZON_REDIRECT_URI
+    })
+  })
+
+  const data = await response.json()
+
+  const access_token = data.access_token
+  const refresh_token = data.refresh_token
+
+  console.log("TOKEN:", data)
+
+  // 🔥 هنا تخزينه في قاعدة البيانات
+  // supabase.from('amazon_connections').insert(...)
+
+  res.redirect("/dashboard")
+}
+🔥 الخطوة 6: تخزين التوكن
+
+في جدول:
+
+amazon_connections
+
+أضيفي:
+
+user_id
+access_token
+refresh_token
+🔥 الخطوة 7: استخدام التوكن (أهم شي)
+مثال: جلب الحملات
+const response = await fetch("https://advertising-api.amazon.com/v2/campaigns", {
+  headers: {
+    Authorization: `Bearer ${access_token}`,
+    "Amazon-Advertising-API-ClientId": process.env.AMAZON_CLIENT_ID
+  }
+})
+
+const campaigns = await response.json()
+🔥 الخطوة 8: إنشاء حملة
+await fetch("https://advertising-api.amazon.com/v2/campaigns", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${access_token}`,
+    "Amazon-Advertising-API-ClientId": process.env.AMAZON_CLIENT_ID,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name: "Test Campaign",
+    budget: 50,
+    state: "enabled"
+  })
+})

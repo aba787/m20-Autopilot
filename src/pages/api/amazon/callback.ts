@@ -59,8 +59,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let profileId = 'pending';
     let marketplace = 'amazon.sa';
     let sellerName = 'Amazon Seller';
+    let profileError: string | null = null;
     try {
-      const profRes = await fetch('https://advertising-api.amazon.com/v2/profiles', {
+      const profRes = await fetch('https://advertising-api-eu.amazon.com/v2/profiles', {
         headers: {
           'Authorization': `Bearer ${tokens.access_token}`,
           'Amazon-Advertising-API-ClientId': clientId!,
@@ -69,13 +70,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (profRes.ok) {
         const profiles = await profRes.json();
         if (Array.isArray(profiles) && profiles.length > 0) {
-          const p = profiles[0];
+          // Prefer the Saudi Arabia profile (KSA marketplace), else first.
+          const p = profiles.find((x: any) =>
+            String(x.countryCode).toUpperCase() === 'SA' ||
+            x?.accountInfo?.marketplaceStringId === 'A17E79C6D8DWNP',
+          ) || profiles[0];
           profileId = String(p.profileId);
           if (p.countryCode) marketplace = `amazon.${String(p.countryCode).toLowerCase()}`;
           if (p.accountInfo && p.accountInfo.name) sellerName = p.accountInfo.name;
+        } else {
+          profileError = 'no_advertising_profile';
         }
+      } else {
+        // e.g. 401/403 when the client_id is not approved for production Ads API.
+        profileError = `profile_fetch_${profRes.status}`;
       }
-    } catch (e) { console.error('Failed to fetch Amazon profile:', e); }
+    } catch (e) {
+      console.error('Failed to fetch Amazon profile:', e);
+      profileError = 'profile_fetch_failed';
+    }
+
+    // Fail closed: a connection with no real profile_id has an invalid Ads scope
+    // and every later API call would fail, so don't save it as active.
+    if (profileId === 'pending') {
+      return res.redirect(`/integration?error=${encodeURIComponent(profileError || 'no_advertising_profile')}`);
+    }
+
     const connectionData = {
       user_id: userId,
 profile_id: profileId,

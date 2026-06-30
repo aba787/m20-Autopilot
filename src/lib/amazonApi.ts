@@ -4,6 +4,34 @@ import { encrypt, decrypt } from './crypto';
 const AMAZON_ADS_API_BASE = 'https://advertising-api.amazon.com';
 const AMAZON_AUTH_URL = 'https://api.amazon.com/auth/o2/token';
 
+// Amazon Ads API regional endpoints. The correct region is mandatory: calling
+// the wrong one returns empty profiles and 404s. KSA/UAE/EG live in the EU region.
+const ADS_REGION_ENDPOINTS = {
+  NA: 'https://advertising-api.amazon.com',
+  EU: 'https://advertising-api-eu.amazon.com',
+  FE: 'https://advertising-api-fe.amazon.com',
+} as const;
+
+const EU_COUNTRIES = ['SA', 'AE', 'EG', 'TR', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'SE', 'PL', 'BE', 'IN'];
+const FE_COUNTRIES = ['JP', 'AU', 'SG'];
+
+// The connection stores `marketplace` as either `amazon.sa` or a bare code like
+// `US`/`SA`. Extract the ISO country code from whichever format is present.
+function connectionCountryCode(connection: AmazonConnection): string {
+  const raw = (connection?.marketplace || '').trim();
+  if (!raw) return 'SA'; // KSA is the platform's default market.
+  const parts = raw.split('.');
+  return parts[parts.length - 1].toUpperCase();
+}
+
+// Picks the Ads API base URL for the connection's marketplace region.
+function adsBaseUrl(connection: AmazonConnection): string {
+  const cc = connectionCountryCode(connection);
+  if (FE_COUNTRIES.includes(cc)) return ADS_REGION_ENDPOINTS.FE;
+  if (EU_COUNTRIES.includes(cc)) return ADS_REGION_ENDPOINTS.EU;
+  return ADS_REGION_ENDPOINTS.NA;
+}
+
 export interface AmazonConnection {
   id: string;
   user_id: string;
@@ -113,7 +141,8 @@ export async function amazonApiCall(
   connection: AmazonConnection,
   endpoint: string,
   method: string = 'GET',
-  body?: any
+  body?: any,
+  vendorType?: string,
 ): Promise<any> {
   let token = decrypt(connection.access_token);
   const expiresAt = new Date(connection.token_expires_at);
@@ -122,14 +151,22 @@ export async function amazonApiCall(
     token = await refreshAccessToken(connection);
   }
 
-  const response = await fetch(`${AMAZON_ADS_API_BASE}${endpoint}`, {
+  const headers: Record<string, string> = {
+    'Authorization': `Bearer ${token}`,
+    'Amazon-Advertising-API-ClientId': process.env.AMAZON_CLIENT_ID || '',
+    'Amazon-Advertising-API-Scope': connection.profile_id,
+  };
+  // v3 endpoints require the resource media type on BOTH Content-Type and Accept.
+  if (vendorType) {
+    headers['Content-Type'] = vendorType;
+    headers['Accept'] = vendorType;
+  } else {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const response = await fetch(`${adsBaseUrl(connection)}${endpoint}`, {
     method,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Amazon-Advertising-API-ClientId': process.env.AMAZON_CLIENT_ID || '',
-      'Amazon-Advertising-API-Scope': connection.profile_id,
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 
@@ -141,19 +178,68 @@ export async function amazonApiCall(
   return response.json();
 }
 
+// Safety cap so a misbehaving API (e.g. a repeating/erroneous nextToken) can
+// never hang a sync request indefinitely.
+const MAX_SYNC_PAGES = 50;
+
+// Pages through a Sponsored Products v3 "list" endpoint, collecting every item
+// from `collectionKey`. Bounded by MAX_SYNC_PAGES and a repeated-token guard.
+async function listAllV3(
+  connection: AmazonConnection,
+  endpoint: string,
+  vendorType: string,
+  collectionKey: string,
+): Promise<any[]> {
+  const items: any[] = [];
+  const seenTokens = new Set<string>();
+  let nextToken: string | undefined;
+  let pages = 0;
+
+  do {
+    const body: any = { stateFilter: { include: ['ENABLED', 'PAUSED', 'ARCHIVED'] }, maxResults: 100 };
+    if (nextToken) body.nextToken = nextToken;
+
+    const data = await amazonApiCall(connection, endpoint, 'POST', body, vendorType);
+    const batch = data[collectionKey];
+    if (Array.isArray(batch)) items.push(...batch);
+
+    nextToken = data.nextToken || undefined;
+    pages++;
+
+    // Stop if Amazon keeps handing back a token we've already followed.
+    if (nextToken && seenTokens.has(nextToken)) break;
+    if (nextToken) seenTokens.add(nextToken);
+  } while (nextToken && pages < MAX_SYNC_PAGES);
+
+  return items;
+}
+
 export async function syncCampaigns(userId: string, connection: AmazonConnection) {
-  const campaigns = await amazonApiCall(connection, '/v2/sp/campaigns');
+  const campaigns = await listAllV3(
+    connection,
+    '/sp/campaigns/list',
+    'application/vnd.spCampaign.v3+json',
+    'campaigns',
+  );
+
+  const today = new Date().toISOString().split('T')[0];
+  let failures = 0;
+  let firstError: string | null = null;
 
   for (const campaign of campaigns) {
-    await adminDb.from('campaigns').upsert({
+    const state = String(campaign.state || '').toUpperCase();
+    // v3 budget is an object: { budget: number, budgetType: 'DAILY' }.
+    const budget = campaign.budget?.budget ?? campaign.dailyBudget ?? 0;
+    const { error } = await adminDb.from('campaigns').upsert({
       user_id: userId,
       amazon_campaign_id: String(campaign.campaignId),
       name: campaign.name,
       type: 'Sponsored Products',
-      status: campaign.state === 'enabled' ? 'active' : campaign.state === 'paused' ? 'paused' : 'archived',
-      budget: campaign.dailyBudget || 0,
-      date: new Date().toISOString().split('T')[0],
+      status: state === 'ENABLED' ? 'active' : state === 'PAUSED' ? 'paused' : 'archived',
+      budget,
+      date: today,
     }, { onConflict: 'user_id,amazon_campaign_id,date' });
+    if (error) { failures++; if (!firstError) firstError = error.message; }
   }
 
   await adminDb
@@ -161,7 +247,63 @@ export async function syncCampaigns(userId: string, connection: AmazonConnection
     .update({ last_synced_at: new Date().toISOString() })
     .eq('id', connection.id);
 
+  // Pull the advertised products (ASINs) so they surface in the dashboard.
+  await syncProductAds(userId, connection);
+
+  // Fail loudly so a partial/failed save is never reported as success.
+  if (failures > 0) {
+    throw new Error(`Failed to save ${failures} of ${campaigns.length} campaigns: ${firstError}`);
+  }
+
   return campaigns.length;
+}
+
+export async function syncProductAds(userId: string, connection: AmazonConnection) {
+  const productAds = await listAllV3(
+    connection,
+    '/sp/productAds/list',
+    'application/vnd.spProductAd.v3+json',
+    'productAds',
+  );
+
+  let failures = 0;
+  let firstError: string | null = null;
+
+  for (const ad of productAds) {
+    if (!ad.asin) continue;
+    const state = String(ad.state || '').toUpperCase();
+    // products.status only allows active/weak/poor/paused — map the ad state.
+    const status = state === 'ENABLED' ? 'active' : 'paused';
+
+    // products.name is NOT NULL and the productAds API doesn't return a title.
+    // Update only the status of existing rows (preserve any real name/metrics),
+    // and insert new rows with the ASIN as a placeholder name.
+    const { data: existing } = await adminDb
+      .from('products')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('asin', ad.asin)
+      .maybeSingle();
+
+    const { error } = existing
+      ? await adminDb
+          .from('products')
+          .update({ status, updated_at: new Date().toISOString() })
+          .eq('id', existing.id)
+      : await adminDb.from('products').insert({
+          user_id: userId,
+          asin: ad.asin,
+          name: ad.asin,
+          status,
+        });
+    if (error) { failures++; if (!firstError) firstError = error.message; }
+  }
+
+  if (failures > 0) {
+    throw new Error(`Failed to save ${failures} of ${productAds.length} product ads: ${firstError}`);
+  }
+
+  return productAds.length;
 }
 
 export async function updateCampaignBid(connection: AmazonConnection, campaignId: string, newBudget: number) {

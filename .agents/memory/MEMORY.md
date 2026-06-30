@@ -1,3 +1,4 @@
 - [Amazon refresh-token 365-day policy](amazon-refresh-token-policy.md) — consent_date + refresh_token_expires_at on connect; invalid_grant → deactivate + REAUTH_REQUIRED; Supabase DDL is manual, separate migration.
 - [External deploy lockfile firewall URLs](external-deploy-lockfile.md) — Replit npm mirror writes package-firewall.replit.local into package-lock.json; breaks npm ci on Amplify/Vercel; rewrite resolved → registry.npmjs.org.
+- [Amazon Ads region + v3](amazon-ads-region-v3.md) — KSA/UAE/EG are EU region (advertising-api-eu); NA returns empty profiles → profile_id 'pending'; v2 list GETs are 404, use v3 POST /sp/*/list with media type on Content-Type+Accept.
 - [Supabase admin listUsers 14s hang](supabase-admin-listusers-hang.md) — adminDb.auth.admin.listUsers() takes 14+ seconds in this Replit env; never use it; query auth.users via RPC or handle createUser errors instead.

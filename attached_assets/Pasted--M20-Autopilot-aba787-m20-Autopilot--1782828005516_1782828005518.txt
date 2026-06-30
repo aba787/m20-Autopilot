@@ -1,0 +1,129 @@
+# 📋 مواصفات التعديل للمبرمج — M20 Autopilot
+
+**المستودع المستهدف:** `aba787/m20-Autopilot` (فرع `main`) — **هذا هو المستودع الذي ينشره Replit/Amplify فعليًا.**
+
+## السبب الجذري للمشكلة
+المنتجات/الحملات لا تظهر لأن `lib/amazonApi.ts` يستدعي:
+1. **endpoint المنطقة الخطأ:** `advertising-api.amazon.com` (NA) — بينما السعودية على منطقة **EU**.
+2. **endpoints قديمة v2:** `GET /v2/sp/campaigns` (مهجورة → ترجع `404 Method Not Found`). يجب الانتقال إلى **v3**.
+
+النتيجة: `/v2/profiles` (على NA) يرجع فارغًا → `profile_id=pending`، و Sync يفشل بـ v2 404.
+
+---
+
+## التعديل 1 — `src/pages/api/amazon/callback.ts` (تغيير سطر واحد)
+جلب الملف الإعلاني يجب أن يكون من منطقة **EU**:
+
+```js
+// قبل:
+const profRes = await fetch('https://advertising-api.amazon.com/v2/profiles', {
+// بعد:
+const profRes = await fetch('https://advertising-api-eu.amazon.com/v2/profiles', {
+```
+الهيدر يبقى: `Amazon-Advertising-API-ClientId` + `Authorization: Bearer <access_token>`.
+> ملاحظة: اختر من `profiles` الملف الذي `countryCode === 'SA'` (أو `accountInfo.marketplaceStringId === 'A17E79C6D8DWNP'`) واحفظ `profileId` الحقيقي في `amazon_connections.profile_id`، و`accountInfo.name` في `seller_name`.
+
+---
+
+## التعديل 2 — `src/lib/amazonApi.ts`
+
+### (أ) إضافة دالة اختيار المنطقة حسب السوق
+```js
+const ADS_REGION_ENDPOINTS = {
+  NA: 'https://advertising-api.amazon.com',
+  EU: 'https://advertising-api-eu.amazon.com',
+  FE: 'https://advertising-api-fe.amazon.com',
+};
+
+// أسواق EU (تشمل السعودية والإمارات ومصر)
+const EU_COUNTRIES = ['SA','AE','EG','TR','GB','DE','FR','IT','ES','NL','SE','PL','BE','IN'];
+const FE_COUNTRIES = ['JP','AU','SG'];
+
+function adsBaseUrl(connection) {
+  const cc = (connection?.country_code || 'SA').toUpperCase(); // KSA افتراضيًا
+  if (FE_COUNTRIES.includes(cc)) return ADS_REGION_ENDPOINTS.FE;
+  if (EU_COUNTRIES.includes(cc)) return ADS_REGION_ENDPOINTS.EU;
+  return ADS_REGION_ENDPOINTS.NA;
+}
+```
+
+### (ب) تعميم دالة الاستدعاء لدعم v3 (media types)
+```js
+async function amazonApiCall(connection, endpoint, method = 'GET', body = null, vendorType = null) {
+  const accessToken = await getValidAccessToken(connection); // نفس آلية تجديد التوكن الحالية
+  const headers = {
+    'Amazon-Advertising-API-ClientId': process.env.AMAZON_CLIENT_ID,
+    'Amazon-Advertising-API-Scope': connection.profile_id,   // الملف الإعلاني الحقيقي
+    'Authorization': `Bearer ${accessToken}`,
+  };
+  if (vendorType) {                       // v3 تتطلب media type في النوعين
+    headers['Content-Type'] = vendorType;
+    headers['Accept'] = vendorType;
+  } else {
+    headers['Content-Type'] = 'application/json';
+  }
+  const res = await fetch(`${adsBaseUrl(connection)}${endpoint}`, {
+    method, headers, body: body ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) throw new Error(`Amazon API error ${res.status}: ${await res.text()}`);
+  return res.json();
+}
+```
+
+### (ج) جلب الحملات — v3
+```js
+export async function syncCampaigns(userId, connection) {
+  const data = await amazonApiCall(
+    connection,
+    '/sp/campaigns/list',                              // v3
+    'POST',
+    { stateFilter: { include: ['ENABLED','PAUSED','ARCHIVED'] }, maxResults: 100 },
+    'application/vnd.spCampaign.v3+json'               // ← media type v3
+  );
+  const campaigns = data.campaigns || [];
+  // upsert في جدول campaigns (campaign_id, name, state, budget, user_id ...)
+  // ... منطق الحفظ الحالي ...
+  await syncProductAds(userId, connection);            // ← مزامنة المنتجات
+  return campaigns;
+}
+```
+
+### (د) جلب المنتجات المُعلَن عنها — v3 (الجديد)
+```js
+export async function syncProductAds(userId, connection) {
+  const data = await amazonApiCall(
+    connection,
+    '/sp/productAds/list',                             // v3
+    'POST',
+    { stateFilter: { include: ['ENABLED','PAUSED','ARCHIVED'] }, maxResults: 100 },
+    'application/vnd.spProductAd.v3+json'              // ← media type v3
+  );
+  const productAds = data.productAds || [];
+  for (const ad of productAds) {
+    // upsert في جدول products
+    await supabase.from('products').upsert({
+      user_id: userId,
+      asin: ad.asin,
+      sku: ad.sku || null,
+      status: ad.state,        // ENABLED / PAUSED / ARCHIVED
+      // name: يمكن جلبه لاحقًا من Catalog/SP-API إن لزم
+    }, { onConflict: 'user_id,asin' });
+  }
+  return productAds;
+}
+```
+
+---
+
+## ملاحظات مهمة للمبرمج
+- **`profile_id` يجب أن يكون رقم الملف الحقيقي** من `/v2/profiles` (EU). إن بقي `pending` فلن يعمل أي استدعاء (Scope خاطئ).
+- **معرّفات السعودية:** `countryCode = SA`، `marketplaceId = A17E79C6D8DWNP`، المنطقة = **EU**.
+- **رؤوس v3 إلزامية:** `Content-Type` و`Accept` بقيمة `application/vnd.spCampaign.v3+json` (للحملات) و`application/vnd.spProductAd.v3+json` (للمنتجات) — بدونها ترجع `404 Method Not Found`.
+- **الترقيم (pagination):** الردود قد تحوي `nextToken` — مرّره في الطلب التالي لجلب كل النتائج.
+- **الاعتماد:** كل هذا يتطلّب أن يكون `client_id` **معتمدًا للوصول الإنتاجي لـ Amazon Ads API (Partner Network)** — إن لم يكن معتمدًا، ستفشل الاستدعاءات بـ 401/403 (وهذه البوابة الأخيرة بعد النشر).
+
+---
+
+**بعد أن يطبّقها المبرمج وينشر عبر Replit/Amplify**، أخبرني وسأكمل الاختبار النهائي معك (ربط حساب `Mhmdsalam` → Sync → التحقق من ظهور الحملات والمنتجات، وكشف إن كان اعتماد Ads API يحتاج تجديدًا).
+
+هل تريد أن أصيغها له أيضًا **كرسالة جاهزة بالإنجليزية** (لو المبرمج لا يقرأ العربية)؟
